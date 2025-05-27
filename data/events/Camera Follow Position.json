@@ -1,0 +1,14 @@
+{
+    "params": [
+        {
+            "name": "X Coordinates",
+            "type": "Float(-999999, 999999, 0.001, 2)",
+            "defaultValue": 0.0
+        },
+        {
+            "name": "Y Coordinates",
+            "type": "Float(-999999, 999999, 0.001, 2)",
+            "defaultValue": 0.0
+        }
+    ]
+}

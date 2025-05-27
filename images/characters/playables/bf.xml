@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="bf.png" width="296" height="150">
+	<SubTexture name="idle1" x="252" y="0" width="44" height="37" frameX="-9" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle2" x="213" y="38" width="45" height="37" frameX="-9" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle3" x="40" y="77" width="43" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle4" x="83" y="77" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle5" x="85" y="39" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle6" x="85" y="39" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="idle7" x="85" y="39" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down1" x="78" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down2" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down3" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down4" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down5" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down6" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss down7" x="116" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left1" x="126" y="77" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left2" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left3" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left4" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left5" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left6" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss left7" x="168" y="76" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right1" x="173" y="0" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right2" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right3" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right4" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right5" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right6" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss right7" x="258" y="37" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up1" x="0" y="0" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up2" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up3" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up4" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up5" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up6" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="miss up7" x="0" y="42" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera1" x="87" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera2" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera3" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera4" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera5" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera6" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera7" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera8" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera9" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera10" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera11" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera12" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera13" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera14" x="207" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera15" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera16" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera17" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera18" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera19" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera20" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera21" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera22" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera23" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera24" x="246" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera25" x="210" y="76" width="41" height="38" frameX="-16" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera26" x="210" y="76" width="41" height="38" frameX="-16" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera27" x="128" y="38" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera28" x="128" y="38" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera29" x="130" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera30" x="130" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera31" x="130" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock camera32" x="130" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front1" x="87" y="0" width="43" height="38" frameX="-14" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front2" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front3" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front4" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front5" x="168" y="114" width="39" height="36" frameX="-17" frameY="-12" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front6" x="40" y="0" width="47" height="39" frameX="-13" frameY="-9" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front7" x="40" y="0" width="47" height="39" frameX="-13" frameY="-9" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front8" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front9" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front10" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front11" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front12" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front13" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front14" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front15" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="shock front16" x="40" y="39" width="45" height="38" frameX="-13" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing down1" x="78" y="115" width="38" height="33" frameX="-14" frameY="-15" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing down2" x="40" y="115" width="38" height="34" frameX="-14" frameY="-14" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing down3" x="40" y="115" width="38" height="34" frameX="-14" frameY="-14" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing down4" x="40" y="115" width="38" height="34" frameX="-14" frameY="-14" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing left1" x="171" y="38" width="42" height="38" frameX="-9" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing left2" x="210" y="0" width="42" height="38" frameX="-10" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing left3" x="210" y="0" width="42" height="38" frameX="-10" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing left4" x="210" y="0" width="42" height="38" frameX="-10" frameY="-10" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing right1" x="251" y="75" width="38" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing right2" x="173" y="0" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing right3" x="173" y="0" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing right4" x="173" y="0" width="37" height="37" frameX="-21" frameY="-11" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing up1" x="0" y="0" width="40" height="42" frameX="-17" frameY="-6" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing up2" x="0" y="84" width="40" height="41" frameX="-17" frameY="-7" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing up3" x="0" y="84" width="40" height="41" frameX="-17" frameY="-7" frameWidth="72" frameHeight="56"/>
+	<SubTexture name="sing up4" x="0" y="84" width="40" height="41" frameX="-17" frameY="-7" frameWidth="72" frameHeight="56"/>
+</TextureAtlas>

@@ -1,0 +1,14 @@
+<!DOCTYPE codename-engine-character>
+<character sprite="playables/bf" scale="10" antialiasing="false" flipX="true" isPlayer="true" icon="playables/bf-pixel" holdTime="8" color="#31B0D1">
+	<anim name="idle" anim="idle" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singLEFT" anim="sing left" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singDOWN" anim="sing down" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singUP" anim="sing up" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singRIGHT" anim="sing right" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singLEFTmiss" anim="miss left" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singDOWNmiss" anim="miss down" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singUPmiss" anim="miss up" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singRIGHTmiss" anim="miss right" x="0" y="0" fps="12" loop="false"/>
+	<anim name="shock-front" anim="shock front" x="0" y="0" fps="24" loop="false"/>
+	<anim name="shock-camera" anim="shock camera" x="0" y="0" fps="24" loop="false"/>
+</character>

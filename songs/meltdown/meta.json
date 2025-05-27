@@ -1,0 +1,19 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 120,
+	"difficulties": [
+		"EASY",
+		"NORMAL",
+		"HARD",
+		"HELL"
+	],
+	"needsVoices": true,
+	"parsedColor": -5299935,
+	"displayName": "Meltdown",
+	"icon": "red-impostor-pixel",
+	"name": "meltdown",
+	"color": "#AF2121"
+}

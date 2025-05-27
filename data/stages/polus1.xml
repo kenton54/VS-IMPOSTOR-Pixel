@@ -1,0 +1,16 @@
+<stage zoom="0.7" name="Polus Lab (Outside)" folder="stages/polus1" startCamPosX="0" startCamPosY="0">
+    <use-extension script="impostorPixel"/>
+
+    <sprite name="wall" sprite="back" x="200" y="-120" antialiasing="false" scale="10" scrollx="0.8"/>
+    <sprite name="ground" sprite="ground" x="12" y="530" antialiasing="false" scale="10"/>
+
+    <sprite name="lab" sprite="lab" x="59" y="-124" antialiasing="false" scale="10" type="loop">
+        <anim name="watch" anim="watch" loop="true" fps="4"/>
+        <anim name="idle" anim="idle" loop="true" fps="1"/>
+    </sprite>
+
+    <sprite name="dumbasses" sprite="dumbasses" x="0" y="0" antialiasing="false" scale="10" alpha="0.5"/>
+    <girlfriend x="0" y="0"/>
+    <dad x="-452" y="72" camxoffset="0" camyoffset="80"/>
+    <boyfriend x="670" y="244" camxoffset="-100"/>
+</stage>

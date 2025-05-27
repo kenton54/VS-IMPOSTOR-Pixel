@@ -1,0 +1,10 @@
+<menu name="IMP Pixel Options" desc="Change IMPOSTOR Pixel's options here.">
+    <choice id="pixelLanguage" name="Language">
+        <value name="English" value="english"/>
+        <value name="Spanish" value="spanish"/>
+        <value name="French" value="french"/>
+        <value name="Portuguese" value="portuguese"/>
+        <value name="Russian" value="russian"/>
+    </choice>
+    <checkbox id="pixelTimeBar" name="Time Bar"/>
+</menu>

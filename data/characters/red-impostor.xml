@@ -1,0 +1,16 @@
+<!DOCTYPE codename-engine-character>
+<character sprite="red-impostor" scale="10" antialiasing="false" icon="red-impostor-pixel" color="#AF2121" holdTime="8">
+	<anim name="idle" anim="idle" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singRIGHT" anim="sing right" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singDOWN" anim="sing down" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singUP" anim="sing up" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singLEFT" anim="sing left" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singRIGHTmiss" anim="miss right" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singDOWNmiss" anim="miss down" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singUPmiss" anim="miss up" x="0" y="0" fps="12" loop="false"/>
+	<anim name="singLEFTmiss" anim="miss left" x="0" y="0" fps="12" loop="false"/>
+	<anim name="preShoot-front" anim="preshoot front" x="0" y="0" fps="24" loop="false"/>
+	<anim name="preShoot-camera" anim="preshoot camera" x="0" y="0" fps="24" loop="false"/>
+	<anim name="shoot-front" anim="shoot front" x="0" y="0" fps="24" loop="false"/>
+	<anim name="shoot-camera" anim="shoot camera" x="0" y="0" fps="24" loop="false"/>
+</character>
