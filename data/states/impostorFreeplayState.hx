@@ -255,6 +255,7 @@ function createPanel(songData:Array<Dynamic>) {
     }
     else
         attachedIcon.visible = false;
+
     attachedIcon.scale = panel.scale;
     attachedIcon.updateHitbox();
     group.add(attachedIcon);
