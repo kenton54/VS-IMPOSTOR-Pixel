@@ -1,9 +1,6 @@
 import StringTools;
 import flixel.addons.display.FlxStarField2D;
-import flixel.addons.display.shapes.FlxShape;
 import flixel.group.FlxTypedSpriteGroup;
-import flixel.math.FlxRect;
-import flixel.util.FlxGradient;
 import funkin.backend.chart.Chart;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
@@ -188,7 +185,10 @@ function changeDifficulty(change:Int) {
     curDiff = FlxMath.wrap(curDiff + change, 0, changeAmount);
 
     if (difficultiesFromSong != null && difficultiesFromSong[curDiff] != null) {
-        difficultySpr.loadGraphic(Paths.image("menus/freeplay/difficulties/" + difficultiesFromSong[curDiff]));
+        if (Assets.exists(Paths.image("menus/freeplay/difficulties/" + difficultiesFromSong[curDiff])))
+            difficultySpr.loadGraphic(Paths.image("menus/freeplay/difficulties/" + difficultiesFromSong[curDiff]));
+        else
+            difficultySpr.loadGraphic(Paths.image("menus/freeplay/difficulties/unknown"));
     }
     else {
         difficultySpr.loadGraphic(Paths.image("menus/freeplay/difficulties/none"));
@@ -300,6 +300,5 @@ function getRankSticker(songData:Array<Dynamic>):String {
     else
         sticker = null;
 
-    sticker = "p";
     return sticker;
 }
