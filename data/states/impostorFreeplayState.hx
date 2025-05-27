@@ -209,9 +209,11 @@ function regeneratePage() {
     panels = [];
 
     for (i in 0...songs.length) {
-        panels[i] = new FlxTypedSpriteGroup();
-        panels[i] = createPanel(songs[i]);
-        add(panels[i]);
+        if (songs[i].difficulties.contains(songs[curSong].difficulties[curDiff])) {
+            panels[i] = new FlxTypedSpriteGroup();
+            panels[i] = createPanel(songs[i]);
+            add(panels[i]);
+        }
     }
 }
 
