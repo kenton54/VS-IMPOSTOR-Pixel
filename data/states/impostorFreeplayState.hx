@@ -159,6 +159,8 @@ function handleInput() {
 function handleSongSelection() {
     var panelHeight:Float = 140;
     for (i => panel in panels) {
+        if (panel == null) return;
+
         var yPanel:Float = ((FlxG.height - panelHeight) / 2) + ((i - curSong) * panelHeight) + 12;
 
         panel.y = CoolUtil.fpsLerp(panel.y, yPanel, 0.2);
@@ -169,6 +171,8 @@ function handleSongSelection() {
 var lastSong:Int = 0;
 function changeSong(change:Int) {
     curSong = FlxMath.wrap(curSong + change, 0, panels.length - 1);
+
+    if (panels[curSong].members.length < 1) changeSong(change);
 
     changeDifficulty(0);
 
@@ -204,16 +208,18 @@ function changeDifficulty(change:Int) {
 
 function regeneratePage() {
     for (panel in panels) {
-        panel.clear();
+        remove(panel);
+        //panel.clear();
     }
+
     panels = [];
 
     for (i in 0...songs.length) {
+        panels[i] = new FlxTypedSpriteGroup();
         if (songs[i].difficulties.contains(songs[curSong].difficulties[curDiff])) {
-            panels[i] = new FlxTypedSpriteGroup();
             panels[i] = createPanel(songs[i]);
-            add(panels[i]);
         }
+        add(panels[i]);
     }
 }
 
