@@ -11,6 +11,12 @@ static var curPage:Int = 0;
 static var curSong:Int = 0;
 static var curDiff:Int = 1;
 
+static var newPlayableWaiting:Bool = false;
+
+static var curInstPlaying:String = "";
+
+var fade2Volume:Float = 0.7;
+
 var pageArray:Array<Array<Dynamic>>;
 var songs:Array<Dynamic>;
 
@@ -22,6 +28,7 @@ var songsCam:FlxCamera;
 var bordersCam:FlxCamera;
 
 var charBG:FlxSprite;
+var boxes:FlxSprite;
 
 var difficultySpr:FlxSprite;
 var diffLeftArrow:FlxSprite;
@@ -74,7 +81,7 @@ function create() {
     linething.angle = -9.45;
     add(linething);
 
-    var boxes:FlxSprite = new FlxSprite(5, 465).loadGraphic(Paths.image("menus/freeplay/boxes"));
+    boxes = new FlxSprite(5, 465).loadGraphic(Paths.image("menus/freeplay/boxes"));
     boxes.scale.set(9, 9);
     boxes.updateHitbox();
     add(boxes);
@@ -123,6 +130,17 @@ function create() {
     interpolateColor = new FlxInterpolateColor(glow.color);
 }
 
+function postCreate() {
+    if (newPlayableWaiting) {
+        new FlxTimer().start(0.75, _ -> {
+            FlxTween.color(charBG, 0.1, 0xFFFFFFFF, 0xFF555555);
+            FlxTween.color(boxes, 0.1, 0xFFFFFFFF, 0xFF999999);
+        });
+        fade2Volume = 0.4;
+    }
+    playCurSongInst();
+}
+
 function update(elapsed:Float) {
     handleInput();
     handleSongSelection();
@@ -154,31 +172,45 @@ function handleInput() {
 
     if (controls.BACK)
         FlxG.switchState(new MainMenuState());
+
+    if (FlxG.keys.justPressed.HOME)
+        changeSong(-curSong);
+    if (FlxG.keys.justPressed.END) {
+        var amount2jump:Int = 0;
+        for (panel in panels) {
+            if (panel.members.length > 0) amount2jump += 1;
+        }
+        changeSong(amount2jump - curSong - 1);
+    }
 }
 
 function handleSongSelection() {
     var panelHeight:Float = 140;
+
     for (i => panel in panels) {
         if (panel == null) return;
 
         var yPanel:Float = ((FlxG.height - panelHeight) / 2) + ((i - curSong) * panelHeight) + 12;
 
+        var xEquationLol:Float = 280 + (Math.abs(Math.cos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
+
         panel.y = CoolUtil.fpsLerp(panel.y, yPanel, 0.2);
-        panel.x = 280 + (Math.abs(Math.cos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
+        panel.x = CoolUtil.fpsLerp(panel.x, xEquationLol, 0.3);
     }
 }
 
-var lastSong:Int = 0;
+static var lastSong:Int = 0;
 function changeSong(change:Int) {
     curSong = FlxMath.wrap(curSong + change, 0, panels.length - 1);
 
-    if (panels[curSong].members.length < 1) changeSong(change);
+    if (panels[curSong].members.length < 1) changeSong(change / Math.abs(change));
 
     changeDifficulty(0);
 
     if (curSong != lastSong) {
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
         lastSong = curSong;
+        playCurSongInst();
     }
 }
 
@@ -200,10 +232,29 @@ function changeDifficulty(change:Int) {
     difficultySpr.updateHitbox();
     difficultySpr.screenCenter(FlxAxes.X);
 
+    if (change > 0)
+        spawnXpos = -100;
+    else if (change < 0)
+        spawnXpos = FlxG.width;
+
     if (change != 0) {
         regeneratePage();
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
     }
+}
+
+function playCurSongInst() {
+    var player:Void -> Void = function() {
+        if (curInstPlaying != songs[curSong].name) {
+            var song:String = Paths.inst(songs[curSong].name, songs[curSong].difficulties[curDiff]);
+            FlxG.sound.playMusic(song, 0);
+            FlxG.sound.music.fadeIn(4, 0, fade2Volume);
+            Conductor.changeBPM(songs[curSong].bpm, songs[curSong].beatsPerMeasure, songs[curSong].stepsPerBeat);
+
+            curInstPlaying = songs[curSong].name;
+        }
+    }
+    Main.execAsync(player);
 }
 
 function regeneratePage() {
@@ -223,6 +274,7 @@ function regeneratePage() {
     }
 }
 
+var spawnXpos:Float = 0;
 function createPanel(songData:Array<Dynamic>) {
     var scale:Float = 3;
 
@@ -267,6 +319,9 @@ function createPanel(songData:Array<Dynamic>) {
     attachedIcon.scale = panel.scale;
     attachedIcon.updateHitbox();
     group.add(attachedIcon);
+
+    group.y = FlxG.height / 2.38;
+    group.x = spawnXpos;
     
     return group;
 }
