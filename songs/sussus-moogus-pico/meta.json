@@ -11,15 +11,15 @@
 	],
 	"needsVoices": false,
 	"parsedColor": -5299935,
-	"displayName": "Sussus Moogus",
+	"displayName": "Sussus Moogus (Pico Mix)",
 	"icon": "red-impostor-pixel",
-	"name": "sussus-moogus",
+	"name": "sussus-moogus-pico",
 	"color": "#AF2121",
 	"customValues": {
 		"ratingsChart": {
 			"easy": 2,
-			"normal": 3,
-			"hard": 4
+			"normal": 4,
+			"hard": 5
 		}
 	}
 }

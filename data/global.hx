@@ -1,4 +1,6 @@
-public static var pixelPlayable:String = "bf";
+public static var playablesList:Array<String> = ["bf"];
+public static var seenPlayables:Array<String> = ["bf"];
+//public static var pixelPlayable:String = "bf";
 
 function new() {
     window.title = "VS IMPOSTOR Pixel Edition";
@@ -10,8 +12,8 @@ function initSaveData() {
     if (FlxG.save.data.pixelBeans == null) FlxG.save.data.pixelBeans = 0;
     if (FlxG.save.data.pixelLanguage == null) FlxG.save.data.pixelLanguage = "english";
     if (FlxG.save.data.pixelTimeBar == null) FlxG.save.data.pixelTimeBar = true;
-    if (FlxG.save.data.pixelPlayable == null) FlxG.save.data.pixelPlayable = "bf";
-    if (FlxG.save.data.pixelPartner == null) FlxG.save.data.pixelPartner = "gf";
+    //if (FlxG.save.data.pixelPlayable == null) FlxG.save.data.pixelPlayable = "bf";
+    //if (FlxG.save.data.pixelPartner == null) FlxG.save.data.pixelPartner = "gf";
 }
 
 function update(elapsed:Float) {

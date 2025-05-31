@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="computer.png" width="90" height="28">
+	<SubTexture name="beatLeft1" x="0" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="beatRight1" x="18" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="danger1" x="36" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="danger2" x="54" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="newChar1" x="72" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="newChar2" x="0" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="off1" x="18" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="turnOn1" x="18" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="turnOn2" x="36" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="turnOn3" x="54" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="turnOn4" x="72" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+</TextureAtlas>
