@@ -1,5 +1,6 @@
 import StringTools;
 import flixel.addons.display.FlxStarField2D;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.math.FlxRect;
 import flixel.tweens.FlxTween.FlxTweenType;
@@ -57,6 +58,8 @@ var player1DiffIcon:FlxSprite;
 var player1DiffTxt:FunkinText;
 var chartDiffBar:FlxBar;
 var mechDiffBar:FlxBar;
+
+var pressAcceptTxt2P:FunkinText;
 
 var chartDiffValue:Int = 0;
 var chartDiffLerp:Float = 0;
@@ -187,6 +190,13 @@ function create() {
     charP2Side.add(playableCharP2);
     charP2Side.add(otherBoxes);
 
+    pressAcceptTxt2P = new FunkinText(820, 500, 500, 'PLAYER 2\nPRESS START', 56, true);
+    pressAcceptTxt2P.alignment = "center";
+    pressAcceptTxt2P.borderSize = 4;
+    pressAcceptTxt2P.camera = songsCam;
+    pressAcceptTxt2P.visible = false;
+    add(pressAcceptTxt2P);
+
     var topBorder:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height * 0.115, FlxColor.BLACK);
     topBorder.camera = bordersCam;
     add(topBorder);
@@ -309,8 +319,6 @@ function postCreate() {
 
     new FlxTimer().start(0.25, _ -> {computerP1.animation.play("turnOn", true);});
     new FlxTimer().start(0.9, _ -> {
-        doComptIdleDance = true;
-
         allowGlobalInput = true;
 
         if (newPlayableWaiting) {
@@ -322,12 +330,19 @@ function postCreate() {
             comptGlow.color = 0xFFFFD433;
             comptGlow.setPosition(computerP1.x - (comptGlow.getMidpoint().x / 2) - 27, computerP1.y - (comptGlow.getMidpoint().y / 2) - 27);
             comptGlow.blend = 0;
-            insert(members.indexOf(computerP1), comptGlow);
+            charP1Side.insert(charP1Side.members.indexOf(computerP1), comptGlow);
 
             FlxTween.color(charBG, 0.1, 0xFFFFFFFF, 0xFF555555);
             FlxTween.color(boxes, 0.1, 0xFFFFFFFF, 0xFF999999);
             FlxTween.tween(comptGlow, {alpha: 0.9}, 1, {ease: FlxEase.sineInOut,type: FlxTweenType.PINGPONG});
             computerP1.animation.play("newChar");
+        }
+        else {
+            doComptIdleDance = true;
+            pressAcceptTxt2P.visible = true;
+            computerP1.animation.play("beatRight", true);
+
+            flickerLoopP2Txt();
         }
 
         playCurSongInst();
@@ -657,6 +672,29 @@ function playCurSongInst() {
         FlxG.sound.music.fadeIn(2, FlxG.sound.music.volume, fade2Volume);
 }
 
+function flickerLoopP2Txt() {
+    pressAcceptTxt2P.visible = true;
+    FlxFlicker.flicker(pressAcceptTxt2P, 1, 0.5, true, true, flickerLoopP2Txt);
+}
+
+function acceptP2Txt() {
+    if (FlxFlicker.isFlickering(pressAcceptTxt2P))
+        FlxFlicker.stopFlickering(pressAcceptTxt2P);
+
+    var uhhhIdkHow2CallThis:FunkinText = pressAcceptTxt2P.clone();
+    uhhhIdkHow2CallThis.setPosition(pressAcceptTxt2P.x, pressAcceptTxt2P.y);
+    insert(members.indexOf(pressAcceptTxt2P) - 1, uhhhIdkHow2CallThis);
+
+    FlxTween.tween(uhhhIdkHow2CallThis, {alpha: 0}, 0.5);
+    FlxTween.tween(uhhhIdkHow2CallThis.scale, {x: 1.5, y: 1.5}, 0.75, {ease: FlxEase.quartOut, onComplete: _ -> {
+        uhhhIdkHow2CallThis.destroy();
+        remove(uhhhIdkHow2CallThis);
+    }});
+
+    FlxG.sound.play(Paths.sound("menu/enterP2"), 1);
+    FlxFlicker.flicker(pressAcceptTxt2P, 1.25, 0.05, false, true);
+}
+
 function initVersus() {
     trace("we versus tonight");
     isVersusActive = true;
@@ -681,6 +719,8 @@ function initVersus() {
 
     computerP1.animation.play("danger");
     computerP2.animation.play("danger");
+
+    acceptP2Txt();
 
     new FlxTimer().start(1.5, _ -> {
         allowGlobalInput = true;
@@ -735,6 +775,8 @@ function exitVersus() {
 
         diffLeftArrow.visible = true;
         diffRightArrow.visible = true;
+
+        flickerLoopP2Txt();
     });
 }
 
