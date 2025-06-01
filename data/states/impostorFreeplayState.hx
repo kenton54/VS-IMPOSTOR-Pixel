@@ -819,7 +819,6 @@ function regeneratePageP1() {
             songs2Eliminate.push(i);
     }
 
-    trace(songs2Eliminate);
     var positionCorrection:Int = 0;
     for (song in songs2Eliminate) {
         song -= positionCorrection;
@@ -844,7 +843,6 @@ function regeneratePageP2() {
             songs2Eliminate.push(i);
     }
 
-    trace(songs2Eliminate);
     var positionCorrection:Int = 0;
     for (song in songs2Eliminate) {
         song -= positionCorrection;
