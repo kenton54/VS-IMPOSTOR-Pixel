@@ -18,8 +18,8 @@
 	"customValues": {
 		"ratingsChart": {
 			"easy": 5,
-			"normal": 7,
-			"hard": 8
+			"normal": 6,
+			"hard": 7
 		}
 	}
 }

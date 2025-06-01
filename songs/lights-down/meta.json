@@ -1,0 +1,25 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 170,
+	"difficulties": [
+		"easy",
+		"normal",
+		"hard"
+	],
+	"needsVoices": false,
+	"parsedColor": -5299935,
+	"displayName": "Lights Down",
+	"icon": "red-impostor-pixel",
+	"name": "lights-down",
+	"color": "#AF2121",
+	"customValues": {
+		"ratingsChart": {
+			"easy": 6,
+			"normal": 8,
+			"hard": 10
+		}
+	}
+}

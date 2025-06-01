@@ -498,7 +498,10 @@ function changeSongP1(change:Int) {
 
     curSongP1 = FlxMath.wrap(curSongP1 + change, 0, panels1.length - 1);
 
-    if (panels1[curSongP1].members.length < 1) changeSongP1(change / Math.abs(change));
+    if (panels1[curSongP1].members.length < 1) {
+        changeSongP1(change / Math.abs(change));
+        return;
+    }
 
     changeDifficultyP1(0);
     playCurSongInst();
@@ -516,7 +519,10 @@ function changeSongP2(change:Int) {
 
     curSongP2 = FlxMath.wrap(curSongP2 + change, 0, panels2.length - 1);
 
-    if (panels2[curSongP2].members.length < 1) changeSongP2(change / Math.abs(change));
+    if (panels2[curSongP2].members.length < 1) {
+        changeSongP2(change / Math.abs(change));
+        return;
+    }
 
     changeDifficultyP2(0);
     panelTextMovementP2();
@@ -807,11 +813,23 @@ function clearPageP2() {
 function regeneratePageP1() {
     clearPageP1();
 
+    var songs2Eliminate:Array<Int> = [];
+    for (i in 0...songList1.length) {
+        if (!songList1[i].difficulties.contains(songList1[i].difficulties[curDiffP1]))
+            songs2Eliminate.push(i);
+    }
+
+    trace(songs2Eliminate);
+    var positionCorrection:Int = 0;
+    for (song in songs2Eliminate) {
+        song -= positionCorrection;
+        songList1.remove(songList1[song]);
+        positionCorrection += 1;
+    }
+
     for (i in 0...songList1.length) {
         panels1[i] = new FlxTypedSpriteGroup();
-        if (songList1[i].difficulties.contains(songList1[i].difficulties[curDiffP1])) {
-            panels1[i] = createPanel(songList1[i], 1);
-        }
+        panels1[i] = createPanel(songList1[i], 1);
         add(panels1[i]);
     }
     changeSongP1(0);
@@ -820,11 +838,23 @@ function regeneratePageP1() {
 function regeneratePageP2() {
     clearPageP2();
 
+    var songs2Eliminate:Array<Int> = [];
+    for (i in 0...songList2.length) {
+        if (!songList2[i].difficulties.contains(songList2[i].difficulties[curDiffP1]))
+            songs2Eliminate.push(i);
+    }
+
+    trace(songs2Eliminate);
+    var positionCorrection:Int = 0;
+    for (song in songs2Eliminate) {
+        song -= positionCorrection;
+        songList2.remove(songList2[song]);
+        positionCorrection += 1;
+    }
+
     for (i in 0...songList2.length) {
         panels2[i] = new FlxTypedSpriteGroup();
-        if (songList2[i].difficulties.contains(songList2[i].difficulties[curDiffP2])) {
-            panels2[i] = createPanel(songList2[i], 2);
-        }
+        panels2[i] = createPanel(songList2[i], 2);
         add(panels2[i]);
     }
     changeSongP2(0);
