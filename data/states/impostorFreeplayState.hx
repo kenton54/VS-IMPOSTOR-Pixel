@@ -1,6 +1,7 @@
 import StringTools;
 import flixel.addons.display.FlxStarField2D;
 import flixel.group.FlxTypedSpriteGroup;
+import flixel.math.FlxRect;
 import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.ui.FlxBar;
 import flixel.ui.FlxBar.FlxBarFillDirection;
@@ -402,15 +403,6 @@ function handlePlayer2Input() {
         if (controlsP2.DOWN_P)
             changeSongP2(1);
 
-        if (controlsP2.LEFT_P) {
-            diffLeftArrow.animation.play("click");
-            changeDifficultyP2(-1);
-        }
-        if (controlsP2.RIGHT_P) {
-            diffRightArrow.animation.play("click");
-            changeDifficultyP2(1);
-        }
-
         if (controlsP2.BACK)
             exitVersus();
     }
@@ -483,7 +475,7 @@ function handleSongSelection() {
     }
 }
 
-static var lastSongP1:Int = 0;
+static var lastSongP1:Int = -1;
 function changeSongP1(change:Int) {
     if (panels1 != null && panels1.length < 1) return;
 
@@ -493,6 +485,7 @@ function changeSongP1(change:Int) {
 
     changeDifficultyP1(0);
     playCurSongInst();
+    panelTextMovementP1();
 
     if (curSongP1 != lastSongP1) {
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
@@ -500,7 +493,7 @@ function changeSongP1(change:Int) {
     }
 }
 
-static var lastSongP2:Int = 0;
+static var lastSongP2:Int = -1;
 function changeSongP2(change:Int) {
     if (panels2 != null && panels2.length < 1) return;
 
@@ -509,6 +502,7 @@ function changeSongP2(change:Int) {
     if (panels2[curSongP2].members.length < 1) changeSongP2(change / Math.abs(change));
 
     changeDifficultyP2(0);
+    panelTextMovementP2();
 
     if (curSongP2 != lastSongP2) {
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
@@ -672,6 +666,8 @@ function initVersus() {
     spawnXposP1 = 0;
     spawnXposP2 = FlxG.width;
     doComptIdleDance = false;
+    lastSongP1 = -1;
+    lastSongP2 = -1;
     clearPageP1();
 
     chartDiffValue = 0;
@@ -710,6 +706,8 @@ function exitVersus() {
     curInstPlaying = "";
     spawnXposP1 = 0;
     doComptIdleDance = true;
+    lastSongP1 = -1;
+    lastSongP2 = -1;
     clearPageP1();
     clearPageP2();
 
@@ -742,8 +740,9 @@ function exitVersus() {
 
 function clearPageP1() {
     for (panel in panels1) {
-        panel.destroy();
+        panel.clear();
         remove(panel);
+        panel.destroy();
     }
 
     panels1 = [];
@@ -751,8 +750,9 @@ function clearPageP1() {
 
 function clearPageP2() {
     for (panel in panels2) {
-        panel.destroy();
+        panel.clear();
         remove(panel);
+        panel.destroy();
     }
 
     panels2 = [];
@@ -834,6 +834,7 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     var songName:FunkinText = new FunkinText(panel.x + (42 * scale) + .5, panel.y + (13 * scale) + .5, 0, songData.displayName, 25, false);
     songName.font = Paths.font("pixeloidsans-bold.ttf");
     songName.letterSpacing = 1;
+    songName.clipRect = new FlxRect(0, 0, clipLimit, songName.height);
 
     group.add(panelBG);
     group.add(songName);
@@ -880,6 +881,52 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
         group.x = spawnXposP1;
     
     return group;
+}
+
+var clipLimit:Float = 298;
+
+function panelTextMovementP1() {
+    for (i in 0...panels1.length) {
+        FlxTween.cancelTweensOf(panels1[i].members[1]);
+        panels1[i].members[1].clipRect = new FlxRect(0, 0, clipLimit, panels1[i].members[1].height);
+        panels1[i].members[1].offset.x = 0;
+        if (panels1[curSongP1].members[1].width > clipLimit) {
+            movePanelTextRight(panels1[curSongP1].members[1]);
+        }
+    }
+}
+
+function panelTextMovementP2() {
+    for (i in 0...panels2.length) {
+        FlxTween.cancelTweensOf(panels2[i].members[1]);
+        panels2[i].members[1].clipRect = new FlxRect(0, 0, clipLimit, panels2[i].members[1].height);
+        panels2[i].members[1].offset.x = 0;
+        if (panels2[curSongP2].members[1].width > clipLimit) {
+            movePanelTextRight(panels2[curSongP2].members[1]);
+        }
+    }
+}
+
+function movePanelTextRight(text:FunkinText) {
+    if (text == null) return;
+
+    var distance2move:Float = text.width - clipLimit + 14;
+
+    FlxTween.tween(text, {"offset.x": distance2move}, 2, {startDelay: 0.3, ease: FlxEase.sineInOut, onUpdate: _ -> {
+        text.clipRect = new FlxRect(text.offset.x - 10, 0, clipLimit, text.height);
+    }, onComplete: _ -> {
+        movePanelTextLeft(text);
+    }});
+}
+
+function movePanelTextLeft(text:FunkinText) {
+    if (text == null) return;
+
+    FlxTween.tween(text, {"offset.x": 0}, 2, {startDelay: 0.3, ease: FlxEase.sineInOut, onUpdate: _ -> {
+        text.clipRect = new FlxRect(text.offset.x - 10, 0, clipLimit, text.height);
+    }, onComplete: _ -> {
+        movePanelTextRight(text);
+    }});
 }
 
 function getSongList():Array<Dynamic> {
