@@ -399,8 +399,10 @@ function handlePlayer1Input() {
             changeDifficultyP1(1);
         }
 
-        if (controlsP1.BACK)
+        if (controlsP1.BACK) {
+            FlxG.sound.play(Paths.sound("menu/cancel"), 1);
             FlxG.switchState(new MainMenuState());
+        }
     }
 }
 
@@ -762,6 +764,8 @@ function exitVersus() {
 
     computerP1.animation.play("wave");
     computerP2.animation.play("wave");
+
+    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
 
     new FlxTimer().start(1.8, _ -> {
         allowSongInstPlayer = true;
