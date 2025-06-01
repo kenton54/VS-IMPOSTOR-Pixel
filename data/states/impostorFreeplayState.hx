@@ -209,13 +209,13 @@ function create() {
 
     chartDiffBar = new FlxBar(diffBarOutline1.x + (3 * 3.2), diffBarOutline1.y + (2 * 3.2), FlxBarFillDirection.LEFT_TO_RIGHT, 162, 16);
     chartDiffBar.createGradientEmptyBar([0xFF000000], 1);
-    chartDiffBar.createGradientFilledBar([0xFFFE0000, 0xFFFFFF00 0xFF00FA00], 1);
+    chartDiffBar.createGradientFilledBar([0xFFFE0000, 0xFFFFFF00, 0xFF00FA00], 1);
     chartDiffBar.setRange(0, 20);
     chartDiffBar.camera = bordersCam;
 
     mechDiffBar = new FlxBar(diffBarOutline2.x + (3 * 3.2) - 2, diffBarOutline2.y + (2 * 3.2), FlxBarFillDirection.RIGHT_TO_LEFT, 162, 16);
     mechDiffBar.createGradientEmptyBar([0xFF000000], 1);
-    mechDiffBar.createGradientFilledBar([0xFF00FA00, 0xFFFFFF00 0xFFFE0000], 1);
+    mechDiffBar.createGradientFilledBar([0xFF00FA00, 0xFFFFFF00, 0xFFFE0000], 1);
     mechDiffBar.setRange(0, 20);
     mechDiffBar.camera = bordersCam;
 
