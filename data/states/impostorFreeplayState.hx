@@ -9,7 +9,6 @@ import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
 import PlayableData;
 
-//var loadedPlayableId:String = "bf";
 var loadedPlayable:PlayableData;
 
 static var curPlayable:String = "bf";
@@ -17,19 +16,19 @@ static var curPage:Int = 0;
 static var curSong:Int = 0;
 static var curDiff:Int = 1;
 
-/*static*/ var newPlayableWaiting:Bool = false;
+/*static*/ var newPlayableWaiting:Bool = true;
 
 static var curInstPlaying:String = "";
 
 var fade2Volume:Float = 0.7;
 
 var pageArray:Array<Array<Dynamic>>;
-var songs:Array<Dynamic>;
+static var songs:Array<Dynamic>;
 
 var panels:Array<FlxTypedSpriteGroup> = [];
 
 var spaceCam:FlxCamera;
-var leftSideCam:FlxCamera;
+var charactersCam:FlxCamera;
 var songsCam:FlxCamera;
 var bordersCam:FlxCamera;
 
@@ -48,12 +47,14 @@ var mechDiffBar:FlxBar;
 var chartDiffValue:Int = 0;
 var chartDiffLerp:Float = 0;
 
+var mechDiffValue:Int = 0;
+var mechDiffLerp:Float = 0;
+
 var glow:FlxSprite;
 var interpolateColor:FlxInterpolateColor;
 
 function create() {
     loadedPlayable = new PlayableData(curPlayable);
-    //loadedPlayableId = loadedPlayable.id;
 
     pageArray = Json.parse(Assets.getText(Paths.json("playlist")));
 
@@ -63,9 +64,9 @@ function create() {
     spaceCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(spaceCam, false);
 
-    leftSideCam = new FlxCamera();
-    leftSideCam.bgColor = FlxColor.TRANSPARENT;
-    FlxG.cameras.add(leftSideCam, false);
+    charactersCam = new FlxCamera();
+    charactersCam.bgColor = FlxColor.TRANSPARENT;
+    FlxG.cameras.add(charactersCam, false);
 
     songsCam = new FlxCamera();
     songsCam.bgColor = FlxColor.TRANSPARENT;
@@ -91,28 +92,28 @@ function create() {
     charBG = new FlxSprite(0, 0).loadGraphic(Paths.image("menus/freeplay/leftside"));
     charBG.scale.set(6, 6);
     charBG.updateHitbox();
-    charBG.camera = leftSideCam;
+    charBG.camera = charactersCam;
     add(charBG);
 
     var linething:FlxSprite = new FlxSprite((charBG.x + charBG.width) - 32, charBG.y - 10).makeGraphic(12, FlxG.height * 1.5, FlxColor.WHITE);
     linething.angle = -9.45;
-    linething.camera = leftSideCam;
+    linething.camera = charactersCam;
     add(linething);
 
     boxes = new FlxSprite(5, 465).loadGraphic(Paths.image("menus/freeplay/boxes"));
     boxes.scale.set(9, 9);
     boxes.updateHitbox();
-    boxes.camera = leftSideCam;
+    boxes.camera = charactersCam;
 
     playableChar = new FunkinSprite();
     playableChar.scale.set(9, 9);
     playableChar.updateHitbox();
-    playableChar.camera = leftSideCam;
+    playableChar.camera = charactersCam;
 
     computer = new FlxSprite();
     computer.frames = Paths.getFrames("menus/freeplay/computer");
     computer.animation.addByPrefix("off", "off", 1, false);
-    computer.animation.addByPrefix("turnOn", "turnOn", 24, false);
+    computer.animation.addByPrefix("turnOn", "turnOn", 30, false);
     computer.animation.addByPrefix("beatLeft", "beatLeft", 10, false);
     computer.animation.addByPrefix("beatRight", "beatRight", 10, false);
     computer.animation.addByPrefix("newChar", "newChar", 2, true);
@@ -121,7 +122,7 @@ function create() {
     computer.scale.set(9, 9);
     computer.updateHitbox();
     computer.setPosition((boxes.x + boxes.width) - computer.width - 27, boxes.y - computer.height);
-    computer.camera = leftSideCam;
+    computer.camera = charactersCam;
 
     add(computer);
     add(playableChar);
@@ -206,13 +207,20 @@ function create() {
     diffBarOutline2.setPosition(dedCrew2.x + dedCrew2.width + 16, diffBarOutline1.y);
     diffBarOutline2.camera = bordersCam;
 
-    chartDiffBar = new FlxBar(diffBarOutline1.x + (3 * 3.2), diffBarOutline1.y + (2 * 3.2), FlxBarFillDirection.LEFT_TO_RIGHT, 160, 16);
-    chartDiffBar.createGradientEmptyBar([FlxColor.BLACK], 1);
-    chartDiffBar.createGradientFilledBar([FlxColor.RED, FlxColor.LIME], 1);
+    chartDiffBar = new FlxBar(diffBarOutline1.x + (3 * 3.2), diffBarOutline1.y + (2 * 3.2), FlxBarFillDirection.LEFT_TO_RIGHT, 162, 16);
+    chartDiffBar.createGradientEmptyBar([0xFF000000], 1);
+    chartDiffBar.createGradientFilledBar([0xFFFE0000, 0xFFFFFF00 0xFF00FA00], 1);
     chartDiffBar.setRange(0, 20);
     chartDiffBar.camera = bordersCam;
 
+    mechDiffBar = new FlxBar(diffBarOutline2.x + (3 * 3.2) - 2, diffBarOutline2.y + (2 * 3.2), FlxBarFillDirection.RIGHT_TO_LEFT, 162, 16);
+    mechDiffBar.createGradientEmptyBar([0xFF000000], 1);
+    mechDiffBar.createGradientFilledBar([0xFF00FA00, 0xFFFFFF00 0xFFFE0000], 1);
+    mechDiffBar.setRange(0, 20);
+    mechDiffBar.camera = bordersCam;
+
     add(chartDiffBar);
+    add(mechDiffBar);
     add(diffBarOutline1);
     add(diffBarOutline2);
 
@@ -239,16 +247,18 @@ function postCreate() {
         fade2Volume = 0.4;
     }
 
-    new FlxTimer().start(0.5, _ -> {computer.animation.play("turnOn", true);});
-    new FlxTimer().start(1.25, _ -> {
+    new FlxTimer().start(0.25, _ -> {computer.animation.play("turnOn", true);});
+    new FlxTimer().start(0.9, _ -> {
         doComptIdle = true;
+
+        allowInput = true;
 
         if (newPlayableWaiting) {
             var comptGlow:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/freeplay/computerGlow"));
             comptGlow.scale.set(1.5, 1.5);
             comptGlow.updateHitbox();
             comptGlow.alpha = 0;
-            comptGlow.camera = leftSideCam;
+            comptGlow.camera = charactersCam;
             comptGlow.color = 0xFFFFD433;
             comptGlow.setPosition(computer.x - (comptGlow.getMidpoint().x / 2) - 27, computer.y - (comptGlow.getMidpoint().y / 2) - 27);
             comptGlow.blend = 0;
@@ -256,8 +266,7 @@ function postCreate() {
 
             FlxTween.color(charBG, 0.1, 0xFFFFFFFF, 0xFF555555);
             FlxTween.color(boxes, 0.1, 0xFFFFFFFF, 0xFF999999);
-            //FlxTween.color(computer, 0.1, 0xFFFFFFFF, 0xFF999999);
-            FlxTween.tween(comptGlow, {alpha: 1}, 1, {ease: FlxEase.sineInOut,type: FlxTweenType.PINGPONG});
+            FlxTween.tween(comptGlow, {alpha: 0.9}, 1, {ease: FlxEase.sineInOut,type: FlxTweenType.PINGPONG});
             computer.animation.play("newChar");
         }
 
@@ -278,12 +287,14 @@ function update(elapsed:Float) {
         interpolateColor.fpsLerpTo(FlxColor.WHITE, 0.0625);
     glow.color = interpolateColor.color;
 
-    chartDiffLerp = FlxMath.lerp(chartDiffValue, chartDiffLerp, 0.015);
-    //trace(chartDiffLerp);
+    chartDiffLerp = FlxMath.lerp(chartDiffLerp, chartDiffValue, 0.1);
     chartDiffBar.value = chartDiffLerp;
+
+    mechDiffLerp = FlxMath.lerp(mechDiffLerp, mechDiffValue, 0.1);
+    mechDiffBar.value = mechDiffLerp;
 }
 
-var allowInput:Bool = true;
+var allowInput:Bool = false;
 function handleInput() {
     if (!allowInput) return;
 
@@ -323,7 +334,7 @@ function handleInput() {
 }
 
 function handleSongSelection() {
-    var panelHeight:Float = 140;
+    static var panelHeight:Float = 140;
 
     for (i => panel in panels) {
         if (panel == null) return;
@@ -346,7 +357,6 @@ function changeSong(change:Int) {
     if (panels[curSong].members.length < 1) changeSong(change / Math.abs(change));
 
     changeDifficulty(0);
-    updateDiffBars();
 
     if (curSong != lastSong) {
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
@@ -373,6 +383,8 @@ function changeDifficulty(change:Int) {
     difficultySpr.updateHitbox();
     difficultySpr.screenCenter(FlxAxes.X);
 
+    updateDiffBars();
+
     if (change > 0)
         spawnXpos = -100;
     else if (change < 0)
@@ -386,37 +398,52 @@ function changeDifficulty(change:Int) {
 
 function updateDiffBars() {
     var chartRatings:Array<Dynamic>;
-    var chosenRating;
-    if (songs[curSong].customValues != null && songs[curSong].customValues.ratingsChart != null && songs[curSong].customValues.ratingsChart.length > 0) {
+    var chosenChartRating:Int = 0;
+    if (songs[curSong].customValues != null && songs[curSong].customValues.ratingsChart != null) {
         chartRatings = songs[curSong].customValues.ratingsChart;
-        chosenRating = switch(songs[curSong].difficulties[curDiff]) {
+        chosenChartRating = switch(songs[curSong].difficulties[curDiff]) {
             case "easy": chartRatings.easy ?? 0;
             case "normal": chartRatings.normal ?? 0;
             case "hard": chartRatings.hard ?? 0;
+            case "erect": chartRatings.erect ?? 0;
+            case "nightmare": chartRatings.nightmare ?? 0;
             default: 0;
         }
     }
     else
-        chosenRating = 0;
+        chosenChartRating = 0;
 
-    chartDiffValue = chosenRating;
+    var mechRatings:Array<Dynamic>;
+    var chosenMechRating:Int = 0;
+    if (songs[curSong].customValues != null && songs[curSong].customValues.ratingsMechanics != null) {
+        mechRatings = songs[curSong].customValues.ratingsMechanics;
+        chosenMechRating = switch(songs[curSong].difficulties[curDiff]) {
+            case "easy": mechRatings.easy ?? 0;
+            case "normal": mechRatings.normal ?? 0;
+            case "hard": mechRatings.hard ?? 0;
+            case "erect": mechRatings.erect ?? 0;
+            case "nightmare": mechRatings.nightmare ?? 0;
+            default: 0;
+        }
+    }
+    else
+        chosenMechRating = 0;
+
+    chartDiffValue = chosenChartRating;
+    mechDiffValue = chosenMechRating;
 }
 
 function playCurSongInst() {
-    var player:Void -> Void = function() {
-        if (curInstPlaying != songs[curSong].name) {
-            //var inst:String = loadedPlayable.getCharInst(songs[curSong].difficulties[curDiff]);
-            var song:String = Paths.inst(songs[curSong].name, songs[curSong].difficulties[curDiff]);
-            FlxG.sound.playMusic(song, 0);
-            FlxG.sound.music.fadeIn(1, 0, fade2Volume);
+    if (curInstPlaying != (curInstPlaying = Paths.inst(songs[curSong].name, songs[curSong].difficulties[curDiff]))) {
+        var musicPlayer:Void -> Void = function() {
+            FlxG.sound.playMusic(curInstPlaying, 0);
+            FlxG.sound.music.fadeIn(2, 0, fade2Volume);
             Conductor.changeBPM(songs[curSong].bpm, songs[curSong].beatsPerMeasure, songs[curSong].stepsPerBeat);
-
-            curInstPlaying = songs[curSong].name;
         }
-        else
-            FlxG.sound.music.fadeIn(1, FlxG.sound.music.volume, fade2Volume);
+        Main.execAsync(musicPlayer);
     }
-    Main.execAsync(player);
+    else
+        FlxG.sound.music.fadeIn(2, FlxG.sound.music.volume, fade2Volume);
 }
 
 var doComptIdle:Bool = false;
