@@ -2,7 +2,7 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="computer.png" width="90" height="28">
+<TextureAtlas imagePath="computer.png" width="90" height="42">
 	<SubTexture name="beatLeft1" x="0" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
 	<SubTexture name="beatRight1" x="18" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
 	<SubTexture name="danger1" x="36" y="0" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
@@ -14,4 +14,10 @@ Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 	<SubTexture name="turnOn2" x="36" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
 	<SubTexture name="turnOn3" x="54" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
 	<SubTexture name="turnOn4" x="72" y="14" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="versus1" x="0" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="versus2" x="18" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="vsFlipped1" x="36" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="vsFlipped2" x="18" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="wave1" x="54" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
+	<SubTexture name="wave2" x="72" y="28" width="18" height="14" frameX="-0" frameY="-0" frameWidth="18" frameHeight="14"/>
 </TextureAtlas>
