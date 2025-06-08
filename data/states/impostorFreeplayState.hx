@@ -193,7 +193,7 @@ function create() {
     pressAcceptTxt2P = new FunkinText(820, 500, 500, 'PLAYER 2\nPRESS START', 56, true);
     pressAcceptTxt2P.alignment = "center";
     pressAcceptTxt2P.borderSize = 4;
-    pressAcceptTxt2P.camera = songsCam;
+    pressAcceptTxt2P.camera = bordersCam;
     pressAcceptTxt2P.visible = false;
     add(pressAcceptTxt2P);
 
@@ -373,40 +373,62 @@ function update(elapsed:Float) {
 }
 
 var allowP1Input:Bool = true;
+var isSongChosenP1:Bool = false;
 function handlePlayer1Input() {
+    //trace("p1 input " + allowP1Input, "song selected: " + isSongChosenP1);
+
     if (!allowGlobalInput) return;
 
     if (!allowP1Input) return;
 
     if (isVersusActive) {
-        if (controlsP1.UP_P)
-            changeSongP1(-1);
-        if (controlsP1.DOWN_P)
-            changeSongP1(1);
+        if (isSongChosenP1) {
+            if (controlsP1.BACK)
+                deselectSongP1();
+        }
+        else {
+            if (controlsP1.UP_P)
+                changeSongP1(-1);
+            if (controlsP1.DOWN_P)
+                changeSongP1(1);
+
+            if (controlsP1.ACCEPT)
+                selectSongP1();
+        }
     }
     else {
-        if (controlsP1.UP_P || FlxG.mouse.wheel > 0)
-            changeSongP1(-1);
-        if (controlsP1.DOWN_P || FlxG.mouse.wheel < 0)
-            changeSongP1(1);
-
-        if (controlsP1.LEFT_P) {
-            diffLeftArrow.animation.play("click");
-            changeDifficultyP1(-1);
+        if (isSongChosenP1) {
+            if (controlsP1.BACK)
+                deselectSongP1();
         }
-        if (controlsP1.RIGHT_P) {
-            diffRightArrow.animation.play("click");
-            changeDifficultyP1(1);
-        }
+        else {
+            if (controlsP1.UP_P || FlxG.mouse.wheel > 0)
+                changeSongP1(-1);
+            if (controlsP1.DOWN_P || FlxG.mouse.wheel < 0)
+                changeSongP1(1);
 
-        if (controlsP1.BACK) {
-            FlxG.sound.play(Paths.sound("menu/cancel"), 1);
-            FlxG.switchState(new MainMenuState());
+            if (controlsP1.LEFT_P) {
+                diffLeftArrow.animation.play("click");
+                changeDifficultyP1(-1);
+            }
+            if (controlsP1.RIGHT_P) {
+                diffRightArrow.animation.play("click");
+                changeDifficultyP1(1);
+            }
+
+            if (controlsP1.ACCEPT)
+                selectSongP1();
+
+            if (controlsP1.BACK) {
+                FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+                FlxG.switchState(new MainMenuState());
+            }
         }
     }
 }
 
 var allowP2Input:Bool = true;
+var isSongChosenP2:Bool = false;
 function handlePlayer2Input() {
     if (!allowGlobalInput) return;
 
@@ -415,15 +437,26 @@ function handlePlayer2Input() {
     if (newPlayableWaiting) return;
 
     if (isVersusActive) {
-        if (controlsP2.UP_P)
-            changeSongP2(-1);
-        if (controlsP2.DOWN_P)
-            changeSongP2(1);
+        if (isSongChosenP2) {
+            if (controlsP2.BACK)
+                deselectSongP2();
+        }
+        else {
+            if (controlsP2.UP_P)
+                changeSongP2(-1);
+            if (controlsP2.DOWN_P)
+                changeSongP2(1);
 
-        if (controlsP2.BACK)
-            exitVersus();
+            if (controlsP2.ACCEPT)
+                selectSongP2();
+
+            if (controlsP2.BACK)
+                exitVersus();
+        }
     }
     else {
+        if (isSongChosenP1) return;
+
         if (controlsP2.ACCEPT)
             initVersus();
     }
@@ -680,6 +713,159 @@ function playCurSongInst() {
         FlxG.sound.music.fadeIn(2, FlxG.sound.music.volume, fade2Volume);
 }
 
+function selectSongP1() {
+    allowP1Input = false;
+    isSongChosenP1 = true;
+
+    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+
+    if (isVersusActive) {
+        for (i => panel in panels1) {
+            if (i == curSongP1) {
+                panel.members[3].animation.play("select");
+                panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("select-hold");};
+            }
+            else {
+                panel.forEach(function(spr) {
+                    FlxTween.tween(spr, {alpha: 0}, 0.2);
+                });
+            }
+        }
+        new FlxTimer().start(0.2, _ -> {
+            allowP1Input = true;
+        });
+    }
+    else {
+        for (i => panel in panels1) {
+            if (i == curSongP1) {
+                panel.members[3].animation.play("select");
+                panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("select-hold");};
+            }
+            else {
+                panel.forEach(function(spr) {
+                    FlxTween.tween(spr, {alpha: 0}, 0.2);
+                });
+            }
+        }
+    }
+
+    checkPlayersSelection();
+}
+
+function selectSongP2() {
+    allowP2Input = false;
+    isSongChosenP2 = true;
+
+    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+
+    for (i => panel in panels2) {
+        if (i == curSongP2) {
+            panel.members[3].animation.play("select");
+            panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("select-hold");};
+        }
+        else {
+            panel.forEach(function(spr) {
+                FlxTween.tween(spr, {alpha: 0}, 0.2);
+            });
+        }
+    }
+    new FlxTimer().start(0.2, _ -> {
+        allowP2Input = true;
+    });
+
+    checkPlayersSelection();
+}
+
+function deselectSongP1() {
+    allowP1Input = false;
+    isSongChosenP1 = false;
+
+    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+
+    if (isVersusActive) {
+        for (i => panel in panels1) {
+            if (i == curSongP1) {
+                panel.members[3].animation.play("select", false, true);
+                panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("idle");};
+            }
+            else {
+                panel.forEach(function(spr) {
+                    FlxTween.tween(spr, {alpha: 1}, 0.2);
+                });
+            }
+        }
+    }
+    else { // this case scenario shouldnt be possible, but leave it in incase an error happens ig?
+        for (i => panel in panels1) {
+            if (i == curSongP1) {
+                panel.members[3].animation.play("select", false, true);
+                panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("idle");};
+                FlxTween.tween(songsCam, {zoom: 1}, 0.5, {ease: FlxEase.expoOut});
+                FlxG.sound.music.fadeIn(0.5, 0, fade2Volume);
+            }
+            else {
+                panel.forEach(function(spr) {
+                    FlxTween.tween(spr, {alpha: 1}, 0.2);
+                });
+            }
+        }
+    }
+    new FlxTimer().start(0.2, _ -> {
+        allowP1Input = true;
+    });
+}
+
+function deselectSongP2() {
+    allowP2Input = false;
+    isSongChosenP2 = false;
+
+    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+
+    for (i => panel in panels2) {
+        if (i == curSongP2) {
+            panel.members[3].animation.play("select", false, true);
+            panel.members[3].animation.finishCallback = _ -> {panel.members[3].animation.play("idle");};
+        }
+        else {
+            panel.forEach(function(spr) {
+                FlxTween.tween(spr, {alpha: 1}, 0.2);
+            });
+        }
+    }
+    new FlxTimer().start(0.2, _ -> {
+        allowP2Input = true;
+    });
+}
+
+function checkPlayersSelection() {
+    if (isVersusActive) {
+        if (isSongChosenP1 && isSongChosenP2) {
+            allowGlobalInput = false;
+            FlxTween.tween(songsCam, {zoom: 1.2}, 0.5, {ease: FlxEase.expoOut});
+        }
+    }
+    else {
+        FlxTween.tween(songsCam, {zoom: 1.3}, 0.5, {ease: FlxEase.expoOut});
+        FlxG.sound.music.fadeIn(0.5, fade2Volume, 0);
+        decidedSong = songList1[curSongP1];
+        decidedDiff = songList1[curSongP1].difficulties[curDiffP1];
+        loadSong();
+    }
+}
+
+var decidedSong:Array<Dynamic> = [];
+var decidedDiff:String = "";
+function loadSong() {
+    allowSongInstPlayer = false;
+    curInstPlaying = null;
+
+    PlayState.loadSong(decidedSong.name, decidedDiff, false, isVersusActive);
+
+    new FlxTimer().start(1, _ -> {
+        FlxG.switchState(new PlayState());
+    });
+}
+
 function flickerLoopP2Txt() {
     pressAcceptTxt2P.visible = true;
     FlxFlicker.flicker(pressAcceptTxt2P, 1, 0.5, true, true, flickerLoopP2Txt);
@@ -914,16 +1100,6 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     group.add(songName);
     group.add(panel);
 
-    var stickerSprite:Null<String> = getRankSticker(songData);
-    var rankSticker:FlxSprite = new FlxSprite((panel.x + panel.width) - (4 * scale), panel.y + (6 * scale));
-    rankSticker.scale.set(scale, scale);
-    if (stickerSprite != null) {
-        rankSticker.loadGraphic(Paths.image("menus/freeplay/ranks/" + stickerSprite));
-    }
-    else
-        rankSticker.visible = false;
-    group.add(rankSticker);
-
     var iconExists:Bool = /*Assets.exists(Paths.image("menus/freeplay/icons/" + icon[0]))*/ true;
     var attachedIcon:FlxSprite = new FlxSprite();
     attachedIcon.scale = panel.scale;
@@ -941,6 +1117,14 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
 
     attachedIcon.setPosition(panel.x + attachedIcon.origin.x, panel.y + attachedIcon.origin.y);
     group.add(attachedIcon);
+
+    var stickerSprite:Null<String> = getRankSticker(songData);
+    var rankSticker:FlxSprite = new FlxSprite((panel.x + panel.width) - (4 * scale), panel.y + (6 * scale));
+    rankSticker.scale.set(scale, scale);
+    if (stickerSprite != null) {
+        rankSticker.loadGraphic(Paths.image("menus/freeplay/ranks/" + stickerSprite));
+        group.add(rankSticker);
+    }
 
     group.y = FlxG.height / 2.38;
 

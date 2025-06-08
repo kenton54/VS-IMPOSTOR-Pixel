@@ -1,6 +1,6 @@
 public static var playablesList:Array<String> = ["bf"];
 public static var seenPlayables:Array<String> = ["bf"];
-//public static var pixelPlayable:String = "bf";
+public static var pixelPlayable:String = "bf";
 
 function new() {
     window.title = "VS IMPOSTOR Pixel Edition";
