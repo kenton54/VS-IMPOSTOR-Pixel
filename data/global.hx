@@ -5,6 +5,8 @@ public static var pixelPlayable:String = "bf";
 function new() {
     window.title = "VS IMPOSTOR Pixel Edition";
 
+    FlxSprite.defaultAntialiasing = false;
+
     initSaveData();
 }
 

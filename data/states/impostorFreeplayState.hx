@@ -819,7 +819,7 @@ function deselectSongP2() {
     allowP2Input = false;
     isSongChosenP2 = false;
 
-    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
 
     for (i => panel in panels2) {
         if (i == curSongP2) {
@@ -900,6 +900,8 @@ function initVersus() {
     doComptIdleDance = false;
     lastSongP1 = -1;
     lastSongP2 = -1;
+    isSongChosenP1 = false;
+    isSongChosenP2 = false;
     clearPageP1();
 
     chartDiffValue = 0;
@@ -917,6 +919,8 @@ function initVersus() {
     acceptP2Txt();
 
     new FlxTimer().start(1.5, _ -> {
+        allowP1Input = true;
+        allowP2Input = true;
         allowGlobalInput = true;
         regeneratePageP1();
         regeneratePageP2();
@@ -937,11 +941,14 @@ function initVersus() {
 function exitVersus() {
     trace("no more versus :(");
     isVersusActive = false;
+    allowGlobalInput = false;
     curInstPlaying = "";
     spawnXposP1 = 0;
     doComptIdleDance = true;
     lastSongP1 = -1;
     lastSongP2 = -1;
+    isSongChosenP1 = false;
+    isSongChosenP2 = false;
     clearPageP1();
     clearPageP2();
 
@@ -960,6 +967,8 @@ function exitVersus() {
     FlxG.sound.play(Paths.sound("menu/cancel"), 1);
 
     new FlxTimer().start(1.8, _ -> {
+        allowP1Input = true;
+        allowP2Input = true;
         allowSongInstPlayer = true;
         allowGlobalInput = true;
         regeneratePageP1();
