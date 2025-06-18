@@ -10,15 +10,21 @@ function onNoteCreation(event) {
 	var pixelNote = event.note;
 
 	if (pixelNote.isSustainNote) {
-		pixelNote.frames = Paths.getFrames("game/defaultNotes/sustains");
+		pixelNote.frames = Paths.getFrames("game/notes/default/sustains");
 		pixelNote.animation.addByPrefix("hold", "hold " + noteArray[event.strumID]);
 		pixelNote.animation.addByPrefix("holdend", "end " + noteArray[event.strumID]);
 	}
 	else {
-		pixelNote.frames = Paths.getFrames("game/defaultNotes/notes");
+		pixelNote.frames = Paths.getFrames("game/notes/default/notes");
 		pixelNote.animation.addByPrefix("scroll", "note " + noteArray[event.strumID]);
 	}
 	pixelNote.scale.set(noteScale, noteScale);
+	pixelNote.updateHitbox();
+
+	if (FlxG.save.data.impPixelxBRZ) {
+		var xbrzShader:CustomShader = new CustomShader("xbrz");
+		pixelNote.shader = xbrzShader;
+	}
 }
 
 function onPostNoteCreation(event) {
@@ -27,17 +33,21 @@ function onPostNoteCreation(event) {
 
 function onStrumCreation(event) {
 	event.cancel();
-	event.__doAnimation = false;
 
 	var daStrum = event.strum;
 
-	daStrum.frames = Paths.getFrames("game/defaultNotes/strums");
+	daStrum.frames = Paths.getFrames("game/notes/default/strums");
 	daStrum.animation.addByPrefix("static", "strum idle " + noteArray[event.strumID], 24, false);
 	daStrum.animation.addByPrefix("pressed", "strum press " + noteArray[event.strumID], 12, false);
 	daStrum.animation.addByPrefix("confirm", "strum hit " + noteArray[event.strumID], 24, false);
 
 	daStrum.scale.set(noteScale, noteScale);
 	daStrum.updateHitbox();
+
+	if (FlxG.save.data.impPixelxBRZ) {
+		var xbrzShader:CustomShader = new CustomShader("xbrz");
+		daStrum.shader = xbrzShader;
+	}
 
 	daStrum.x -= 32;
 }

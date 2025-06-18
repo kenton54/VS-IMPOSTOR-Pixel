@@ -2,8 +2,23 @@
     "params": [
         {
             "name": "Zoom Value",
-            "type": "Float(0.01, 1.35, 0.01, 2)",
-            "defaultValue": 1.0
+            "type": "Float(0.25, 9999, 0.25, 2)",
+            "defaultValue": "1"
+        },
+        {
+            "name": "Duration in Steps (\"0\" means the zoom will be instant)",
+            "type": "Int(0, 9999, 1)",
+            "defaultValue": "32"
+        },
+        {
+            "name": "Tween Ease",
+            "type": "DropDown('back', 'bounce', 'circ', 'cube', 'elastic', 'expo', 'linear', 'quad', 'quart', 'quint', 'sine', 'smoothStep', 'smootherStep')",
+            "defaultValue": "linear"
+        },
+        {
+            "name": "Tween Type (gets ignored if Tween Ease is \"linear\")",
+            "type": "DropDown('In', 'Out', 'InOut')",
+            "defaultValue": "linear"
         }
     ]
 }

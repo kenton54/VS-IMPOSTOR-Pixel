@@ -3,7 +3,7 @@ public static var seenPlayables:Array<String> = ["bf"];
 public static var pixelPlayable:String = "bf";
 
 function new() {
-    window.title = "VS IMPOSTOR Pixel Edition";
+    window.title = "VS IMPOSTOR Pixel";
 
     FlxSprite.defaultAntialiasing = false;
 
@@ -11,9 +11,9 @@ function new() {
 }
 
 function initSaveData() {
-    if (FlxG.save.data.pixelBeans == null) FlxG.save.data.pixelBeans = 0;
-    if (FlxG.save.data.pixelLanguage == null) FlxG.save.data.pixelLanguage = "english";
-    if (FlxG.save.data.pixelTimeBar == null) FlxG.save.data.pixelTimeBar = true;
+    FlxG.save.data.impPixelBeans ??= 0;
+    FlxG.save.data.impPixelTimeBar ??= true;
+    FlxG.save.data.impPixelxBRZ ??= false;
     //if (FlxG.save.data.pixelPlayable == null) FlxG.save.data.pixelPlayable = "bf";
     //if (FlxG.save.data.pixelPartner == null) FlxG.save.data.pixelPartner = "gf";
 }

@@ -1,0 +1,19 @@
+{
+    "params": [
+        {
+            "name": "Sabotage Interval (Beats)",
+            "type": "Int(0, 64, 1)",
+            "defaultValue": 2
+        },
+        {
+            "name": "In step hit instead of beat hit?",
+            "type": "Bool",
+            "defaultValue": false
+        },
+        {
+            "name": "Play Sound?",
+            "type": "Bool",
+            "defaultValue": false
+        }
+    ]
+}

@@ -37,6 +37,7 @@ var panels2:Array<FlxTypedSpriteGroup> = [];
 var spaceCam:FlxCamera;
 var charactersCam:FlxCamera;
 var songsCam:FlxCamera;
+var songDataCam:FlxCamera;
 var bordersCam:FlxCamera;
 
 var charP1Side:FlxTypedSpriteGroup;
@@ -75,6 +76,14 @@ var bottomBorder:FlxSprite;
 var allowGlobalInput:Bool = false;
 var isVersusActive:Bool = false;
 
+var scorTxtTxt:FunkinText;
+var scoreTxt:FunkinText;
+var accuracyTxt:FunkinText;
+var intendedScore:Int = 0;
+var intendedAccuracy:Float = 0;
+var lerpScore:Int = 0;
+var lerpAccuracy:Float = 0;
+
 function create() {
     loadedPlayable = new PlayableData(curPlayable);
 
@@ -94,6 +103,10 @@ function create() {
     songsCam = new FlxCamera();
     songsCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(songsCam, true);
+
+    songDataCam = new FlxCamera();
+    songDataCam.bgColor = FlxColor.TRANSPARENT;
+    FlxG.cameras.add(songDataCam, false);
 
     bordersCam = new FlxCamera();
     bordersCam.bgColor = FlxColor.TRANSPARENT;
@@ -306,6 +319,35 @@ function create() {
     player1DiffTxt.camera = bordersCam;
     add(player1DiffTxt);
 
+    var lengthOfScoreTxt:Int = 544;
+
+    scorTxtTxt = new FunkinText(FlxG.width, topBorder.height, lengthOfScoreTxt, "HIGHSCORE", 24, true);
+    scorTxtTxt.font = Paths.font("pixeloidsans.ttf");
+    scorTxtTxt.letterSpacing = 2;
+    scorTxtTxt.alignment = "right";
+    scorTxtTxt.borderSize = 3;
+    scorTxtTxt.camera = songDataCam;
+    scorTxtTxt.x -= scorTxtTxt.width + 8;
+    add(scorTxtTxt);
+
+    scoreTxt = new FunkinText(FlxG.width, scorTxtTxt.y + scorTxtTxt.height - 16, lengthOfScoreTxt, "00000000", 64, true);
+    scoreTxt.font = Paths.font("pixeloidsans.ttf");
+    scoreTxt.letterSpacing = 2;
+    scoreTxt.alignment = "right";
+    scoreTxt.borderSize = 8;
+    scoreTxt.camera = songDataCam;
+    scoreTxt.x -= scoreTxt.width;
+    add(scoreTxt);
+
+    accuracyTxt = new FunkinText(FlxG.width, scoreTxt.y + scoreTxt.height - 16, lengthOfScoreTxt, "0.00%", 40, true);
+    accuracyTxt.font = Paths.font("pixeloidsans.ttf");
+    accuracyTxt.letterSpacing = 2;
+    accuracyTxt.alignment = "right";
+    accuracyTxt.borderSize = 5;
+    accuracyTxt.camera = songDataCam;
+    accuracyTxt.x -= accuracyTxt.width;
+    add(accuracyTxt);
+
     regeneratePageP1();
     changeDifficultyP1(0);
 
@@ -370,13 +412,13 @@ function update(elapsed:Float) {
 
     mechDiffLerp = FlxMath.lerp(mechDiffLerp, mechDiffValue, 0.1);
     mechDiffBar.value = mechDiffLerp;
+
+    updateScoreText();
 }
 
 var allowP1Input:Bool = true;
 var isSongChosenP1:Bool = false;
 function handlePlayer1Input() {
-    //trace("p1 input " + allowP1Input, "song selected: " + isSongChosenP1);
-
     if (!allowGlobalInput) return;
 
     if (!allowP1Input) return;
@@ -587,6 +629,7 @@ function changeDifficultyP1(change:Int) {
     difficultySpr.screenCenter(FlxAxes.X);
 
     updateDiffBarsP1();
+    updateScoreValue();
 
     if (!isVersusActive) {
         if (change > 0)
@@ -695,6 +738,36 @@ function updateDiffBarsP2() {
         chosenChartRating = 0;
 
     chartDiffValue = chosenChartRating;
+}
+
+function updateScoreValue() {
+    if (songList1[curSongP1] != null && songList1[curSongP1].difficulties.length <= 0) {
+		intendedScore = 0;
+        intendedAccuracy = 0;
+		return;
+	}
+
+    var saveData = FunkinSave.getSongHighscore(songList1[curSongP1].name, songList1[curSongP1].difficulties[curDiffP1], []);
+    trace(saveData);
+    intendedScore = saveData.score ?? 0;
+    intendedAccuracy = saveData.accuracy ?? 0;
+}
+
+function updateScoreText() {
+    lerpScore = Math.floor(lerp(lerpScore, intendedScore, 0.4));
+    if (Math.abs(lerpScore - intendedScore) <= 5)
+		lerpScore = intendedScore;
+
+    lerpAccuracy = lerp(lerpAccuracy, intendedAccuracy, 0.2);
+    if (Math.abs(lerpAccuracy - intendedAccuracy) <= 0.01)
+		lerpAccuracy = intendedAccuracy;
+
+    scoreTxt.text = StringTools.lpad(Std.string(lerpScore), "0", 8);
+    
+    var splittedAcc:Array<String> = Std.string(FlxMath.roundDecimal(lerpAccuracy * 100, 2)).split(".");
+    var accWholeNums:String = splittedAcc[0];
+    var accDecimals:String = splittedAcc[1] ?? "0";
+    accuracyTxt.text = accWholeNums + "." + StringTools.rpad(accDecimals, "0", 2) + "%";
 }
 
 var allowSongInstPlayer:Bool = true;
@@ -890,7 +963,6 @@ function acceptP2Txt() {
 }
 
 function initVersus() {
-    trace("we versus tonight");
     isVersusActive = true;
     allowGlobalInput = false;
     allowSongInstPlayer = false;
@@ -902,6 +974,9 @@ function initVersus() {
     lastSongP2 = -1;
     isSongChosenP1 = false;
     isSongChosenP2 = false;
+    scorTxtTxt.visible = false;
+    scoreTxt.visible = false;
+    accuracyTxt.visible = false;
     clearPageP1();
 
     chartDiffValue = 0;
@@ -939,7 +1014,6 @@ function initVersus() {
 }
 
 function exitVersus() {
-    trace("no more versus :(");
     isVersusActive = false;
     allowGlobalInput = false;
     curInstPlaying = "";
@@ -980,6 +1054,10 @@ function exitVersus() {
 
         diffLeftArrow.visible = true;
         diffRightArrow.visible = true;
+
+        scorTxtTxt.visible = true;
+        scoreTxt.visible = true;
+        accuracyTxt.visible = true;
 
         flickerLoopP2Txt();
     });
@@ -1101,7 +1179,7 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     panelBG.updateHitbox();
 
     var songName:FunkinText = new FunkinText(panel.x + (42 * scale) + .5, panel.y + (13 * scale) + .5, 0, songData.displayName, 25, false);
-    songName.font = Paths.font("pixeloidsans-bold.ttf");
+    songName.font = Paths.font("pixeloidsans.ttf");
     songName.letterSpacing = 1;
     songName.clipRect = new FlxRect(0, 0, clipLimit, songName.height);
 
@@ -1233,4 +1311,12 @@ function getRankSticker(songData:Array<Dynamic>):String {
         sticker = null;
 
     return sticker;
+}
+
+// taken from MusicBeatState
+function lerp(v1:Float, v2:Float, ratio:Float, fpsSensitive:Bool = false) {
+    if (fpsSensitive)
+        return FlxMath.lerp(v1, v2, ratio);
+    else
+        return CoolUtil.fpsLerp(v1, v2, ratio);
 }
