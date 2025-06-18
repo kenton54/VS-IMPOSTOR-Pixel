@@ -153,7 +153,6 @@ function postCreate() {
     for (strumline in strumLines.members) {
         insert(members.length, strumline);
     }
-    //insert(members.length, strumLines);
 
     if (FlxG.save.data.impPixelxBRZ) {
         forEach(function(spr) {
