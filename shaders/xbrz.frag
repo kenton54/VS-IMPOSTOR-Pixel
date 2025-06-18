@@ -58,9 +58,8 @@ void main() {
 	//                       18|05|00|01|10
 	//                       17|04|03|02|11
 	//                       16|15|14|13|12
-    vec2 ps = vec2(openfl_TextureSize.x, openfl_TextureSize.y);
-    float dx = 1.0 / ps.x;
-    float dy = 1.0 / ps.y;
+    float dx = 1.0 / openfl_TextureSize.x;
+    float dy = 1.0 / openfl_TextureSize.y;
 
     vec4 t1 = openfl_TextureCoordv.xxxy + vec4(-dx, 0.0, dx, -2.0 * dy);    // A1 B1 C1
 	vec4 t2 = openfl_TextureCoordv.xxxy + vec4(-dx, 0.0, dx, -dy);          // A B C
@@ -269,8 +268,7 @@ void main() {
     vec4 sprite = flixel_texture2D(bitmap, uv);
     if (sprite.a > 0.0) {
         gl_FragColor = vec4(res, sprite.a);
-    }
-    else {
+    } else {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
     }
 }

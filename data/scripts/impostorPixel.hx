@@ -23,6 +23,7 @@ function onNoteCreation(event) {
 
 	if (FlxG.save.data.impPixelxBRZ) {
 		var xbrzShader:CustomShader = new CustomShader("xbrz");
+		xbrzShader.precisionHint = 0;
 		pixelNote.shader = xbrzShader;
 	}
 }
@@ -46,6 +47,7 @@ function onStrumCreation(event) {
 
 	if (FlxG.save.data.impPixelxBRZ) {
 		var xbrzShader:CustomShader = new CustomShader("xbrz");
+		xbrzShader.precisionHint = 0;
 		daStrum.shader = xbrzShader;
 	}
 

@@ -1,3 +1,4 @@
+import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxRect;
 import funkin.editors.charter.Charter;
@@ -8,6 +9,7 @@ import funkin.menus.StoryMenuState;
 import funkin.savedata.FunkinSave;
 import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
+import openfl.filters.ShaderFilter;
 import Date;
 
 public var taskbarBG:FlxSprite;
@@ -158,6 +160,7 @@ function postCreate() {
             if (spr is FunkinSprite) {
                 if (spr.camera == camGame) {
                     var xbrzShader:CustomShader = new CustomShader("xbrz");
+                    xbrzShader.precisionHint = 0;
                     spr.shader = xbrzShader;
                 }
             }
@@ -165,6 +168,7 @@ function postCreate() {
 
         splashHandler.getSplashGroup("impostorPixel-default").forEach(function(splash) {
             var xbrzShader:CustomShader = new CustomShader("xbrz");
+            xbrzShader.precisionHint = 0;
             splash.shader = xbrzShader;
         });
     }

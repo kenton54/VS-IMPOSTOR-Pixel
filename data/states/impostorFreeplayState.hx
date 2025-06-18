@@ -390,6 +390,33 @@ function postCreate() {
         playCurSongInst();
     });
 
+    if (FlxG.save.data.impPixelxBRZ) {
+        forEach(function(spr) {
+            if (spr.camera == bordersCam) {
+                if (spr is FlxSprite) {
+                    var xbrzShader:CustomShader = new CustomShader("xbrz");
+                    xbrzShader.precisionHint = 0;
+                    spr.shader = xbrzShader;
+                }
+            }
+        });
+        charP1Side.forEach(function(spr) {
+            if (spr is FlxSprite) {
+                var xbrzShader:CustomShader = new CustomShader("xbrz");
+                xbrzShader.precisionHint = 0;
+                spr.shader = xbrzShader;
+            }
+        });
+        charP2Side.forEach(function(spr) {
+            trace(spr);
+            if (spr is FlxSprite) {
+                var xbrzShader:CustomShader = new CustomShader("xbrz");
+                xbrzShader.precisionHint = 0;
+                spr.shader = xbrzShader;
+            }
+        });
+    }
+
     // corrects position if ur hovering over a null panel
     if (panels1[curSongP1].members.length < 1) changeSongP1(1);
     if (panels2[curSongP2].members.length < 1) changeSongP2(1);
@@ -1224,6 +1251,16 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     }
     else
         group.x = spawnXposP1;
+
+    if (FlxG.save.data.impPixelxBRZ) {
+        group.forEach(function(spr) {
+            if (spr is FlxSprite) {
+                var xbrzShader:CustomShader = new CustomShader("xbrz");
+                xbrzShader.precisionHint = 0;
+                spr.shader = xbrzShader;
+            }
+        });
+    }
     
     return group;
 }
