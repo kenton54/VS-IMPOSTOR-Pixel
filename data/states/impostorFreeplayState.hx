@@ -199,7 +199,7 @@ function create() {
     charP2Side.add(playableCharP2);
     charP2Side.add(otherBoxes);
 
-    pressAcceptTxt2P = new FunkinText(820, 500, 500, 'PLAYER 2\nPRESS START', 56, true);
+    pressAcceptTxt2P = new FunkinText(820, 524, 500, 'PLAYER 2\nPRESS START', 56, true);
     pressAcceptTxt2P.alignment = "center";
     pressAcceptTxt2P.borderSize = 4;
     pressAcceptTxt2P.camera = bordersCam;
