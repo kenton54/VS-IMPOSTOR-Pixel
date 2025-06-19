@@ -480,12 +480,12 @@ function onPlayerMiss(event) {
         if (!event.note.isSustainNote) {
             health += missHealth;
             scor = missScore;
+            notesMissed++;
+            notesHit++;
         }
         breakCombo();
     }
 
-    notesMissed++;
-    notesHit++;
     songScore += scor;
     recalculateAccuracy();
 
