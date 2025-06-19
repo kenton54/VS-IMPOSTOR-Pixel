@@ -1,5 +1,4 @@
 import StringTools;
-import flixel.addons.display.FlxStarField2D;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.math.FlxRect;
@@ -10,6 +9,7 @@ import funkin.backend.chart.Chart;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
 import PlayableData;
+import PixelStars;
 
 var loadedPlayable:PlayableData;
 
@@ -112,10 +112,9 @@ function create() {
     bordersCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(bordersCam, false);
 
-    var stars:FlxStarField2D = new FlxStarField2D(0, 0, FlxG.width, FlxG.height, 120);
-    stars.setStarSpeed(5, 50);
-    stars.camera = spaceCam;
-    add(stars);
+    var stars:PixelStars = new PixelStars(0, 0, -30, 4, 2);
+    stars.setCamera(spaceCam);
+    stars.addStars();
 
     glow = new FlxSprite().loadGraphic(Paths.image("menus/freeplay/glow"));
     glow.scale.set(3, 3);

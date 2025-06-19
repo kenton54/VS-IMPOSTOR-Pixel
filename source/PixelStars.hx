@@ -12,18 +12,18 @@ class PixelStars {
      * @param speed The speed the stars travel
      * @param layerAmount How many layers of star fields should there be
      */
-    public function new(x:Float, y:Float, speed:Float = -50, layerAmount:Int = 3) {
-        super();
+    public function new(x:Float, y:Float, speed:Float = -50, layerAmount:Int = 3, ?baseScale:Float) {
+        if (baseScale == null) baseScale = 4;
 
         this.speed = speed;
 
         for (i in 0...layerAmount) {
             var star:FlxBackdrop = new FlxBackdrop(Paths.image("menus/stars"));
-            star.scale.set(4 / i, 4 / i);
+            star.scale.set(baseScale / i, baseScale / i);
             star.updateHitbox();
             star.setPosition(x + (60 * i), y + (60 * i));
             star.scrollFactor.set(0, 0);
-            star.velocity.x = speed / (i + 1);
+            star.velocity.x = speed / (i * 2);
 
             var fuckingEquation:Float = (i * 2) * 0.1;
             var alphaAmount:Float = FlxMath.remapToRange(fuckingEquation, 0, 1, 1, 0);
