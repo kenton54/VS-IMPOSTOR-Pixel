@@ -14,6 +14,7 @@ function initSaveData() {
     FlxG.save.data.impPixelBeans ??= 0;
     FlxG.save.data.impPixelTimeBar ??= true;
     FlxG.save.data.impPixelxBRZ ??= false;
+    FlxG.save.data.impPixelStrumBG ??= 0.0;
     //if (FlxG.save.data.pixelPlayable == null) FlxG.save.data.pixelPlayable = "bf";
     //if (FlxG.save.data.pixelPartner == null) FlxG.save.data.pixelPartner = "gf";
 }

@@ -1,4 +1,5 @@
 <menu name="IMP Pixel Options" desc="Change IMPOSTOR Pixel's options here...">
     <checkbox id="impPixelTimeBar" name="Time Bar" desc="If enabled, it'll show a bar that tracks the current song position, as well as its percentage from completion."/>
     <checkbox id="impPixelxBRZ" name="xBRZ Shader" desc="If enabled, it'll smooth and connect every sprite's pixel, creating a pseudo scaled version of the original sprite. (WARNING 1: The effect causes a lot of lag on weak machines!) (WARNING 2: The effect is a bit broken!)"/>
+    <number id="impPixelStrumBG" name="StrumLine BG Opacity" min="0" max="100" change="5" desc="Give the strumlines a semi-transparent (or fully transparent) background."/>
 </menu>

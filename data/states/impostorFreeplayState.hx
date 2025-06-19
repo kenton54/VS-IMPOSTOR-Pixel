@@ -780,8 +780,8 @@ function updateScoreText() {
     if (Math.abs(lerpScore - intendedScore) <= 5)
 		lerpScore = intendedScore;
 
-    lerpAccuracy = lerp(lerpAccuracy, intendedAccuracy, 0.2);
-    if (Math.abs(lerpAccuracy - intendedAccuracy) <= 0.01)
+    lerpAccuracy = lerp(lerpAccuracy, intendedAccuracy, 0.15);
+    if (Math.abs(lerpAccuracy - intendedAccuracy) <= 0.005)
 		lerpAccuracy = intendedAccuracy;
 
     scoreTxt.text = StringTools.lpad(Std.string(lerpScore), "0", 8);

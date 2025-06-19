@@ -22,6 +22,8 @@ public var camMovementSpeed:Float = 1;
 
 public var songPercent:Float = 0;
 
+var strumlineBackground:FlxSprite;
+
 var notesHit:Float = 0;
 var sickHits:Int = 0;
 var notesMissed:Int = 0;
@@ -159,6 +161,8 @@ function postCreate() {
         insert(members.length, strumline);
     }
 
+    insert(members.length, splashHandler.getSplashGroup("impostorPixel-default"));
+
     if (FlxG.save.data.impPixelxBRZ) {
         forEach(function(spr) {
             if (spr is FunkinSprite) {
@@ -175,6 +179,13 @@ function postCreate() {
             xbrzShader.precisionHint = 0;
             splash.shader = xbrzShader;
         });
+    }
+
+    if (FlxG.save.data.impPixelStrumBG > 0) {
+        strumlineBackground = new FlxSprite(playerStrums.members[0].x).makeGraphic(playerStrums.members[0].width * (playerStrums.members.length - 1) + 16, FlxG.height, FlxColor.BLACK);
+        strumlineBackground.alpha = FlxG.save.data.impPixelStrumBG / 100;
+        strumlineBackground.camera = camHUD;
+        insert(members.indexOf(playerStrums), strumlineBackground);
     }
 }
 
@@ -346,16 +357,6 @@ function onDadHit(event) {
     var accuracy:Float = 0;
 
     if (!event.note.isSustainNote) {
-        /*
-        songScore += score2add;
-        health += health2gain;
-        accuracyPressedNotes++;
-        totalAccuracyAmount += event.accuracy;
-
-        if (event.countAsCombo)
-            combo++;
-        */
-
         for (char in event.characters) {
             if (char != null)
                 char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
@@ -363,16 +364,7 @@ function onDadHit(event) {
 
         if (event.note.__strum != null) {
             event.note.__strum.press(event.note.strumTime);
-            //if (showSplashes) splashHandler.showSplash(event.note.splash, event.note.__strum);
         }
-
-        /*
-        if (daRating == "bad" || daRating == "shit") {
-            breakCombo();
-        }
-
-        displayRating(daRating, score2add);
-        */
     }
     else {
         for (char in event.characters) {
