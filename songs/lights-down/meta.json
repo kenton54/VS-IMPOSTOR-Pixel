@@ -17,9 +17,9 @@
 	"color": "#AF2121",
 	"customValues": {
 		"ratingsChart": {
-			"easy": 6,
-			"normal": 8,
-			"hard": 10
+			"easy": 7,
+			"normal": 10,
+			"hard": 12
 		}
 	}
 }
