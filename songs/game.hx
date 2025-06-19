@@ -22,6 +22,10 @@ public var camMovementSpeed:Float = 1;
 
 public var songPercent:Float = 0;
 
+var notesHit:Float = 0;
+var sickHits:Int = 0;
+var notesMissed:Int = 0;
+
 var healthLerp:Float = 0;
 var maxHealth:Float = 2;
 
@@ -266,8 +270,10 @@ function onPlayerHit(event) {
     if (!event.note.isSustainNote) {
         songScore += score2add;
         health += health2gain;
-        accuracyPressedNotes++;
-        totalAccuracyAmount += event.accuracy;
+        if (daRating == "sick" || daRating == "perfect")
+            sickHits++;
+        notesHit++;
+        recalculateAccuracy();
 
         if (event.countAsCombo)
             combo++;
@@ -478,7 +484,10 @@ function onPlayerMiss(event) {
         breakCombo();
     }
 
+    notesMissed++;
+    notesHit++;
     songScore += scor;
+    recalculateAccuracy();
 
     for (char in event.characters) {
         if (char != null)
@@ -492,6 +501,11 @@ function onPlayerMiss(event) {
 
         displayRating(ratingJudge(timing), scor);
     }
+}
+
+function recalculateAccuracy() {
+    accuracy = Math.min(1, Math.max(0, (sickHits - notesMissed) / notesHit));
+    trace("accuracy: "+accuracy);
 }
 
 var ratingTimer:FlxTimer = new FlxTimer();
