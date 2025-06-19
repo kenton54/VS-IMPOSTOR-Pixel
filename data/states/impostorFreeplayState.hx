@@ -89,9 +89,6 @@ function create() {
 
     pageArray = Json.parse(Assets.getText(Paths.json("playlist")));
 
-    songList1 = getSongList();
-    songList2 = getSongList();
-
     spaceCam = new FlxCamera();
     spaceCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(spaceCam, false);
@@ -407,7 +404,6 @@ function postCreate() {
             }
         });
         charP2Side.forEach(function(spr) {
-            trace(spr);
             if (spr is FlxSprite) {
                 var xbrzShader:CustomShader = new CustomShader("xbrz");
                 xbrzShader.precisionHint = 0;
@@ -697,7 +693,7 @@ function changeDifficultyP2(change:Int) {
     spawnXposP2 = FlxG.width;
 
     if (change != 0) {
-        regeneratePageP1();
+        regeneratePageP2();
         FlxG.sound.play(Paths.sound("menu/scroll"), 1);
     }
 }
@@ -774,7 +770,7 @@ function updateScoreValue() {
 	}
 
     var saveData = FunkinSave.getSongHighscore(songList1[curSongP1].name, songList1[curSongP1].difficulties[curDiffP1], []);
-    trace(saveData);
+    //trace(saveData);
     intendedScore = saveData.score ?? 0;
     intendedAccuracy = saveData.accuracy ?? 0;
 }
@@ -1112,6 +1108,8 @@ function clearPageP2() {
 function regeneratePageP1() {
     clearPageP1();
 
+    getSongListP1();
+
     var songs2Eliminate:Array<Int> = [];
     for (i in 0...songList1.length) {
         if (!songList1[i].difficulties.contains(songList1[i].difficulties[curDiffP1]))
@@ -1126,15 +1124,18 @@ function regeneratePageP1() {
     }
 
     for (i in 0...songList1.length) {
-        panels1[i] = new FlxTypedSpriteGroup();
-        panels1[i] = createPanel(songList1[i], 1);
-        add(panels1[i]);
+        var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        newPanel = createPanel(songList1[i], 1);
+        add(newPanel);
+        panels1.push(newPanel);
     }
     changeSongP1(0);
 }
 
 function regeneratePageP2() {
     clearPageP2();
+
+    getSongListP2();
 
     var songs2Eliminate:Array<Int> = [];
     for (i in 0...songList2.length) {
@@ -1150,9 +1151,10 @@ function regeneratePageP2() {
     }
 
     for (i in 0...songList2.length) {
-        panels2[i] = new FlxTypedSpriteGroup();
-        panels2[i] = createPanel(songList2[i], 2);
-        add(panels2[i]);
+        var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        newPanel = createPanel(songList2[i], 2);
+        add(newPanel);
+        panels2.push(newPanel);
     }
     changeSongP2(0);
 }
@@ -1207,7 +1209,7 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     var songName:FunkinText = new FunkinText(panel.x + (42 * scale) + .5, panel.y + (13 * scale) + .5, 0, songData.displayName, 25, false);
     songName.font = Paths.font("pixeloidsans.ttf");
     songName.letterSpacing = 1;
-    songName.clipRect = new FlxRect(0, 0, clipLimit, songName.height);
+    songName.clipRect = new FlxRect(0, 0, clipLimitR, songName.height);
 
     group.add(panelBG);
     group.add(songName);
@@ -1231,10 +1233,11 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     attachedIcon.setPosition(panel.x + attachedIcon.origin.x, panel.y + attachedIcon.origin.y);
     group.add(attachedIcon);
 
+    // the sticker MUST be the last sprite that gets added to the group, so it doesnt interfer with values
     var stickerSprite:Null<String> = getRankSticker(songData);
     var rankSticker:FlxSprite = new FlxSprite((panel.x + panel.width) - (4 * scale), panel.y + (6 * scale));
     rankSticker.scale.set(scale, scale);
-    if (stickerSprite != null) {
+    if (stickerSprite != null && !isVersusActive) {
         rankSticker.loadGraphic(Paths.image("menus/freeplay/ranks/" + stickerSprite));
         group.add(rankSticker);
     }
@@ -1260,18 +1263,19 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
             }
         });
     }
-    
+
     return group;
 }
 
-var clipLimit:Float = 298;
+var clipLimitL:Float = -12;
+var clipLimitR:Float = 300;
 
 function panelTextMovementP1() {
     for (i in 0...panels1.length) {
         FlxTween.cancelTweensOf(panels1[i].members[1]);
-        panels1[i].members[1].clipRect = new FlxRect(0, 0, clipLimit, panels1[i].members[1].height);
+        panels1[i].members[1].clipRect = new FlxRect(0, 0, clipLimitR, panels1[i].members[1].height);
         panels1[i].members[1].offset.x = 0;
-        if (panels1[curSongP1].members[1].width > clipLimit) {
+        if (panels1[curSongP1].members[1].width > clipLimitR) {
             movePanelTextRight(panels1[curSongP1].members[1]);
         }
     }
@@ -1280,9 +1284,9 @@ function panelTextMovementP1() {
 function panelTextMovementP2() {
     for (i in 0...panels2.length) {
         FlxTween.cancelTweensOf(panels2[i].members[1]);
-        panels2[i].members[1].clipRect = new FlxRect(0, 0, clipLimit, panels2[i].members[1].height);
+        panels2[i].members[1].clipRect = new FlxRect(0, 0, clipLimitR, panels2[i].members[1].height);
         panels2[i].members[1].offset.x = 0;
-        if (panels2[curSongP2].members[1].width > clipLimit) {
+        if (panels2[curSongP2].members[1].width > clipLimitR) {
             movePanelTextRight(panels2[curSongP2].members[1]);
         }
     }
@@ -1291,10 +1295,10 @@ function panelTextMovementP2() {
 function movePanelTextRight(text:FunkinText) {
     if (text == null) return;
 
-    var distance2move:Float = text.width - clipLimit + 14;
+    var distance2move:Float = text.width - clipLimitR + 14;
 
     FlxTween.tween(text, {"offset.x": distance2move}, 2, {startDelay: 0.3, ease: FlxEase.sineInOut, onUpdate: _ -> {
-        text.clipRect = new FlxRect(text.offset.x - 10, 0, clipLimit, text.height);
+        text.clipRect = new FlxRect(text.offset.x + clipLimitL, 0, clipLimitR, text.height);
     }, onComplete: _ -> {
         movePanelTextLeft(text);
     }});
@@ -1304,25 +1308,32 @@ function movePanelTextLeft(text:FunkinText) {
     if (text == null) return;
 
     FlxTween.tween(text, {"offset.x": 0}, 2, {startDelay: 0.3, ease: FlxEase.sineInOut, onUpdate: _ -> {
-        text.clipRect = new FlxRect(text.offset.x - 10, 0, clipLimit, text.height);
+        text.clipRect = new FlxRect(text.offset.x + clipLimitL, 0, clipLimitR, text.height);
     }, onComplete: _ -> {
         movePanelTextRight(text);
     }});
 }
 
-function getSongList():Array<Dynamic> {
-    var array:Array<Dynamic> = [];
-
+function getSongListP1():Array<Dynamic> {
+    songList1 = [];
     if (pageArray.pages[curPageP1].songs.length > 0) {
         for (song in pageArray.pages[curPageP1].songs) {
-            array.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+            songList1.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
         }
     }
-    return array;
+}
+
+function getSongListP2():Array<Dynamic> {
+    songList2 = [];
+    if (pageArray.pages[curPageP2].songs.length > 0) {
+        for (song in pageArray.pages[curPageP2].songs) {
+            songList2.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+        }
+    }
 }
 
 function getRankSticker(songData:Array<Dynamic>):String {
-    var data:Float = FunkinSave.getSongHighscore(songData.name);
+    var data:Float = FunkinSave.getSongHighscore(songData.name, songData.difficulties[curDiffP1], []);
     var sticker:Null<String> = "";
 
     if (data.date != null) {

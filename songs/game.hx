@@ -62,6 +62,7 @@ function create() {
     add(taskbarTxt);
 
     camZooming = true;
+    validScore = true;
 }
 
 /*

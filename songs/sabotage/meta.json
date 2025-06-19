@@ -9,7 +9,7 @@
 		"normal",
 		"hard"
 	],
-	"needsVoices": false,
+	"needsVoices": true,
 	"parsedColor": -5299935,
 	"displayName": "Sabotage",
 	"icon": "red-impostor-pixel",
