@@ -12,7 +12,7 @@ var stars:PixelStars;
 var skyGradient:FlxSprite;
 
 function create() {
-    snowParticles = new FlxTypedEmitter(-1600, -800, 140);
+    snowParticles = new FlxTypedEmitter(-1600, -800, 180);
     snowParticles.makeParticles(5, 5, FlxColor.WHITE, 100);
     snowParticles.launchAngle.set(120, 60);
     snowParticles.speed.set(80, 250, 200, 800);

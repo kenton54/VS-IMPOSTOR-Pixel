@@ -1,159 +1,6 @@
 {
-	"events": [
-		{
-			"params": [
-				1
-			],
-			"time": 5612.90322580645,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 11294.1176470588,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 16941.1764705882,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 22588.2352941176,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 28235.2941176471,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 33882.3529411765,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 39529.4117647059,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 45176.4705882353,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 50823.5294117647,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 56470.5882352941,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 62117.6470588235,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 67764.7058823529,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 79058.8235294117,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 84705.8823529411,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 90352.9411764705,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 95999.9999999999,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 101647.058823529,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 107294.117647059,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 112941.176470588,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				0
-			],
-			"time": 118588.235294117,
-			"name": "Camera Movement"
-		},
-		{
-			"params": [
-				1
-			],
-			"time": 124235.294117647,
-			"name": "Camera Movement"
-		}
-	],
-	"scrollSpeed": 2.8,
-	"codenameChart": true,
 	"strumLines": [
 		{
-			"strumScale": 1,
-			"position": "dad",
 			"notes": [
 				{
 					"id": 3,
@@ -193,7 +40,7 @@
 				},
 				{
 					"id": 3,
-					"sLen": 573.529411764714,
+					"sLen": 573.529411764715,
 					"time": 13455.8823529412,
 					"type": 0
 				},
@@ -853,7 +700,7 @@
 				},
 				{
 					"id": 2,
-					"sLen": 264.705882352915,
+					"sLen": 264.705882352908,
 					"time": 54352.9411764705,
 					"type": 0
 				},
@@ -889,7 +736,7 @@
 				},
 				{
 					"id": 3,
-					"sLen": 264.705882352915,
+					"sLen": 264.705882352908,
 					"time": 55764.7058823529,
 					"type": 0
 				},
@@ -1099,7 +946,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352981,
+					"sLen": 264.705882352988,
 					"time": 64588.2352941176,
 					"type": 0
 				},
@@ -1459,7 +1306,7 @@
 				},
 				{
 					"id": 2,
-					"sLen": 264.705882352995,
+					"sLen": 264.70588235301,
 					"time": 102352.94117647,
 					"type": 0
 				},
@@ -1495,7 +1342,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352966,
+					"sLen": 264.705882352995,
 					"time": 106588.235294117,
 					"type": 0
 				},
@@ -1789,7 +1636,7 @@
 				},
 				{
 					"id": 2,
-					"sLen": 264.705882352864,
+					"sLen": 264.70588235285,
 					"time": 120705.882352941,
 					"type": 0
 				},
@@ -1885,7 +1732,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352864,
+					"sLen": 264.70588235285,
 					"time": 126705.882352941,
 					"type": 0
 				},
@@ -2106,21 +1953,21 @@
 					"type": 0
 				}
 			],
+			"position": "dad",
+			"strumScale": 1,
+			"visible": true,
+			"type": 0,
 			"characters": [
 				"red-impostor"
 			],
-			"type": 0,
-			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "-opponent",
-			"strumLinePos": 0.25
+			"strumLinePos": 0.25,
+			"vocalsSuffix": "-opponent"
 		},
 		{
-			"strumScale": 1,
-			"position": "boyfriend",
 			"notes": [
 				{
 					"id": 3,
@@ -2676,7 +2523,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352915,
+					"sLen": 264.705882352908,
 					"time": 51176.4705882353,
 					"type": 0
 				},
@@ -2796,7 +2643,7 @@
 				},
 				{
 					"id": 3,
-					"sLen": 264.705882352915,
+					"sLen": 264.705882352908,
 					"time": 55764.7058823529,
 					"type": 0
 				},
@@ -3006,7 +2853,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352981,
+					"sLen": 264.705882352988,
 					"time": 64588.2352941176,
 					"type": 0
 				},
@@ -3384,7 +3231,7 @@
 				},
 				{
 					"id": 2,
-					"sLen": 264.705882352995,
+					"sLen": 264.70588235301,
 					"time": 102352.94117647,
 					"type": 0
 				},
@@ -3414,7 +3261,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 264.705882352966,
+					"sLen": 264.705882352995,
 					"time": 106588.235294117,
 					"type": 0
 				},
@@ -3714,7 +3561,7 @@
 				},
 				{
 					"id": 2,
-					"sLen": 264.705882352864,
+					"sLen": 264.70588235285,
 					"time": 120705.882352941,
 					"type": 0
 				},
@@ -3828,7 +3675,7 @@
 				},
 				{
 					"id": 0,
-					"sLen": 264.705882352864,
+					"sLen": 264.70588235285,
 					"time": 126705.882352941,
 					"type": 0
 				},
@@ -4091,36 +3938,40 @@
 					"type": 0
 				}
 			],
-			"characters": [
-				"playable-bf"
-			],
-			"type": 1,
 			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
+			"position": "boyfriend",
+			"strumScale": 1,
 			"vocalsSuffix": "-bf",
-			"strumLinePos": 0.75
+			"strumLinePos": 0.75,
+			"type": 1,
+			"characters": [
+				"bf"
+			]
 		},
 		{
-			"strumScale": 1,
-			"position": "girlfriend",
 			"notes": [],
+			"position": "girlfriend",
+			"strumScale": 1,
+			"visible": false,
+			"type": 2,
 			"characters": [
 				"gf"
 			],
-			"type": 2,
-			"visible": false,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "",
-			"strumLinePos": 0.25
+			"strumLinePos": 0.25,
+			"vocalsSuffix": ""
 		}
 	],
+	"codenameChart": true,
 	"stage": "polus1",
+	"scrollSpeed": 2.8,
 	"noteTypes": [
 		"Alt Animation"
 	]

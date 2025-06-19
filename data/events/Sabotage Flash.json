@@ -1,0 +1,14 @@
+{
+    "params": [
+        {
+            "name": "Flash Length (in steps)",
+            "type": "Int(0, 16, 1)",
+            "defaultValue": 8
+        },
+        {
+            "name": "Play Sound?",
+            "type": "Bool",
+            "defaultValue": false
+        }
+    ]
+}

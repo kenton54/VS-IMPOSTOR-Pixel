@@ -37,7 +37,6 @@ function beatHit(curBeat:Int) {
 }
 
 function stepHit(curStep:Int) {
-    //trace(curStep % interval == 0 && onStep);
     if (curStep % interval == 0 && onStep) {
         sabotageFlash.visible = !sabotageFlash.visible;
         if (sabotageFlash.visible)

@@ -105,6 +105,8 @@ function createHoldCovers() {
 */
 
 function postCreate() {
+    camGame.snapToTarget();
+
     healthLerp = health;
 
     healthBarBG.loadGraphic(Paths.image("game/healthBar"));
@@ -207,8 +209,6 @@ function postUpdate(elapsed:Float) {
     taskbarTxt.text = SONG.meta.displayName + " (" + Math.round(songPercent * 100) + "%)";
     scoreTxt.text = songScore;
 
-    FlxG.camera.followLerp = 0.04 * camMovementSpeed;
-
     if (!inCutscene)
         processNotes(elapsed);
 
@@ -290,9 +290,11 @@ function onPlayerHit(event) {
         if (event.countAsCombo)
             combo++;
 
-        for (char in event.characters) {
-            if (char != null)
-                char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
+        if (!event.animCancelled || event.noteType != "No Anim Note") {
+            for (char in event.characters) {
+                if (char != null)
+                    char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
+            }
         }
 
         if (event.note.__strum != null) {
@@ -307,14 +309,16 @@ function onPlayerHit(event) {
         displayRating(daRating, score2add);
     }
     else {
-        for (char in event.characters) {
-            if (char != null) {
-                var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
-                if (char.animation.exists(animName))
-                    char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
-                else {
-                    char.playSingAnim(event.direction, event.animSuffix, "SING", false);
-                    char.animation.finish();
+        if (!event.animCancelled || event.noteType != "No Anim Note") {
+            for (char in event.characters) {
+                if (char != null) {
+                    var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
+                    if (char.animation.exists(animName))
+                        char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
+                    else {
+                        char.playSingAnim(event.direction, event.animSuffix, "SING", false);
+                        char.animation.finish();
+                    }
                 }
             }
         }
@@ -357,9 +361,11 @@ function onDadHit(event) {
     var accuracy:Float = 0;
 
     if (!event.note.isSustainNote) {
-        for (char in event.characters) {
-            if (char != null)
-                char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
+        if (!event.animCancelled || event.noteType == "No Anim Note") {
+            for (char in event.characters) {
+                if (char != null)
+                    char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
+            }
         }
 
         if (event.note.__strum != null) {
@@ -367,14 +373,16 @@ function onDadHit(event) {
         }
     }
     else {
-        for (char in event.characters) {
-            if (char != null) {
-                var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
-                if (char.animation.exists(animName))
-                    char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
-                else {
-                    char.playSingAnim(event.direction, event.animSuffix, "SING", false);
-                    char.animation.finish();
+        if (!event.animCancelled || event.noteType == "No Anim Note") {
+            for (char in event.characters) {
+                if (char != null) {
+                    var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
+                    if (char.animation.exists(animName))
+                        char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
+                    else {
+                        char.playSingAnim(event.direction, event.animSuffix, "SING", false);
+                        char.animation.finish();
+                    }
                 }
             }
         }

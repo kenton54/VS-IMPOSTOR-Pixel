@@ -21,9 +21,6 @@ function onStartSong() {
 }
 
 function moogusIntroTween() {
-    FlxTween.tween(camFollow, {y: 0}, stepTime * 32, {ease: FlxEase.quadInOut});
-    FlxTween.tween(camGame, {zoom: 0.6}, stepTime * 32, {ease: FlxEase.quadInOut, startDelay: stepTime * 16});
-    FlxTween.tween(camHUD, {alpha: 1}, stepTime * 16, {startDelay: stepTime * 56, onStart: _ -> {
-        snowParticles.start(false, 0.1);
-    }});
+    snowParticles.start(false, 0.1);
+    FlxTween.tween(camHUD, {alpha: 1}, stepTime * 16);
 }
