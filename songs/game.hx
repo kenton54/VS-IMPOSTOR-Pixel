@@ -504,7 +504,7 @@ function onPlayerMiss(event) {
 }
 
 function recalculateAccuracy() {
-    accuracy = Math.min(1, Math.max(0, (sickHits - notesMissed) / notesHit));
+    accuracy = Math.min(1, Math.max(0, sickHits / notesHit));
     trace("accuracy: "+accuracy);
 }
 
