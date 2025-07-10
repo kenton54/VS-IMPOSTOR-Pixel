@@ -1,7 +1,8 @@
 import funkin.backend.utils.DiscordUtil;
+import ImpostorFlags;
 
 function onGameOver() {
-	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " (" + PlayState.difficulty + ")");
+	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]");
 }
 
 function onDiscordPresenceUpdate(e) {
@@ -18,14 +19,13 @@ function onDiscordPresenceUpdate(e) {
 function onPlayStateUpdate() {
 	DiscordUtil.changeSongPresence(
 		PlayState.instance.detailsText,
-		"Playing " + PlayState.SONG.meta.displayName + " (" + PlayState.difficulty + ")" /* + (PlayState.instance.paused ? "(PAUSED)" : "")*/,
-		PlayState.instance.inst,
-		PlayState.instance.getIconRPC()
+		!ImpostorFlags.playingVersus ? "Playing Solo: " + PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]" : "Competing against a Friend: " + PlayState.SONG.meta.displayName,
+		PlayState.instance.inst
 	);
 }
 
 function onMenuLoaded(name:String) {
-    DiscordUtil.changePresenceSince("Navigating Menus", null);
+    DiscordUtil.changePresenceSince("Navigating Menus", name);
 }
 
 function onEditorTreeLoaded(name:String) {

@@ -6,6 +6,7 @@ import flixel.tweens.FlxTween.FlxTweenType;
 import flixel.ui.FlxBar;
 import flixel.ui.FlxBar.FlxBarFillDirection;
 import funkin.backend.chart.Chart;
+import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
 import PlayableData;
@@ -85,6 +86,8 @@ var lerpScore:Int = 0;
 var lerpAccuracy:Float = 0;
 
 function create() {
+    DiscordUtil.call("onMenuLoaded", ["Freeplay (Solo)"]);
+
     loadedPlayable = new PlayableData(curPlayable);
 
     pageArray = Json.parse(Assets.getText(Paths.json("playlist")));
@@ -959,6 +962,8 @@ function acceptP2Txt() {
 }
 
 function initVersus() {
+    DiscordUtil.call("onMenuLoaded", ["Freeplay (Versus)"]);
+
     isVersusActive = true;
     allowGlobalInput = false;
     allowSongInstPlayer = false;
@@ -1037,6 +1042,8 @@ function exitVersus() {
     FlxG.sound.play(Paths.sound("menu/cancel"), 1);
 
     new FlxTimer().start(1.8, _ -> {
+        DiscordUtil.call("onMenuLoaded", ["Freeplay (Solo)"]);
+
         allowP1Input = true;
         allowP2Input = true;
         allowSongInstPlayer = true;

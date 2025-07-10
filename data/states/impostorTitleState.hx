@@ -1,4 +1,5 @@
 import flixel.group.FlxTypedSpriteGroup;
+import funkin.backend.utils.DiscordUtil;
 import PixelStars;
 
 var title:FlxTypedSpriteGroup;
@@ -7,6 +8,8 @@ var baseScale:Float = 4;
 var pressStart:FunkinText;
 
 function create() {
+    DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
+
     var stars:PixelStars = new PixelStars(0, 0, -40, 4, 3);
     stars.addStars();
 

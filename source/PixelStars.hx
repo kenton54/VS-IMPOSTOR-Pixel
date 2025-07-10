@@ -1,7 +1,7 @@
 import flixel.addons.display.FlxBackdrop;
 
 class PixelStars {
-    public var starArray:Array<FunkinBackdrop> = [];
+    public var starArray:Array<FlxBackdrop> = [];
 
     public var speed:Float = 0;
 
@@ -28,6 +28,8 @@ class PixelStars {
             var fuckingEquation:Float = (i * 2) * 0.1;
             var alphaAmount:Float = FlxMath.remapToRange(fuckingEquation, 0, 1, 1, 0);
             star.alpha = alphaAmount;
+
+            star.color = FlxColor.WHITE;
 
             starArray.push(star);
         }
