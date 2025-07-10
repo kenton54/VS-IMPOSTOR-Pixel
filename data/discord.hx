@@ -1,19 +1,15 @@
 import funkin.backend.utils.DiscordUtil;
+import hxdiscord_rpc.Types;
 import ImpostorFlags;
 
-function onGameOver() {
-	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]");
+function new() {}
+
+function onDiscordPresenceUpdate(event) {
+	var presence = event.presence;
 }
 
-function onDiscordPresenceUpdate(e) {
-	var data = e.presence;
-
-	/*
-	if (data.button1Label == null)
-		//data.button1Label = "";
-	if (data.button1Url == null)
-		//data.button1Url = "";
-	*/
+function onMenuLoaded(name:String) {
+    DiscordUtil.changePresenceSince("Navigating Menus", name);
 }
 
 function onPlayStateUpdate() {
@@ -24,8 +20,8 @@ function onPlayStateUpdate() {
 	);
 }
 
-function onMenuLoaded(name:String) {
-    DiscordUtil.changePresenceSince("Navigating Menus", name);
+function onGameOver() {
+	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]");
 }
 
 function onEditorTreeLoaded(name:String) {

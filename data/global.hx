@@ -58,7 +58,10 @@ function flushSaveData() {
 }
 
 function update(elapsed:Float) {
+    if (!impPixelDebugMode) return;
+
     if (FlxG.keys.justPressed.F5) reloadState();
+    if (FlxG.keys.justPressed.F8) DiscordUtil.loadScript();
 }
 
 function reloadState() {
