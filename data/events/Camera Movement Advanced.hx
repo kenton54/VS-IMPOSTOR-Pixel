@@ -1,3 +1,7 @@
+import funkin.backend.scripting.EventManager;
+import funkin.backend.scripting.events.CamMoveEvent;
+
+
 function onEvent(sus) {
     if (sus.event.name == "Camera Movement Advanced") {
         curCameraTarget = -1;
@@ -29,6 +33,15 @@ function onEvent(sus) {
                     FlxTween.tween(camFollow, {x: fullXpos, y: fullYpos}, (Conductor.stepCrochet / 1000) * params.duration, {ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType)});
                 }
             }
+            var camPoint:FlxPoint = FlxPoint.get(fullXpos, fullYpos);
+            scripts.call("onNewCameraMove", [camPoint, strumLines.members[params.target], position.amount]);
         }
+    }
+    if (sus.event.name == "Camera Movement") {
+        curCameraTarget = -1;
+        var position:CamPosData = getStrumlineCamPos(sus.event.params[0]);
+        FlxG.camera.followLerp = 0.04;
+        camFollow.setPosition(position.pos.x, position.pos.y);
+        scripts.call("onNewCameraMove", [position.pos, strumLines.members[params.target], position.amount]);
     }
 }

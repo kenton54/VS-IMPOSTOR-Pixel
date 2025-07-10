@@ -13,12 +13,16 @@ function onEvent(event) {
             twnType: event.event.params[3],
         }
         FlxTween.cancelTweensOf(camGame, ["zoom"]);
+
         var actualZoom:Float = stageDefCamZoom + (params.zoomVal - 1.0);
-        trace("[Zoom Camera] will zoom camera to value: "+actualZoom);
-        if (params.duration == 0)
+        var easing:FlxEase = CoolUtil.flxeaseFromString(params.twnEase, params.twnType);
+        var duration:Float = (Conductor.stepCrochet / 1000) * params.duration;
+        trace("[Zoom Camera] zoom: "+Std.string(actualZoom)+", easing: "+Std.string(easing)+", duration: "+Std.string(duration)+" seconds ("+params.duration+" steps)");
+
+        if (duration == 0)
             camGame.zoom = actualZoom;
         else
-            FlxTween.tween(camGame, {zoom: actualZoom}, (Conductor.stepCrochet / 1000) * params.duration, {ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType)});
+            FlxTween.tween(camGame, {zoom: actualZoom}, duration, {ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType)});
 
         defaultCamZoom = actualZoom;
     }

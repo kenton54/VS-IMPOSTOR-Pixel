@@ -1,5 +1,9 @@
 <character sprite="partners/gf" scale="10" antialiasing="false" isGF="true" icon="partners/gf-pixel" holdTime="8" color="#31B0D1" camx="-120">
-	<anim name="danceLeft" anim="dance" indices="1..8" x="0" y="0" fps="12" loop="false"/>
-	<anim name="danceRight" anim="dance" indices="9..16" x="0" y="0" fps="12" loop="false"/>
-	<anim name="sad" anim="sob" x="0" y="0" fps="12" loop="true"/>
+	<anim name="danceLeft" anim="bop left" x="0" y="0" fps="24" loop="false"/>
+	<anim name="danceRight" anim="bop right" x="0" y="0" fps="24" loop="false"/>
+	<anim name="sad" anim="sob" x="0" y="0" fps="24" loop="false"/>
+	<anim name="cheer" anim="cheer" x="0" y="0" fps="24" loop="false"/>
+	<anim name="combo50" anim="cheer" x="0" y="0" fps="24" loop="false"/>
+	<anim name="drop70" anim="sob" x="0" y="0" fps="24" loop="false"/>
+	<anim name="shock" anim="shock" x="0" y="0" fps="24" loop="false"/>
 </character>

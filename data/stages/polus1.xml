@@ -3,15 +3,41 @@
 
     <sprite name="moon" sprite="moon" x="-50" y="-200" antialiasing="false" scale="5" scroll="0.1"/>
 
-    <sprite name="wall" sprite="back" x="200" y="-80" antialiasing="false" scale="10" scroll="0.85"/>
-    <sprite name="ground" sprite="ground" x="12" y="530" antialiasing="false" scale="10"/>
-
-    <sprite name="lab" sprite="lab" x="59" y="-124" antialiasing="false" scale="10" type="loop">
-        <anim name="watch" anim="watch" loop="true" fps="4"/>
-        <anim name="idle" anim="idle" loop="true" fps="1"/>
+    <sprite name="medbay_normal" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
+        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+    </sprite>
+    <sprite name="medbay_dark" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
+        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <property name="visible" type="bool" value="false"/>
     </sprite>
 
-    <girlfriend x="98" y="34" scroll="1"/>
+    <sprite name="labWall_normal" sprite="lab-wall" x="680" y="-10" antialiasing="false" scale="10" scroll="0.9" >
+        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+    </sprite>
+    <sprite name="labWall_dark" sprite="lab-wall" x="680" y="-10" antialiasing="false" scale="10" scroll="0.9" >
+        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <property name="visible" type="bool" value="false"/>
+    </sprite>
+
+    <sprite name="ground_normal" sprite="ground" x="16" y="483" antialiasing="false" scale="10" >
+        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+    </sprite>
+    <sprite name="ground_dark" sprite="ground" x="16" y="483" antialiasing="false" scale="10">
+        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <property name="visible" type="bool" value="false"/>
+    </sprite>
+
+    <sprite name="labEntrance_normal" sprite="lab-entrance" x="159" y="-124" antialiasing="false" scale="10" type="loop" >
+        <anim name="watch" anim="watch normal" loop="true" fps="4"/>
+        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+    </sprite>
+    <sprite name="labEntrance_dark" sprite="lab-entrance" x="159" y="-124" antialiasing="false" scale="10" type="loop" >
+        <anim name="watch" anim="watch dark" loop="true" fps="4"/>
+        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <property name="visible" type="bool" value="false"/>
+    </sprite>
+
+    <girlfriend x="137" y="34" scroll="1"/>
     <dad x="-452" y="69" camxoffset="0" camyoffset="80"/>
     <boyfriend x="670" y="240" camxoffset="-100" camyoffset="-38"/>
 </stage>

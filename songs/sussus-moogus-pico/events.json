@@ -1,0 +1,1552 @@
+{
+	"events": [
+		{
+			"params": [
+				"moogusIntroTween",
+				""
+			],
+			"time": 4645.16129032258,
+			"name": "HScript Call"
+		},
+		{
+			"params": [
+				"moogusIntroTween",
+				""
+			],
+			"name": "HScript Call",
+			"time": 4645.16129032258
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 12387.0967741935
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"time": 12387.0967741935,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 12387.0967741935,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 12387.0967741935
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 18580.6451612903
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 18580.6451612903,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 24774.1935483871
+		},
+		{
+			"params": [
+				2,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 24774.1935483871
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 24774.1935483871,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				2,
+				1
+			],
+			"time": 24774.1935483871,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 30967.7419354839
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 30967.7419354839,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 32516.1290322581,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 32516.1290322581
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 34064.5161290323,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				20,
+				1
+			],
+			"time": 34064.5161290323,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 34064.5161290323
+		},
+		{
+			"params": [
+				20,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 34064.5161290323
+		},
+		{
+			"params": [
+				1,
+				1.5
+			],
+			"time": 35516.1290322581,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.5
+			],
+			"name": "Camera Modulo Change",
+			"time": 35516.1290322581
+		},
+		{
+			"params": [
+				0.85
+			],
+			"time": 35612.9032258064,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.85
+			],
+			"name": "Zoom Camera",
+			"time": 35612.9032258064
+		},
+		{
+			"params": [
+				0.9
+			],
+			"time": 36000,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.9
+			],
+			"name": "Zoom Camera",
+			"time": 36000
+		},
+		{
+			"params": [
+				0.95
+			],
+			"time": 36387.0967741935,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0,
+				"preShoot-front",
+				true
+			],
+			"name": "Play Animation",
+			"time": 36387.0967741935
+		},
+		{
+			"params": [
+				0.95
+			],
+			"name": "Zoom Camera",
+			"time": 36387.0967741935
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 36774.1935483871,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0,
+				"shoot-front",
+				true
+			],
+			"name": "Play Animation",
+			"time": 36774.1935483871
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Zoom Camera",
+			"time": 36774.1935483871
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"time": 37064.5161290323,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"name": "Camera Modulo Change",
+			"time": 37064.5161290323
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 37161.2903225806,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 37161.2903225806,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 37161.2903225806
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 37161.2903225806
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 43354.8387096774,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 43354.8387096774
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 44903.2258064516,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 44903.2258064516
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 46451.6129032258,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 46451.6129032258
+		},
+		{
+			"params": [
+				0.65
+			],
+			"time": 48000,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.65
+			],
+			"name": "Zoom Camera",
+			"time": 48000
+		},
+		{
+			"params": [
+				1,
+				1.5
+			],
+			"time": 49451.6129032258,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.5
+			],
+			"name": "Camera Modulo Change",
+			"time": 49451.6129032258
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 49548.3870967742,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 49548.3870967742,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 49548.3870967742
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 49548.3870967742
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 49935.4838709677,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 49935.4838709677
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 50322.5806451613,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 50322.5806451613
+		},
+		{
+			"params": [
+				0.85
+			],
+			"time": 50709.6774193548,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.85
+			],
+			"name": "Zoom Camera",
+			"time": 50709.6774193548
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 51096.7741935484,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				20,
+				1
+			],
+			"time": 51096.7741935484,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.9
+			],
+			"time": 51096.7741935484,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 51096.7741935484
+		},
+		{
+			"params": [
+				20,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 51096.7741935484
+		},
+		{
+			"params": [
+				0.9
+			],
+			"name": "Zoom Camera",
+			"time": 51096.7741935484
+		},
+		{
+			"params": [
+				0,
+				"preShoot-camera",
+				true
+			],
+			"name": "Play Animation",
+			"time": 51870.9677419355
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 52258.064516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0,
+				"shoot-camera",
+				true
+			],
+			"name": "Play Animation",
+			"time": 52258.064516129
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 52258.064516129
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"time": 52548.3870967742,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"name": "Camera Modulo Change",
+			"time": 52548.3870967742
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"time": 52645.1612903226,
+			"name": "Camera Follow Position"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 52645.1612903226,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"name": "Camera Follow Position",
+			"time": 52645.1612903226
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 52645.1612903226
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 55741.935483871,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 55741.935483871,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 55741.935483871
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 55741.935483871
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"name": "Camera Follow Position",
+			"time": 58838.7096774193
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 58838.7096774193
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"time": 58838.7096774193,
+			"name": "Camera Follow Position"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 58838.7096774193,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 61935.4838709677
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 61935.4838709677,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"time": 61935.4838709677,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 61935.4838709677
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 62322.5806451613,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 62322.5806451613
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 63483.8709677419
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 63483.8709677419,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 65032.2580645161
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 65032.2580645161,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.85
+			],
+			"name": "Zoom Camera",
+			"time": 66580.6451612903
+		},
+		{
+			"params": [
+				0.85
+			],
+			"time": 66580.6451612903,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 67354.8387096774
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 67354.8387096774,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 67741.935483871
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 67741.935483871,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 68129.0322580645
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 68129.0322580645,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 68516.1290322581
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 68516.1290322581,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 69677.4193548387,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 69677.4193548387
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 71225.8064516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 71225.8064516129
+		},
+		{
+			"params": [
+				0.85
+			],
+			"time": 72774.1935483871,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.85
+			],
+			"name": "Zoom Camera",
+			"time": 72774.1935483871
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 73548.3870967742,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 73548.3870967742
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 73935.4838709677,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 73935.4838709677
+		},
+		{
+			"params": [
+				2,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 74225.8064516129
+		},
+		{
+			"params": [
+				2,
+				1
+			],
+			"time": 74225.8064516129,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 74322.5806451613,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 74322.5806451613
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 74709.6774193548
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 74709.6774193548,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 77032.2580645161
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 77032.2580645161,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"time": 77806.4516129032,
+			"name": "Camera Follow Position"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 77806.4516129032,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"name": "Camera Follow Position",
+			"time": 77806.4516129032
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 77806.4516129032
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 78967.7419354839
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 78967.7419354839,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 80903.2258064516,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 80903.2258064516
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 83225.8064516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 83225.8064516129
+		},
+		{
+			"params": [
+				0.9
+			],
+			"name": "Zoom Camera",
+			"time": 85161.2903225806
+		},
+		{
+			"params": [
+				0.9
+			],
+			"time": 85161.2903225806,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 86709.6774193548
+		},
+		{
+			"params": [
+				80,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 86709.6774193548
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 86709.6774193548,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				80,
+				1
+			],
+			"time": 86709.6774193548,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 88258.064516129
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 88258.064516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 90193.5483870968
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 90193.5483870968,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 96387.0967741935
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 96387.0967741935,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				4,
+				0.9
+			],
+			"name": "Camera Modulo Change",
+			"time": 102096.774193548
+		},
+		{
+			"params": [
+				4,
+				0.9
+			],
+			"time": 102096.774193548,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0.65
+			],
+			"name": "Zoom Camera",
+			"time": 102193.548387097
+		},
+		{
+			"params": [
+				0.65
+			],
+			"time": 102193.548387097,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 102580.64516129
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 102580.64516129,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 106838.709677419
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 106838.709677419,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 108774.193548387
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 108774.193548387,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 113032.258064516
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 113032.258064516,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 114193.548387097
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 114193.548387097,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"name": "Camera Modulo Change",
+			"time": 114483.870967742
+		},
+		{
+			"params": [
+				2,
+				1.2
+			],
+			"time": 114483.870967742,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 114967.741935484
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 114967.741935484,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 118064.516129032
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 118064.516129032,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 119225.806451613
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 119225.806451613,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 120580.64516129
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 120580.64516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 121161.290322581,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 121161.290322581
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 121161.290322581
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 121161.290322581,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 125419.35483871
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 125419.35483871,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.65
+			],
+			"name": "Zoom Camera",
+			"time": 126193.548387097
+		},
+		{
+			"params": [
+				0.65
+			],
+			"time": 126193.548387097,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 126967.741935484
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 126967.741935484
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 126967.741935484,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 126967.741935484,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 128516.129032258,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 128516.129032258
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 130064.516129032
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 130064.516129032,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 131612.903225806,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 131612.903225806
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 132387.096774194
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 132387.096774194,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.75
+			],
+			"name": "Zoom Camera",
+			"time": 134709.677419355
+		},
+		{
+			"params": [
+				0.75
+			],
+			"time": 134709.677419355,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.8
+			],
+			"name": "Zoom Camera",
+			"time": 136258.064516129
+		},
+		{
+			"params": [
+				0.8
+			],
+			"time": 136258.064516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.85
+			],
+			"name": "Zoom Camera",
+			"time": 137806.451612903
+		},
+		{
+			"params": [
+				0.85
+			],
+			"time": 137806.451612903,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.9
+			],
+			"name": "Zoom Camera",
+			"time": 138580.64516129
+		},
+		{
+			"params": [
+				0.9
+			],
+			"time": 138580.64516129,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				0.7
+			],
+			"name": "Zoom Camera",
+			"time": 139354.838709677
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 139354.838709677
+		},
+		{
+			"params": [
+				0.7
+			],
+			"time": 139354.838709677,
+			"name": "Zoom Camera"
+		},
+		{
+			"params": [
+				4,
+				1
+			],
+			"time": 139354.838709677,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 139741.935483871
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 139741.935483871,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 145935.483870968,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 145935.483870968
+		},
+		{
+			"params": [
+				4,
+				0.8
+			],
+			"name": "Camera Modulo Change",
+			"time": 151741.935483871
+		},
+		{
+			"params": [
+				4,
+				0.8
+			],
+			"time": 151741.935483871,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				0
+			],
+			"name": "Camera Movement",
+			"time": 152129.032258065
+		},
+		{
+			"params": [
+				0
+			],
+			"time": 152129.032258065,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				1
+			],
+			"name": "Camera Movement",
+			"time": 158322.580645161
+		},
+		{
+			"params": [
+				1
+			],
+			"time": 158322.580645161,
+			"name": "Camera Movement"
+		},
+		{
+			"params": [
+				80,
+				1
+			],
+			"name": "Camera Modulo Change",
+			"time": 164129.032258065
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"name": "Camera Follow Position",
+			"time": 164129.032258065
+		},
+		{
+			"params": [
+				0.6
+			],
+			"name": "Zoom Camera",
+			"time": 164129.032258065
+		},
+		{
+			"params": [
+				80,
+				1
+			],
+			"time": 164129.032258065,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				-10,
+				-100
+			],
+			"time": 164129.032258065,
+			"name": "Camera Follow Position"
+		},
+		{
+			"params": [
+				0.6
+			],
+			"time": 164129.032258065,
+			"name": "Zoom Camera"
+		}
+	]
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="nene.png" width="398" height="283">
+	<SubTexture name="bop left1" x="305" y="0" width="46" height="49" frameX="-12" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left10" x="147" y="95" width="54" height="54" frameX="-6" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left11" x="338" y="100" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left12" x="338" y="100" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left2" x="305" y="0" width="46" height="49" frameX="-12" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left3" x="254" y="48" width="51" height="50" frameX="-7" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left4" x="254" y="48" width="51" height="50" frameX="-7" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left5" x="239" y="98" width="54" height="54" frameX="-4" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left6" x="239" y="98" width="54" height="54" frameX="-4" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left7" x="93" y="90" width="54" height="53" frameX="-5" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left8" x="93" y="90" width="54" height="53" frameX="-5" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop left9" x="147" y="95" width="54" height="54" frameX="-6" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right1" x="208" y="0" width="52" height="46" frameX="-9" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right10" x="128" y="0" width="40" height="41" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right11" x="168" y="0" width="40" height="45" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right12" x="168" y="0" width="40" height="45" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right2" x="208" y="0" width="52" height="46" frameX="-9" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right3" x="41" y="0" width="47" height="40" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right4" x="41" y="0" width="47" height="40" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right5" x="0" y="0" width="41" height="39" frameX="-20" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right6" x="0" y="0" width="41" height="39" frameX="-20" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right7" x="88" y="0" width="40" height="40" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right8" x="88" y="0" width="40" height="40" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="bop right9" x="128" y="0" width="40" height="41" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer1" x="305" y="49" width="38" height="51" frameX="-21" frameY="-18" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer10" x="38" y="196" width="38" height="62" frameX="-21" frameY="-8" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer11" x="38" y="196" width="38" height="62" frameX="-21" frameY="-8" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer12" x="76" y="198" width="38" height="63" frameX="-21" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer13" x="76" y="198" width="38" height="63" frameX="-21" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer14" x="343" y="49" width="38" height="51" frameX="-21" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer15" x="343" y="49" width="38" height="51" frameX="-21" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer16" x="343" y="49" width="38" height="51" frameX="-21" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer2" x="201" y="95" width="38" height="54" frameX="-21" frameY="-15" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer3" x="0" y="141" width="38" height="55" frameX="-21" frameY="-15" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer4" x="195" y="149" width="38" height="58" frameX="-21" frameY="-12" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer5" x="195" y="149" width="38" height="58" frameX="-21" frameY="-12" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer6" x="338" y="155" width="38" height="60" frameX="-21" frameY="-10" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer7" x="338" y="155" width="38" height="60" frameX="-21" frameY="-10" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer8" x="0" y="196" width="38" height="61" frameX="-21" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="cheer9" x="0" y="196" width="38" height="61" frameX="-21" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited1" x="0" y="89" width="47" height="52" frameX="-17" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited2" x="0" y="89" width="47" height="52" frameX="-17" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited3" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited4" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited5" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited6" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited7" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="excited8" x="293" y="100" width="45" height="54" frameX="-18" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="flash1" x="38" y="141" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="flash2" x="38" y="141" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="flash3" x="91" y="143" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="flash4" x="91" y="143" width="53" height="55" frameX="-7" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle1" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle10" x="232" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle11" x="232" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle2" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle3" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle4" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle5" x="271" y="209" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle6" x="310" y="215" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle7" x="310" y="215" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle8" x="349" y="215" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife idle9" x="349" y="215" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower1" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower10" x="208" y="0" width="52" height="46" frameX="-9" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower11" x="41" y="0" width="47" height="40" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower12" x="41" y="0" width="47" height="40" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower13" x="0" y="0" width="41" height="39" frameX="-20" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower14" x="0" y="0" width="41" height="39" frameX="-20" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower15" x="88" y="0" width="40" height="40" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower16" x="88" y="0" width="40" height="40" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower17" x="128" y="0" width="40" height="41" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower18" x="128" y="0" width="40" height="41" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower19" x="168" y="0" width="40" height="45" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower2" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower20" x="168" y="0" width="40" height="45" frameX="-20" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower3" x="154" y="204" width="39" height="67" frameX="-20" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower4" x="154" y="204" width="39" height="67" frameX="-20" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower5" x="114" y="204" width="40" height="65" frameX="-19" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower6" x="114" y="204" width="40" height="65" frameX="-19" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower7" x="144" y="149" width="51" height="55" frameX="-9" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower8" x="144" y="149" width="51" height="55" frameX="-9" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife lower9" x="208" y="0" width="52" height="46" frameX="-9" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise1" x="233" y="152" width="55" height="55" frameX="-5" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise10" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise11" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise12" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise13" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise14" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise15" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise16" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise2" x="233" y="152" width="55" height="55" frameX="-5" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise3" x="288" y="154" width="50" height="55" frameX="-9" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise4" x="288" y="154" width="50" height="55" frameX="-9" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise5" x="114" y="204" width="40" height="65" frameX="-19" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise6" x="114" y="204" width="40" height="65" frameX="-19" frameY="-9" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise7" x="154" y="204" width="39" height="67" frameX="-20" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise8" x="154" y="204" width="39" height="67" frameX="-20" frameY="-7" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="knife raise9" x="193" y="207" width="39" height="68" frameX="-20" frameY="-6" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh1" x="0" y="40" width="56" height="49" frameX="-5" frameY="-24" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh10" x="162" y="45" width="45" height="50" frameX="-14" frameY="-20" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh11" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh12" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh13" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh14" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh15" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh16" x="47" y="89" width="46" height="52" frameX="-13" frameY="-19" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh2" x="0" y="40" width="56" height="49" frameX="-5" frameY="-24" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh3" x="56" y="40" width="53" height="49" frameX="-7" frameY="-23" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh4" x="109" y="41" width="53" height="49" frameX="-7" frameY="-23" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh5" x="351" y="0" width="47" height="49" frameX="-13" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh6" x="207" y="46" width="47" height="49" frameX="-13" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh7" x="260" y="0" width="45" height="48" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh8" x="260" y="0" width="45" height="48" frameX="-14" frameY="-21" frameWidth="80" frameHeight="88"/>
+	<SubTexture name="laugh9" x="162" y="45" width="45" height="50" frameX="-14" frameY="-20" frameWidth="80" frameHeight="88"/>
+</TextureAtlas>

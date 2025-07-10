@@ -31,12 +31,6 @@ var notesMissed:Int = 0;
 var healthLerp:Float = 0;
 var maxHealth:Float = 2;
 
-// hold note covers
-var coverData:Array<Any> = [];
-var coverGroup:FlxSpriteGroup;
-public var holdCoverSkin:String = "game/holdCovers/impostorPixel-default";
-public var holdCoverColor:Array<String> = ["purple", "blue", "green", "red"];
-
 function create() {
     taskbarBG = new FlxSprite(45).loadGraphic(Paths.image("game/taskBar"));
     taskbarBG.scale.set(4, 3.5);
@@ -65,44 +59,8 @@ function create() {
 
     camZooming = true;
     validScore = true;
+    curCameraTarget = -1;
 }
-
-/*
-function createHoldCovers() {
-    coverGroup = new FlxSpriteGroup();
-    coverGroup.camera = camHUD;
-    add(coverGroup);
-
-    var i:Int = 0;
-    for (strumLine in strumLines.members) {
-        if (i > 3) i = 0;
-
-        // dont create hold covers if the strumline doesnt have any notes
-        if (strumLine.notes.length < 1) break;
-
-        for (strum in strumLine.members) {
-            var cover:FlxSprite = new FlxSprite();
-            cover.frames = Paths.getFrames(holdCoverSkin);
-            cover.animation.addByPrefix("start", holdCoverColor[i] + " hold cover start", 24, false);
-            cover.animation.addByPrefix("hold", holdCoverColor[i] + " hold cover loop", 24, true);
-            cover.animation.addByPrefix("end", holdCoverColor[i] + " hold cover end", 24, false);
-            cover.animation.play("hold");
-            cover.antialiasing = false;
-            cover.scale.set(5.55, 5.55);
-            cover.updateHitbox();
-            cover.offset.set(-53.5, -50);
-            cover.visible = false;
-
-            cover.setPosition(strum.x, strum.y);
-
-            coverGroup.add(cover);
-            coverData.push({cover: cover});
-
-            i++;
-        }
-    }
-}
-*/
 
 function postCreate() {
     camGame.snapToTarget();
@@ -157,34 +115,32 @@ function postCreate() {
     ratingHitTxt.alpha = 0;
     add(ratingHitTxt);
 
-    //createHoldCovers();
-
     for (strumline in strumLines.members) {
         insert(members.length, strumline);
     }
 
     insert(members.length, splashHandler.getSplashGroup("impostorPixel-default"));
 
+    scripts.call("postPostCreate");
+
+    /*
     if (FlxG.save.data.impPixelxBRZ) {
         forEach(function(spr) {
             if (spr is FunkinSprite) {
                 if (spr.camera == camGame) {
-                    var xbrzShader:CustomShader = new CustomShader("xbrz");
-                    xbrzShader.precisionHint = 0;
-                    spr.shader = xbrzShader;
+                    if (spr.shader == null) {
+                        var xbrzShader:CustomShader = new CustomShader("6xbrz");
+                        xbrzShader.precisionHint = 0;
+                        spr.shader = xbrzShader;
+                    }
                 }
             }
         });
-
-        splashHandler.getSplashGroup("impostorPixel-default").forEach(function(splash) {
-            var xbrzShader:CustomShader = new CustomShader("xbrz");
-            xbrzShader.precisionHint = 0;
-            splash.shader = xbrzShader;
-        });
     }
+    */
 
     if (FlxG.save.data.impPixelStrumBG > 0) {
-        strumlineBackground = new FlxSprite(playerStrums.members[0].x).makeGraphic(playerStrums.members[0].width * (playerStrums.members.length - 1) + 16, FlxG.height, FlxColor.BLACK);
+        strumlineBackground = new FlxSprite(playerStrums.members[0].x).makeGraphic(playerStrums.members[0].width * (playerStrums.members.length - 1) - 10, FlxG.height, FlxColor.BLACK);
         strumlineBackground.alpha = FlxG.save.data.impPixelStrumBG / 100;
         strumlineBackground.camera = camHUD;
         insert(members.indexOf(playerStrums), strumlineBackground);
@@ -225,6 +181,9 @@ function onStartSong() {
     FlxTween.tween(taskbarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbarTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+    if (gf != null)
+        gf.scripts.call("initVisualizer");
 }
 
 var holdScoreBonus:Float = 250;
@@ -338,6 +297,8 @@ function onPlayerHit(event) {
 
     if (event.deleteNote)
         strumline.deleteNote(event.note);
+
+    scripts.call("onNewPlayerHit", [event]);
 }
 
 function onDadHit(event) {
@@ -361,7 +322,7 @@ function onDadHit(event) {
     var accuracy:Float = 0;
 
     if (!event.note.isSustainNote) {
-        if (!event.animCancelled || event.noteType == "No Anim Note") {
+        if (!event.animCancelled || event.noteType != "No Anim Note") {
             for (char in event.characters) {
                 if (char != null)
                     char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
@@ -373,7 +334,7 @@ function onDadHit(event) {
         }
     }
     else {
-        if (!event.animCancelled || event.noteType == "No Anim Note") {
+        if (!event.animCancelled || event.noteType != "No Anim Note") {
             for (char in event.characters) {
                 if (char != null) {
                     var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
@@ -402,6 +363,8 @@ function onDadHit(event) {
 
     if (event.deleteNote)
         strumline.deleteNote(event.note);
+
+    scripts.call("onNewOpponentHit", [event]);
 }
 
 var exactThreshold:Float = 5;
@@ -502,6 +465,8 @@ function onPlayerMiss(event) {
 
         displayRating(ratingJudge(timing), scor);
     }
+
+    scripts.call("onNewPlayerMiss", [event]);
 }
 
 function recalculateAccuracy() {
@@ -525,6 +490,9 @@ function displayRating(rating:String, score:Int) {
     ratingTimer.start(1.5, _ -> {
         FlxTween.tween(ratingHitTxt, {alpha: 0}, 0.5);
     });
+
+    if (gf != null)
+        gf.scripts.call("playComboAnim", [combo]);
 }
 
 function breakCombo(ignoreCurCombo:Bool = false) {
@@ -550,7 +518,12 @@ function breakCombo(ignoreCurCombo:Bool = false) {
             }});
         });
     }
+    scripts.call("preComboBroken", [combo]);
+
+    gf.scripts.call("playComboDropAnim", [combo]);
     combo = 0;
+
+    scripts.call("onComboBroken", [combo]);
 }
 
 function getRatingDisplay(rating:String):String {
@@ -589,44 +562,13 @@ function getRatingColor(rating:String):FlxColor {
     return color;
 }
 
-/*
-function onNoteHit(event) {
-    coverBehaviour(event.note, event.player);
-}
-
-function coverBehaviour(note:Note, isPlayer:Bool) {
-    var data:Int = note.noteData;
-    if (isPlayer) data += strumLines.members[1].members.length;
-
-    var cover:FlxSprite = coverData[data].cover;
-    if (cover == null) return;
-
-    if (note.isSustainNote) {
-        if (StringTools.endsWith(note.animation.curAnim.name, "end")) {
-            var delay:Float = 0.1;
-            if (!isPlayer) {
-                new FlxTimer().start(delay, _ -> {cover.visible = false;});
-            }
-            else {
-                new FlxTimer().start(delay, _ -> {
-                    cover.animation.play("end", true);
-                    cover.animation.finishCallback = _ -> cover.visible = false;
-                });
-            }
-        }
-        else {
-            cover.visible = true;
-            cover.animation.play("start");
-            cover.animation.finishCallback = _ -> cover.animation.play("hold", true);
+function onNewCameraMove(position:FlxPoint, strumLine:StrumLine, focusedChars:Int) {
+    for (strumline in strumLines.members) {
+        for (char in strumline.characters) {
+            char.scripts.call("cameraPositionChange", [position]);
         }
     }
 }
-
-function coverKill(cover:FlxSprite) {
-    cover.visible = false;
-    cover.kill();
-}
-*/
 
 /*
 function impostorEndSong() {
@@ -703,8 +645,6 @@ function go2nextSong() {
 */
 
 function transitionToResults() {
-    curCameraTarget = -1;
-
     var cam1:FlxPoint = FlxPoint.get(strumLines.members[0].characters[0].cameraOffset.x, strumLines.members[0].characters[0].cameraOffset.y);
     var cam2:FlxPoint = FlxPoint.get(strumLines.members[1].characters[0].cameraOffset.x, strumLines.members[1].characters[0].cameraOffset.y);
 

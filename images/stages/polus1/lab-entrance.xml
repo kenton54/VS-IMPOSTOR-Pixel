@@ -1,0 +1,10 @@
+<!-- Manually created by kentongus -->
+<TextureAtlas imagePath="lab-entrace.png" width="494" height="202">
+	<SubTexture name="idle normal1" x="0" y="0" width="247" height="101"/>
+	<SubTexture name="watch normal1" x="0" y="0" width="247" height="101"/>
+	<SubTexture name="watch normal2" x="0" y="101" width="247" height="101"/>
+
+	<SubTexture name="idle dark1" x="247" y="0" width="247" height="101"/>
+	<SubTexture name="watch dark1" x="247" y="0" width="247" height="101"/>
+	<SubTexture name="watch dark2" x="247" y="101" width="247" height="101"/>
+</TextureAtlas>

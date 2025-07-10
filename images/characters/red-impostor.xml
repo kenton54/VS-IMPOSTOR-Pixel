@@ -2,104 +2,116 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="red-impostor.png" width="460" height="435">
-	<SubTexture name="idle1" x="324" y="69" width="91" height="45" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle2" x="324" y="114" width="91" height="45" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle3" x="415" y="144" width="45" height="91" rotated="true" frameX="-68" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle4" x="324" y="159" width="89" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle5" x="324" y="159" width="89" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle6" x="324" y="159" width="89" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="idle7" x="324" y="159" width="89" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down1" x="397" y="309" width="61" height="41" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down2" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down3" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down4" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down5" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down6" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss down7" x="218" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left1" x="324" y="397" width="71" height="36" frameX="-78" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left2" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left3" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left4" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left5" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left6" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss left7" x="218" y="70" width="70" height="38" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right1" x="324" y="354" width="71" height="43" frameX="-85" frameY="-69" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right2" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right3" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right4" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right5" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right6" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss right7" x="324" y="315" width="72" height="39" frameX="-84" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up1" x="397" y="235" width="61" height="74" rotated="true" frameX="-75" frameY="-66" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up2" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up3" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up4" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up5" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up6" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="miss up7" x="200" y="170" width="77" height="64" frameX="-76" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera1" x="268" y="238" width="38" height="81" rotated="true" frameX="-76" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera2" x="322" y="203" width="75" height="35" frameX="-82" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera3" x="218" y="0" width="71" height="35" frameX="-85" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera4" x="218" y="0" width="71" height="35" frameX="-85" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera5" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera6" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera7" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera8" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera9" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot camera10" x="141" y="0" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front1" x="141" y="114" width="77" height="56" frameX="-75" frameY="-74" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front2" x="144" y="170" width="56" height="65" rotated="true" frameX="-92" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front3" x="183" y="235" width="46" height="82" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front4" x="229" y="238" width="39" height="82" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front5" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front6" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front7" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front8" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front9" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="preshoot front10" x="144" y="235" width="39" height="83" rotated="true" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera1" x="324" y="0" width="94" height="69" frameX="-62" frameY="-54" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera2" x="0" y="322" width="131" height="113" frameX="-28" frameY="-28" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera3" x="0" y="0" width="141" height="170" rotated="true" frameX="-9" frameY="-13" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera4" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera5" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera6" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera7" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera8" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera9" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera10" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera11" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot camera12" x="396" y="350" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front1" x="257" y="322" width="67" height="109" rotated="true" frameX="-100" frameY="-45" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front2" x="131" y="322" width="126" height="109" frameX="-100" frameY="-23" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front3" x="0" y="170" width="144" height="152" rotated="true" frameX="-95" frameY="-6" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front4" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front5" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front6" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front7" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front8" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front9" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front10" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front11" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="shoot front12" x="277" y="170" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing down1" x="397" y="309" width="61" height="41" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing down2" x="259" y="108" width="41" height="61" rotated="true" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing down3" x="141" y="35" width="61" height="41" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing down4" x="141" y="35" width="61" height="41" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing down5" x="141" y="35" width="61" height="41" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing left1" x="324" y="397" width="71" height="36" frameX="-78" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing left2" x="289" y="0" width="35" height="71" rotated="true" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing left3" x="218" y="35" width="71" height="35" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing left4" x="218" y="35" width="71" height="35" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing left5" x="218" y="35" width="71" height="35" frameX="-79" frameY="-77" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing right1" x="324" y="354" width="71" height="43" frameX="-85" frameY="-69" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing right2" x="418" y="0" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing right3" x="418" y="72" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing right4" x="418" y="72" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing right5" x="418" y="72" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing up1" x="397" y="235" width="61" height="74" rotated="true" frameX="-75" frameY="-66" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing up2" x="306" y="238" width="59" height="77" rotated="true" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing up3" x="306" y="238" width="59" height="77" rotated="true" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing up4" x="306" y="238" width="59" height="77" rotated="true" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
-	<SubTexture name="sing up5" x="306" y="238" width="59" height="77" rotated="true" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
+<TextureAtlas imagePath="red-impostor.png" width="599" height="580">
+	<SubTexture name="idle1" x="554" y="0" width="45" height="91" rotated="true" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle10" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle11" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle12" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle13" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle14" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle2" x="554" y="0" width="45" height="91" rotated="true" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle3" x="554" y="91" width="45" height="91" rotated="true" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle4" x="554" y="91" width="45" height="91" rotated="true" frameX="-68" frameY="-78" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle5" x="554" y="182" width="45" height="91" rotated="true" frameX="-68" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle6" x="554" y="182" width="45" height="91" rotated="true" frameX="-68" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle7" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle8" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="idle9" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note down1" x="483" y="185" width="61" height="41" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note down2" x="483" y="185" width="61" height="41" frameX="-88" frameY="-76" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note down3" x="405" y="68" width="41" height="61" rotated="true" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note down4" x="405" y="68" width="41" height="61" rotated="true" frameX="-88" frameY="-75" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note left1" x="469" y="379" width="35" height="73" rotated="true" frameX="-76" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note left2" x="469" y="379" width="35" height="73" rotated="true" frameX="-76" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note left3" x="448" y="81" width="36" height="72" rotated="true" frameX="-78" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note left4" x="448" y="81" width="36" height="72" rotated="true" frameX="-78" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note right1" x="351" y="0" width="43" height="72" rotated="true" frameX="-85" frameY="-69" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note right2" x="351" y="0" width="43" height="72" rotated="true" frameX="-85" frameY="-69" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note right3" x="364" y="72" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note right4" x="364" y="72" width="41" height="72" rotated="true" frameX="-84" frameY="-71" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note up1" x="157" y="86" width="74" height="61" frameX="-75" frameY="-66" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note up2" x="157" y="86" width="74" height="61" frameX="-75" frameY="-66" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note up3" x="311" y="521" width="77" height="59" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="note up4" x="311" y="521" width="77" height="59" frameX="-73" frameY="-67" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera1" x="448" y="0" width="38" height="81" rotated="true" frameX="-76" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera2" x="231" y="78" width="35" height="75" rotated="true" frameX="-82" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera3" x="334" y="273" width="35" height="71" rotated="true" frameX="-85" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera4" x="484" y="100" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera5" x="484" y="100" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera6" x="484" y="100" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot camera7" x="484" y="100" width="69" height="35" frameX="-87" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front1" x="0" y="522" width="77" height="56" frameX="-75" frameY="-74" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front2" x="77" y="522" width="65" height="56" frameX="-92" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front3" x="228" y="475" width="82" height="46" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front4" x="240" y="153" width="82" height="39" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front5" x="157" y="153" width="83" height="39" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front6" x="157" y="153" width="83" height="39" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front7" x="157" y="153" width="83" height="39" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="preshoot front8" x="157" y="153" width="83" height="39" frameX="-100" frameY="-73" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage1" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage10" x="486" y="0" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage11" x="486" y="50" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage12" x="486" y="50" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage13" x="486" y="0" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage14" x="486" y="0" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage15" x="484" y="135" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage16" x="369" y="273" width="50" height="70" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage17" x="251" y="0" width="50" height="77" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage18" x="227" y="522" width="84" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage19" x="142" y="522" width="85" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage2" x="157" y="0" width="44" height="86" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage20" x="472" y="521" width="82" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage21" x="285" y="192" width="50" height="79" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage22" x="301" y="0" width="50" height="77" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage23" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage24" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage25" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage26" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage27" x="266" y="77" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage28" x="266" y="77" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage29" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage3" x="310" y="475" width="82" height="46" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage30" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage31" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage32" x="335" y="197" width="50" height="76" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage33" x="201" y="0" width="50" height="78" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage34" x="472" y="229" width="82" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage35" x="388" y="521" width="84" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage36" x="469" y="279" width="82" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage37" x="469" y="329" width="79" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage38" x="486" y="452" width="50" height="69" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage39" x="419" y="273" width="50" height="68" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage4" x="316" y="77" width="48" height="76" rotated="true" frameX="-70" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage40" x="419" y="273" width="50" height="68" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage41" x="504" y="379" width="49" height="68" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage42" x="159" y="475" width="69" height="47" frameX="-70" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage43" x="554" y="350" width="45" height="70" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage44" x="554" y="273" width="45" height="77" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage45" x="335" y="153" width="84" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage46" x="385" y="229" width="87" height="44" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage47" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage48" x="554" y="488" width="44" height="89" rotated="true" frameX="-69" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage5" x="285" y="273" width="49" height="71" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage6" x="394" y="0" width="49" height="68" rotated="true" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage7" x="486" y="50" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage8" x="486" y="50" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="sabotage9" x="486" y="0" width="68" height="50" frameX="-71" frameY="-77" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera1" x="392" y="452" width="94" height="69" frameX="-62" frameY="-54" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera2" x="392" y="452" width="94" height="69" frameX="-62" frameY="-54" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera3" x="159" y="344" width="113" height="131" rotated="true" frameX="-28" frameY="-28" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera4" x="0" y="192" width="141" height="170" rotated="true" frameX="-9" frameY="-13" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera5" x="0" y="0" width="157" height="192" rotated="true" frameX="-0" frameY="-3" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera6" x="419" y="153" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera7" x="419" y="153" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera8" x="419" y="153" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot camera9" x="419" y="153" width="64" height="76" frameX="-92" frameY="-36" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front1" x="381" y="343" width="67" height="109" rotated="true" frameX="-100" frameY="-45" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front2" x="381" y="343" width="67" height="109" rotated="true" frameX="-100" frameY="-45" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front3" x="272" y="344" width="109" height="126" rotated="true" frameX="-100" frameY="-23" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front4" x="141" y="192" width="144" height="152" rotated="true" frameX="-95" frameY="-6" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front5" x="0" y="362" width="159" height="160" rotated="true" frameX="-94" frameY="-0" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front6" x="554" y="420" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front7" x="554" y="420" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front8" x="554" y="420" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
+	<SubTexture name="shoot front9" x="554" y="420" width="45" height="68" frameX="-95" frameY="-44" frameWidth="254" frameHeight="160"/>
 </TextureAtlas>

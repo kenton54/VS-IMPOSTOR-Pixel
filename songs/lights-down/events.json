@@ -1,0 +1,28 @@
+{
+	"events": [
+		{
+			"params": [
+				1,
+				0,
+				0,
+				32,
+				"classic",
+				"Out"
+			],
+			"name": "Camera Movement Advanced",
+			"time": 2823.52941176471
+		},
+		{
+			"params": [
+				0,
+				0,
+				0,
+				32,
+				"classic",
+				"Out"
+			],
+			"name": "Camera Movement Advanced",
+			"time": 5647.05882352941
+		}
+	]
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="red-crewmate.png" width="261" height="180">
+	<SubTexture name="idle1" x="113" y="41" width="37" height="54" rotated="true" frameX="-26" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle10" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle11" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle12" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle13" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle14" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle2" x="113" y="41" width="37" height="54" rotated="true" frameX="-26" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle3" x="124" y="95" width="54" height="37" frameX="-26" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle4" x="124" y="95" width="54" height="37" frameX="-26" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle5" x="48" y="140" width="49" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle6" x="48" y="140" width="49" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle7" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle8" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="idle9" x="97" y="140" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note down1" x="178" y="132" width="32" height="48" rotated="true" frameX="-28" frameY="-24" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note down2" x="178" y="132" width="32" height="48" rotated="true" frameX="-28" frameY="-24" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note down3" x="145" y="132" width="33" height="48" rotated="true" frameX="-28" frameY="-23" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note down4" x="145" y="132" width="33" height="48" rotated="true" frameX="-28" frameY="-23" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note left1" x="178" y="94" width="50" height="36" frameX="-22" frameY="-20" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note left2" x="178" y="94" width="50" height="36" frameX="-22" frameY="-20" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note left3" x="210" y="130" width="36" height="50" rotated="true" frameX="-23" frameY="-20" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note left4" x="210" y="130" width="36" height="50" rotated="true" frameX="-23" frameY="-20" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note right1" x="76" y="41" width="37" height="55" rotated="true" frameX="-32" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note right2" x="76" y="41" width="37" height="55" rotated="true" frameX="-32" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note right3" x="150" y="41" width="37" height="53" rotated="true" frameX="-32" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note right4" x="150" y="41" width="37" height="53" rotated="true" frameX="-32" frameY="-19" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note up1" x="213" y="0" width="48" height="41" frameX="-27" frameY="-15" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note up2" x="213" y="0" width="48" height="41" frameX="-27" frameY="-15" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note up3" x="0" y="140" width="48" height="40" frameX="-27" frameY="-16" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="note up4" x="0" y="140" width="48" height="40" frameX="-27" frameY="-16" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock1" x="76" y="96" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock10" x="0" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock11" x="0" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock12" x="0" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock13" x="0" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock14" x="0" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock15" x="0" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock16" x="0" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock17" x="0" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock18" x="0" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock2" x="76" y="96" width="48" height="38" frameX="-27" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock3" x="210" y="41" width="51" height="34" frameX="-29" frameY="-22" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock4" x="210" y="41" width="51" height="34" frameX="-29" frameY="-22" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock5" x="145" y="0" width="68" height="41" frameX="-16" frameY="-15" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock6" x="76" y="0" width="68" height="41" frameX="-16" frameY="-15" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock7" x="38" y="0" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock8" x="38" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+	<SubTexture name="shock9" x="0" y="70" width="38" height="70" rotated="true" frameX="-15" frameY="-18" frameWidth="96" frameHeight="64"/>
+</TextureAtlas>

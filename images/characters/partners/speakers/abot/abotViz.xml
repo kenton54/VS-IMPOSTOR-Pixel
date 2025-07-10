@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="abotViz.png" width="45" height="51">
+	<SubTexture name="abot viz 11" x="6" y="17" width="5" height="18" frameX="-26" frameY="-9" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 12" x="21" y="19" width="5" height="16" frameX="-26" frameY="-11" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 13" x="21" y="35" width="5" height="13" frameX="-26" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 14" x="31" y="33" width="5" height="9" frameX="-26" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 15" x="26" y="45" width="4" height="5" frameX="-27" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 16" x="22" y="17" width="3" height="2" frameX="-28" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 21" x="12" y="0" width="5" height="19" frameX="-30" frameY="-8" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 22" x="11" y="19" width="5" height="17" frameX="-30" frameY="-10" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 23" x="5" y="35" width="5" height="13" frameX="-30" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 24" x="26" y="36" width="5" height="9" frameX="-30" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 25" x="36" y="43" width="4" height="5" frameX="-31" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 26" x="11" y="49" width="3" height="2" frameX="-32" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 31" x="26" y="0" width="4" height="20" frameX="-35" frameY="-7" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 32" x="22" y="0" width="4" height="17" frameX="-35" frameY="-10" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 33" x="37" y="17" width="4" height="13" frameX="-35" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 34" x="41" y="9" width="4" height="9" frameX="-35" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 35" x="40" y="43" width="4" height="5" frameX="-35" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 36" x="11" y="49" width="3" height="2" frameX="-36" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 41" x="0" y="0" width="6" height="20" frameX="-40" frameY="-7" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 42" x="6" y="0" width="6" height="17" frameX="-40" frameY="-10" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 43" x="31" y="20" width="6" height="13" frameX="-40" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 44" x="15" y="36" width="6" height="9" frameX="-40" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 45" x="15" y="45" width="6" height="5" frameX="-40" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 46" x="5" y="49" width="6" height="2" frameX="-40" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 51" x="30" y="0" width="4" height="20" frameX="-47" frameY="-7" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 52" x="34" y="0" width="4" height="17" frameX="-47" frameY="-10" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 53" x="37" y="30" width="4" height="13" frameX="-47" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 54" x="41" y="18" width="4" height="9" frameX="-47" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 55" x="41" y="27" width="4" height="5" frameX="-47" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 56" x="11" y="49" width="3" height="2" frameX="-47" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 61" x="17" y="0" width="5" height="19" frameX="-51" frameY="-8" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 62" x="16" y="19" width="5" height="17" frameX="-51" frameY="-10" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 63" x="0" y="38" width="5" height="13" frameX="-51" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 64" x="31" y="42" width="5" height="9" frameX="-51" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 65" x="41" y="32" width="4" height="5" frameX="-51" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 66" x="11" y="49" width="3" height="2" frameX="-51" frameY="-25" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 71" x="0" y="20" width="5" height="18" frameX="-55" frameY="-9" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 72" x="26" y="20" width="5" height="16" frameX="-55" frameY="-11" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 73" x="10" y="36" width="5" height="13" frameX="-55" frameY="-14" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 74" x="38" y="0" width="5" height="9" frameX="-55" frameY="-18" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 75" x="41" y="37" width="4" height="5" frameX="-55" frameY="-22" frameWidth="86" frameHeight="36"/>
+	<SubTexture name="abot viz 76" x="34" y="17" width="3" height="2" frameX="-55" frameY="-25" frameWidth="86" frameHeight="36"/>
+</TextureAtlas>

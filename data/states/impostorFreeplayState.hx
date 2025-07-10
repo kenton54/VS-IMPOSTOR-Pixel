@@ -206,11 +206,11 @@ function create() {
     pressAcceptTxt2P.visible = false;
     add(pressAcceptTxt2P);
 
-    var topBorder:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height * 0.115, FlxColor.BLACK);
+    var topBorder:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height * 0.115, 0xFF010101);
     topBorder.camera = bordersCam;
     add(topBorder);
 
-    bottomBorder = new FlxSprite(0, FlxG.height).makeGraphic(FlxG.width, FlxG.height * 0.115, FlxColor.BLACK);
+    bottomBorder = new FlxSprite(0, FlxG.height).makeGraphic(FlxG.width, FlxG.height * 0.115, 0xFF010101);
     bottomBorder.y -= bottomBorder.height;
     bottomBorder.camera = bordersCam;
     add(bottomBorder);
@@ -385,32 +385,6 @@ function postCreate() {
 
         playCurSongInst();
     });
-
-    if (FlxG.save.data.impPixelxBRZ) {
-        forEach(function(spr) {
-            if (spr.camera == bordersCam) {
-                if (spr is FlxSprite) {
-                    var xbrzShader:CustomShader = new CustomShader("xbrz");
-                    xbrzShader.precisionHint = 0;
-                    spr.shader = xbrzShader;
-                }
-            }
-        });
-        charP1Side.forEach(function(spr) {
-            if (spr is FlxSprite) {
-                var xbrzShader:CustomShader = new CustomShader("xbrz");
-                xbrzShader.precisionHint = 0;
-                spr.shader = xbrzShader;
-            }
-        });
-        charP2Side.forEach(function(spr) {
-            if (spr is FlxSprite) {
-                var xbrzShader:CustomShader = new CustomShader("xbrz");
-                xbrzShader.precisionHint = 0;
-                spr.shader = xbrzShader;
-            }
-        });
-    }
 
     // corrects position if ur hovering over a null panel
     if (panels1[curSongP1].members.length < 1) changeSongP1(1);
@@ -1254,16 +1228,6 @@ function createPanel(songData:Array<Dynamic>, ?player:Int) {
     else
         group.x = spawnXposP1;
 
-    if (FlxG.save.data.impPixelxBRZ) {
-        group.forEach(function(spr) {
-            if (spr is FlxSprite) {
-                var xbrzShader:CustomShader = new CustomShader("xbrz");
-                xbrzShader.precisionHint = 0;
-                spr.shader = xbrzShader;
-            }
-        });
-    }
-
     return group;
 }
 
@@ -1292,7 +1256,7 @@ function panelTextMovementP2() {
     }
 }
 
-function movePanelTextRight(text:FunkinText) {
+function movePanelTextRight(text:FlxText) {
     if (text == null) return;
 
     var distance2move:Float = text.width - clipLimitR + 14;
@@ -1304,7 +1268,7 @@ function movePanelTextRight(text:FunkinText) {
     }});
 }
 
-function movePanelTextLeft(text:FunkinText) {
+function movePanelTextLeft(text:FlxText) {
     if (text == null) return;
 
     FlxTween.tween(text, {"offset.x": 0}, 2, {startDelay: 0.3, ease: FlxEase.sineInOut, onUpdate: _ -> {
