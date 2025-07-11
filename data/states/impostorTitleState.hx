@@ -8,7 +8,9 @@ import funkin.backend.utils.FlxInterpolateColor;
 import funkin.backend.MusicBeatState;
 import funkin.options.Options;
 import PixelStars;
-importScript("data/global");
+importScript("data/variables");
+
+var stars:PixelStars;
 
 var camFollow:FlxObject;
 
@@ -17,6 +19,10 @@ var baseScale:Float = 4;
 
 var pressStart:FunkinText;
 var psColor:FlxInterpolateColor;
+
+static var oldpsColor:FlxInterpolateColor;
+
+static var reloadState:Bool = false;
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
@@ -31,10 +37,10 @@ function create() {
 
     MusicBeatState.skipTransIn = true;
 
-    camFollow = new FlxObject(FlxG.width / 2, FlxG.height / 2, 2, 2);
+    camFollow = new FlxObject(FlxG.width / 2, FlxG.height / 2);
     add(camFollow);
 
-    var stars:PixelStars = new PixelStars(0, 0, -40, 4, 3);
+    stars = new PixelStars(-40, 4, 3);
     stars.setScrollFactor(0.2, 0.2);
     stars.addStars();
 
@@ -46,7 +52,7 @@ function create() {
     titleColor.updateHitbox();
     titleColor.centerOffsets();
     titleColor.screenCenter(FlxAxes.X);
-    titleColor.y = FlxG.height * 0.1;
+    titleColor.y = FlxG.height * 0.2;
     titleColor.color = 0xFFE31629;
     title.add(titleColor);
 
@@ -55,7 +61,7 @@ function create() {
     titleMain.updateHitbox();
     titleMain.centerOffsets();
     titleMain.screenCenter(FlxAxes.X);
-    titleMain.y = FlxG.height * 0.1;
+    titleMain.y = FlxG.height * 0.2;
     title.add(titleMain);
 
     var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
@@ -71,6 +77,15 @@ function create() {
     psColor = new FlxInterpolateColor(colorArray[colorArrayPos]);
 
     FlxG.camera.follow(camFollow);
+
+    reloadState = false;
+}
+
+function onResize(event) {
+    reloadState = true;
+    MusicBeatState.skipTransIn = true;
+    MusicBeatState.skipTransOut = true;
+    FlxG.resetState();
 }
 
 var transitioning:Bool = false;
@@ -122,9 +137,9 @@ function beatHit(curBeat:Int) {
 }
 
 function title(?flash:Bool) {
-    if (flash)
+    if (flash && !reloadState)
         FlxG.camera.flash(FlxColor.WHITE, 1);
-    else
+    else if (!reloadState)
         FlxG.camera.fade(0xFF000000, 1, true);
 }
 
@@ -174,4 +189,9 @@ function accept() {
             FlxG.switchState(new MainMenuState());
         });
     });
+}
+
+function destroy() {
+    stars.destroy();
+    stars = null;
 }

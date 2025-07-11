@@ -112,7 +112,7 @@ function create() {
     bordersCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(bordersCam, false);
 
-    var stars:PixelStars = new PixelStars(0, 0, -30, 4, 2);
+    var stars:PixelStars = new PixelStars(-30, 4, 2);
     stars.setCamera(spaceCam);
     stars.addStars();
 

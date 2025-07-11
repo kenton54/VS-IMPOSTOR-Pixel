@@ -5,31 +5,9 @@ import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import lime.app.Application;
 import StorySequenceManipulator;
-import ImpostorFlags;
 
-public var storyState:Array<String> = [
-    "start",
-    "postLobbyShowcase",
-    "postWeek1",
-    "",
-    "",
-    "postOminous"
-];
-public var storySequence:Int = 0;
-
-public static var playablesList:Map<String, Bool> = ["bf" => true];
-//public static var partnersList:Map<String, Bool> = ["gf" => true];
-public static var skinsList:Map<String, Map<String, Bool>> = [/*character => [skin => bought]*/];
-
-public static var seenPlayables:Array<String> = ["bf"];
-
-public static var pixelPlayable:String = "bf";
-
-public static var pixelBeans:Int = 0;
-
-public var impPixelDebugMode:Bool = true;
+var impPixelDebugMode:Bool = true;
 var storySequenceDebugInfo:ImpostorStorySequence;
-var flags:ImpostorFlags = new ImpostorFlags();
 
 function new() {
     WindowUtils.winTitle = "VS IMPOSTOR Pixel";
@@ -43,7 +21,6 @@ function new() {
     initSaveData();
 
     Application.current.onExit.add(closeGame);
-    ModsFolder.onModSwitch.add(onModSwitch);
 }
 
 function initSaveData() {
@@ -59,21 +36,6 @@ function initSaveData() {
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= [];
-
-    storySequence = FlxG.save.data.impPixelStorySequence;
-    playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
-    //partnersList = FlxG.save.data.impPixelPartnersUnlocked;
-    flags.load(FlxG.save.data.impPixelFlags);
-}
-
-function flushSaveData() {
-    FlxG.save.data.impPixelStorySequence = storySequence;
-    FlxG.save.data.impPixelBeans = pixelBeans;
-    FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
-    FlxG.save.data.impPixelSkinsUnlocked = skinsList;
-    flags.save();
-
-    FlxG.save.flush();
 }
 
 function update(elapsed:Float) {
@@ -100,17 +62,22 @@ function preStateSwitch() {
             FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
 
-function closeGame() {
-    Logs.traceColored([
-        Logs.logText("[VS IMPOSTOR Pixel] ", 12),
-        Logs.logText("Saving Impostor Pixel data...")
-    ]);
-    flushSaveData();
+function gameResized(width:Int, height:Int) {
+    FlxG.initialWidth = width;
+    FlxG.initialHeight = height;
+    FlxG.width = width;
+    FlxG.height = height;
 }
 
-function onModSwitch() {
+function closeGame() {}
+
+function destroy() {
     Application.current.onExit.remove(closeGame);
     if (impPixelDebugMode) storySequenceDebugInfo.destroy();
 
-    flushSaveData();
+    FlxG.initialWidth = 1280;
+    FlxG.initialHeight = 720;
+    FlxG.width = 1280;
+    FlxG.height = 720;
+    FlxG.resizeWindow(FlxG.width, FlxG.height);
 }

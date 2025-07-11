@@ -1,27 +1,38 @@
 import flixel.addons.display.FlxBackdrop;
+import flixel.math.FlxVelocity;
 
 class PixelStars {
-    public var starArray:Array<FlxBackdrop> = [];
+    private var starArray:Array<FlxBackdrop> = [];
+    private var starBasePos:Array<Array<Float>> = [];
+    private var scale:Float = 0;
 
     public var speed:Float = 0;
+    public var layers:Int = 3;
+
+    private var currentPosition:Float = 0;
 
     /**
      * Creates a set of backdrops filled with a star field, it automatically adds them to the current state
-     * @param x The horizontal position of each backdrop
-     * @param y The vertical position of each backdrop
      * @param speed The speed the stars travel
      * @param layerAmount How many layers of star fields should there be
+     * @param baseScale The scaling of each layer
      */
-    public function new(x:Float, y:Float, speed:Float = -50, layerAmount:Int = 3, ?baseScale:Float) {
+    public function new(speed:Float = -50, layerAmount:Int = 3, ?baseScale:Float = 1) {
         if (baseScale == null) baseScale = 4;
 
         this.speed = speed;
+        this.layers = layerAmount;
+        this.scale = baseScale;
 
-        for (i in 0...layerAmount) {
+        createStars();
+    }
+
+    private function createStars() {
+        for (i in 0...layers) {
             var star:FlxBackdrop = new FlxBackdrop(Paths.image("menus/stars"));
-            star.scale.set(baseScale / i, baseScale / i);
+            star.scale.set(scale / i, scale / i);
             star.updateHitbox();
-            star.setPosition(x + (60 * i), y + (60 * i));
+            star.setPosition(60 * i, 60 * i);
             star.scrollFactor.set(0, 0);
             star.velocity.x = speed / (i * 2);
 

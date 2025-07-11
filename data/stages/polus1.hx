@@ -24,7 +24,7 @@ function create() {
     skyGradient.scrollFactor.set(0.15, 0.15);
     insert(0, skyGradient);
 
-    stars = new PixelStars(0, 0, -20, 3);
+    stars = new PixelStars(-20, 3);
     stars.setScrollFactor(0.05, 0.05);
     stars.addStars(0);
 
