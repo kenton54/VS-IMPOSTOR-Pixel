@@ -8,6 +8,7 @@ import funkin.backend.utils.FlxInterpolateColor;
 import funkin.backend.MusicBeatState;
 import funkin.options.Options;
 import PixelStars;
+importScript("data/global");
 
 var camFollow:FlxObject;
 
@@ -19,6 +20,14 @@ var psColor:FlxInterpolateColor;
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
+
+    if (storyState[storySequence] == "start" || storyState[storySequence] == "postLobbyShowcase") {
+        title();
+    }
+    else {
+        CoolUtil.playMenuSong(true);
+        intro();
+    }
 
     MusicBeatState.skipTransIn = true;
 
@@ -112,6 +121,13 @@ function beatHit(curBeat:Int) {
     bopTitle();
 }
 
+function title(?flash:Bool) {
+    if (flash)
+        FlxG.camera.flash(FlxColor.WHITE, 1);
+    else
+        FlxG.camera.fade(0xFF000000, 1, true);
+}
+
 function bopTitle() {
     title.forEach(function(spr) {
         FlxTween.cancelTweensOf(spr, ["scale.x", "scale.y"]);
@@ -128,7 +144,7 @@ var transitionTimer:FlxTimer = new FlxTimer();
 function accept() {
     interpolate = false;
 
-    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+    CoolUtil.playMenuSFX(1);
     FlxG.camera.zoom += 0.08;
 
     var fakePressStart:FunkinText = pressStart.clone();

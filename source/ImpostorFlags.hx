@@ -4,11 +4,13 @@ class ImpostorFlags {
     public static var week2Completed:Map<String, Bool> = ["bf" => false];
 
     // ———————————————————— PlayState ———————————————————— //
-    public static var playingVersus:Bool = false;
+    public static var playingVersus:Bool = false; // not to be saved
+
+    // ———————————————————— Cutscene Player ———————————————————— //
+    public static var unlockedVideos:Map<String, Bool> = [/*"video path" => isUnlocked*/];
 
     public function new() {
         load(FlxG.save.data.impPixelFlags);
-        trace("ImpostorFlags initialized");
     }
 
     public function init() {
@@ -21,6 +23,9 @@ class ImpostorFlags {
         week1Completed = data["week1Completed"] ?? ["bf" => false];
         week2Completed = data["week2Completed"] ?? ["bf" => false];
         playingVersus = data["playingVersus"] ?? false;
+        unlockedVideos = data["unlockedVideos"] == [];
+
+        init();
     }
 
     public function getFlags():Map<String, Dynamic> {
@@ -30,6 +35,8 @@ class ImpostorFlags {
         map.set("week2Completed", week2Completed);
 
         map.set("playingVersus", playingVersus);
+
+        map.set("unlockedVideos", unlockedVideos);
 
         return map;
     }
