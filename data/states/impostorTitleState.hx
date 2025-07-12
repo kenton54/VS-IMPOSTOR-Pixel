@@ -22,8 +22,6 @@ var psColor:FlxInterpolateColor;
 
 static var oldpsColor:FlxInterpolateColor;
 
-static var reloadState:Bool = false;
-
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
 
@@ -77,19 +75,17 @@ function create() {
     psColor = new FlxInterpolateColor(colorArray[colorArrayPos]);
 
     FlxG.camera.follow(camFollow);
-
-    reloadState = false;
-    MusicBeatState.skipTransOut = false;
 }
 
+/*
 var switchingState:Bool = false;
 function onResize(event) {
     if (switchingState) return;
-    reloadState = true;
     MusicBeatState.skipTransIn = true;
     MusicBeatState.skipTransOut = true;
     FlxG.resetState();
 }
+*/
 
 var transitioning:Bool = false;
 function update(elapsed:Float) {
@@ -99,13 +95,11 @@ function update(elapsed:Float) {
         if (transitionTimer.active) {
             FlxG.switchState(new MainMenuState());
             transitionTimer.cancel();
-            switchingState = true;
+            //switchingState = true;
         }
         else if (!transitioning)
             accept();
     }
-    if (FlxG.keys.justPressed.F5)
-        switchingState = true;
 
     interpolatePSColor();
 
@@ -143,9 +137,9 @@ function beatHit(curBeat:Int) {
 }
 
 function title(?flash:Bool) {
-    if (flash && !reloadState)
+    if (flash)
         FlxG.camera.flash(FlxColor.WHITE, 1);
-    else if (!reloadState)
+    else
         FlxG.camera.fade(0xFF000000, 1, true);
 }
 
@@ -192,7 +186,7 @@ function accept() {
         }});
 
         new FlxTimer().start(1.6, _ -> {
-            switchingState = true;
+            //switchingState = true;
             FlxG.switchState(new MainMenuState());
         });
     });

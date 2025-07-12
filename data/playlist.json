@@ -5,8 +5,16 @@
             "songs": ["sussus-moogus", "sabotage", "meltdown", "sussus-toogus", "lights-down", "reactor", "ejected"]
         },
         {
+            "title": "Jorsawsee's Jams",
+            "songs": ["o2", "voting time", "turbulence", "victory"]
+        },
+        {
             "title": "Extra Songs (Main Cast)",
-            "songs": []
+            "songs": ["double-trouble", "identity-crisis"]
+        },
+        {
+            "title": "Extra Songs (Jorsawsee's Jams)",
+            "songs": ["room-code"]
         }
     ]
 }

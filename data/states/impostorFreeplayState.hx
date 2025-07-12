@@ -62,6 +62,14 @@ var player1DiffTxt:FunkinText;
 var chartDiffBar:FlxBar;
 var mechDiffBar:FlxBar;
 
+var pageTitles:Array<String> = [];
+var pageTitlesGroupP1:FlxTypedSpriteGroup;
+var pageTitlesGroupP2:FlxTypedSpriteGroup;
+var pageTitleLeftArrowP1:FlxSprite;
+var pageTitleRightArrowP1:FlxSprite;
+var pageTitleLeftArrowP2:FlxSprite;
+var pageTitleRightArrowP2:FlxSprite;
+
 var pressAcceptTxt2P:FunkinText;
 
 var chartDiffValue:Int = 0;
@@ -73,6 +81,7 @@ var mechDiffLerp:Float = 0;
 var glow:FlxSprite;
 var interpolateColor:FlxInterpolateColor;
 
+var topBorder:FlxSprite;
 var bottomBorder:FlxSprite;
 
 var allowGlobalInput:Bool = false;
@@ -92,6 +101,12 @@ function create() {
     loadedPlayable = new PlayableData(curPlayable);
 
     pageArray = Json.parse(Assets.getText(Paths.json("playlist")));
+
+    for (page in pageArray.pages) {
+        var title:String = page.title;
+        pageTitles.push(title);
+    }
+    pageTitles.unshift("All Songs");
 
     spaceCam = new FlxCamera();
     spaceCam.bgColor = FlxColor.TRANSPARENT;
@@ -219,7 +234,7 @@ function create() {
     pressAcceptTxt2P.visible = false;
     add(pressAcceptTxt2P);
 
-    var topBorder:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height * 0.115, 0xFF010101);
+    topBorder = new FlxSprite().makeGraphic(FlxG.width, FlxG.height * 0.115, 0xFF010101);
     topBorder.camera = bordersCam;
     add(topBorder);
 
@@ -328,6 +343,52 @@ function create() {
     player1DiffTxt.camera = bordersCam;
     add(player1DiffTxt);
 
+    generateTitles(false);
+
+    pageTitleLeftArrowP1 = new FlxSprite().loadGraphicFromSprite(diffRightArrow);
+    pageTitleLeftArrowP1.animation.copyFrom(diffRightArrow.animation);
+    pageTitleLeftArrowP1.animation.play("idle");
+    pageTitleLeftArrowP1.animation.finishCallback = _ -> {pageTitleLeftArrowP1.animation.play("idle");};
+    pageTitleLeftArrowP1.scale.set(3.2, 3.2);
+    pageTitleLeftArrowP1.updateHitbox();
+    pageTitleLeftArrowP1.setPosition(FlxG.width * 0.25, topBorder.height / 8);
+    pageTitleLeftArrowP1.camera = bordersCam;
+    add(pageTitleLeftArrowP1);
+
+    pageTitleLeftArrowP2 = new FlxSprite().loadGraphicFromSprite(pageTitleLeftArrowP1);
+    pageTitleLeftArrowP2.animation.copyFrom(pageTitleLeftArrowP1.animation);
+    pageTitleLeftArrowP2.animation.play("idle");
+    pageTitleLeftArrowP2.animation.finishCallback = _ -> {pageTitleLeftArrowP2.animation.play("idle");};
+    pageTitleLeftArrowP2.scale.set(3.2, 3.2);
+    pageTitleLeftArrowP2.updateHitbox();
+    pageTitleLeftArrowP2.setPosition(FlxG.width * 0.25, topBorder.height / 8);
+    pageTitleLeftArrowP2.camera = bordersCam;
+    pageTitleLeftArrowP2.visible = false;
+    add(pageTitleLeftArrowP2);
+
+    pageTitleRightArrowP1 = new FlxSprite().loadGraphicFromSprite(pageTitleLeftArrowP2);
+    pageTitleRightArrowP1.animation.copyFrom(pageTitleLeftArrowP2.animation);
+    pageTitleRightArrowP1.animation.play("idle");
+    pageTitleRightArrowP1.animation.finishCallback = _ -> {pageTitleRightArrowP1.animation.play("idle");};
+    pageTitleRightArrowP1.scale.set(3.2, 3.2);
+    pageTitleRightArrowP1.updateHitbox();
+    pageTitleRightArrowP1.setPosition(FlxG.width * 0.72, topBorder.height / 8);
+    pageTitleRightArrowP1.camera = bordersCam;
+    pageTitleRightArrowP1.flipX = true;
+    add(pageTitleRightArrowP1);
+
+    pageTitleRightArrowP2 = new FlxSprite().loadGraphicFromSprite(pageTitleRightArrowP1);
+    pageTitleRightArrowP2.animation.copyFrom(pageTitleRightArrowP1.animation);
+    pageTitleRightArrowP2.animation.play("idle");
+    pageTitleRightArrowP2.animation.finishCallback = _ -> {pageTitleRightArrowP2.animation.play("idle");};
+    pageTitleRightArrowP2.scale.set(3.2, 3.2);
+    pageTitleRightArrowP2.updateHitbox();
+    pageTitleRightArrowP2.setPosition(FlxG.width * 0.72, topBorder.height / 8);
+    pageTitleRightArrowP2.camera = bordersCam;
+    pageTitleRightArrowP2.flipX = true;
+    pageTitleRightArrowP2.visible = false;
+    add(pageTitleRightArrowP2);
+
     var lengthOfScoreTxt:Int = 544;
 
     scorTxtTxt = new FunkinText(FlxG.width, topBorder.height, lengthOfScoreTxt, "HIGHSCORE", 24, true);
@@ -409,6 +470,7 @@ function update(elapsed:Float) {
     handlePlayer2Input();
     handleGlobalInput();
     handleSongSelection();
+    rearrangeTitles();
 
     if (songList1 != null && songList1.length > 0 && songList1[curSongP1] != null)
         interpolateColor.fpsLerpTo(songList1[curSongP1].parsedColor, 0.0625);
@@ -443,6 +505,15 @@ function handlePlayer1Input() {
             if (controlsP1.DOWN_P)
                 changeSongP1(1);
 
+            if (FlxG.keys.justPressed.Q) {
+                pageTitleLeftArrowP1.animation.play("click");
+                changePageP1(-1);
+            }
+            if (FlxG.keys.justPressed.E) {
+                pageTitleRightArrowP1.animation.play("click");
+                changePageP1(1);
+            }
+
             if (controlsP1.ACCEPT)
                 selectSongP1();
         }
@@ -458,6 +529,15 @@ function handlePlayer1Input() {
             if (controlsP1.DOWN_P || FlxG.mouse.wheel < 0)
                 changeSongP1(1);
 
+            if (FlxG.keys.justPressed.Q) {
+                pageTitleLeftArrowP1.animation.play("click");
+                changePageP1(-1);
+            }
+            if (FlxG.keys.justPressed.E) {
+                pageTitleRightArrowP1.animation.play("click");
+                changePageP1(1);
+            }
+
             if (controlsP1.LEFT_P) {
                 diffLeftArrow.animation.play("click");
                 changeDifficultyP1(-1);
@@ -471,7 +551,7 @@ function handlePlayer1Input() {
                 selectSongP1();
 
             if (controlsP1.BACK) {
-                FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+                CoolUtil.playMenuSFX(2);
                 FlxG.switchState(new MainMenuState());
             }
         }
@@ -497,6 +577,15 @@ function handlePlayer2Input() {
                 changeSongP2(-1);
             if (controlsP2.DOWN_P)
                 changeSongP2(1);
+
+            if (FlxG.keys.justPressed.U) {
+                pageTitleLeftArrowP2.animation.play("click");
+                changePageP2(-1);
+            }
+            if (FlxG.keys.justPressed.O) {
+                pageTitleRightArrowP2.animation.play("click");
+                changePageP2(1);
+            }
 
             if (controlsP2.ACCEPT)
                 selectSongP2();
@@ -545,7 +634,7 @@ function handleSongSelection() {
 
             var yPanel:Float = ((FlxG.height - panelHeight) / 2) + ((i - curSongP1) * panelHeight) + 12;
 
-            var xEquationLol:Float = (Math.abs(Math.cos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
+            var xEquationLol:Float = (Math.abs(FlxMath.fastCos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
 
             panel.y = CoolUtil.fpsLerp(panel.y, yPanel, 0.2);
             panel.x = CoolUtil.fpsLerp(panel.x, xEquationLol, 0.25);
@@ -556,7 +645,7 @@ function handleSongSelection() {
             var yPanel:Float = ((FlxG.height - panelHeight) / 2) + ((i - curSongP2) * panelHeight) + 12;
 
             // this is probably the laziest and stupidest solution... but it works LOL
-            var xEquationLol:Float = -(Math.abs(Math.cos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150) + FlxG.width / 1.5 - 4;
+            var xEquationLol:Float = -(Math.abs(FlxMath.fastCos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150) + FlxG.width / 1.5 - 4;
 
             panel.y = CoolUtil.fpsLerp(panel.y, yPanel, 0.2);
             panel.x = CoolUtil.fpsLerp(panel.x, xEquationLol, 0.25);
@@ -568,11 +657,70 @@ function handleSongSelection() {
 
             var yPanel:Float = ((FlxG.height - panelHeight) / 2) + ((i - curSongP1) * panelHeight) + 12;
 
-            var xEquationLol:Float = 305 + (Math.abs(Math.cos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
+            var xEquationLol:Float = 305 + (Math.abs(FlxMath.fastCos((panel.y + (panelHeight / 2) - (FlxG.camera.scroll.y + (FlxG.height / 2))) / (FlxG.height * 1.25) * Math.PI)) * 150);
 
             panel.y = CoolUtil.fpsLerp(panel.y, yPanel, 0.2);
             panel.x = CoolUtil.fpsLerp(panel.x, xEquationLol, 0.25);
         }
+    }
+}
+
+function rearrangeTitles() {
+    if (isVersusActive) {
+        if (pageTitlesGroupP1 != null && pageTitlesGroupP1.members != null && pageTitlesGroupP1.members.length > 0) {
+            for (i => title in pageTitlesGroupP1.members) {
+                var xValue:Float = FlxG.width / 4 - (title.width / 2);
+                title.x = CoolUtil.fpsLerp(title.x, xValue, 0.2);
+                if ((i - 1) == curPageP1) {
+                    title.visible = true;
+                }
+                else {
+                    title.visible = false;
+                }
+            }
+        }
+        if (pageTitlesGroupP2 != null && pageTitlesGroupP2.members != null && pageTitlesGroupP2.members.length > 0) {
+            for (i => title in pageTitlesGroupP2.members) {
+                var xValue:Float = FlxG.width / 1.325 - (title.width / 2);
+                title.x = CoolUtil.fpsLerp(title.x, xValue, 0.2);
+                if ((i - 1) == curPageP2) {
+                    title.visible = true;
+                }
+                else {
+                    title.visible = false;
+                }
+            }
+        }
+    }
+    else {
+        if (pageTitlesGroupP1 != null && pageTitlesGroupP1.members != null && pageTitlesGroupP1.members.length > 0) {
+            for (i => title in pageTitlesGroupP1.members) {
+                var xValue:Float = (i - curPageP1) * FlxG.width / 2 - (title.width / 2);
+                title.x = CoolUtil.fpsLerp(title.x, xValue, 0.2);
+            }
+        }
+    }
+}
+
+static var lastPageP1:Int = -1;
+function changePageP1(change:Int) {
+    curPageP1 = FlxMath.wrap(curPageP1 + change, -1, pageArray.pages.length - 1);
+
+    if (curPageP1 != lastPageP1) {
+        regeneratePageP1();
+        CoolUtil.playMenuSFX(0);
+        lastPageP1 = curPageP1;
+    }
+}
+
+static var lastPageP2:Int = -1;
+function changePageP2(change:Int) {
+    curPageP2 = FlxMath.wrap(curPageP2 + change, -1, pageArray.pages.length - 1);
+
+    if (curPageP2 != lastPageP2 || change != 0) {
+        regeneratePageP2();
+        CoolUtil.playMenuSFX(0);
+        lastPageP2 = curPageP2;
     }
 }
 
@@ -592,7 +740,7 @@ function changeSongP1(change:Int) {
     panelTextMovementP1();
 
     if (curSongP1 != lastSongP1) {
-        FlxG.sound.play(Paths.sound("menu/scroll"), 1);
+        CoolUtil.playMenuSFX(0);
         lastSongP1 = curSongP1;
     }
 }
@@ -612,7 +760,7 @@ function changeSongP2(change:Int) {
     panelTextMovementP2();
 
     if (curSongP2 != lastSongP2) {
-        FlxG.sound.play(Paths.sound("menu/scroll"), 1);
+        CoolUtil.playMenuSFX(0);
         lastSongP2 = curSongP2;
     }
 }
@@ -651,7 +799,7 @@ function changeDifficultyP1(change:Int) {
 
     if (change != 0) {
         regeneratePageP1();
-        FlxG.sound.play(Paths.sound("menu/scroll"), 1);
+        CoolUtil.playMenuSFX(0);
     }
 }
 
@@ -681,7 +829,7 @@ function changeDifficultyP2(change:Int) {
 
     if (change != 0) {
         regeneratePageP2();
-        FlxG.sound.play(Paths.sound("menu/scroll"), 1);
+        CoolUtil.playMenuSFX(0);
     }
 }
 
@@ -799,7 +947,7 @@ function selectSongP1() {
     allowP1Input = false;
     isSongChosenP1 = true;
 
-    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+    CoolUtil.playMenuSFX(1);
 
     if (isVersusActive) {
         for (i => panel in panels1) {
@@ -838,7 +986,7 @@ function selectSongP2() {
     allowP2Input = false;
     isSongChosenP2 = true;
 
-    FlxG.sound.play(Paths.sound("menu/confirm"), 1);
+    CoolUtil.playMenuSFX(1);
 
     for (i => panel in panels2) {
         if (i == curSongP2) {
@@ -862,7 +1010,7 @@ function deselectSongP1() {
     allowP1Input = false;
     isSongChosenP1 = false;
 
-    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+    CoolUtil.playMenuSFX(2);
 
     if (isVersusActive) {
         for (i => panel in panels1) {
@@ -901,7 +1049,7 @@ function deselectSongP2() {
     allowP2Input = false;
     isSongChosenP2 = false;
 
-    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+    CoolUtil.playMenuSFX(2);
 
     for (i => panel in panels2) {
         if (i == curSongP2) {
@@ -973,8 +1121,6 @@ function acceptP2Txt() {
 
 var charP2SideMoveDistance:Float = 0;
 function initVersus() {
-    DiscordUtil.call("onMenuLoaded", ["Freeplay (Versus)"]);
-
     isVersusActive = true;
     allowGlobalInput = false;
     allowSongInstPlayer = false;
@@ -989,7 +1135,9 @@ function initVersus() {
     scorTxtTxt.visible = false;
     scoreTxt.visible = false;
     accuracyTxt.visible = false;
+    titleMaxWidth = 350;
     clearPageP1();
+    clearTitles();
 
     chartDiffValue = 0;
     mechDiffValue = 0;
@@ -1005,14 +1153,22 @@ function initVersus() {
     computerP1.animation.play("danger");
     computerP2.animation.play("danger");
 
+    pageTitleLeftArrowP1.visible = false;
+    pageTitleRightArrowP1.visible = false;
+    pageTitleLeftArrowP2.visible = false;
+    pageTitleRightArrowP2.visible = false;
+
     acceptP2Txt();
 
     new FlxTimer().start(1.5, _ -> {
+        DiscordUtil.call("onMenuLoaded", ["Freeplay (Versus)"]);
+
         allowP1Input = true;
         allowP2Input = true;
         allowGlobalInput = true;
         regeneratePageP1();
         regeneratePageP2();
+        generateTitles(true);
 
         player1DiffIcon.loadGraphic(Paths.image("menus/freeplay/chartDiff"));
         player1DiffIcon.updateHitbox();
@@ -1021,6 +1177,15 @@ function initVersus() {
 
         computerP1.animation.play("versus");
         computerP2.animation.play("versus-flipped");
+
+        pageTitleLeftArrowP1.x = (FlxG.width / 2) * 0.15;
+        pageTitleRightArrowP1.x = (FlxG.width / 2) * 0.8;
+        pageTitleLeftArrowP2.x = (FlxG.width / 2) * 0.15 + (FlxG.width / 2);
+        pageTitleRightArrowP2.x = (FlxG.width / 2) * 0.8 + (FlxG.width / 2);
+        pageTitleLeftArrowP1.visible = true;
+        pageTitleRightArrowP1.visible = true;
+        pageTitleLeftArrowP2.visible = true;
+        pageTitleRightArrowP2.visible = true;
 
         diffLeftArrow.visible = false;
         diffRightArrow.visible = false;
@@ -1039,6 +1204,7 @@ function exitVersus() {
     isSongChosenP2 = false;
     clearPageP1();
     clearPageP2();
+    clearTitles();
 
     chartDiffValue = 0;
     mechDiffValue = 0;
@@ -1052,7 +1218,12 @@ function exitVersus() {
     computerP1.animation.play("wave");
     computerP2.animation.play("wave");
 
-    FlxG.sound.play(Paths.sound("menu/cancel"), 1);
+    pageTitleLeftArrowP1.visible = false;
+    pageTitleRightArrowP1.visible = false;
+    pageTitleLeftArrowP2.visible = false;
+    pageTitleRightArrowP2.visible = false;
+
+    CoolUtil.playMenuSFX(2);
 
     new FlxTimer().start(1.8, _ -> {
         DiscordUtil.call("onMenuLoaded", ["Freeplay (Solo)"]);
@@ -1061,12 +1232,23 @@ function exitVersus() {
         allowP2Input = true;
         allowSongInstPlayer = true;
         allowGlobalInput = true;
+        titleMaxWidth = 500;
         regeneratePageP1();
+        generateTitles(false);
 
         player1DiffIcon.loadGraphic(Paths.image("menus/freeplay/mechDiff"));
         player1DiffIcon.updateHitbox();
         player1DiffIcon.setPosition(diffLeftArrow.x - player1DiffIcon.width - 20, bottomBorder.y + (player1DiffIcon.frameHeight / 10));
         player1DiffTxt.text = "Mechanics";
+
+        pageTitleLeftArrowP1.x = FlxG.width * 0.25;
+        pageTitleRightArrowP1.x = FlxG.width * 0.72;
+        pageTitleLeftArrowP2.x = FlxG.width * 0.25;
+        pageTitleRightArrowP2.x = FlxG.width * 0.72;
+        pageTitleLeftArrowP1.visible = true;
+        pageTitleRightArrowP1.visible = true;
+        pageTitleLeftArrowP2.visible = false;
+        pageTitleRightArrowP2.visible = false;
 
         diffLeftArrow.visible = true;
         diffRightArrow.visible = true;
@@ -1077,6 +1259,25 @@ function exitVersus() {
 
         flickerLoopP2Txt();
     });
+}
+
+function generateTitles(player2Too:Bool) {
+    pageTitlesGroupP1 = new FlxTypedSpriteGroup();
+    pageTitlesGroupP1 = createTitles();
+    pageTitlesGroupP1.camera = bordersCam;
+    insert(members.indexOf(topBorder) + 1, pageTitlesGroupP1);
+
+    if (player2Too) {
+        pageTitlesGroupP2 = new FlxTypedSpriteGroup();
+        pageTitlesGroupP2 = createTitles();
+        pageTitlesGroupP2.camera = bordersCam;
+        insert(members.indexOf(topBorder) + 1, pageTitlesGroupP2);
+    }
+}
+
+function clearTitles() {
+    pageTitlesGroupP1.clear();
+    pageTitlesGroupP2.clear();
 }
 
 function clearPageP1() {
@@ -1110,12 +1311,14 @@ function regeneratePageP1() {
             songs2Eliminate.push(i);
     }
 
+    /*
     var positionCorrection:Int = 0;
     for (song in songs2Eliminate) {
         song -= positionCorrection;
         songList1.remove(songList1[song]);
         positionCorrection += 1;
     }
+    */
 
     for (i in 0...songList1.length) {
         var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
@@ -1138,12 +1341,14 @@ function regeneratePageP2() {
             songs2Eliminate.push(i);
     }
 
+    /*
     var positionCorrection:Int = 0;
     for (song in songs2Eliminate) {
         song -= positionCorrection;
         songList2.remove(songList2[song]);
         positionCorrection += 1;
     }
+    */
 
     for (i in 0...songList2.length) {
         var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
@@ -1168,6 +1373,31 @@ function beatHit(curBeat:Int) {
             comptDance = !comptDance;
         }
     }
+}
+
+var titleMaxWidth:Int = 500;
+function createTitles():FlxTypedSpriteGroup {
+    var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+
+    for (title in pageTitles) {
+        var titleText:FunkinText = new FunkinText(0, topBorder.height / 8, 0, title, 48, true);
+        titleText.font = Paths.font("pixeloidsans.ttf");
+        titleText.borderSize = 4;
+        titleText.x = FlxG.width / 2 - (titleText.width / 2);
+
+        if (titleText.fieldWidth > titleMaxWidth) {
+            titleText.scale.x = titleMaxWidth / titleText.fieldWidth;
+        }
+        else
+            titleText.scale.x = 1;
+
+        titleText.updateHitbox();
+        titleText.screenCenter(FlxAxes.X);
+
+        group.add(titleText);
+    }
+
+    return group;
 }
 
 var spawnXposP1:Float = 0;
@@ -1302,18 +1532,41 @@ function movePanelTextLeft(text:FlxText) {
 
 function getSongListP1():Array<Dynamic> {
     songList1 = [];
-    if (pageArray.pages[curPageP1].songs.length > 0) {
-        for (song in pageArray.pages[curPageP1].songs) {
-            songList1.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+    if (curPageP1 == -1) {
+        for (page in pageArray.pages) {
+            if (page.songs.length > 0) {
+                for (song in page.songs) {
+                    songList1.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+                }
+            }
         }
     }
+    else {
+        if (pageArray.pages[curPageP1].songs.length > 0) {
+            for (song in pageArray.pages[curPageP1].songs) {
+                songList1.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+            }
+        }
+    }
+
 }
 
 function getSongListP2():Array<Dynamic> {
     songList2 = [];
-    if (pageArray.pages[curPageP2].songs.length > 0) {
-        for (song in pageArray.pages[curPageP2].songs) {
-            songList2.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+    if (curPageP2 == -1) {
+        for (page in pageArray.pages) {
+            if (page.songs.length > 0) {
+                for (song in page.songs) {
+                    songList2.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+                }
+            }
+        }
+    }
+    else {
+        if (pageArray.pages[curPageP2].songs.length > 0) {
+            for (song in pageArray.pages[curPageP2].songs) {
+                songList2.push(Chart.loadChartMeta(loadedPlayable.getSongName(song), "normal", false));
+            }
         }
     }
 }
