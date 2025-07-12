@@ -11,6 +11,7 @@ import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
 import PlayableData;
 import PixelStars;
+importScript("data/variables");
 
 var loadedPlayable:PlayableData;
 
@@ -123,7 +124,8 @@ function create() {
     glow.alpha = 0.4;
     glow.camera = spaceCam;
     add(glow);
-    
+
+    //charP1SideDefaultPos = Math.floor(240 * FlxMath.remapToRange(windowSizeRatio, 1, 0, 0, 1)) * windowSizeMult;
     charP1Side = new FlxTypedSpriteGroup();
     charP1Side.camera = charactersCam;
     add(charP1Side);
@@ -136,15 +138,20 @@ function create() {
     charBG = new FlxSprite(0, 0).loadGraphic(Paths.image("menus/freeplay/leftside"));
     charBG.scale.set(6, 6);
     charBG.updateHitbox();
+    //charBG.x = Math.floor(240 * FlxMath.remapToRange(windowSizeRatio, 1, 0, 0, 1)) * windowSizeMult;
+    //if (charBG.x > 0) charBG.x = 0;
     charP1Side.add(charBG);
 
     var player2BG:FlxSprite = new FlxSprite().loadGraphicFromSprite(charBG);
     player2BG.scale.set(6, 6);
     player2BG.updateHitbox();
+    //player2BG.x = Math.floor(240 * FlxMath.remapToRange(windowSizeRatio, 1, 0, 0, 1)) * windowSizeMult;
+    //if (player2BG < FlxG.width) player2BG.x = FlxG.width;
     player2BG.flipX = true;
     charP2Side.add(player2BG);
+    charP2SideMoveDistance = player2BG.width;
 
-    var linething1:FlxSprite = new FlxSprite(charBG.width - 32, -10).makeGraphic(12, FlxG.height * 1.5, FlxColor.WHITE);
+    var linething1:FlxSprite = new FlxSprite((charBG.x + charBG.width) - 32 * windowSizeMult, -10).makeGraphic(12, FlxG.height * 1.5, FlxColor.WHITE);
     linething1.angle = -9.45;
     charP1Side.add(linething1);
 
@@ -152,15 +159,17 @@ function create() {
     linething2.angle = 9.45;
     charP2Side.add(linething2);
 
-    boxes = new FlxSprite(5, 465).loadGraphic(Paths.image("menus/freeplay/boxes"));
+    boxes = new FlxSprite(5, charBG.height).loadGraphic(Paths.image("menus/freeplay/boxes"));
     boxes.scale.set(9, 9);
     boxes.updateHitbox();
+    boxes.y -= boxes.height * 1.365;
 
-    var otherBoxes:FlxSprite = new FlxSprite(-2, 465).loadGraphicFromSprite(boxes);
+    var otherBoxes:FlxSprite = new FlxSprite(-2, boxes.y).loadGraphicFromSprite(boxes);
     otherBoxes.scale.set(9, 9);
     otherBoxes.updateHitbox();
     otherBoxes.flipX = true;
 
+    /*
     playableCharP1 = new FunkinSprite();
     playableCharP1.scale.set(9, 9);
     playableCharP1.updateHitbox();
@@ -168,6 +177,7 @@ function create() {
     playableCharP2 = new FunkinSprite();
     playableCharP2.scale.set(9, 9);
     playableCharP2.updateHitbox();
+    */
 
     computerP1 = new FlxSprite();
     computerP1.frames = Paths.getFrames("menus/freeplay/computer");
@@ -195,11 +205,11 @@ function create() {
     computerP2.flipX = true;
 
     charP1Side.add(computerP1);
-    charP1Side.add(playableCharP1);
+    //charP1Side.add(playableCharP1);
     charP1Side.add(boxes);
 
     charP2Side.add(computerP2);
-    charP2Side.add(playableCharP2);
+    //charP2Side.add(playableCharP2);
     charP2Side.add(otherBoxes);
 
     pressAcceptTxt2P = new FunkinText(820, 524, 500, 'PLAYER 2\nPRESS START', 56, true);
@@ -961,6 +971,7 @@ function acceptP2Txt() {
     FlxFlicker.flicker(pressAcceptTxt2P, 1.25, 0.05, false, true);
 }
 
+var charP2SideMoveDistance:Float = 0;
 function initVersus() {
     DiscordUtil.call("onMenuLoaded", ["Freeplay (Versus)"]);
 
@@ -985,8 +996,10 @@ function initVersus() {
 
     FlxG.sound.music.stop();
 
-    FlxTween.tween(charP1Side, {x: -48}, 1.5, {ease: FlxEase.quartOut});
-    FlxTween.tween(charP2Side, {x: 848}, 1.25, {ease: FlxEase.quartOut});
+    var p1Position:Float = 0 - 6 * 5;
+    var p2Position:Float = FlxG.width - charP2SideMoveDistance + 6 * 5;
+    FlxTween.tween(charP1Side, {x: p1Position}, 1.5, {ease: FlxEase.quartOut});
+    FlxTween.tween(charP2Side, {x: p2Position}, 1.25, {ease: FlxEase.quartOut});
     FlxTween.tween(glow, {alpha: 0}, 1);
 
     computerP1.animation.play("danger");

@@ -1,4 +1,3 @@
-import funkin.backend.assets.ModsFolder;
 import funkin.backend.system.framerate.Framerate;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
@@ -19,7 +18,9 @@ function new() {
 
     initSaveData();
 
-    gameResized(Application.current.window.width, Application.current.window.height);
+    Application.current.window.minWidth = 1280;
+    Application.current.window.minHeight = 720;
+    //gameResized(Application.current.window.width, Application.current.window.height);
 
     Application.current.onExit.add(closeGame);
 }
@@ -63,12 +64,14 @@ function preStateSwitch() {
             FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
 
+/*
 function gameResized(width:Int, height:Int) {
     FlxG.initialWidth = width;
     FlxG.initialHeight = height;
     FlxG.width = width;
     FlxG.height = height;
 }
+*/
 
 function closeGame() {}
 
@@ -76,6 +79,8 @@ function destroy() {
     Application.current.onExit.remove(closeGame);
     if (impPixelDebugMode) storySequenceDebugInfo.destroy();
 
-    gameResized(1280, 720);
-    FlxG.resizeWindow(FlxG.width, FlxG.height);
+    Application.current.window.minWidth = null;
+    Application.current.window.minHeight = null;
+    //gameResized(1280, 720);
+    //FlxG.resizeWindow(FlxG.width, FlxG.height);
 }
