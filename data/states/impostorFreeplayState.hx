@@ -1107,6 +1107,7 @@ function regeneratePageP1() {
     for (i in 0...songList1.length) {
         var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         newPanel = createPanel(songList1[i], 1);
+        newPanel.camera = songsCam;
         add(newPanel);
         panels1.push(newPanel);
     }
@@ -1134,6 +1135,7 @@ function regeneratePageP2() {
     for (i in 0...songList2.length) {
         var newPanel:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         newPanel = createPanel(songList2[i], 2);
+        newPanel.camera = songsCam;
         add(newPanel);
         panels2.push(newPanel);
     }
