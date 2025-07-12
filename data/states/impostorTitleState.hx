@@ -79,9 +79,12 @@ function create() {
     FlxG.camera.follow(camFollow);
 
     reloadState = false;
+    MusicBeatState.skipTransOut = false;
 }
 
+var switchingState:Bool = false;
 function onResize(event) {
+    if (switchingState) return;
     reloadState = true;
     MusicBeatState.skipTransIn = true;
     MusicBeatState.skipTransOut = true;
@@ -96,10 +99,13 @@ function update(elapsed:Float) {
         if (transitionTimer.active) {
             FlxG.switchState(new MainMenuState());
             transitionTimer.cancel();
+            switchingState = true;
         }
         else if (!transitioning)
             accept();
     }
+    if (FlxG.keys.justPressed.F5)
+        switchingState = true;
 
     interpolatePSColor();
 
@@ -186,6 +192,7 @@ function accept() {
         }});
 
         new FlxTimer().start(1.6, _ -> {
+            switchingState = true;
             FlxG.switchState(new MainMenuState());
         });
     });

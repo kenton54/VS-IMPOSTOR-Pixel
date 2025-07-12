@@ -1,4 +1,5 @@
 import funkin.backend.system.Logs;
+import lime.app.Application;
 import ImpostorFlags;
 
 public var storyState:Array<String> = [

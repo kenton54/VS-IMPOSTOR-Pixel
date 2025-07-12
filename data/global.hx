@@ -3,7 +3,6 @@ import funkin.backend.system.framerate.Framerate;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
-import lime.app.Application;
 import StorySequenceManipulator;
 
 var impPixelDebugMode:Bool = true;
@@ -19,6 +18,8 @@ function new() {
     }
 
     initSaveData();
+
+    gameResized(Application.current.window.width, Application.current.window.height);
 
     Application.current.onExit.add(closeGame);
 }
@@ -75,9 +76,6 @@ function destroy() {
     Application.current.onExit.remove(closeGame);
     if (impPixelDebugMode) storySequenceDebugInfo.destroy();
 
-    FlxG.initialWidth = 1280;
-    FlxG.initialHeight = 720;
-    FlxG.width = 1280;
-    FlxG.height = 720;
+    gameResized(1280, 720);
     FlxG.resizeWindow(FlxG.width, FlxG.height);
 }
