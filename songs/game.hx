@@ -130,11 +130,6 @@ function postCreate() {
 
     scripts.call("postPostCreate");
 
-    threeDthingLol = new CustomShader("camFov");
-    threeDthingLol.horIntensity = 0.2;
-    threeDthingLol.verIntensity = 0.05;
-    camGame.setFilters([new ShaderFilter(threeDthingLol)]);
-
     /*
     if (FlxG.save.data.impPixelxBRZ) {
         forEach(function(spr) {
@@ -158,7 +153,6 @@ function postCreate() {
         insert(members.indexOf(playerStrums), strumlineBackground);
     }
 }
-var threeDthingLol:CustomShader;
 
 function update(elapsed:Float) {
     songPercent = (Conductor.songPosition / inst.length);
