@@ -132,12 +132,6 @@ function create() {
     topShadow.camera = mainCam;
     add(topShadow);
 
-    var dcAvatarBounds:FlxSprite = new FlxSprite(top.x + 6 * baseScale, top.y + 2.5 * baseScale).loadGraphic(Paths.image("menus/mainmenu/avatarDrawBounds"));
-    dcAvatarBounds.scale.set(baseScale, baseScale);
-    dcAvatarBounds.updateHitbox();
-    dcAvatarBounds.camera = mainCam;
-    add(dcAvatarBounds);
-
     discordAvatar = new FlxSprite(dcAvatarBounds.x, dcAvatarBounds.y);
 
     if (DiscordUtil.ready) {
