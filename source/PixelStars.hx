@@ -1,4 +1,5 @@
 import flixel.addons.display.FlxBackdrop;
+import flixel.group.FlxTypedGroup;
 import flixel.math.FlxVelocity;
 
 class PixelStars {
@@ -28,7 +29,7 @@ class PixelStars {
     }
 
     private function createStars() {
-        for (i in 0...layers) {
+        for (i in 0...layers + 1) {
             var star:FlxBackdrop = new FlxBackdrop(Paths.image("menus/stars"));
             star.scale.set(scale / i, scale / i);
             star.updateHitbox();
@@ -57,6 +58,20 @@ class PixelStars {
                 FlxG.state.insert(fromPos, star);
             }
         }
+    }
+
+    public function addStarsToGroup(group:FlxTypedGroup, ?fromPos:Int) {
+        if (fromPos == null) {
+            for (star in starArray) {
+                group.add(star);
+            }
+        }
+        else {
+            for (star in starArray) {
+                group.insert(fromPos, star);
+            }
+        }
+        
     }
 
     public function setSpeed(newSpeed:Float = 50) {

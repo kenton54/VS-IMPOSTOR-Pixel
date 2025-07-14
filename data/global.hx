@@ -53,7 +53,7 @@ function reloadState() {
 // da states
 var redirectStates:Map<FlxState, String> = [
     TitleState => "impostorTitleState"
-    //MainMenuState => "impostorMenuState",
+    MainMenuState => "impostorMenuState",
     FreeplayState => "impostorFreeplayState"
 ];
 

@@ -45,3 +45,17 @@ function onEditorLoaded(name:String, editingThing:String) {
 			DiscordUtil.changePresenceSince("Editing a Stage", editingThing);
 	}
 }
+
+function destroy() {
+	if (DiscordUtil.ready) {
+		DiscordUtil.user.handle = null;
+		DiscordUtil.user.userId = null;
+		DiscordUtil.user.username = null;
+		DiscordUtil.user.discriminator = null;
+		DiscordUtil.user.avatar = null;
+		DiscordUtil.user.globalName = null;
+		DiscordUtil.user.bot = null;
+		DiscordUtil.user.flags = null;
+		DiscordUtil.user.premiumType = null;
+	}
+}
