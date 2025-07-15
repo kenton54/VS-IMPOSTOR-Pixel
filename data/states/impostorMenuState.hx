@@ -1,8 +1,13 @@
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
+import flixel.tweens.FlxTweenType;
 import flixel.ui.FlxButton;
 import funkin.backend.utils.DiscordUtil;
 //import funkin.backend.utils.HttpUtil;
+import funkin.backend.MusicBeatTransition;
+import funkin.editors.character.CharacterSelection;
+import funkin.editors.charter.CharterSelection;
+import funkin.editors.DebugOptions;
 import funkin.editors.EditorPicker;
 import funkin.menus.credits.CreditsMain;
 import funkin.menus.ModSwitchMenu;
@@ -76,20 +81,73 @@ var buttonsMainGroup:FlxTypedSpriteGroup;
 var buttonsLabelGroup:FlxTypedSpriteGroup;
 var buttonsIconGroup:FlxTypedSpriteGroup;
 
-var playSectionButtons:Array<Dynamic> = [
+var playSectionButtons:Array<Array<Dynamic>> = [
     {
-        name: "World Map",
-        available: true,
-        image: Paths.image("menus/mainmenu/playSec/story"),
-        colorIdle: 0xFF0A3C33,
-        colorHover: 0xFF10584B
+        [
+            {
+                name: "World Map",
+                available: true,
+                image: Paths.image("menus/mainmenu/playSec/story"),
+                colorIdle: 0xFF0A3C33,
+                colorHover: 0xFF10584B
+            },
+            {
+                name: "Freeplay",
+                available: (storyState[storySequence] == "start") ? false : true,
+                image: Paths.image("menus/mainmenu/playSec/freeplay" + pixelPlayable),
+                colorIdle: 0xFF0A3C33,
+                colorHover: 0xFF10584B
+            }
+        ];
     },
     {
-        name: "Freeplay",
-        available: (storyState[storySequence] == "start") ? false : true,
-        icon: Paths.image("menus/mainmenu/playSec/freeplay" + pixelPlayable),
-        colorIdle: 0xFF0A3C33,
-        colorHover: 0xFF10584B
+        [
+            {
+                name: "How to Play",
+                available: true,
+                image: Paths.image("menus/mainmenu/playSec/question"),
+                colorIdle: 0xFFAAE2DC,
+                colorHover: 0xFFFFFFFF
+            }
+        ];
+    }
+];
+var debugOptions:Array<Array<Dynamic>> = [
+    {
+        [
+            {
+                name: "Chart Editor",
+                image: Paths.image("editors/icons/chart"),
+                transition: "data/transitions/right2leftSharpCircle",
+                action: function() {
+                    FlxG.switchState(new CharterSelection());
+                }
+            }
+        ];
+    },
+    {
+        [
+            {
+                name: "Character Editor",
+                image: Paths.image("editors/icons/character"),
+                transition: "data/transitions/right2leftSharpCircle",
+                action: function() {
+                    FlxG.switchState(new CharacterSelection());
+                }
+            }
+        ];
+    },
+    {
+        [
+            {
+                name: "Debug Options",
+                image: Paths.image("editors/icons/options"),
+                transition: "data/transitions/right2leftSharpCircle",
+                action: function() {
+                    FlxG.switchState(new DebugOptions());
+                }
+            }
+        ];
     }
 ];
 
@@ -98,11 +156,9 @@ var topButtonsGroup:FlxTypedSpriteGroup;
 var mainCam:FlxCamera;
 var spaceCam:FlxCamera;
 var spaceGroup:FlxTypedSpriteGroup;
+var windowGroup:FlxTypedSpriteGroup;
 
 var baseScale:Float = 5;
-
-var curEntry:Int = 0;
-static var lastEntry:Int = -1;
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
@@ -132,7 +188,7 @@ function create() {
     topShadow.camera = mainCam;
     add(topShadow);
 
-    discordAvatar = new FlxSprite(dcAvatarBounds.x, dcAvatarBounds.y);
+    discordAvatar = new FlxSprite(top.x + 6 * baseScale, top.y + 2.5 * baseScale);
 
     if (DiscordUtil.ready) {
         try {
@@ -202,6 +258,17 @@ function create() {
     discordButton.x -= discordButton.width + 8 * baseScale;
     discordButton.y -= discordButton.height + 2 * baseScale;
     topButtonsGroup.add(discordButton);
+
+    if (debugMode) {
+        var debugButton:FlxSprite = new FlxSprite(discordButton.x, discordButton.y);
+        debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
+        debugButton.animation.add("idle", [0], 0, false);
+        debugButton.animation.add("click", [1], 0, false);
+        debugButton.scale.set(baseScale, baseScale);
+        debugButton.updateHitbox();
+        debugButton.x -= debugButton.width + 4 * baseScale;
+        topButtonsGroup.add(debugButton);
+    }
 
     var title:FlxSprite = new FlxSprite(3 * baseScale, (topShadow.y + topShadow.height) + 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/title"));
     title.scale.set(baseScale, baseScale);
@@ -277,11 +344,14 @@ function create() {
 
     spaceGroup = new FlxTypedSpriteGroup();
     spaceGroup.camera = spaceCam;
-
     add(spaceGroup);
 
     var starField:PixelStars = new PixelStars(-20, 2, 2);
     starField.addStarsToGroup(spaceGroup);
+
+    windowGroup = new FlxTypedSpriteGroup();
+    windowGroup.camera = spaceCam;
+    add(windowGroup);
 
     var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, "Mod Version: " + modVersion/* + '\nCodename Version: ' + Main.releaseVersion*/, 18);
     version.font = Paths.font("pixeloidsans.ttf");
@@ -383,6 +453,12 @@ function update(elapsed:Float) {
     handleMainButtons();
     handleTopButtons();
 
+    if (currentSelectionMode == "window")
+        handleWindow();
+
+    if (storyState[storySequence] == "postWeek1")
+        floatSus();
+
     /*
     if (checkTimer >= checkLimit) {
         updateDiscordUserStatus();
@@ -393,7 +469,21 @@ function update(elapsed:Float) {
     */
 }
 
+// main, window
+var currentSelectionMode:String = "main";
+
+var curEntry:Int = 0;
+var curWindowEntry:Array<Int> = [0, 0];
+var lastWindowEntry:Array<Int> = [-1, -1];
+
+var maxWindowEntries:Array<Int> = [0, 0];
+var curWindow:Array<Dynamic> = [];
+var curWindowLogic:Void = null;
+
+var allowMouse:Bool = true;
 function handleMouse() {
+    if (!allowMouse) return;
+
     if (FlxG.mouse.justMoved) {
         if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
     }
@@ -405,27 +495,39 @@ function handleMouse() {
     }
     else {
         lastEntry = -1;
+        lastWindowEntry[0] = -1;
+        lastWindowEntry[1] = -1;
         Mouse.cursor = "arrow";
     }
 }
 
+var allowKeyboard:Bool = true;
 function handleInput() {
-    if (controls.ACCEPT || mouseIsOverABtn && FlxG.mouse.justPressed) {
-        checkSelectedEntry();
+    if (!allowKeyboard) return;
+
+    if (currentSelectionMode == "main") {
+        if (controls.ACCEPT || mouseIsOverABtn && FlxG.mouse.justPressed) {
+            checkSelectedMainEntry();
+        }
+
+        if (controls.BACK) {
+            FlxG.switchState(new ModState("impostorTitleState"));
+        }
+
+        if (controls.SWITCHMOD) {
+            openSubState(new ModSwitchMenu());
+            persistentUpdate = !(persistentDraw = true);
+        }
     }
+    else if (currentSelectionMode == "window") {
+        if (controls.ACCEPT || mouseIsOverABtn && FlxG.mouse.justPressed) {
+            checkSelectedWindowEntry();
+        }
 
-    if (FlxG.keys.justPressed.SEVEN) {
-		openSubState(new EditorPicker());
-        persistentUpdate = !(persistentDraw = true);
-	}
-
-    if (controls.BACK) {
-        FlxG.switchState(new ModState("impostorTitleState"));
-    }
-
-    if (controls.SWITCHMOD) {
-        openSubState(new ModSwitchMenu());
-        persistentUpdate = !(persistentDraw = true);
+        if (controls.BACK) {
+            closeWindowSection();
+            currentSelectionMode = "main";
+        }
     }
 }
 
@@ -433,30 +535,36 @@ var mouseIsOverABtn:Bool = false;
 function handleMainButtons() {
     mouseIsOverABtn = false;
 
+    if (!allowMouse) return;
     if (!FlxG.mouse.visible) return;
 
-    var i:Int = 0;
-    buttonsMainGroup.forEach(function(button) {
-        if (FlxG.mouse.overlaps(button)) {
-            mouseIsOverABtn = true;
-            button.animation.play("hover");
+    if (currentSelectionMode == "main") {
+        var i:Int = 0;
+        buttonsMainGroup.forEach(function(button) {
+            if (FlxG.mouse.overlaps(button)) {
+                mouseIsOverABtn = true;
+                button.animation.play("hover");
 
-            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-            curEntry = buttonsLabelGroup.members.indexOf(buttonsLabelGroup.members[i]);
+                curEntry = buttonsLabelGroup.members.indexOf(buttonsLabelGroup.members[i]);
 
-            playSound();
-        }
-        else {
-            button.animation.play("idle");
-            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
-        }
-        i++;
-    });
+                playSoundMain();
+            }
+            else {
+                button.animation.play("idle");
+                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+            }
+            i++;
+        });
+    }
 }
 
 var connecting:Bool = false;
 function handleTopButtons() {
+    if (!allowMouse) return;
+    if (currentSelectionMode != "main") return;
+
     topButtonsGroup.forEach(function(button) {
         if (FlxG.mouse.overlaps(button)) {
             if (connecting) return;
@@ -477,6 +585,67 @@ function handleTopButtons() {
                         initDiscordRPC();
                     }
                 }
+                else if (button == topButtonsGroup.members[1]) {
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    if (curWindow != debugOptions) {
+                        openWindowSection('Debug Tools', [0, debugOptions.length], debugOptions, function(posH, posV, group) {
+                            var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
+                            for (v => column in debugOptions) {
+                                var columnGroup = new FlxTypedSpriteGroup(posH, posV + v * daHeight);
+                                group.add(columnGroup);
+
+                                for (row in column) {
+                                    var rowGroup = new FlxTypedSpriteGroup();
+                                    columnGroup.add(rowGroup);
+
+                                    var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
+                                    bg.alpha = 0;
+                                    rowGroup.add(bg);
+
+                                    var toolLabel:FunkinText = new FunkinText(30 * baseScale, bg.height / 2, 0, row.name, 32);
+                                    toolLabel.font = Paths.font("pixeloidsans.ttf");
+                                    toolLabel.borderSize = 3;
+                                    toolLabel.y -= toolLabel.height / 2;
+
+                                    var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
+                                    toolIcon.scale.set(baseScale, baseScale);
+                                    toolIcon.updateHitbox();
+                                    toolIcon.x = 2 * baseScale + (daHeight - toolIcon.width) / 2;
+                                    toolIcon.y -= toolIcon.height / 2;
+
+                                    rowGroup.add(toolIcon);
+                                    rowGroup.add(toolLabel);
+                                }
+                            }
+                        }, function() {
+                            mouseIsOverABtn = false;
+
+                            if (!allowMouse) return;
+
+                            var col:Int = 0;
+                            windowGroup.forEach(function(column) {
+                                var rw:Int = 0;
+                                if (column is FlxTypedSpriteGroup) {
+                                    column.forEach(function(row) {
+                                        if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                            row.members[0].alpha = 0.25;
+
+                                            mouseIsOverABtn = true;
+                                            curWindowEntry[0] = col;
+                                            curWindowEntry[1] = rw;
+                                            playSoundWindow();
+                                        }
+                                        else {
+                                            row.members[0].alpha = 0;
+                                        }
+                                        rw++;
+                                    });
+                                    col++;
+                                }
+                            });
+                        });
+                    }
+                }
             }
         }
         else {
@@ -485,14 +654,24 @@ function handleTopButtons() {
     });
 }
 
-function playSound() {
+function playSoundMain() {
     if (curEntry != lastEntry) {
         CoolUtil.playMenuSFX(0);
         lastEntry = curEntry;
     }
 }
 
-function checkSelectedEntry() {
+function playSoundWindow() {
+    if (curWindowEntry[0] != lastWindowEntry[0] || curWindowEntry[1] != lastWindowEntry[1]) {
+        CoolUtil.playMenuSFX(0);
+        lastWindowEntry[0] = curWindowEntry[0];
+        lastWindowEntry[1] = curWindowEntry[1];
+
+        trace("Column Pos: "+curWindowEntry[0],"Row Pos: "+curWindowEntry[1]);
+    }
+}
+
+function checkSelectedMainEntry() {
     trace("current entry id: "+curEntry);
 
     CoolUtil.playMenuSFX(1);
@@ -501,7 +680,84 @@ function checkSelectedEntry() {
     if (buttonsIconGroup.members[curEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curEntry], 1, 0.05, true, true);
 }
 
-function openPlaySection() {}
+function openWindowSection(title:String, maxEntries:Array<Int>, windowArray:Array<Dynamic>, membersCreation:(subMenuVerPos:Float, group:FlxTypedSpriteGroup) -> Void, updateLogic:() -> Void) {
+    currentSelectionMode = "window";
+    curWindow = windowArray;
+    curWindowLogic = updateLogic;
+    maxWindowEntries = maxEntries;
+
+    var correctCornerPos:Float = 4 * baseScale;
+
+    var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, spaceCam.height, 0xFF404040);
+    bg.alpha = 0.7;
+    windowGroup.add(bg);
+
+    var titleSpr:FunkinText = new FunkinText(spaceCam.width, correctCornerPos + 2 * baseScale, 0, title, 48);
+    titleSpr.font = Paths.font("pixeloidsans.ttf");
+    titleSpr.alignment = "center";
+    titleSpr.borderSize = 5;
+    titleSpr.x -= titleSpr.width + 8 * baseScale;
+    titleSpr.fieldWidth = titleSpr.width + 40;
+
+    var xButton:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, correctCornerPos).loadGraphic(Paths.image("menus/mainmenu/x"));
+    xButton.scale.set(baseScale, baseScale);
+    xButton.updateHitbox();
+
+    var division:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, xButton.y + xButton.height).makeGraphic(138 * baseScale, baseScale, FlxColor.WHITE);
+    division.y += 2;
+
+    membersCreation(correctCornerPos, division.y + division.height, windowGroup);
+
+    windowGroup.add(division);
+    windowGroup.add(titleSpr);
+    windowGroup.add(xButton);
+}
+
+var curMousePos:FlxPoint = FlxPoint.get();
+function handleWindow() {
+    curWindowLogic();
+
+    if (windowGroup.members[windowGroup.length - 1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+        if (FlxG.mouse.justPressed)
+            closeWindowSection();
+    }
+}
+
+function closeWindowSection() {
+    CoolUtil.playMenuSFX(2);
+    currentSelectionMode = "main";
+    curWindow = [];
+    curWindowEntry[0] = 0;
+    curWindowEntry[1] = 0;
+    lastWindowEntry[0] = -1;
+    lastWindowEntry[1] = -1;
+
+    windowGroup.forEach(function(spr) {
+        spr.destroy();
+    });
+    windowGroup.clear();
+}
+
+function checkSelectedWindowEntry() {
+    if (curWindow == null) return;
+
+    if (curWindow[curWindowEntry[0]][curWindowEntry[1]] != null && curWindow[curWindowEntry[0]][curWindowEntry[1]].action != null) {
+        disableInput();
+
+        CoolUtil.playMenuSFX(1);
+
+        FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
+        FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
+
+        MusicBeatTransition.script = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
+
+        new FlxTimer().start(1, _ -> {
+            curWindow[curWindowEntry[0]][curWindowEntry[1]].action();
+        });
+    }
+}
+
+function floatSus() {}
 
 function shutdownDiscordRPC() {
     DiscordUtil.shutdown();
@@ -553,4 +809,10 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
         lightGlow.color = 0xFF333333;
         lightGlow.visible = false;
     }
+}
+
+function disableInput() {
+    allowMouse = false;
+    allowKeyboard = false;
+    FlxG.mouse.visible = false;
 }
