@@ -1,3 +1,4 @@
+import funkin.backend.scripting.events.StateEvent;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTweenType;
@@ -163,7 +164,9 @@ var baseScale:Float = 5;
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
 
-    DiscordUtil.init();
+    //DiscordUtil.init();
+
+    subStateClosed.add(onCloseSubstate);
 
     mainCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
     mainCam.bgColor = 0x00000000;
@@ -249,24 +252,33 @@ function create() {
     topButtonsGroup.camera = mainCam;
     add(topButtonsGroup);
 
-    var discordButton:FlxSprite = new FlxSprite(top.x + top.width, top.y + top.height);
+    var statsButton:FlxSprite = new FlxSprite(top.x + top.width, top.y + top.height);
+    statsButton.loadGraphic(Paths.image("menus/mainmenu/statsButton"), true, 14, 14);
+    statsButton.animation.add("idle", [0], 0, false);
+    statsButton.animation.add("click", [1], 0, false);
+    statsButton.scale.set(baseScale, baseScale);
+    statsButton.updateHitbox();
+    statsButton.x -= statsButton.width + 8 * baseScale;
+    statsButton.y -= statsButton.height + 2 * baseScale;
+    topButtonsGroup.add(statsButton);
+
+    var discordButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
     discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
     discordButton.animation.add("idle", [0], 0, false);
     discordButton.animation.add("click", [1], 0, false);
     discordButton.scale.set(baseScale, baseScale);
     discordButton.updateHitbox();
-    discordButton.x -= discordButton.width + 8 * baseScale;
-    discordButton.y -= discordButton.height + 2 * baseScale;
+    discordButton.x -= 4 * baseScale;
     topButtonsGroup.add(discordButton);
 
     if (debugMode) {
-        var debugButton:FlxSprite = new FlxSprite(discordButton.x, discordButton.y);
+        var debugButton:FlxSprite = new FlxSprite(discordButton.x - discordButton.width, discordButton.y);
         debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
         debugButton.animation.add("idle", [0], 0, false);
         debugButton.animation.add("click", [1], 0, false);
         debugButton.scale.set(baseScale, baseScale);
         debugButton.updateHitbox();
-        debugButton.x -= debugButton.width + 4 * baseScale;
+        debugButton.x -= 4 * baseScale;
         topButtonsGroup.add(debugButton);
     }
 
@@ -511,6 +523,7 @@ function handleInput() {
         }
 
         if (controls.BACK) {
+            MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
             FlxG.switchState(new ModState("impostorTitleState"));
         }
 
@@ -578,6 +591,13 @@ function handleTopButtons() {
 
             if (FlxG.mouse.justReleased) {
                 if (button == topButtonsGroup.members[0]) {
+                    disableInput();
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    openSubState(new ModSubState("statsMenuSubstate"));
+                    persistentUpdate = persistentDraw = true;
+                }
+                if (button == topButtonsGroup.members[1]) {
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
                     if (DiscordUtil.ready) {
                         shutdownDiscordRPC();
                     }
@@ -585,7 +605,7 @@ function handleTopButtons() {
                         initDiscordRPC();
                     }
                 }
-                else if (button == topButtonsGroup.members[1]) {
+                else if (button == topButtonsGroup.members[2]) {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
                     if (curWindow != debugOptions) {
                         openWindowSection('Debug Tools', [0, debugOptions.length], debugOptions, function(posH, posV, group) {
@@ -610,7 +630,7 @@ function handleTopButtons() {
                                     var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
                                     toolIcon.scale.set(baseScale, baseScale);
                                     toolIcon.updateHitbox();
-                                    toolIcon.x = 2 * baseScale + (daHeight - toolIcon.width) / 2;
+                                    toolIcon.x = 1.5 * baseScale + (daHeight - toolIcon.width) / 2;
                                     toolIcon.y -= toolIcon.height / 2;
 
                                     rowGroup.add(toolIcon);
@@ -809,6 +829,16 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
         lightGlow.color = 0xFF333333;
         lightGlow.visible = false;
     }
+}
+
+function onCloseSubstate() {
+    enableInput();
+    MusicBeatTransition.script = "data/transitions/closingSharpCircle";
+}
+
+function enableInput() {
+    allowMouse = true;
+    allowKeyboard = true;
 }
 
 function disableInput() {

@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.backend.MusicBeatState;
+import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
 import PixelStars;
 importScript("data/variables");
@@ -26,6 +27,8 @@ static var gameStarted:Bool = false;
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
+
+    MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
 
     if (storyState[storySequence] == "start" || storyState[storySequence] == "postLobbyShowcase") {
         title();

@@ -3,7 +3,7 @@ import funkin.backend.system.Logs;
 import lime.app.Application;
 import ImpostorFlags;
 
-public var storyState:Array<String> = [
+public static var storyState:Array<String> = [
     "start",
     "postLobbyShowcase",
     "postWeek1",
@@ -11,7 +11,9 @@ public var storyState:Array<String> = [
     "",
     "postOminous"
 ];
-public var storySequence:Int = 0;
+public static var storySequence:Int = 0;
+
+public static var stats:Map<String, Dynamic> = [];
 
 public static var playablesList:Map<String, Bool> = ["bf" => true];
 public static var skinsList:Map<String, Map<String, Bool>> = [/*character => [skin => bought]*/];
@@ -32,6 +34,7 @@ public static var debugMode:Bool = true;
 
 function new() {
     storySequence = FlxG.save.data.impPixelStorySequence;
+    stats = FlxG.save.data.impPixelStats;
     playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
     skinsList = FlxG.save.data.impPixelSkinsUnlocked;
     pixelBeans = FlxG.save.data.impPixelBeans;
@@ -56,6 +59,7 @@ function customGameResize(width:Int, height:Int) {
 
 function flushSaveData() {
     FlxG.save.data.impPixelStorySequence = storySequence;
+    FlxG.save.data.impPixelStats = stats;
     FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
@@ -71,9 +75,11 @@ function flushSaveData() {
 
 function destroy() {
     Application.current.onExit.remove(closeGame);
-    flushSaveData();
 }
 
-function closeGame() destroy();
+function closeGame() flushSaveData();
 
-function onModSwitch() destroy();
+function onModSwitch() {
+    ModsFolder.onModSwitch.remove(onModSwitch);
+    flushSaveData();
+}

@@ -34,6 +34,7 @@ function initSaveData() {
     // Mod Source
     FlxG.save.data.impPixelStorySequence ??= 0;
     FlxG.save.data.impPixelBeans ??= 0;
+    FlxG.save.data.impPixelStats = [];
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
