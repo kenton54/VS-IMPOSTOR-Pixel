@@ -46,7 +46,7 @@ function create(event) {
     var circleWidth:Int = transitionSprite.width;
     var circleHeight:Int = transitionSprite.height;
     var tweenDur:Float = 2 / 4;
-    var tweenEase:FlxEase = FlxEase.quartIn;
+    var tweenEase:FlxEase = event.transOut ? FlxEase.quartOut : FlxEase.quartIn;
     if (event.transOut) {
         blackSpr.y = circleY - blackSpr.height;
         blackSpr1.x = circleX - blackSpr.width;

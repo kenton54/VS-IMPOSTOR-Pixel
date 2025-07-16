@@ -182,14 +182,15 @@ function create() {
     top.scale.set(baseScale, baseScale);
     top.updateHitbox();
     top.camera = mainCam;
-    add(top);
 
     var topShadow:FlxSprite = new FlxSprite(3 * baseScale, (top.y + top.height) - 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top-shadow"));
     topShadow.scale.set(baseScale, baseScale);
     topShadow.updateHitbox();
     topShadow.blend = 9;
     topShadow.camera = mainCam;
+
     add(topShadow);
+    add(top);
 
     discordAvatar = new FlxSprite(top.x + 6 * baseScale, top.y + 2.5 * baseScale);
 
@@ -292,14 +293,15 @@ function create() {
     buttonsBack.scale.set(baseScale, baseScale);
     buttonsBack.updateHitbox();
     buttonsBack.camera = mainCam;
-    add(buttonsBack);
 
     var buttonsBackShadow:FlxSprite = new FlxSprite(buttonsBack.x - 1 * baseScale, buttonsBack.y + 3 * baseScale).loadGraphic(Paths.image("menus/mainmenu/buttonsBack-shadow"));
     buttonsBackShadow.scale.set(baseScale, baseScale);
     buttonsBackShadow.updateHitbox();
     buttonsBackShadow.blend = 9;
     buttonsBackShadow.camera = mainCam;
+
     add(buttonsBackShadow);
+    add(buttonsBack);
 
     var divisionThing:FlxSprite = new FlxSprite(buttonsBack.x + 4 * baseScale, buttonsBack.y + 46 * baseScale).loadGraphic(Paths.image("menus/mainmenu/buttonsDivision"));
     divisionThing.scale.set(baseScale, baseScale);
@@ -330,14 +332,15 @@ function create() {
     windowBorder.scale.set(baseScale, baseScale);
     windowBorder.updateHitbox();
     windowBorder.camera = mainCam;
-    add(windowBorder);
 
     var windowBorderShadow:FlxSprite = new FlxSprite(windowBorder.x - 1 * baseScale, windowBorder.y + 5 * baseScale).loadGraphic(Paths.image("menus/mainmenu/windowBorder-shadow"));
     windowBorderShadow.scale.set(baseScale, baseScale);
     windowBorderShadow.updateHitbox();
     windowBorderShadow.blend = 9;
     windowBorderShadow.camera = mainCam;
+
     add(windowBorderShadow);
+    add(windowBorder);
 
     var spaceHpos:Float = windowBorder.x + 4 * baseScale;
     var spaceVpos:Float = windowBorder.y + 4 * baseScale;
@@ -833,7 +836,6 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
 
 function onCloseSubstate() {
     enableInput();
-    MusicBeatTransition.script = "data/transitions/closingSharpCircle";
 }
 
 function enableInput() {
