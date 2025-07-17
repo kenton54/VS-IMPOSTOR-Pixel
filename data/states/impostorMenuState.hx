@@ -859,7 +859,7 @@ function checkSelectedMainEntry() {
                             case 0: FlxG.switchState(new ModState("worldmapState", ["lobby"]));
                             case 1: FlxG.switchState(new ModState("impostorFreeplayState"));
                         }
-                        case 1: FlxG.switchState(new ModState("tutorialPlayState"));
+                        case 1: FlxG.switchState(new ModState("game/tutorialPlayState"));
                     }
                 });
             });

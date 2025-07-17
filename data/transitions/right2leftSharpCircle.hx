@@ -18,7 +18,7 @@ function create(event) {
 
     transitionCamera.scroll.x = transitionCamera.width;
     transitionTween = FlxTween.tween(transitionCamera, {"scroll.x": -transitionCamera.width}, 2 / 5, {
-        ease: FlxEase.sineOut,
+        ease: event.transOut ? FlxEase.sineOut : FlxEase.sineIn,
         onComplete: _ -> {
             finish();
         }
