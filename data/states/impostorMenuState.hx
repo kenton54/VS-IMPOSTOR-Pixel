@@ -88,16 +88,18 @@ var playSectionButtons:Array<Array<Dynamic>> = [
             {
                 name: "World Map",
                 available: true,
-                image: Paths.image("menus/mainmenu/playSec/story"),
+                image: Paths.image("menus/mainmenu/bigButtons/worldmap"),
                 colorIdle: 0xFF0A3C33,
-                colorHover: 0xFF10584B
+                colorHover: 0xFF10584B,
+                transition: "data/transitions/closingSharpCircle"
             },
             {
                 name: "Freeplay",
                 available: (storyState[storySequence] == "start") ? false : true,
-                image: Paths.image("menus/mainmenu/playSec/freeplay" + pixelPlayable),
+                image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
                 colorIdle: 0xFF0A3C33,
-                colorHover: 0xFF10584B
+                colorHover: 0xFF10584B,
+                transition: "data/transitions/right2leftSharpCircle"
             }
         ];
     },
@@ -106,9 +108,10 @@ var playSectionButtons:Array<Array<Dynamic>> = [
             {
                 name: "How to Play",
                 available: true,
-                image: Paths.image("menus/mainmenu/playSec/question"),
+                image: Paths.image("menus/mainmenu/bigButtons/tutorial"),
                 colorIdle: 0xFFAAE2DC,
-                colorHover: 0xFFFFFFFF
+                colorHover: 0xFFFFFFFF,
+                transition: "data/transitions/closingSharpCircle"
             }
         ];
     }
@@ -119,10 +122,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Chart Editor",
                 image: Paths.image("editors/icons/chart"),
-                transition: "data/transitions/right2leftSharpCircle",
-                action: function() {
-                    FlxG.switchState(new CharterSelection());
-                }
+                transition: "data/transitions/right2leftSharpCircle"
             }
         ];
     },
@@ -131,10 +131,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Character Editor",
                 image: Paths.image("editors/icons/character"),
-                transition: "data/transitions/right2leftSharpCircle",
-                action: function() {
-                    FlxG.switchState(new CharacterSelection());
-                }
+                transition: "data/transitions/right2leftSharpCircle"
             }
         ];
     },
@@ -143,10 +140,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Debug Options",
                 image: Paths.image("editors/icons/options"),
-                transition: "data/transitions/right2leftSharpCircle",
-                action: function() {
-                    FlxG.switchState(new DebugOptions());
-                }
+                transition: "data/transitions/right2leftSharpCircle"
             }
         ];
     }
@@ -491,9 +485,10 @@ var curEntry:Int = 0;
 var curWindowEntry:Array<Int> = [0, 0];
 var lastWindowEntry:Array<Int> = [-1, -1];
 
-var maxWindowEntries:Array<Int> = [0, 0];
+var maxWindowEntries:Array<Array<Int>> = [0][0];
 var curWindow:Array<Dynamic> = [];
 var curWindowLogic:Void = null;
+var curWindowChooseBehaviour:Void = null;
 
 var allowMouse:Bool = true;
 function handleMouse() {
@@ -610,64 +605,75 @@ function handleTopButtons() {
                 }
                 else if (button == topButtonsGroup.members[2]) {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    if (curWindow != debugOptions) {
-                        openWindowSection('Debug Tools', [0, debugOptions.length], debugOptions, function(posH, posV, group) {
-                            var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
-                            for (v => column in debugOptions) {
-                                var columnGroup = new FlxTypedSpriteGroup(posH, posV + v * daHeight);
-                                group.add(columnGroup);
+                    openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
+                        var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
+                        for (v => column in debugOptions) {
+                            var columnGroup = new FlxTypedSpriteGroup(posH, posV + v * daHeight);
+                            group.add(columnGroup);
 
-                                for (row in column) {
-                                    var rowGroup = new FlxTypedSpriteGroup();
-                                    columnGroup.add(rowGroup);
+                            for (row in column) {
+                                var rowGroup = new FlxTypedSpriteGroup();
+                                columnGroup.add(rowGroup);
 
-                                    var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
-                                    bg.alpha = 0;
-                                    rowGroup.add(bg);
+                                var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
+                                bg.alpha = 0;
+                                rowGroup.add(bg);
 
-                                    var toolLabel:FunkinText = new FunkinText(30 * baseScale, bg.height / 2, 0, row.name, 32);
-                                    toolLabel.font = Paths.font("pixeloidsans.ttf");
-                                    toolLabel.borderSize = 3;
-                                    toolLabel.y -= toolLabel.height / 2;
+                                var toolLabel:FunkinText = new FunkinText(30 * baseScale, bg.height / 2, 0, row.name, 32);
+                                toolLabel.font = Paths.font("pixeloidsans.ttf");
+                                toolLabel.borderSize = 3;
+                                toolLabel.y -= toolLabel.height / 2;
 
-                                    var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
-                                    toolIcon.scale.set(baseScale, baseScale);
-                                    toolIcon.updateHitbox();
-                                    toolIcon.x = 1.5 * baseScale + (daHeight - toolIcon.width) / 2;
-                                    toolIcon.y -= toolIcon.height / 2;
+                                var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
+                                toolIcon.scale.set(baseScale, baseScale);
+                                toolIcon.updateHitbox();
+                                toolIcon.x = 1.5 * baseScale + (daHeight - toolIcon.width) / 2;
+                                toolIcon.y -= toolIcon.height / 2;
 
-                                    rowGroup.add(toolIcon);
-                                    rowGroup.add(toolLabel);
-                                }
+                                rowGroup.add(toolIcon);
+                                rowGroup.add(toolLabel);
                             }
-                        }, function() {
-                            mouseIsOverABtn = false;
+                        }
+                    }, function() {
+                        mouseIsOverABtn = false;
 
-                            if (!allowMouse) return;
+                        if (!allowMouse) return;
 
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                var rw:Int = 0;
-                                if (column is FlxTypedSpriteGroup) {
-                                    column.forEach(function(row) {
-                                        if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                            row.members[0].alpha = 0.25;
+                        var col:Int = 0;
+                        windowGroup.forEach(function(column) {
+                            var rw:Int = 0;
+                            if (column is FlxTypedSpriteGroup) {
+                                column.forEach(function(row) {
+                                    if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                        row.members[0].alpha = 0.25;
 
-                                            mouseIsOverABtn = true;
-                                            curWindowEntry[0] = col;
-                                            curWindowEntry[1] = rw;
-                                            playSoundWindow();
-                                        }
-                                        else {
-                                            row.members[0].alpha = 0;
-                                        }
-                                        rw++;
-                                    });
-                                    col++;
+                                        mouseIsOverABtn = true;
+                                        curWindowEntry[0] = col;
+                                        curWindowEntry[1] = rw;
+                                        playSoundWindow();
+                                    }
+                                    else {
+                                        row.members[0].alpha = 0;
+                                    }
+                                    rw++;
+                                });
+                                col++;
+                            }
+                        });
+                    }, function() {
+                        if (curWindowEntry[1] == 0) {
+                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
+                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
+
+                            new FlxTimer().start(1, _ -> {
+                                switch(curWindowEntry[0]) {
+                                    case 0: FlxG.switchState(new CharterSelection());
+                                    case 1: FlxG.switchState(new CharacterSelection());
+                                    case 2: FlxG.switchState(new DebugOptions());
                                 }
                             });
-                        });
-                    }
+                        }
+                    });
                 }
             }
         }
@@ -701,13 +707,170 @@ function checkSelectedMainEntry() {
     FlxFlicker.flicker(buttonsMainGroup.members[curEntry], 1, 0.05, true, true);
     FlxFlicker.flicker(buttonsLabelGroup.members[curEntry], 1, 0.05, true, true);
     if (buttonsIconGroup.members[curEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curEntry], 1, 0.05, true, true);
+
+    switch(curEntry) {
+        case 0:
+            openWindowSection("Play", playSectionButtons, function(posH, posV, group) {
+                var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
+                var thirdButtonYPos:Float = 0;
+                for (v => column in playSectionButtons) {
+                    var columnGroup = new FlxTypedSpriteGroup(posH, posV);
+                    group.add(columnGroup);
+
+                    for (r => row in column) {
+                        var rowGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+                        columnGroup.add(rowGroup);
+
+                        if (v == 0 && r == 0) {
+                            var worldMapGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
+                            worldMapGroup.x -= 28 * baseScale;
+                            rowGroup.add(worldMapGroup);
+
+                            var worldMapButton:FlxSprite = new FlxSprite().loadGraphic(row.image, true, 56, 55);
+                            worldMapButton.animation.add("idle", [0], 0, false);
+                            worldMapButton.animation.add("hover", [1], 0, false);
+                            worldMapButton.scale.set(baseScale, baseScale);
+                            worldMapButton.updateHitbox();
+                            worldMapGroup.add(worldMapButton);
+
+                            var worldMapTxt:FunkinText = new FunkinText(1.2 * baseScale, worldMapButton.height, worldMapButton.width, "World Map", 32, false);
+                            worldMapTxt.font = Paths.font("pixeloidsans.ttf");
+                            worldMapTxt.alignment = "center";
+                            worldMapTxt.color = row.colorIdle;
+                            worldMapTxt.y -= worldMapTxt.height + 2.6 * baseScale;
+                            worldMapGroup.add(worldMapTxt);
+
+                            worldMapGroup.x -= (worldMapGroup.width / 2) - 1 * baseScale;
+
+                            thirdButtonYPos = worldMapGroup.height;
+                        }
+                        else if (v == 0 && r == 1) {
+                            var freeplayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
+                            freeplayGroup.x += 28 * baseScale;
+                            rowGroup.add(freeplayGroup);
+
+                            var freeplayButton:FlxSprite = new FlxSprite().loadGraphic(column[1].image, true, 56, 55);
+                            freeplayButton.animation.add("idle", [0], 0, false);
+                            freeplayButton.animation.add("hover", [1], 0, false);
+                            freeplayButton.scale.set(baseScale, baseScale);
+                            freeplayButton.updateHitbox();
+                            freeplayGroup.add(freeplayButton);
+
+                            var freeplayTxt:FunkinText = new FunkinText(1.2 * baseScale, freeplayButton.height, freeplayButton.width, "Freeplay", 32, false);
+                            freeplayTxt.font = Paths.font("pixeloidsans.ttf");
+                            freeplayTxt.alignment = "center";
+                            freeplayTxt.color = column[1].colorIdle;
+                            freeplayTxt.y -= freeplayTxt.height + 2.6 * baseScale;
+                            freeplayGroup.add(freeplayTxt);
+
+                            freeplayGroup.x -= (freeplayGroup.width / 2) - 2 * baseScale;
+                        }
+                        else {
+                            var howToPlayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX + 2, thirdButtonYPos + 6 * baseScale);
+                            rowGroup.add(howToPlayGroup);
+
+                            var howToPlayBtn:FlxSprite = new FlxSprite().loadGraphic(column[0].image, true, 66, 12);
+                            howToPlayBtn.animation.add("idle", [0], 0, false);
+                            howToPlayBtn.animation.add("hover", [1], 0, false);
+                            howToPlayBtn.scale.set(baseScale, baseScale);
+                            howToPlayBtn.updateHitbox();
+                            howToPlayGroup.add(howToPlayBtn);
+
+                            var howToPlayTxt:FunkinText = new FunkinText(0, howToPlayBtn.height, howToPlayBtn.width, "How to Play", 32, false);
+                            howToPlayTxt.font = Paths.font("pixeloidsans.ttf");
+                            howToPlayTxt.alignment = "center";
+                            howToPlayTxt.color = column[0].colorIdle;
+                            howToPlayTxt.y -= howToPlayTxt.height + 1.7 * baseScale;
+                            howToPlayGroup.add(howToPlayTxt);
+
+                            howToPlayGroup.x -= howToPlayGroup.width / 2;
+                        }
+                    }
+                }
+            }, function() {
+                mouseIsOverABtn = false;
+
+                if (!allowMouse) return;
+
+                if (allowMouse) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxTypedSpriteGroup) {
+                            var rw:Int = 0;
+                            column.forEach(function(row) {
+                                if (row is FlxTypedSpriteGroup) {
+                                    row.forEach(function(grp) {
+                                        if (grp is FlxTypedSpriteGroup) {
+                                            if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                                grp.members[0].animation.play("hover");
+                                                grp.members[1].color = curWindow[col][rw].colorHover;
+
+                                                mouseIsOverABtn = true;
+                                                curWindowEntry[0] = col;
+                                                curWindowEntry[1] = rw;
+                                                playSoundWindow();
+                                            }
+                                            else {
+                                                grp.members[0].animation.play("idle");
+                                                grp.members[1].color = curWindow[col][rw].colorIdle;
+                                            }
+                                        }
+                                    });
+                                    rw++;
+                                }
+                            });
+                            col++;
+                        }
+                    });
+                }
+            }, function() {
+                var col:Int = 0;
+                windowGroup.forEach(function(column) {
+                    if (column is FlxTypedSpriteGroup) {
+                        var rw:Int = 0;
+                        if (col != curWindowEntry[0]) {
+                            col++;
+                            return;
+                        }
+                        else {
+                            column.forEach(function(row) {
+                                if (row is FlxTypedSpriteGroup) {
+                                    if (rw != curWindowEntry[1]) {
+                                        rw++;
+                                        return;
+                                    }
+                                    else {
+                                        row.forEach(function(grp) {
+                                            FlxFlicker.flicker(grp.members[0], 1, 0.05, true, true);
+                                            FlxFlicker.flicker(grp.members[1], 1, 0.05, true, true);
+                                        });
+                                        rw++;
+                                    }
+                                }
+                            });
+                            col++;
+                        }
+                    }
+                });
+
+                new FlxTimer().start(1, _ -> {
+                    switch(curWindowEntry[0]) {
+                        case 0: switch(curWindowEntry[1]) {
+                            case 0: FlxG.switchState(new ModState("worldmapState", ["lobby"]));
+                            case 1: FlxG.switchState(new ModState("impostorFreeplayState"));
+                        }
+                        case 1: FlxG.switchState(new ModState("tutorialPlayState"));
+                    }
+                });
+            });
+    }
 }
 
-function openWindowSection(title:String, maxEntries:Array<Int>, windowArray:Array<Dynamic>, membersCreation:(subMenuVerPos:Float, group:FlxTypedSpriteGroup) -> Void, updateLogic:() -> Void) {
+function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, membersCreation:(correctHorPos:Float, subMenuVerPos:Float, group:FlxTypedSpriteGroup) -> Void, updateLogic:Void, onChoose:Void) {
     currentSelectionMode = "window";
     curWindow = windowArray;
     curWindowLogic = updateLogic;
-    maxWindowEntries = maxEntries;
+    curWindowChooseBehaviour = onChoose;
 
     var correctCornerPos:Float = 4 * baseScale;
 
@@ -750,6 +913,7 @@ function closeWindowSection() {
     CoolUtil.playMenuSFX(2);
     currentSelectionMode = "main";
     curWindow = [];
+    curWindowLogic = null;
     curWindowEntry[0] = 0;
     curWindowEntry[1] = 0;
     lastWindowEntry[0] = -1;
@@ -764,19 +928,15 @@ function closeWindowSection() {
 function checkSelectedWindowEntry() {
     if (curWindow == null) return;
 
-    if (curWindow[curWindowEntry[0]][curWindowEntry[1]] != null && curWindow[curWindowEntry[0]][curWindowEntry[1]].action != null) {
+    trace(curWindowEntry);
+
+    if (curWindow[curWindowEntry[0]][curWindowEntry[1]] != null) {
         disableInput();
 
         CoolUtil.playMenuSFX(1);
 
-        FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
-        FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
-
         MusicBeatTransition.script = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
-
-        new FlxTimer().start(1, _ -> {
-            curWindow[curWindowEntry[0]][curWindowEntry[1]].action();
-        });
+        curWindowChooseBehaviour();
     }
 }
 

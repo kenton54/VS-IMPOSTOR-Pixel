@@ -5,6 +5,7 @@ import ImpostorFlags;
 
 public static var storyState:Array<String> = [
     "start",
+    "postTutorial",
     "postLobbyShowcase",
     "postWeek1",
     "",
@@ -67,10 +68,12 @@ function flushSaveData() {
 
     FlxG.save.flush();
 
+    /*
     Logs.traceColored([
         Logs.logText("[VS IMPOSTOR Pixel] ", 12),
         Logs.logText("Data succesfully saved!")
     ]);
+    */
 }
 
 function destroy() {

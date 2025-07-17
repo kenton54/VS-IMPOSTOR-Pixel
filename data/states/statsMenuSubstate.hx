@@ -11,12 +11,12 @@ var statsLabels:Array<String> = [
     "Good Note Hits",
     "Bad Note Hits",
     "Shit Note Hits",
-    "Total Attacks Dodged"/*,
+    "Total Attacks Dodged",
     "Tasks Speedrun PB (Skeld)",
     "Tasks Speedrun PB (Mira HQ)",
     "Tasks Speedrun PB (Polus)",
     "Tasks Speedrun PB (Airship)",
-    "Total Tasks Completed"*/
+    "Total Tasks Completed"
 ];
 var defaultStats:Map<String, Dynamic> = [
     "Current Story Progression" => storyState[storySequence],
