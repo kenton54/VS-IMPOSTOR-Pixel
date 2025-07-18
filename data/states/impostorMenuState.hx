@@ -890,6 +890,10 @@ function checkSelectedMainEntry() {
                         var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? "Disable Mods" : row, 28);
                         daMod.font = Paths.font("pixeloidsans.ttf");
                         daMod.borderSize = 3;
+                        if (daHeight < 30) {
+                            daMod.scale.y = daHeight / 30;
+                            daMod.updateHitbox();
+                        }
                         daMod.y -= daMod.height / 2;
                         rowGroup.add(daMod);
                     }
