@@ -1,8 +1,8 @@
-import funkin.backend.scripting.events.StateEvent;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTweenType;
 import flixel.ui.FlxButton;
+import funkin.backend.assets.ModsFolder;
 import funkin.backend.utils.DiscordUtil;
 //import funkin.backend.utils.HttpUtil;
 import funkin.backend.MusicBeatTransition;
@@ -12,11 +12,12 @@ import funkin.editors.DebugOptions;
 import funkin.editors.EditorPicker;
 import funkin.menus.credits.CreditsMain;
 import funkin.menus.ModSwitchMenu;
+import lime.graphics.Image;
+import openfl.filters.ShaderFilter;
+import openfl.ui.Mouse;
 //import sys.net.Socket;
 //import sys.Http;
 import PixelStars;
-import openfl.filters.ShaderFilter;
-import openfl.ui.Mouse;
 importScript("data/variables");
 
 var modVersion:String = "0.0.0";
@@ -116,6 +117,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
         ];
     }
 ];
+var modsArray:Array<Array<Dynamic>> = []; // the options are added dynamically
 var debugOptions:Array<Array<Dynamic>> = [
     {
         [
@@ -157,8 +159,6 @@ var baseScale:Float = 5;
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
-
-    //DiscordUtil.init();
 
     subStateClosed.add(onCloseSubstate);
 
@@ -481,7 +481,8 @@ function update(elapsed:Float) {
 // main, window
 var currentSelectionMode:String = "main";
 
-var curEntry:Int = 0;
+var curMainEntry:Int = 0;
+var lastMainEntry:Int = -1;
 var curWindowEntry:Array<Int> = [0, 0];
 var lastWindowEntry:Array<Int> = [-1, -1];
 
@@ -504,7 +505,7 @@ function handleMouse() {
         Mouse.cursor = "button";
     }
     else {
-        lastEntry = -1;
+        lastMainEntry = -1;
         lastWindowEntry[0] = -1;
         lastWindowEntry[1] = -1;
         Mouse.cursor = "arrow";
@@ -523,11 +524,6 @@ function handleInput() {
         if (controls.BACK) {
             MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
             FlxG.switchState(new ModState("impostorTitleState"));
-        }
-
-        if (controls.SWITCHMOD) {
-            openSubState(new ModSwitchMenu());
-            persistentUpdate = !(persistentDraw = true);
         }
     }
     else if (currentSelectionMode == "window") {
@@ -558,7 +554,7 @@ function handleMainButtons() {
 
                 buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-                curEntry = buttonsLabelGroup.members.indexOf(buttonsLabelGroup.members[i]);
+                curMainEntry = i;
 
                 playSoundMain();
             }
@@ -607,8 +603,8 @@ function handleTopButtons() {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
                     openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
                         var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
-                        for (v => column in debugOptions) {
-                            var columnGroup = new FlxTypedSpriteGroup(posH, posV + v * daHeight);
+                        for (c => column in debugOptions) {
+                            var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
                             group.add(columnGroup);
 
                             for (row in column) {
@@ -641,8 +637,8 @@ function handleTopButtons() {
 
                         var col:Int = 0;
                         windowGroup.forEach(function(column) {
-                            var rw:Int = 0;
                             if (column is FlxTypedSpriteGroup) {
+                                var rw:Int = 0;
                                 column.forEach(function(row) {
                                     if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
                                         row.members[0].alpha = 0.25;
@@ -661,6 +657,8 @@ function handleTopButtons() {
                             }
                         });
                     }, function() {
+                        CoolUtil.playMenuSFX(1);
+
                         if (curWindowEntry[1] == 0) {
                             FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
                             FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
@@ -684,9 +682,10 @@ function handleTopButtons() {
 }
 
 function playSoundMain() {
-    if (curEntry != lastEntry) {
+    //trace(curEntry, lastEntry);
+    if (curMainEntry != lastMainEntry) {
         CoolUtil.playMenuSFX(0);
-        lastEntry = curEntry;
+        lastMainEntry = curMainEntry;
     }
 }
 
@@ -701,19 +700,17 @@ function playSoundWindow() {
 }
 
 function checkSelectedMainEntry() {
-    trace("current entry id: "+curEntry);
-
     CoolUtil.playMenuSFX(1);
-    FlxFlicker.flicker(buttonsMainGroup.members[curEntry], 1, 0.05, true, true);
-    FlxFlicker.flicker(buttonsLabelGroup.members[curEntry], 1, 0.05, true, true);
-    if (buttonsIconGroup.members[curEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curEntry], 1, 0.05, true, true);
 
-    switch(curEntry) {
-        case 0:
-            openWindowSection("Play", playSectionButtons, function(posH, posV, group) {
+    FlxFlicker.flicker(buttonsMainGroup.members[curMainEntry], 1, 0.05, true, true);
+    FlxFlicker.flicker(buttonsLabelGroup.members[curMainEntry], 1, 0.05, true, true);
+    if (buttonsIconGroup.members[curMainEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curMainEntry], 1, 0.05, true, true);
+
+    switch(curMainEntry) {
+        case 0: openWindowSection("Play", playSectionButtons, function(posH, posV, group) {
                 var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
                 var thirdButtonYPos:Float = 0;
-                for (v => column in playSectionButtons) {
+                for (c => column in playSectionButtons) {
                     var columnGroup = new FlxTypedSpriteGroup(posH, posV);
                     group.add(columnGroup);
 
@@ -721,7 +718,7 @@ function checkSelectedMainEntry() {
                         var rowGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
                         columnGroup.add(rowGroup);
 
-                        if (v == 0 && r == 0) {
+                        if (c == 0 && r == 0) {
                             var worldMapGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
                             worldMapGroup.x -= 28 * baseScale;
                             rowGroup.add(worldMapGroup);
@@ -744,7 +741,7 @@ function checkSelectedMainEntry() {
 
                             thirdButtonYPos = worldMapGroup.height;
                         }
-                        else if (v == 0 && r == 1) {
+                        else if (c == 0 && r == 1) {
                             var freeplayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
                             freeplayGroup.x += 28 * baseScale;
                             rowGroup.add(freeplayGroup);
@@ -790,8 +787,6 @@ function checkSelectedMainEntry() {
             }, function() {
                 mouseIsOverABtn = false;
 
-                if (!allowMouse) return;
-
                 if (allowMouse) {
                     var col:Int = 0;
                     windowGroup.forEach(function(column) {
@@ -824,6 +819,8 @@ function checkSelectedMainEntry() {
                     });
                 }
             }, function() {
+                CoolUtil.playMenuSFX(1);
+
                 var col:Int = 0;
                 windowGroup.forEach(function(column) {
                     if (column is FlxTypedSpriteGroup) {
@@ -861,6 +858,74 @@ function checkSelectedMainEntry() {
                         }
                         case 1: FlxG.switchState(new ModState("game/tutorialPlayState"));
                     }
+                });
+            });
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            var mods:Array<String> = [];
+            mods = ModsFolder.getModsList();
+            mods.push(null);
+            for (i => mod in mods) {
+                modsArray[i] = [];
+                modsArray[i][0] = mod;
+            }
+            openWindowSection("Mods", modsArray, function(posH, posV, group) {
+                var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / modsArray.length;
+                for (c => column in modsArray) {
+                    var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
+                    group.add(columnGroup);
+
+                    for (row in column) {
+                        var rowGroup = new FlxTypedSpriteGroup();
+                        columnGroup.add(rowGroup);
+
+                        var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
+                        bg.color = (row == null) ? FlxColor.RED : FlxColor.WHITE;
+                        bg.alpha = 0;
+                        rowGroup.add(bg);
+
+                        var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? "Disable Mods" : row, 28);
+                        daMod.font = Paths.font("pixeloidsans.ttf");
+                        daMod.borderSize = 3;
+                        daMod.y -= daMod.height / 2;
+                        rowGroup.add(daMod);
+                    }
+                }
+            }, function() {
+                if (allowMouse) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxTypedSpriteGroup) {
+                            var rw:Int = 0;
+                            column.forEach(function(row) {
+                                if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                    row.members[0].alpha = 0.25;
+
+                                    mouseIsOverABtn = true;
+                                    curWindowEntry[0] = col;
+                                    curWindowEntry[1] = rw;
+                                    playSoundWindow();
+                                }
+                                else {
+                                    row.members[0].alpha = 0;
+                                }
+                                rw++;
+                            });
+                            col++;
+                        }
+                    });
+                }
+            }, function() {
+                CoolUtil.playMenuSFX(2);
+
+                var dur:Float = 1;
+                FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
+                new FlxTimer().start(dur, _ -> {
+                    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
+                    ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
                 });
             });
     }
@@ -928,16 +993,18 @@ function closeWindowSection() {
 function checkSelectedWindowEntry() {
     if (curWindow == null) return;
 
-    trace(curWindowEntry);
+    disableInput();
 
-    if (curWindow[curWindowEntry[0]][curWindowEntry[1]] != null) {
-        disableInput();
-
-        CoolUtil.playMenuSFX(1);
-
-        MusicBeatTransition.script = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
-        curWindowChooseBehaviour();
+    var trans:String = "";
+    try {
+        trans = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
     }
+    catch(e:Dynamic) {
+        trans = "data/transitions/closingSharpCircle";
+    }
+
+    MusicBeatTransition.script = trans;
+    curWindowChooseBehaviour();
 }
 
 function floatSus() {}
@@ -1007,4 +1074,5 @@ function disableInput() {
     allowMouse = false;
     allowKeyboard = false;
     FlxG.mouse.visible = false;
+    Mouse.cursor = "arrow";
 }

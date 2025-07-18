@@ -2,6 +2,7 @@ import funkin.backend.system.framerate.Framerate;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
+import lime.graphics.Image;
 import StorySequenceManipulator;
 
 var impPixelDebugMode:Bool = true;
@@ -18,11 +19,18 @@ function new() {
 
     initSaveData();
 
-    Application.current.window.minWidth = 1280;
-    Application.current.window.minHeight = 720;
+    setWindowParameters();
+
     //gameResized(Application.current.window.width, Application.current.window.height);
 
     Application.current.onExit.add(closeGame);
+}
+
+function setWindowParameters() {
+    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
+
+    window.minWidth = 1280;
+    window.minHeight = 720;
 }
 
 function initSaveData() {
@@ -82,6 +90,7 @@ function destroy() {
 
     Application.current.window.minWidth = null;
     Application.current.window.minHeight = null;
+
     //gameResized(1280, 720);
     //FlxG.resizeWindow(FlxG.width, FlxG.height);
 }
