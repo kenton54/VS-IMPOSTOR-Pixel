@@ -875,6 +875,7 @@ function checkSelectedMainEntry() {
         case 3:
         case 4:
         case 5:
+            modsArray = [];
             var mods:Array<String> = [];
             mods = ModsFolder.getModsList();
             mods.push(null);
