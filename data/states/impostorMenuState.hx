@@ -27,6 +27,7 @@ var discordUsername:FunkinText;
 
 var lightThing:FlxSprite;
 var lightGlow:FlxSprite;
+var lightLight:FlxSprite;
 
 var mainButtons:Array<Dynamic> = [
     {
@@ -207,14 +208,21 @@ function create() {
 
     lightThing = new FlxSprite(top.x + 26 * baseScale, top.y + 4 * baseScale).loadGraphic(Paths.image("menus/mainmenu/lightThing"));
     lightThing.scale.set(baseScale, baseScale);
-    lightThing.camera = mainCam;
     lightThing.updateHitbox();
+    lightThing.camera = mainCam;
 
-    lightGlow = new FlxSprite(lightThing.x - 7 * baseScale, lightThing.y - 7 * baseScale).loadGraphic(Paths.image("menus/mainmenu/lightGlow"));
-    lightGlow.scale.set(baseScale, baseScale);
+    lightGlow = new FlxSprite().loadGraphic(Paths.image("menus/mainmenu/lightGlow"));
+    lightGlow.scale.set(1.5, 1.5);
     lightGlow.updateHitbox();
+    lightGlow.setPosition(lightThing.x + (lightThing.width / 2) - (lightGlow.width / 2), lightThing.y + (lightThing.height / 2) - (lightGlow.height / 2));
     lightGlow.blend = 0;
     lightGlow.camera = mainCam;
+
+    lightLight = new FlxSprite(lightThing.x, lightThing.y).loadGraphic(Paths.image("menus/mainmenu/lightLight"));
+    lightLight.scale.set(baseScale, baseScale);
+    lightLight.updateHitbox();
+    lightLight.camera = mainCam;
+    lightLight.blend = 0;
 
     discordUsername = new FunkinText(0, 0, 0, "", 32);
     discordUsername.borderSize = 4;
@@ -232,6 +240,7 @@ function create() {
         lightThing.color = 0xFF333333;
         lightGlow.color = 0xFF333333;
         lightGlow.visible = false;
+        lightLight.visible = false;
         discordUsername.text = "Disconnected from Discord";
         discordUsername.color = FlxColor.GRAY;
     }
@@ -242,6 +251,7 @@ function create() {
 
     add(lightGlow);
     add(lightThing);
+    add(lightLight);
 
     topButtonsGroup = new FlxTypedSpriteGroup();
     topButtonsGroup.camera = mainCam;
@@ -1052,6 +1062,7 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
         lightThing.color = 0xFF43A25A;
         lightGlow.color = 0xFF43A25A;
         lightGlow.visible = true;
+        lightLight.visible = true;
     }
     else {
         discordAvatar.loadGraphic(Paths.image("menus/mainmenu/nullAvatar"));
@@ -1062,6 +1073,7 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
         lightThing.color = 0xFF333333;
         lightGlow.color = 0xFF333333;
         lightGlow.visible = false;
+        lightLight.visible = false;
     }
 }
 
