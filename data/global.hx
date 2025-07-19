@@ -3,6 +3,7 @@ import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import lime.graphics.Image;
+import openfl.system.Capabilities;
 import StorySequenceManipulator;
 
 var impPixelDebugMode:Bool = true;
@@ -19,11 +20,19 @@ function new() {
 
     initSaveData();
 
-    setWindowParameters();
-
     //gameResized(Application.current.window.width, Application.current.window.height);
 
     Application.current.onExit.add(closeGame);
+
+    if (FlxG.onMobile) {
+        var screenWidth:Float = Capabilities.screenResolutionX;
+        var screenHeight:Float = Capabilities.screenResolutionY;
+        resizeGame(Std.int(screenWidth), Std.int(screenHeight));
+    }
+    else {
+        setWindowParameters();
+        FlxG.mouse.visible = true;
+    }
 }
 
 function setWindowParameters() {
@@ -61,7 +70,7 @@ function reloadState() {
 
 // da states
 var redirectStates:Map<FlxState, String> = [
-    TitleState => "impostorTitleState"
+    TitleState => "impostorTitleState",
     MainMenuState => "impostorMenuState",
     FreeplayState => "impostorFreeplayState"
 ];
@@ -73,14 +82,12 @@ function preStateSwitch() {
             FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
 
-/*
-function gameResized(width:Int, height:Int) {
+function resizeGame(width:Int, height:Int) {
     FlxG.initialWidth = width;
     FlxG.initialHeight = height;
     FlxG.width = width;
     FlxG.height = height;
 }
-*/
 
 function closeGame() {}
 
@@ -91,6 +98,7 @@ function destroy() {
     Application.current.window.minWidth = null;
     Application.current.window.minHeight = null;
 
-    //gameResized(1280, 720);
-    //FlxG.resizeWindow(FlxG.width, FlxG.height);
+    if (FlxG.onMobile) {
+        resizeGame(1280, 720);
+    }
 }

@@ -4,7 +4,6 @@ import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxGradient;
 import flixel.FlxObject;
 import funkin.backend.utils.DiscordUtil;
-import funkin.backend.utils.FlxInterpolateColor;
 import funkin.backend.MusicBeatState;
 import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
@@ -19,9 +18,6 @@ var title:FlxTypedSpriteGroup;
 var baseScale:Float = 4;
 
 var pressStart:FunkinText;
-var psColor:FlxInterpolateColor;
-
-static var oldpsColor:FlxInterpolateColor;
 
 static var gameStarted:Bool = false;
 
@@ -67,65 +63,83 @@ function create() {
     titleMain.y = FlxG.height * 0.2;
     title.add(titleMain);
 
-    var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
-    pressStart = new FunkinText(0, 0, FlxG.width, "PRESS " + CoolUtil.keyToString(acceptKey) + " TO PLAY", 52);
+    pressStart = new FunkinText(0, 0, FlxG.width, "", 52);
     pressStart.alignment = "center";
     pressStart.color = FlxColor.TRANSPARENT;
     pressStart.borderColor = FlxColor.WHITE;
     pressStart.borderSize = 6.75;
     pressStart.font = Paths.font("gameboy.ttf");
     pressStart.y = FlxG.height * 0.8;
+    pressStart.alpha = 0;
     add(pressStart);
 
-    psColor = new FlxInterpolateColor(colorArray[colorArrayPos]);
+    tweenPressStart();
 
     FlxG.camera.follow(camFollow);
 
     gameStarted = true;
 }
 
+var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
+
 var transitioning:Bool = false;
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.F11) FlxG.fullscreen = !FlxG.fullscreen;
 
-    if (controls.ACCEPT) {
-        if (transitionTimer.active) {
-            FlxG.switchState(new MainMenuState());
+    if (FlxG.mouse.justPressed || FlxG.touches.getFirst() != null && FlxG.touches.getFirst().justPressed) {
+        if (transitionTimer.active && !transitioning) {
             transitionTimer.cancel();
-            //switchingState = true;
+            FlxG.switchState(new MainMenuState());
         }
-        else if (!transitioning)
+        else if (!transitionTimer.active && !transitioning) {
+            pressStart.text = FlxG.onMobile ? "TOUCH THE SCREEN TO PLAY" : "CLICK TO PLAY";
             accept();
+        }
     }
-
-    interpolatePSColor();
+    if (controls.ACCEPT) {
+        if (transitionTimer.active && !transitioning) {
+            transitionTimer.cancel();
+            FlxG.switchState(new MainMenuState());
+        }
+        else if (!transitionTimer.active && !transitioning) {
+            pressStart.text = "PRESS " + CoolUtil.keyToString(acceptKey) + " TO PLAY";
+            accept();
+        }
+    }
 
     FlxG.camera.zoom = CoolUtil.fpsLerp(FlxG.camera.zoom, 1, 0.05);
 }
 
-var interpolate:Bool = true;
-var colorArray:Array<FlxColor> = [FlxColor.CYAN, 0xFF4242CF];
-var colorArrayPos:Int = 0;
-var colorArraychange:Int = 1;
-function interpolatePSColor() {
-    if (!interpolate) {
-        pressStart.borderColor = FlxColor.WHITE;
-        psColor.color = FlxColor.WHITE;
-        colorArrayPos = 0;
-        colorArraychange = 1;
+var tweenDur:Float = 1.5;
+var tweenIn:FlxTween = null;
+var tweenOut:FlxTween = null;
+var colorArray:Array<FlxColor> = [
+    0xFF0CF0A0, 0xFF27F6CD, 0xFF33FFFF, 0xFF33DAF6, 0xFF33B5ED,
+    0xFF3387E1, 0xFF3362D8, 0xFF3333CC, 0xFF4422DD, 0xFF420DDD];
+var mouseTxt:Bool = false;
+function tweenPressStart() {
+    pressStart.borderColor = colorArray[FlxG.random.int(0, colorArray.length - 1)];
+    if (FlxG.onMobile) {
+        pressStart.text = "TOUCH THE SCREEN TO PLAY";
+        tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
+            tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
+                tweenPressStart();
+            }});
+        }});
     }
     else {
-        psColor.fpsLerpTo(colorArray[colorArrayPos], 0.04);
-        pressStart.borderColor = psColor.color;
-
-        if (Math.abs(pressStart.borderColor - colorArray[colorArrayPos]) <= 65536 * 2) {
-            pressStart.borderColor = colorArray[colorArrayPos];
-            psColor.color = colorArray[colorArrayPos];
-            colorArrayPos += colorArraychange;
+        if (!mouseTxt) {
+            pressStart.text = "PRESS " + CoolUtil.keyToString(acceptKey).toUpperCase() + " TO PLAY";
         }
-
-        if (colorArrayPos == colorArray.length - 1) colorArraychange = -1;
-        if (colorArrayPos == 0) colorArraychange = 1;
+        else {
+            pressStart.text = "CLICK TO PLAY";
+        }
+        tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
+            tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
+                tweenPressStart();
+            }});
+        }});
+        mouseTxt = !mouseTxt;
     }
 }
 
@@ -154,7 +168,11 @@ function bopTitle() {
 
 var transitionTimer:FlxTimer = new FlxTimer();
 function accept() {
-    interpolate = false;
+    if (tweenIn != null && tweenIn.active) tweenIn.cancel();
+    if (tweenOut != null && tweenOut.active) tweenOut.cancel();
+    FlxTween.cancelTweensOf(pressStart, ["alpha"]);
+    pressStart.alpha = 1;
+    pressStart.borderColor = FlxColor.WHITE;
 
     CoolUtil.playMenuSFX(1);
     FlxG.camera.zoom += 0.08;
@@ -183,7 +201,6 @@ function accept() {
         }});
 
         new FlxTimer().start(1.6, _ -> {
-            //switchingState = true;
             FlxG.switchState(new ModState("impostorMenuState"));
         });
     });

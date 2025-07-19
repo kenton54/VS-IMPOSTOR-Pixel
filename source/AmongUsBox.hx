@@ -74,7 +74,7 @@ class AmongUsBox {
         bottomBorder.flipY = true;
         box.add(bottomBorder);
 
-        var verticalDistance:Float = FlxMath.distanceBetween(topLeftCorner, botLeftCorner) - topRightCorner.height;
+        var verticalDistance:Float = FlxMath.distanceBetween(topLeftCorner, botLeftCorner) - botLeftCorner.height;
         var leftBorder:FlxSprite = new FlxSprite(boxBack.x, boxBack.y).loadGraphic(Paths.image("menus/amongusBoxSideBorder-"+style));
         var verticalXScale:Float = leftBorder.width * scale;
         leftBorder.setGraphicSize(verticalXScale, height);

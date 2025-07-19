@@ -167,46 +167,91 @@ function create() {
     mainCam.bgColor = 0x00000000;
     FlxG.cameras.add(mainCam, true);
 
-    var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/mainmenu/bg"));
-    bg.scale.set(baseScale, baseScale);
-    bg.updateHitbox();
-    bg.camera = mainCam;
-    add(bg);
+    var bgLeft:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/mainmenu/bg-left"));
+    bgLeft.scale.set(baseScale, baseScale);
+    bgLeft.updateHitbox();
+    bgLeft.camera = mainCam;
 
-    var top:FlxSprite = new FlxSprite(3 * baseScale, 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top"));
-    top.scale.set(baseScale, baseScale);
-    top.updateHitbox();
-    top.camera = mainCam;
+    var bgRight:FlxSprite = new FlxSprite(FlxG.width).loadGraphic(Paths.image("menus/mainmenu/bg-right"));
+    bgRight.scale.set(baseScale, baseScale);
+    bgRight.updateHitbox();
+    bgRight.x -= bgRight.width;
+    bgRight.camera = mainCam;
 
-    var topShadow:FlxSprite = new FlxSprite(3 * baseScale, (top.y + top.height) - 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top-shadow"));
-    topShadow.scale.set(baseScale, baseScale);
-    topShadow.updateHitbox();
-    topShadow.blend = 9;
-    topShadow.camera = mainCam;
+    var bgDistance:Int = FlxMath.distanceBetween(bgLeft, bgRight) - bgRight.width;
+    var bgMiddle:FlxSprite = new FlxSprite(bgLeft.x + bgLeft.width).loadGraphic(Paths.image("menus/mainmenu/bg-middle"));
+    bgMiddle.scale.set(bgDistance, baseScale);
+    bgMiddle.updateHitbox();
+    bgMiddle.camera = mainCam;
 
-    add(topShadow);
-    add(top);
+    add(bgMiddle);
+    add(bgLeft);
+    add(bgRight);
 
-    discordAvatar = new FlxSprite(top.x + 6 * baseScale, top.y + 2.5 * baseScale);
+    var topLeft:FlxSprite = new FlxSprite(3 * baseScale, 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top-left"));
+    topLeft.scale.set(baseScale, baseScale);
+    topLeft.updateHitbox();
+    topLeft.camera = mainCam;
 
-    if (DiscordUtil.ready) {
-        try {
-            discordAvatar.loadGraphic(DiscordUtil.user.getAvatar(64));
+    var topRight:FlxSprite = new FlxSprite(FlxG.width - 3 * baseScale, topLeft.y).loadGraphic(Paths.image("menus/mainmenu/top-right"));
+    topRight.scale.set(baseScale, baseScale);
+    topRight.updateHitbox();
+    topRight.x -= topRight.width;
+    topRight.camera = mainCam;
+
+    var topDistance:Int = FlxMath.distanceBetween(topLeft, topRight) - topLeft.width + 4 * baseScale;
+    var topMiddle:FlxSprite = new FlxSprite(topLeft.x + topLeft.width, topLeft.y).loadGraphic(Paths.image("menus/mainmenu/top-middle"));
+    topMiddle.scale.set(topDistance, baseScale);
+    topMiddle.updateHitbox();
+    topMiddle.camera = mainCam;
+
+    var topShadowL:FlxSprite = new FlxSprite(topLeft.x, (topLeft.y + topLeft.height) - 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top-shadow"));
+    topShadowL.scale.set(baseScale, baseScale);
+    topShadowL.updateHitbox();
+    topShadowL.blend = 9;
+    topShadowL.camera = mainCam;
+
+    var topShadowR:FlxSprite = new FlxSprite(topRight.x, (topRight.y + topRight.height) - 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/top-shadow"));
+    topShadowR.scale.set(baseScale, baseScale);
+    topShadowR.updateHitbox();
+    topShadowR.blend = 9;
+    topShadowR.camera = mainCam;
+    topShadowR.flipX = true;
+
+    var topShadowDistance:Int = FlxMath.distanceBetween(topShadowL, topShadowR) - topShadowR.width;
+    var topShadowM:FlxSprite = new FlxSprite(topShadowL.x + topShadowL.width, topShadowL.y).makeGraphic(Std.int(topShadowDistance), Std.int(4 * baseScale), 0xFF999999);
+    topShadowM.blend = 9;
+    topShadowM.camera = mainCam;
+
+    add(topShadowM);
+    add(topShadowL);
+    add(topShadowR);
+    add(topMiddle);
+    add(topLeft);
+    add(topRight);
+
+    if (!FlxG.onMobile) {
+        discordAvatar = new FlxSprite(topLeft.x + 6 * baseScale, topLeft.y + 2.5 * baseScale);
+
+        if (DiscordUtil.ready) {
+            try {
+                discordAvatar.loadGraphic(DiscordUtil.user.getAvatar(64));
+            }
+            catch (e:Dynamic) {
+                discordAvatar.loadGraphic(Paths.image("menus/mainmenu/nullAvatar"));
+            }
         }
-        catch (e:Dynamic) {
+        else
             discordAvatar.loadGraphic(Paths.image("menus/mainmenu/nullAvatar"));
-        }
+
+        discordAvatar.camera = mainCam;
+        discordAvatar.shader = new CustomShader("spriteSphereBounds");
+        discordAvatar.shader.uRadius = 0.5;
+        discordAvatar.shader.uCenter = [discordAvatar.width / 2, discordAvatar.height / 2];
+        add(discordAvatar);
     }
-    else
-        discordAvatar.loadGraphic(Paths.image("menus/mainmenu/nullAvatar"));
 
-    discordAvatar.camera = mainCam;
-    discordAvatar.shader = new CustomShader("spriteSphereBounds");
-    discordAvatar.shader.uRadius = 0.5;
-    discordAvatar.shader.uCenter = [discordAvatar.width / 2, discordAvatar.height / 2];
-    add(discordAvatar);
-
-    lightThing = new FlxSprite(top.x + 26 * baseScale, top.y + 4 * baseScale).loadGraphic(Paths.image("menus/mainmenu/lightThing"));
+    lightThing = new FlxSprite(topLeft.x + 26 * baseScale, topLeft.y + 4 * baseScale).loadGraphic(Paths.image("menus/mainmenu/lightThing"));
     lightThing.scale.set(baseScale, baseScale);
     lightThing.updateHitbox();
     lightThing.camera = mainCam;
@@ -224,30 +269,36 @@ function create() {
     lightLight.camera = mainCam;
     lightLight.blend = 0;
 
-    discordUsername = new FunkinText(0, 0, 0, "", 32);
-    discordUsername.borderSize = 4;
-    discordUsername.font = Paths.font("pixeloidsans.ttf");
-    discordUsername.camera = mainCam;
-    add(discordUsername);
-
-    if (DiscordUtil.ready) {
+    if (FlxG.onMobile) {
         lightThing.color = 0xFF43A25A;
         lightGlow.color = 0xFF43A25A;
-        discordUsername.text = DiscordUtil.user.globalName;
-        discordUsername.color = FlxColor.WHITE;
     }
     else {
-        lightThing.color = 0xFF333333;
-        lightGlow.color = 0xFF333333;
-        lightGlow.visible = false;
-        lightLight.visible = false;
-        discordUsername.text = "Disconnected from Discord";
-        discordUsername.color = FlxColor.GRAY;
-    }
+        discordUsername = new FunkinText(0, 0, 0, "", 32);
+        discordUsername.borderSize = 4;
+        discordUsername.font = Paths.font("pixeloidsans.ttf");
+        discordUsername.camera = mainCam;
+        add(discordUsername);
 
-    discordUsername.fieldWidth = discordUsername.width + 40;
-    discordUsername.alignment = "center";
-    discordUsername.setPosition((lightThing.x + lightThing.width) + 2 * baseScale, top.y + 5 * baseScale);
+        if (DiscordUtil.ready) {
+            lightThing.color = 0xFF43A25A;
+            lightGlow.color = 0xFF43A25A;
+            discordUsername.text = DiscordUtil.user.globalName;
+            discordUsername.color = FlxColor.WHITE;
+        }
+        else {
+            lightThing.color = 0xFF333333;
+            lightGlow.color = 0xFF333333;
+            lightGlow.visible = false;
+            lightLight.visible = false;
+            discordUsername.text = "Disconnected from Discord";
+            discordUsername.color = FlxColor.GRAY;
+        }
+
+        discordUsername.fieldWidth = discordUsername.width + 40;
+        discordUsername.alignment = "center";
+        discordUsername.setPosition((lightThing.x + lightThing.width) + 2 * baseScale, topLeft.y + 5 * baseScale);
+    }
 
     add(lightGlow);
     add(lightThing);
@@ -257,7 +308,7 @@ function create() {
     topButtonsGroup.camera = mainCam;
     add(topButtonsGroup);
 
-    var statsButton:FlxSprite = new FlxSprite(top.x + top.width, top.y + top.height);
+    var statsButton:FlxSprite = new FlxSprite(topRight.x + topRight.width, topLeft.y + topLeft.height);
     statsButton.loadGraphic(Paths.image("menus/mainmenu/statsButton"), true, 14, 14);
     statsButton.animation.add("idle", [0], 0, false);
     statsButton.animation.add("click", [1], 0, false);
@@ -267,27 +318,29 @@ function create() {
     statsButton.y -= statsButton.height + 2 * baseScale;
     topButtonsGroup.add(statsButton);
 
-    var discordButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
-    discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
-    discordButton.animation.add("idle", [0], 0, false);
-    discordButton.animation.add("click", [1], 0, false);
-    discordButton.scale.set(baseScale, baseScale);
-    discordButton.updateHitbox();
-    discordButton.x -= 4 * baseScale;
-    topButtonsGroup.add(discordButton);
+    if (!FlxG.onMobile) {
+        var discordButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
+        discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
+        discordButton.animation.add("idle", [0], 0, false);
+        discordButton.animation.add("click", [1], 0, false);
+        discordButton.scale.set(baseScale, baseScale);
+        discordButton.updateHitbox();
+        discordButton.x -= 4 * baseScale;
+        topButtonsGroup.add(discordButton);
 
-    if (debugMode) {
-        var debugButton:FlxSprite = new FlxSprite(discordButton.x - discordButton.width, discordButton.y);
-        debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
-        debugButton.animation.add("idle", [0], 0, false);
-        debugButton.animation.add("click", [1], 0, false);
-        debugButton.scale.set(baseScale, baseScale);
-        debugButton.updateHitbox();
-        debugButton.x -= 4 * baseScale;
-        topButtonsGroup.add(debugButton);
+        if (debugMode) {
+            var debugButton:FlxSprite = new FlxSprite(discordButton.x - discordButton.width, discordButton.y);
+            debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
+            debugButton.animation.add("idle", [0], 0, false);
+            debugButton.animation.add("click", [1], 0, false);
+            debugButton.scale.set(baseScale, baseScale);
+            debugButton.updateHitbox();
+            debugButton.x -= 4 * baseScale;
+            topButtonsGroup.add(debugButton);
+        }
     }
 
-    var title:FlxSprite = new FlxSprite(3 * baseScale, (topShadow.y + topShadow.height) + 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/title"));
+    var title:FlxSprite = new FlxSprite(3 * baseScale, (topShadowL.y + topShadowL.height) + 2 * baseScale).loadGraphic(Paths.image("menus/mainmenu/title"));
     title.scale.set(baseScale, baseScale);
     title.updateHitbox();
     title.camera = mainCam;
@@ -332,23 +385,34 @@ function create() {
     createOtherButtons(3 * baseScale, (divisionThing.y - posV) + 3 * baseScale);
     createFinalButtons(3 * baseScale, posV + 9 * baseScale);
 
-    var windowBorder:FlxSprite = new FlxSprite((buttonsBack.x + buttonsBack.width) + 2 * baseScale, (top.y + top.height) + 3 * baseScale).loadGraphic(Paths.image("menus/mainmenu/windowBorder"));
-    windowBorder.scale.set(baseScale, baseScale);
-    windowBorder.updateHitbox();
-    windowBorder.camera = mainCam;
+    var windowBorderLeft:FlxSprite = new FlxSprite((buttonsBack.x + buttonsBack.width) + 2 * baseScale, (topLeft.y + topLeft.height) + 3 * baseScale).loadGraphic(Paths.image("menus/mainmenu/windowBorder-left"));
+    windowBorderLeft.scale.set(baseScale, baseScale);
+    windowBorderLeft.updateHitbox();
 
-    var windowBorderShadow:FlxSprite = new FlxSprite(windowBorder.x - 1 * baseScale, windowBorder.y + 5 * baseScale).loadGraphic(Paths.image("menus/mainmenu/windowBorder-shadow"));
-    windowBorderShadow.scale.set(baseScale, baseScale);
-    windowBorderShadow.updateHitbox();
-    windowBorderShadow.blend = 9;
-    windowBorderShadow.camera = mainCam;
+    var windowBorderDistance:Int = FlxMath.distanceToPoint(windowBorderLeft, FlxPoint.get(FlxG.width, windowBorderLeft.y));
+    var windowBorderMiddle:FlxSprite = new FlxSprite(windowBorderLeft.x + windowBorderLeft.width, windowBorderLeft.y).loadGraphic(Paths.image("menus/mainmenu/windowBorder-middle"));
+    windowBorderMiddle.scale.set(windowBorderDistance, baseScale);
+    windowBorderMiddle.updateHitbox();
 
-    add(windowBorderShadow);
-    add(windowBorder);
+    var windowBorderShadowL:FlxSprite = new FlxSprite(windowBorderLeft.x - 1 * baseScale, windowBorderLeft.y + 5 * baseScale).loadGraphic(Paths.image("menus/mainmenu/windowBorder-shadow-left"));
+    windowBorderShadowL.scale.set(baseScale, baseScale);
+    windowBorderShadowL.updateHitbox();
+    windowBorderShadowL.blend = 9;
 
-    var spaceHpos:Float = windowBorder.x + 4 * baseScale;
-    var spaceVpos:Float = windowBorder.y + 4 * baseScale;
-    var camWidth:Float = 150 * baseScale - 4 * baseScale;
+    var windowShadowDistance:Int = FlxMath.distanceToPoint(windowBorderShadowL, FlxPoint.get(FlxG.width, windowBorderShadowL.y));
+    var windowBorderShadowM:FlxSprite = new FlxSprite(windowBorderShadowL.x + windowBorderShadowL.width, windowBorderShadowL.y).loadGraphic(Paths.image("menus/mainmenu/windowBorder-shadow-middle"));
+    windowBorderShadowM.scale.set(windowShadowDistance, baseScale);
+    windowBorderShadowM.updateHitbox();
+    windowBorderShadowM.blend = 9;
+
+    add(windowBorderShadowM);
+    add(windowBorderShadowL);
+    add(windowBorderMiddle);
+    add(windowBorderLeft);
+
+    var spaceHpos:Float = windowBorderLeft.x + 4 * baseScale;
+    var spaceVpos:Float = windowBorderLeft.y + 4 * baseScale;
+    var camWidth:Float = FlxG.width - spaceHpos;
     var camHeight:Float = 112 * baseScale - 4 * baseScale * 2;
     spaceCam = new FlxCamera(spaceHpos, spaceVpos, camWidth, camHeight);
 
@@ -358,8 +422,10 @@ function create() {
     FlxG.cameras.add(spaceCam, false);
     FlxG.cameras.add(frontCam, true);
 
-    windowBorder.camera = frontCam;
-    windowBorderShadow.camera = frontCam;
+    windowBorderLeft.camera = frontCam;
+    windowBorderMiddle.camera = frontCam;
+    windowBorderShadowL.camera = frontCam;
+    windowBorderShadowM.camera = frontCam;
 
     spaceGroup = new FlxTypedSpriteGroup();
     spaceGroup.camera = spaceCam;
@@ -464,28 +530,46 @@ function createFinalButtons(x:Float, y:Float) {
     }
 }
 
+var mobileBackButton:FlxSprite;
+
+function postCreate() {
+    if (FlxG.onMobile) {
+        mobileBackButton = new FlxSprite(FlxG.width, FlxG.height);
+        mobileBackButton.frames = Paths.getFrames("app/backButton");
+        mobileBackButton.animation.addByPrefix("idle", "idle normal", 0, true);
+        mobileBackButton.animation.addByPrefix("hold", "hold", 0, true);
+        mobileBackButton.animation.addByPrefix("back", "back", 24, false);
+        mobileBackButton.animation.play("idle");
+        mobileBackButton.scale.set(4, 4);
+        mobileBackButton.updateHitbox();
+        mobileBackButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
+
+        mobileBackButton.x -= mobileBackButton.width * 1.25;
+        mobileBackButton.y -= mobileBackButton.height * 1.1;
+        add(mobileBackButton);
+    }
+}
+
 var checkTimer:Float = 0;
 var checkLimit:Float = 5;
 function update(elapsed:Float) {
-    handleInput();
-    handleMouse();
-    handleMainButtons();
-    handleTopButtons();
-
-    if (currentSelectionMode == "window")
+    if (currentSelectionMode == "main") {
+        handleMainButtons();
+        handleTopButtons();
+    }
+    else if (currentSelectionMode == "window")
         handleWindow();
 
+    handleKeyboard();
+    if (FlxG.onMobile)
+        handleTouch();
+    else
+        handleMouse();
+}
+
+function postUpdate(elapsed:Float) {
     if (storyState[storySequence] == "postWeek1")
         floatSus();
-
-    /*
-    if (checkTimer >= checkLimit) {
-        updateDiscordUserStatus();
-    }
-
-    checkTimer += elapsed;
-    if (checkTimer > checkLimit + 0.025) checkTimer = 0;
-    */
 }
 
 // main, window
@@ -501,6 +585,32 @@ var curWindow:Array<Dynamic> = [];
 var curWindowLogic:Void = null;
 var curWindowChooseBehaviour:Void = null;
 
+var allowKeyboard:Bool = true;
+function handleKeyboard() {
+    if (!allowKeyboard) return;
+
+    if (currentSelectionMode == "main") {
+        if (controls.ACCEPT) {
+            checkSelectedMainEntry();
+        }
+
+        if (controls.BACK) {
+            MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
+            FlxG.switchState(new ModState("impostorTitleState"));
+        }
+    }
+    else if (currentSelectionMode == "window") {
+        if (controls.ACCEPT) {
+            checkSelectedWindowEntry();
+        }
+
+        if (controls.BACK) {
+            closeWindowSection();
+            currentSelectionMode = "main";
+        }
+    }
+}
+
 var allowMouse:Bool = true;
 function handleMouse() {
     if (!allowMouse) return;
@@ -513,6 +623,17 @@ function handleMouse() {
 
     if (mouseIsOverABtn) {
         Mouse.cursor = "button";
+
+        if (currentSelectionMode == "main") {
+            if (FlxG.mouse.justReleased) {
+                checkSelectedMainEntry();
+            }
+        }
+        else if (currentSelectionMode == "window") {
+            if (FlxG.mouse.justReleased) {
+                checkSelectedWindowEntry();
+            }
+        }
     }
     else {
         lastMainEntry = -1;
@@ -522,58 +643,96 @@ function handleMouse() {
     }
 }
 
-var allowKeyboard:Bool = true;
-function handleInput() {
-    if (!allowKeyboard) return;
+var isTouchingButton:Bool = false;
+var allowTouch:Bool = true;
+function handleTouch() {
+    if (!allowTouch) return;
 
-    if (currentSelectionMode == "main") {
-        if (controls.ACCEPT || mouseIsOverABtn && FlxG.mouse.justPressed) {
-            checkSelectedMainEntry();
+    for (touch in FlxG.touches.list) {
+        if (touch.overlaps(mobileBackButton)) {
+            if (touch.pressed) {
+                mobileBackButton.animation.play("hold", true);
+            }
+            else if (touch.justReleased) {
+                CoolUtil.playMenuSFX(2);
+                mobileBackButton.animation.play("back", true);
+                mobileBackButton.animation.finishCallback = _ -> {
+                    FlxG.switchState(new ModState("impostorTitleState"));
+                };
+            }
+            else {
+                mobileBackButton.animation.play("idle", true);
+            }
+        }
+        else {
+            mobileBackButton.animation.play("idle", true);
         }
 
-        if (controls.BACK) {
-            MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
-            FlxG.switchState(new ModState("impostorTitleState"));
-        }
-    }
-    else if (currentSelectionMode == "window") {
-        if (controls.ACCEPT || mouseIsOverABtn && FlxG.mouse.justPressed) {
-            checkSelectedWindowEntry();
-        }
-
-        if (controls.BACK) {
-            closeWindowSection();
-            currentSelectionMode = "main";
+        if (isTouchingButton) {
+            if (currentSelectionMode == "main") {
+                if (touch.justReleased)
+                    checkSelectedMainEntry();
+            }
+            else if (currentSelectionMode == "window") {
+                if (touch.justReleased)
+                    checkSelectedWindowEntry();
+            }
         }
     }
 }
 
 var mouseIsOverABtn:Bool = false;
 function handleMainButtons() {
-    mouseIsOverABtn = false;
+    if (FlxG.onMobile) {
+        isTouchingButton = false;
 
-    if (!allowMouse) return;
-    if (!FlxG.mouse.visible) return;
+        if (!allowTouch) return;
 
-    if (currentSelectionMode == "main") {
-        var i:Int = 0;
-        buttonsMainGroup.forEach(function(button) {
-            if (FlxG.mouse.overlaps(button)) {
-                mouseIsOverABtn = true;
-                button.animation.play("hover");
+        for (touch in FlxG.touches.list) {
+            if (currentSelectionMode == "main") {
+                var i:Int = 0;
+                buttonsMainGroup.forEach(function(button) {
+                    if (touch.overlaps(button)) {
+                        isTouchingButton = true;
+                        button.animation.play("hover");
+                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
-
-                curMainEntry = i;
-
-                playSoundMain();
+                        curMainEntry = i;
+                    }
+                    else {
+                        button.animation.play("idle");
+                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                    }
+                    i++;
+                });
             }
-            else {
-                button.animation.play("idle");
-                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
-            }
-            i++;
-        });
+        }
+    }
+    else {
+        mouseIsOverABtn = false;
+
+        if (!allowMouse) return;
+        if (!FlxG.mouse.visible) return;
+
+        if (currentSelectionMode == "main") {
+            var i:Int = 0;
+            buttonsMainGroup.forEach(function(button) {
+                if (FlxG.mouse.overlaps(button)) {
+                    mouseIsOverABtn = true;
+                    button.animation.play("hover");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+
+                    curMainEntry = i;
+
+                    playSoundMain();
+                }
+                else {
+                    button.animation.play("idle");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                }
+                i++;
+            });
+        }
     }
 }
 
@@ -597,7 +756,7 @@ function handleTopButtons() {
                 if (button == topButtonsGroup.members[0]) {
                     disableInput();
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    openSubState(new ModSubState("statsMenuSubstate"));
+                    openSubState(new ModSubState("statsMenuSubState"));
                     persistentUpdate = persistentDraw = true;
                 }
                 if (button == topButtonsGroup.members[1]) {
@@ -795,38 +954,77 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
-                mouseIsOverABtn = false;
+                if (FlxG.onMobile) {
+                    isTouchingButton = false;
 
-                if (allowMouse) {
-                    var col:Int = 0;
-                    windowGroup.forEach(function(column) {
-                        if (column is FlxTypedSpriteGroup) {
-                            var rw:Int = 0;
-                            column.forEach(function(row) {
-                                if (row is FlxTypedSpriteGroup) {
-                                    row.forEach(function(grp) {
-                                        if (grp is FlxTypedSpriteGroup) {
-                                            if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                grp.members[0].animation.play("hover");
-                                                grp.members[1].color = curWindow[col][rw].colorHover;
+                    if (allowTouch) {
+                        for (touch in FlxG.touches.list) {
+                            var col:Int = 0;
+                            windowGroup.forEach(function(column) {
+                                var rw:Int = 0;
+                                if (column is FlxTypedSpriteGroup) {
+                                    column.forEach(function(row) {
+                                        if (row is FlxTypedSpriteGroup) {
+                                            row.forEach(function(grp) {
+                                                if (grp is FlxTypedSpriteGroup) {
+                                                    if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
+                                                        grp.members[0].animation.play("hover");
+                                                        grp.members[1].color = curWindow[col][rw].colorHover;
 
-                                                mouseIsOverABtn = true;
-                                                curWindowEntry[0] = col;
-                                                curWindowEntry[1] = rw;
-                                                playSoundWindow();
-                                            }
-                                            else {
-                                                grp.members[0].animation.play("idle");
-                                                grp.members[1].color = curWindow[col][rw].colorIdle;
-                                            }
+                                                        isTouchingButton = true;
+                                                        curWindowEntry[0] = col;
+                                                        curWindowEntry[1] = rw;
+                                                        playSoundWindow();
+                                                    }
+                                                    else {
+                                                        grp.members[0].animation.play("idle");
+                                                        grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                    }
+                                                }
+                                            });
+                                            rw++;
                                         }
                                     });
-                                    rw++;
+                                    col++;
                                 }
                             });
-                            col++;
                         }
-                    });
+                    }
+                }
+                else {
+                    mouseIsOverABtn = false;
+
+                    if (allowMouse) {
+                        var col:Int = 0;
+                        windowGroup.forEach(function(column) {
+                            if (column is FlxTypedSpriteGroup) {
+                                var rw:Int = 0;
+                                column.forEach(function(row) {
+                                    if (row is FlxTypedSpriteGroup) {
+                                        row.forEach(function(grp) {
+                                            if (grp is FlxTypedSpriteGroup) {
+                                                if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                                    grp.members[0].animation.play("hover");
+                                                    grp.members[1].color = curWindow[col][rw].colorHover;
+
+                                                    mouseIsOverABtn = true;
+                                                    curWindowEntry[0] = col;
+                                                    curWindowEntry[1] = rw;
+                                                    playSoundWindow();
+                                                }
+                                                else {
+                                                    grp.members[0].animation.play("idle");
+                                                    grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                }
+                                            }
+                                        });
+                                        rw++;
+                                    }
+                                });
+                                col++;
+                            }
+                        });
+                    }
                 }
             }, function() {
                 CoolUtil.playMenuSFX(1);
@@ -910,28 +1108,61 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
-                if (allowMouse) {
-                    var col:Int = 0;
-                    windowGroup.forEach(function(column) {
-                        if (column is FlxTypedSpriteGroup) {
-                            var rw:Int = 0;
-                            column.forEach(function(row) {
-                                if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                    row.members[0].alpha = 0.25;
+                if (FlxG.onMobile) {
+                    isTouchingButton = false;
 
-                                    mouseIsOverABtn = true;
-                                    curWindowEntry[0] = col;
-                                    curWindowEntry[1] = rw;
-                                    playSoundWindow();
+                    for (touch in FlxG.touches.list) {
+                        if (allowTouch) {
+                            var col:Int = 0;
+                            windowGroup.forEach(function(column) {
+                                if (column is FlxTypedSpriteGroup) {
+                                    var rw:Int = 0;
+                                    column.forEach(function(row) {
+                                        if (row.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
+                                            row.members[0].alpha = 0.25;
+
+                                            isTouchingButton = true;
+                                            curWindowEntry[0] = col;
+                                            curWindowEntry[1] = rw;
+                                            playSoundWindow();
+                                        }
+                                        else {
+                                            row.members[0].alpha = 0;
+                                        }
+                                        rw++;
+                                    });
+                                    col++;
                                 }
-                                else {
-                                    row.members[0].alpha = 0;
-                                }
-                                rw++;
                             });
-                            col++;
                         }
-                    });
+                    }
+                }
+                else {
+                    mouseIsOverABtn = false;
+
+                    if (allowMouse) {
+                        var col:Int = 0;
+                        windowGroup.forEach(function(column) {
+                            if (column is FlxTypedSpriteGroup) {
+                                var rw:Int = 0;
+                                column.forEach(function(row) {
+                                    if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                        row.members[0].alpha = 0.25;
+
+                                        mouseIsOverABtn = true;
+                                        curWindowEntry[0] = col;
+                                        curWindowEntry[1] = rw;
+                                        playSoundWindow();
+                                    }
+                                    else {
+                                        row.members[0].alpha = 0;
+                                    }
+                                    rw++;
+                                });
+                                col++;
+                            }
+                        });
+                    }
                 }
             }, function() {
                 CoolUtil.playMenuSFX(2);
@@ -939,7 +1170,7 @@ function checkSelectedMainEntry() {
                 var dur:Float = 1;
                 FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
                 new FlxTimer().start(dur, _ -> {
-                    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
+                    if (!FlxG.onMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
                     ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
                 });
             });
@@ -951,6 +1182,9 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     curWindow = windowArray;
     curWindowLogic = updateLogic;
     curWindowChooseBehaviour = onChoose;
+
+    if (mobileBackButton != null)
+        mobileBackButton.visible = false;
 
     var correctCornerPos:Float = 4 * baseScale;
 
@@ -969,7 +1203,8 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     xButton.scale.set(baseScale, baseScale);
     xButton.updateHitbox();
 
-    var division:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, xButton.y + xButton.height).makeGraphic(138 * baseScale, baseScale, FlxColor.WHITE);
+    var divisionWidth:Float = spaceCam.width - correctCornerPos - 4 * baseScale;
+    var division:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, xButton.y + xButton.height).makeGraphic(Std.int(divisionWidth), baseScale, FlxColor.WHITE);
     division.y += 2;
 
     membersCreation(correctCornerPos, division.y + division.height, windowGroup);
@@ -979,13 +1214,22 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     windowGroup.add(xButton);
 }
 
-var curMousePos:FlxPoint = FlxPoint.get();
 function handleWindow() {
     curWindowLogic();
 
-    if (windowGroup.members[windowGroup.length - 1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-        if (FlxG.mouse.justPressed)
-            closeWindowSection();
+    if (FlxG.onMobile) {
+        for (touch in FlxG.touches.list) {
+            if (windowGroup.members[windowGroup.length - 1].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
+                if (touch.justReleased)
+                    closeWindowSection();
+            }
+        }
+    }
+    else {
+        if (windowGroup.members[windowGroup.length - 1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+            if (FlxG.mouse.justPressed)
+                closeWindowSection();
+        }
     }
 }
 
@@ -998,6 +1242,9 @@ function closeWindowSection() {
     curWindowEntry[1] = 0;
     lastWindowEntry[0] = -1;
     lastWindowEntry[1] = -1;
+
+    if (mobileBackButton != null)
+        mobileBackButton.visible = true;
 
     windowGroup.forEach(function(spr) {
         spr.destroy();
@@ -1085,11 +1332,13 @@ function onCloseSubstate() {
 function enableInput() {
     allowMouse = true;
     allowKeyboard = true;
+    allowTouch = true;
 }
 
 function disableInput() {
     allowMouse = false;
     allowKeyboard = false;
+    allowTouch = false;
     FlxG.mouse.visible = false;
     Mouse.cursor = "arrow";
 }

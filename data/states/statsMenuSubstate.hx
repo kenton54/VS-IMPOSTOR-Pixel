@@ -90,11 +90,11 @@ function create() {
 }
 
 function postCreate() {
-    FlxG.mouse.visible = true;
+    if (!FlxG.onMobile) FlxG.mouse.visible = true;
 }
 
 function update(elapsed:Float) {
-    if (controls.BACK || FlxG.mouse.overlaps(closeButton) && FlxG.mouse.justPressed) {
+    if (controls.BACK || (!FlxG.onMobile ? (FlxG.mouse.overlaps(closeButton) && FlxG.mouse.justPressed) : (FlxG.touches.getFirst() != null && FlxG.touches.getFirst().overlaps(closeButton) && FlxG.touches.getFirst().justPressed))) {
         CoolUtil.playMenuSFX(2);
         close();
     }
