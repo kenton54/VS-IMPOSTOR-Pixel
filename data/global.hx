@@ -6,17 +6,11 @@ import lime.graphics.Image;
 import openfl.system.Capabilities;
 import StorySequenceManipulator;
 
-var impPixelDebugMode:Bool = true;
-var storySequenceDebugInfo:ImpostorStorySequence;
+var debugMode:Bool = true;
 
 function new() {
     WindowUtils.winTitle = "VS IMPOSTOR Pixel";
     FlxSprite.defaultAntialiasing = false;
-
-    if (impPixelDebugMode) {
-        storySequenceDebugInfo = new ImpostorStorySequence();
-        FlxG.addChildBelowMouse(storySequenceDebugInfo.sprite);
-    }
 
     initSaveData();
 
@@ -59,7 +53,7 @@ function initSaveData() {
 }
 
 function update(elapsed:Float) {
-    if (impPixelDebugMode) {
+    if (debugMode) {
         if (FlxG.keys.justPressed.F5) reloadState();
     }
 }
