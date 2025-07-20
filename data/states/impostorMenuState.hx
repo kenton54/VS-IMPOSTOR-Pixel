@@ -563,7 +563,8 @@ function postCreate() {
     backButton.y -= backButton.height * 1.1;
     add(backButton);
 
-    FlxG.mouse.visible = (!usingKeyboard && !FlxG.onMobile);
+    FlxG.mouse.visible = !usingKeyboard;
+    if (FlxG.onMobile) FlxG.mouse.visible = false;
 }
 
 var checkTimer:Float = 0;
