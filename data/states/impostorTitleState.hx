@@ -83,10 +83,13 @@ function create() {
 var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
 
 var transitioning:Bool = false;
+var pressedWithKeyboard:Bool = false;
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.F11) FlxG.fullscreen = !FlxG.fullscreen;
 
     if (FlxG.mouse.justPressed || FlxG.touches.getFirst() != null && FlxG.touches.getFirst().justPressed) {
+        pressedWithKeyboard = false;
+
         if (transitionTimer.active && !transitioning) {
             transitionTimer.cancel();
             FlxG.switchState(new MainMenuState());
@@ -97,6 +100,8 @@ function update(elapsed:Float) {
         }
     }
     if (controls.ACCEPT) {
+        pressedWithKeyboard = true;
+
         if (transitionTimer.active && !transitioning) {
             transitionTimer.cancel();
             FlxG.switchState(new MainMenuState());
@@ -201,7 +206,7 @@ function accept() {
         }});
 
         new FlxTimer().start(1.6, _ -> {
-            FlxG.switchState(new ModState("impostorMenuState"));
+            FlxG.switchState(new ModState("impostorMenuState", [pressedWithKeyboard]));
         });
     });
 }

@@ -102,7 +102,6 @@ function update(elapsed:Float) {
 
 function destroy() {
     buttonsBack.destroy();
-
     FlxG.cameras.remove(statsCam);
     statsCam.destroy();
 }

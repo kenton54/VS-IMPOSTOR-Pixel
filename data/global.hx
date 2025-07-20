@@ -25,9 +25,9 @@ function new() {
     Application.current.onExit.add(closeGame);
 
     if (FlxG.onMobile) {
-        var screenWidth:Float = Capabilities.screenResolutionX;
-        var screenHeight:Float = Capabilities.screenResolutionY;
-        resizeGame(Std.int(screenWidth), Std.int(screenHeight));
+        //var screenWidth:Float = Capabilities.screenResolutionX;
+        //var screenHeight:Float = Capabilities.screenResolutionY;
+        resizeGame(1600, 720);
     }
     else {
         setWindowParameters();

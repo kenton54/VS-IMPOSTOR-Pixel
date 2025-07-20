@@ -78,7 +78,7 @@ var modButton:Array<Dynamic> = [
 ];
 
 var allButtonsArray:Array<Dynamic> = [];
-var buttonsTotalLength:Int = mainButtons.length + otherButtons.length;
+var buttonsTotalLength:Int = mainButtons.length + otherButtons.length + modButton.length;
 var buttonGroup:FlxTypedSpriteGroup;
 var buttonsMainGroup:FlxTypedSpriteGroup;
 var buttonsLabelGroup:FlxTypedSpriteGroup;
@@ -157,6 +157,11 @@ var spaceGroup:FlxTypedSpriteGroup;
 var windowGroup:FlxTypedSpriteGroup;
 
 var baseScale:Float = 5;
+
+// it seems that it doesnt work?
+public function new(keyboardQM:Bool) {
+    usingKeyboard = keyboardQM;
+}
 
 function create() {
     DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
@@ -422,6 +427,15 @@ function create() {
     FlxG.cameras.add(spaceCam, false);
     FlxG.cameras.add(frontCam, true);
 
+    var windowShine:FlxSprite = new FlxSprite(spaceCam.width, 4 * baseScale).loadGraphic(Paths.image("menus/mainmenu/window-shine"));
+    windowShine.scale.set(baseScale, baseScale);
+    windowShine.updateHitbox();
+    windowShine.blend = 0;
+    windowShine.alpha = 0.15;
+    windowShine.x -= windowShine.width * (spaceCam.width / 760);
+    windowShine.camera = spaceCam;
+    add(windowShine);
+
     windowBorderLeft.camera = frontCam;
     windowBorderMiddle.camera = frontCam;
     windowBorderShadowL.camera = frontCam;
@@ -519,7 +533,7 @@ function createFinalButtons(x:Float, y:Float) {
         buttonSprite.updateHitbox();
         buttonsMainGroup.add(buttonSprite);
 
-        var buttonLabel:FunkinText = new FunkinText(x, yPos + 0.2, buttonSprite.width, button.name, 20, false);
+        var buttonLabel:FunkinText = new FunkinText(x, yPos - 2.4, buttonSprite.width, button.name, 25.5, false);
         buttonLabel.font = Paths.font("pixeloidsans.ttf");
         buttonLabel.color = button.colorIdle;
         buttonLabel.alignment = "right";
@@ -530,29 +544,33 @@ function createFinalButtons(x:Float, y:Float) {
     }
 }
 
-var mobileBackButton:FlxSprite;
-
+var backButton:FlxSprite;
+var pressedBack:Bool = false;
 function postCreate() {
-    if (FlxG.onMobile) {
-        mobileBackButton = new FlxSprite(FlxG.width, FlxG.height);
-        mobileBackButton.frames = Paths.getFrames("app/backButton");
-        mobileBackButton.animation.addByPrefix("idle", "idle normal", 0, true);
-        mobileBackButton.animation.addByPrefix("hold", "hold", 0, true);
-        mobileBackButton.animation.addByPrefix("back", "back", 24, false);
-        mobileBackButton.animation.play("idle");
-        mobileBackButton.scale.set(4, 4);
-        mobileBackButton.updateHitbox();
-        mobileBackButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
+    backButton = new FlxSprite(FlxG.width, FlxG.height);
+    backButton.frames = Paths.getFrames("app/backButton");
+    backButton.animation.addByPrefix("idle", "idle normal", 0, true);
+    backButton.animation.addByPrefix("hover", "hover", 0, true);
+    backButton.animation.addByPrefix("hold", "hold", 0, true);
+    backButton.animation.addByPrefix("back", "spin", 24, false);
+    backButton.animation.play("idle");
+    backButton.scale.set(4, 4);
+    backButton.updateHitbox();
+    backButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
+    backButton.visible = !usingKeyboard;
 
-        mobileBackButton.x -= mobileBackButton.width * 1.25;
-        mobileBackButton.y -= mobileBackButton.height * 1.1;
-        add(mobileBackButton);
-    }
+    backButton.x -= backButton.width * 1.25;
+    backButton.y -= backButton.height * 1.1;
+    add(backButton);
+
+    FlxG.mouse.visible = (!usingKeyboard && !FlxG.onMobile);
 }
 
 var checkTimer:Float = 0;
 var checkLimit:Float = 5;
 function update(elapsed:Float) {
+    if (pressedBack) return;
+
     if (currentSelectionMode == "main") {
         handleMainButtons();
         handleTopButtons();
@@ -586,13 +604,20 @@ var curWindowLogic:Void = null;
 var curWindowChooseBehaviour:Void = null;
 
 var allowKeyboard:Bool = true;
+var usingKeyboard:Bool = !FlxG.onMobile;
 function handleKeyboard() {
     if (!allowKeyboard) return;
 
     if (currentSelectionMode == "main") {
-        if (controls.ACCEPT) {
+        if (controls.UP_P)
+            changeMainEntry(-1);
+        if (controls.DOWN_P)
+            changeMainEntry(1);
+
+        if (!usingKeyboard) return;
+
+        if (controls.ACCEPT)
             checkSelectedMainEntry();
-        }
 
         if (controls.BACK) {
             MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
@@ -600,9 +625,10 @@ function handleKeyboard() {
         }
     }
     else if (currentSelectionMode == "window") {
-        if (controls.ACCEPT) {
+        if (!usingKeyboard) return;
+
+        if (controls.ACCEPT)
             checkSelectedWindowEntry();
-        }
 
         if (controls.BACK) {
             closeWindowSection();
@@ -611,15 +637,24 @@ function handleKeyboard() {
     }
 }
 
+function useKeyboard() {
+    usingKeyboard = true;
+    backButton.visible = false;
+    FlxG.mouse.visible = false;
+}
+
 var allowMouse:Bool = true;
 function handleMouse() {
     if (!allowMouse) return;
 
     if (FlxG.mouse.justMoved) {
-        if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
+        usingKeyboard = false;
+        FlxG.mouse.visible = true;
+        if (currentSelectionMode == "main") backButton.visible = true;
     }
 
     if (!FlxG.mouse.visible) return;
+    if (usingKeyboard) return;
 
     if (mouseIsOverABtn) {
         Mouse.cursor = "button";
@@ -641,6 +676,27 @@ function handleMouse() {
         lastWindowEntry[1] = -1;
         Mouse.cursor = "arrow";
     }
+
+    if (FlxG.mouse.overlaps(backButton)) {
+        if (FlxG.mouse.pressed) {
+            backButton.animation.play("hold", true);
+        }
+        else if (FlxG.mouse.justReleased) {
+            pressedBack = true;
+            CoolUtil.playMenuSFX(2);
+
+            backButton.animation.play("back", true);
+            new FlxTimer().start(0.5, _ -> {
+                FlxG.switchState(new ModState("impostorTitleState"));
+            });
+        }
+        else {
+            backButton.animation.play("hover", true);
+        }
+    }
+    else {
+        backButton.animation.play("idle", true);
+    }
 }
 
 var isTouchingButton:Bool = false;
@@ -649,24 +705,33 @@ function handleTouch() {
     if (!allowTouch) return;
 
     for (touch in FlxG.touches.list) {
-        if (touch.overlaps(mobileBackButton)) {
+        if (touch.justReleased) {
+            usingKeyboard = false;
+            if (currentSelectionMode == "main") backButton.visible = true;
+        }
+    }
+
+    if (usingKeyboard) return;
+
+    for (touch in FlxG.touches.list) {
+        if (touch.overlaps(backButton)) {
             if (touch.pressed) {
-                mobileBackButton.animation.play("hold", true);
+                backButton.animation.play("hold", true);
             }
             else if (touch.justReleased) {
+                pressedBack = true;
                 CoolUtil.playMenuSFX(2);
-                mobileBackButton.animation.play("back", true);
-                mobileBackButton.animation.finishCallback = _ -> {
+
+                backButton.animation.play("back", true);
+                new FlxTimer().start(0.5, _ -> {
                     FlxG.switchState(new ModState("impostorTitleState"));
-                };
+                });
             }
-            else {
-                mobileBackButton.animation.play("idle", true);
-            }
+            else
+                backButton.animation.play("hover", true);
         }
-        else {
-            mobileBackButton.animation.play("idle", true);
-        }
+        else
+            backButton.animation.play("idle", true);
 
         if (isTouchingButton) {
             if (currentSelectionMode == "main") {
@@ -683,6 +748,21 @@ function handleTouch() {
 
 var mouseIsOverABtn:Bool = false;
 function handleMainButtons() {
+    if (usingKeyboard) {
+        for (i in 0...buttonsTotalLength) {
+            if (i == curMainEntry) {
+                buttonsMainGroup.members[i].animation.play("hover");
+                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+            }
+            else {
+                buttonsMainGroup.members[i].animation.play("idle");
+                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+            }
+        }
+
+        return;
+    }
+
     if (FlxG.onMobile) {
         isTouchingButton = false;
 
@@ -698,6 +778,7 @@ function handleMainButtons() {
                         buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
                         curMainEntry = i;
+                        playSoundMain();
                     }
                     else {
                         button.animation.play("idle");
@@ -723,7 +804,6 @@ function handleMainButtons() {
                     buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
                     curMainEntry = i;
-
                     playSoundMain();
                 }
                 else {
@@ -851,7 +931,6 @@ function handleTopButtons() {
 }
 
 function playSoundMain() {
-    //trace(curEntry, lastEntry);
     if (curMainEntry != lastMainEntry) {
         CoolUtil.playMenuSFX(0);
         lastMainEntry = curMainEntry;
@@ -866,6 +945,14 @@ function playSoundWindow() {
 
         trace("Column Pos: "+curWindowEntry[0],"Row Pos: "+curWindowEntry[1]);
     }
+}
+
+function changeMainEntry(change:Int) {
+    useKeyboard();
+
+    curMainEntry = FlxMath.wrap(curMainEntry + change, 0, buttonsTotalLength - 1);
+
+    playSoundMain();
 }
 
 function checkSelectedMainEntry() {
@@ -1071,6 +1158,9 @@ function checkSelectedMainEntry() {
         case 1:
         case 2:
         case 3:
+            disableInput();
+            openSubState(new ModSubState("options/impostorOptionsSubState"));
+            persistentUpdate = persistentDraw = true;
         case 4:
         case 5:
             modsArray = [];
@@ -1097,7 +1187,7 @@ function checkSelectedMainEntry() {
                         rowGroup.add(bg);
 
                         var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? "Disable Mods" : row, 28);
-                        daMod.font = Paths.font("pixeloidsans.ttf");
+                        daMod.font = Paths.font("retrogaming.ttf");
                         daMod.borderSize = 3;
                         if (daHeight < 30) {
                             daMod.scale.y = daHeight / 30;
@@ -1183,8 +1273,7 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     curWindowLogic = updateLogic;
     curWindowChooseBehaviour = onChoose;
 
-    if (mobileBackButton != null)
-        mobileBackButton.visible = false;
+    backButton.visible = false;
 
     var correctCornerPos:Float = 4 * baseScale;
 
@@ -1243,8 +1332,8 @@ function closeWindowSection() {
     lastWindowEntry[0] = -1;
     lastWindowEntry[1] = -1;
 
-    if (mobileBackButton != null)
-        mobileBackButton.visible = true;
+    if (!usingKeyboard)
+        backButton.visible = true;
 
     windowGroup.forEach(function(spr) {
         spr.destroy();
