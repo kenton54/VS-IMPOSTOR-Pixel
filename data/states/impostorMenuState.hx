@@ -579,7 +579,7 @@ function update(elapsed:Float) {
     else if (currentSelectionMode == "window")
         handleWindow();
 
-    handleKeyboard();
+    handleKeyboard(elapsed);
     if (FlxG.onMobile)
         handleTouch();
     else
@@ -606,7 +606,11 @@ var curWindowChooseBehaviour:Void = null;
 
 var allowKeyboard:Bool = true;
 var usingKeyboard:Bool = !FlxG.onMobile;
-function handleKeyboard() {
+var holdTimer:Float = 0;
+var maxHeldTime:Float = 0.5;
+var frameDelayer:Int = 0;
+var maxDelay:Int = 2;
+function handleKeyboard(elapsed:Float) {
     if (!allowKeyboard) return;
 
     if (currentSelectionMode == "main") {
@@ -615,7 +619,40 @@ function handleKeyboard() {
         if (controls.DOWN_P)
             changeMainEntry(1);
 
+        if (controls.UP) {
+            if (holdTimer >= maxHeldTime) {
+                if (frameDelayer >= maxDelay) {
+                    changeMainEntry(-1);
+                    frameDelayer = 0;
+                }
+                else {
+                    frameDelayer++;
+                }
+            }
+            else
+                holdTimer += elapsed;
+        }
+        else if (controls.DOWN) {
+            if (holdTimer >= maxHeldTime)
+                if (frameDelayer >= maxDelay) {
+                    changeMainEntry(1);
+                    frameDelayer = 0;
+                }
+                else {
+                    frameDelayer++;
+                }
+            else
+                holdTimer += elapsed;
+        }
+        else {
+            frameDelayer = 0;
+            holdTimer = 0;
+        }
+
         if (!usingKeyboard) return;
+
+        if (controls.SWITCHMOD)
+            statsMenu();
 
         if (controls.ACCEPT)
             checkSelectedMainEntry();
@@ -626,6 +663,15 @@ function handleKeyboard() {
         }
     }
     else if (currentSelectionMode == "window") {
+        if (controls.UP_P)
+            changeWindowEntry(-1, 0);
+        if (controls.DOWN_P)
+            changeWindowEntry(1, 0);
+        if (controls.LEFT_P)
+            changeWindowEntry(0, -1);
+        if (controls.RIGHT_P)
+            changeWindowEntry(0, 1);
+
         if (!usingKeyboard) return;
 
         if (controls.ACCEPT)
@@ -835,10 +881,7 @@ function handleTopButtons() {
 
             if (FlxG.mouse.justReleased) {
                 if (button == topButtonsGroup.members[0]) {
-                    disableInput();
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    openSubState(new ModSubState("statsMenuSubState"));
-                    persistentUpdate = persistentDraw = true;
+                    statsMenu();
                 }
                 if (button == topButtonsGroup.members[1]) {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
@@ -931,6 +974,13 @@ function handleTopButtons() {
     });
 }
 
+function statsMenu() {
+    disableInput();
+    FlxG.sound.play(Paths.sound("menu/select"), 1);
+    openSubState(new ModSubState("statsMenuSubState"));
+    persistentUpdate = persistentDraw = true;
+}
+
 function playSoundMain() {
     if (curMainEntry != lastMainEntry) {
         CoolUtil.playMenuSFX(0);
@@ -954,6 +1004,15 @@ function changeMainEntry(change:Int) {
     curMainEntry = FlxMath.wrap(curMainEntry + change, 0, buttonsTotalLength - 1);
 
     playSoundMain();
+}
+
+function changeWindowEntry(changeColumn:Int, changeRow:Int) {
+    useKeyboard();
+
+    curWindowEntry[0] = FlxMath.wrap(curWindowEntry[0] + changeColumn, 0, curWindow.length - 1);
+    curWindowEntry[1] = FlxMath.wrap(curWindowEntry[1] + changeRow, 0, curWindow[curWindowEntry[0]].length - 1);
+
+    playSoundWindow();
 }
 
 function checkSelectedMainEntry() {
@@ -1042,6 +1101,46 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
+                if (usingKeyboard) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxTypedSpriteGroup) {
+                            var rw:Int = 0;
+                            if (col == curWindowEntry[0]) {
+                                column.forEach(function(row) {
+                                    if (row is FlxTypedSpriteGroup) {
+                                        if (rw == curWindowEntry[1]) {
+                                            row.forEach(function(grp) {
+                                                grp.members[0].animation.play("hover");
+                                                grp.members[1].color = curWindow[col][rw].colorHover;
+                                            });
+                                        }
+                                        else {
+                                            row.forEach(function(grp) {
+                                                grp.members[0].animation.play("idle");
+                                                grp.members[1].color = curWindow[col][rw].colorIdle;
+                                            });
+                                        }
+                                        rw++;
+                                    }
+                                });
+                            }
+                            else {
+                                column.forEach(function(row) {
+                                    if (row is FlxTypedSpriteGroup) {
+                                        row.forEach(function(grp) {
+                                            grp.members[0].animation.play("idle");
+                                            grp.members[1].color = curWindow[col][rw].colorIdle;
+                                        });
+                                        rw++;
+                                    }
+                                });
+                            }
+                            col++;
+                        }
+                    });
+                    return;
+                }
                 if (FlxG.onMobile) {
                     isTouchingButton = false;
 
@@ -1049,8 +1148,8 @@ function checkSelectedMainEntry() {
                         for (touch in FlxG.touches.list) {
                             var col:Int = 0;
                             windowGroup.forEach(function(column) {
-                                var rw:Int = 0;
                                 if (column is FlxTypedSpriteGroup) {
+                                    var rw:Int = 0;
                                     column.forEach(function(row) {
                                         if (row is FlxTypedSpriteGroup) {
                                             row.forEach(function(grp) {
@@ -1199,6 +1298,29 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
+                if (usingKeyboard) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxTypedSpriteGroup) {
+                            var rw:Int = 0;
+                            if (col == curWindowEntry[0]) {
+                                column.forEach(function(row) {
+                                    if (rw == curWindowEntry[1])
+                                        row.members[0].alpha = 0.25;
+                                    rw++;
+                                });
+                            }
+                            else {
+                                column.forEach(function(row) {
+                                    row.members[0].alpha = 0;
+                                    rw++;
+                                });
+                            }
+                            col++;
+                        }
+                    });
+                    return;
+                }
                 if (FlxG.onMobile) {
                     isTouchingButton = false;
 

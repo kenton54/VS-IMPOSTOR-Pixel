@@ -4,9 +4,8 @@ import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import lime.graphics.Image;
 import openfl.system.Capabilities;
-import StorySequenceManipulator;
 
-var debugMode:Bool = true;
+var debugMode:Bool = (true && !FlxG.onMobile);
 
 function new() {
     WindowUtils.winTitle = "VS IMPOSTOR Pixel";
@@ -87,7 +86,6 @@ function closeGame() {}
 
 function destroy() {
     Application.current.onExit.remove(closeGame);
-    if (impPixelDebugMode) storySequenceDebugInfo.destroy();
 
     Application.current.window.minWidth = null;
     Application.current.window.minHeight = null;
