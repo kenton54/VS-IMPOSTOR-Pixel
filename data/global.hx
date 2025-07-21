@@ -38,7 +38,6 @@ function setWindowParameters() {
 function initSaveData() {
     // Options
     FlxG.save.data.impPixelTimeBar ??= true;
-    FlxG.save.data.impPixelxBRZ ??= false;
     FlxG.save.data.impPixelStrumBG ??= 0;
 
     // Mod Source

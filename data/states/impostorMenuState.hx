@@ -547,7 +547,7 @@ function createFinalButtons(x:Float, y:Float) {
 var backButton:FlxSprite;
 var pressedBack:Bool = false;
 function postCreate() {
-    backButton = new FlxSprite(FlxG.width, FlxG.height);
+    backButton = new FlxSprite(FlxG.width * 0.975, FlxG.height);
     backButton.frames = Paths.getFrames("app/backButton");
     backButton.animation.addByPrefix("idle", "idle normal", 0, true);
     backButton.animation.addByPrefix("hover", "hover", 0, true);
@@ -559,7 +559,7 @@ function postCreate() {
     backButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
     backButton.visible = !usingKeyboard;
 
-    backButton.x -= backButton.width * 1.25;
+    backButton.x -= backButton.width;
     backButton.y -= backButton.height * 1.1;
     add(backButton);
 

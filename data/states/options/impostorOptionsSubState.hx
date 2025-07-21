@@ -17,19 +17,19 @@ var categories:Array<String> = [];
 var curCategory:Script;
 var curCategoryIndex:Int = -1;
 var lastCategoryIndex:Int = -1;
-public var categoryContents:FlxTypedSpriteGroup;
+var categoryBounds:Array<Float> = [];
 
 var closeButton:FlxSprite;
 
 var scale:Float = 5;
 
 function create() {
-    for (category in FileSystem.readDirectory(Assets.getPath(Paths.getPath("data/states/options")))) {
+    var path:String = FileSystem.absolutePath(Assets.getPath(Paths.getPath("data/states/options")));
+    for (category in FileSystem.readDirectory(path)) {
         category = removeExtension(category);
         categories.push(category);
     }
     categories.remove(categories[categories.indexOf("impostorOptionsSubState")]);
-    trace(categories);
 
     optionsCam = new FlxCamera();
     optionsCam.bgColor = 0x80000000;
@@ -75,7 +75,7 @@ function create() {
     phoneScreen.add(categoriesGroup);
 
     var categoriesHeight:Float = optionsBox.height / categories.length;
-    trace(categoriesHeight);
+    //trace(categoriesHeight);
     for (i in 0...categories.length) {
         var categoryGrp:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(0, categoriesHeight * i);
         categoriesGroup.add(categoryGrp);
@@ -101,8 +101,7 @@ function create() {
     startTxt.y -= startTxt.height / 2;
     phoneScreen.add(startTxt);
 
-    categoryContents = new FlxTypedSpriteGroup(generalWidth, titleVerBounds);
-    phoneScreen.add(categoryContents);
+    categoryBounds = [phoneBack.x + generalWidth, phoneBack.y + titleVerBounds, optionsBox.width, optionsBox.height];
 
     closeButton = new FlxSprite(phoneSpr.x - 4 * scale, phoneSpr.y - 4 * scale).loadGraphic(Paths.image("menus/mainmenu/x"));
     closeButton.scale.set(scale, scale);
@@ -120,7 +119,7 @@ function removeExtension(s:String):String {
 }
 
 function postCreate() {
-    FlxG.mouse.visible = true;
+    if (!FlxG.onMobile) FlxG.mouse.visible = true;
 }
 
 // prevents from opening a category IMMEDIATLY after opening this substate
@@ -162,16 +161,16 @@ function handleMouse() {
 
 function handleTouch() {
     if (canInteract) {
-        for (i => category in categoriesGroup.members) {
-            if (touch.overlaps(category.members[0])) {
-                if (touch.justReleased) {
-                    curCategoryIndex = i;
-                    updateCategory();
+        for (touch in FlxG.touches.list) {
+            for (i => category in categoriesGroup.members) {
+                if (touch.overlaps(category.members[0])) {
+                    if (touch.justReleased) {
+                        curCategoryIndex = i;
+                        updateCategory();
+                    }
                 }
             }
-        }
 
-        for (touch in FlxG.touches.list) {
             if (touch.overlaps(closeButton) && touch.justReleased) {
                 closeOptions();
             }
@@ -192,10 +191,14 @@ function updateCategory() {
         FlxG.sound.play(Paths.sound("menu/select"), 1);
         lastCategoryIndex = curCategoryIndex;
 
-        categoryContents.clear();
+        if (curCategory != null) {
+            curCategory.call("destroy");
+            curCategory.destroy();
+        }
         curCategory = Script.create(Paths.script("data/states/options/" + categories[curCategoryIndex]));
         curCategory.setParent(this);
         curCategory.load();
+        curCategory.set("bounds", [categoryBounds[0], categoryBounds[1], categoryBounds[2], categoryBounds[3]]);
         curCategory.call("create");
 
         for (i => category in categoriesGroup.members) {
@@ -218,8 +221,11 @@ function updateCategory() {
         lastCategoryIndex = -1;
         curCategoryIndex = -1;
 
-        if (curCategory != null)
+        if (curCategory != null) {
+            curCategory.call("destroy");
             curCategory.destroy();
+            curCategory = null;
+        }
 
         for (i => category in categoriesGroup.members) {
             category.members[0].color = FlxColor.BLACK;
