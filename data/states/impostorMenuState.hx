@@ -547,6 +547,7 @@ function createFinalButtons(x:Float, y:Float) {
 var backButton:FlxSprite;
 var pressedBack:Bool = false;
 function postCreate() {
+    var backBtnScale:Float = FlxG.onMobile ? 4 : 3;
     backButton = new FlxSprite(FlxG.width * 0.975, FlxG.height);
     backButton.frames = Paths.getFrames("app/backButton");
     backButton.animation.addByPrefix("idle", "idle normal", 0, true);
@@ -554,7 +555,7 @@ function postCreate() {
     backButton.animation.addByPrefix("hold", "hold", 0, true);
     backButton.animation.addByPrefix("back", "spin", 24, false);
     backButton.animation.play("idle");
-    backButton.scale.set(4, 4);
+    backButton.scale.set(backBtnScale, backBtnScale);
     backButton.updateHitbox();
     backButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
     backButton.visible = !usingKeyboard;

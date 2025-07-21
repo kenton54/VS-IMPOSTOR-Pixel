@@ -148,7 +148,7 @@ function postCreate() {
 
     if (FlxG.save.data.impPixelStrumBG > 0) {
         strumlineBackground = new FlxSprite(playerStrums.members[0].x).makeGraphic(playerStrums.members[0].width * (playerStrums.members.length - 1) - 10, FlxG.height, FlxColor.BLACK);
-        strumlineBackground.alpha = FlxG.save.data.impPixelStrumBG / 100;
+        strumlineBackground.alpha = FlxG.save.data.impPixelStrumBG;
         strumlineBackground.camera = camHUD;
         insert(members.indexOf(playerStrums), strumlineBackground);
     }

@@ -1,5 +1,8 @@
 import flixel.group.FlxTypedSpriteGroup;
+//import flixel.text.FlxInputText; // must wait until next codename update :face_holding_back_tears: (i need flixel +5.9.0)
 import funkin.backend.scripting.Script;
+import funkin.editors.ui.UITextBox;
+import funkin.editors.ui.UIText;
 import funkin.options.Options;
 import sys.FileSystem;
 importScript("data/variables");
@@ -18,6 +21,7 @@ var curCategory:Script;
 var curCategoryIndex:Int = -1;
 var lastCategoryIndex:Int = -1;
 var categoryBounds:Array<Float> = [];
+var curCategoryGrp:FlxTypedSpriteGroup;
 
 var closeButton:FlxSprite;
 
@@ -59,7 +63,7 @@ function create() {
     optionsBox.alpha = 0.2;
     optionsBox.blend = 0;
 
-    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, "Options", 64, false);
+    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, "Options", 65, false);
     phoneTitle.font = Paths.font("pixeloidsans.ttf");
     phoneTitle.color = FlxColor.BLACK;
     phoneTitle.alignment = "right";
@@ -86,7 +90,7 @@ function create() {
         bg.alpha = 0.6;
         categoryGrp.add(bg);
 
-        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, categories[i], 32, false);
+        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, categories[i], 33, false);
         title.font = Paths.font("pixeloidsans.ttf");
         title.color = FlxColor.BLACK;
         title.alignment = "center";
@@ -102,6 +106,8 @@ function create() {
     phoneScreen.add(startTxt);
 
     categoryBounds = [phoneBack.x + generalWidth, phoneBack.y + titleVerBounds, optionsBox.width, optionsBox.height];
+    curCategoryGrp = new FlxTypedSpriteGroup(categoryBounds[0] - 70, categoryBounds[1] - 65);
+    phoneScreen.add(curCategoryGrp);
 
     closeButton = new FlxSprite(phoneSpr.x - 4 * scale, phoneSpr.y - 4 * scale).loadGraphic(Paths.image("menus/mainmenu/x"));
     closeButton.scale.set(scale, scale);
@@ -191,15 +197,15 @@ function updateCategory() {
         FlxG.sound.play(Paths.sound("menu/select"), 1);
         lastCategoryIndex = curCategoryIndex;
 
+        deleteCategory();
+
         if (curCategory != null) {
-            curCategory.call("destroy");
             curCategory.destroy();
         }
         curCategory = Script.create(Paths.script("data/states/options/" + categories[curCategoryIndex]));
         curCategory.setParent(this);
         curCategory.load();
-        curCategory.set("bounds", [categoryBounds[0], categoryBounds[1], categoryBounds[2], categoryBounds[3]]);
-        curCategory.call("create");
+        curCategoryOptions = curCategory.get("options");
 
         for (i => category in categoriesGroup.members) {
             if (i == curCategoryIndex) {
@@ -215,11 +221,15 @@ function updateCategory() {
         }
 
         startTxt.visible = false;
+
+        createCategory();
     }
     else {
         CoolUtil.playMenuSFX(2);
         lastCategoryIndex = -1;
         curCategoryIndex = -1;
+
+        deleteCategory();
 
         if (curCategory != null) {
             curCategory.call("destroy");
@@ -235,6 +245,122 @@ function updateCategory() {
 
         startTxt.visible = true;
     }
+}
+
+var curCategoryOptions:Array<Dynamic> = [];
+function createCategory() {
+    for (i in 0...curCategoryOptions.length) {
+        var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        curCategoryGrp.add(group);
+
+        var height:Float = 52;
+        var iHeight:Float = height * i; // this is necessary otherwise positions will get fucked up
+        var x:Float = 0;
+        var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);
+        bg.alpha = 0;
+        bg.blend = 9;
+        group.add(bg);
+
+        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, curCategoryOptions[i].name, 30);
+        label.font = Paths.font("yoster-island.ttf");
+        label.borderSize = 3;
+        label.y -= label.height / 2;
+        group.add(label);
+
+        var optionTypeScale:Float = 2;
+        if (curCategoryOptions[i].type == "bool") {
+            var checkbox:FlxSprite = new FlxSprite(x + bg.width, iHeight + bg.height / 2);
+            checkbox.frames = Paths.getFrames("menus/options/checkbox");
+            checkbox.animation.addByPrefix("false", "idle false", 0, true);
+            checkbox.animation.addByPrefix("trans true", "transition true", 24, false);
+            checkbox.animation.addByPrefix("true", "idle true", 0, true);
+            checkbox.animation.addByPrefix("trans false", "transition false", 24, false);
+            checkbox.animation.play(Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar)));
+            checkbox.scale.set(optionTypeScale, optionTypeScale);
+            checkbox.updateHitbox();
+            checkbox.x -= checkbox.width;
+            checkbox.y -= checkbox.height / 1.5;
+            group.add(checkbox);
+        }
+        else if (curCategoryOptions[i].type == "integer") {
+            var inputBox:FlxSprite = new FlxSprite(x + bg.width - 2 * optionTypeScale, iHeight + bg.height / 2).loadGraphic(Paths.image("menus/options/inputBox"));
+            inputBox.scale.set(optionTypeScale, optionTypeScale);
+            inputBox.updateHitbox();
+            inputBox.x -= inputBox.width;
+            inputBox.y -= inputBox.height / 2;
+
+            var rightBtn:FlxSprite = new FlxSprite(inputBox.x - 2 * optionTypeScale, inputBox.y);
+            rightBtn.frames = Paths.getFrames("menus/options/buttons");
+            rightBtn.animation.addByIndices("idle", "add", [1], "", 0, true);
+            rightBtn.animation.addByIndices("press", "add", [2], "", 0, true);
+            rightBtn.animation.play("idle");
+            rightBtn.scale.set(optionTypeScale, optionTypeScale);
+            rightBtn.updateHitbox();
+            rightBtn.x -= rightBtn.width;
+
+            var leftBtn:FlxSprite = new FlxSprite(rightBtn.x - 2 * optionTypeScale, rightBtn.y);
+            leftBtn.frames = Paths.getFrames("menus/options/buttons");
+            leftBtn.animation.addByIndices("idle", "subtract", [1], "", 0, true);
+            leftBtn.animation.addByIndices("press", "subtract", [2], "", 0, true);
+            leftBtn.animation.play("idle");
+            leftBtn.scale.set(optionTypeScale, optionTypeScale);
+            leftBtn.updateHitbox();
+            leftBtn.x -= leftBtn.width;
+
+            // change this when new codename update arrives
+            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y, inputBox.width, "", 24);
+            inputTxt.font = Paths.font("retrogaming.ttf");
+            inputTxt.borderSize = 2.2;
+            inputTxt.alignment = "center";
+            inputTxt.text = Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar));
+
+            group.add(leftBtn);
+            group.add(rightBtn);
+            group.add(inputBox);
+            group.add(inputTxt);
+        }
+        else if (curCategoryOptions[i].type == "percent") {
+            var inputBox:FlxSprite = new FlxSprite(x + bg.width - 2 * optionTypeScale, iHeight + bg.height / 2).loadGraphic(Paths.image("menus/options/percentBox"));
+            inputBox.scale.set(optionTypeScale, optionTypeScale);
+            inputBox.updateHitbox();
+            inputBox.x -= inputBox.width;
+            inputBox.y -= inputBox.height / 2;
+
+            var rightBtn:FlxSprite = new FlxSprite(inputBox.x - 2 * optionTypeScale, inputBox.y);
+            rightBtn.frames = Paths.getFrames("menus/options/buttons");
+            rightBtn.animation.addByIndices("idle", "add", [1], "", 0, true);
+            rightBtn.animation.addByIndices("press", "add", [2], "", 0, true);
+            rightBtn.animation.play("idle");
+            rightBtn.scale.set(optionTypeScale, optionTypeScale);
+            rightBtn.updateHitbox();
+            rightBtn.x -= rightBtn.width;
+
+            var leftBtn:FlxSprite = new FlxSprite(rightBtn.x - 2 * optionTypeScale, rightBtn.y);
+            leftBtn.frames = Paths.getFrames("menus/options/buttons");
+            leftBtn.animation.addByIndices("idle", "subtract", [1], "", 0, true);
+            leftBtn.animation.addByIndices("press", "subtract", [2], "", 0, true);
+            leftBtn.animation.play("idle");
+            leftBtn.scale.set(optionTypeScale, optionTypeScale);
+            leftBtn.updateHitbox();
+            leftBtn.x -= leftBtn.width;
+
+            // change this when new codename update arrives
+            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y, inputBox.width - 15 * optionTypeScale, "", 24);
+            inputTxt.font = Paths.font("retrogaming.ttf");
+            inputTxt.borderSize = 2.2;
+            inputTxt.alignment = "center";
+            inputTxt.text = Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar) * 100);
+
+            group.add(leftBtn);
+            group.add(rightBtn);
+            group.add(inputBox);
+            group.add(inputTxt);
+        }
+    }
+}
+
+function deleteCategory() {
+    curCategoryGrp.clear();
 }
 
 function closeOptions() {

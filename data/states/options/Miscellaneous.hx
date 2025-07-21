@@ -1,5 +1,1 @@
-var bounds:Array<Float> = [];
-
-function create() {
-    trace("miscellaneous");
-}
+import funkin.options.Options;
