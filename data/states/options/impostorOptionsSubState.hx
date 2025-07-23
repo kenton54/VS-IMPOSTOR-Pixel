@@ -174,7 +174,7 @@ function update(elapsed:Float) {
         handleMouse();
 }
 
-var usingKeyboard:Bool = true;
+var usingKeyboard:Bool = !FlxG.onMobile;
 function handleKeyboard() {
     if (controls.UP_P)
         changeOptionSelec(-1);
@@ -252,6 +252,13 @@ function handleTouch() {
                     curCategoryIndex = i;
                     updateCategory();
                 }
+            }
+        }
+
+        for (i => group in curCategoryGrp.members) {
+            if (touch.overlaps(group.members[0])) {
+                curOption = i;
+                playSound();
             }
         }
 
@@ -390,7 +397,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
 
     if (FlxG.onMobile) {
         for (touch in FlxG.touches.list) {
-            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justReleased) {
+            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
                 FlxG.sound.play(Paths.sound("menu/select"), 1);
 
                 var value:Bool;
@@ -407,7 +414,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
         }
     }
     else {
-        if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justReleased) {
+        if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justPressed) {
             FlxG.sound.play(Paths.sound("menu/select"), 1);
 
             var value:Bool;
@@ -1087,7 +1094,7 @@ function handleFunction(position:Int) {
     }
     if (FlxG.onMobile) {
         for (touch in FlxG.touches.list) {
-            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justReleased) {
+            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
                 FlxG.sound.play(Paths.sound("menu/select"), 1);
                 curCategory.call("onCallFunction", [position]);
             }

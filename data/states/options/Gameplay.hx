@@ -48,7 +48,7 @@ var options:Array<Dynamic> = [
     },
     {
         name: "StrumLines' Background",
-        description: "If unchecked, the game will use the orginal red and green health bar from the Base Game (also known as V-Slice).",
+        description: "Give the strumline a semi-(or fully)-transparent background.",
         type: "percent",
         change: 0.05,
         savevar: "impPixelStrumBG",
