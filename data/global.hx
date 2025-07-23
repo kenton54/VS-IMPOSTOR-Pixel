@@ -37,6 +37,7 @@ function setWindowParameters() {
 
 function initSaveData() {
     // Options
+    FlxG.save.data.middlescroll ??= FlxG.onMobile ? true : false;
     FlxG.save.data.impPixelTimeBar ??= true;
     FlxG.save.data.impPixelStrumBG ??= 0;
 

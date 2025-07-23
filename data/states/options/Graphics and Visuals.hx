@@ -47,10 +47,37 @@ var options:Array<Dynamic> = [
         savepoint: Options
     },
     {
-        name: "Freeze Game on Unfocus",
+        name: "Pause on Unfocus",
         description: FlxG.onMobile ? "If checked, opening the notification bar will freeze the game until you come back." : "If checked, going to another window will freeze the game until you come back.",
         type: "bool",
         savevar: "autoPause",
         savepoint: Options
     }
 ];
+
+function onChangeBool(option:Int, newValue:Bool) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+
+    if (options[option].savevar == "autoPause") {
+        FlxG.autoPause = newValue;
+    }
+}
+
+function onChangeInt(option:Int, newValue:Int) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+
+    if (options[option].savevar == "framerate") {
+        if (FlxG.updateFramerate < newValue)
+			FlxG.drawFramerate = FlxG.updateFramerate = newValue;
+		else
+			FlxG.updateFramerate = FlxG.drawFramerate = newValue;
+    }
+}
+
+function onChangeFloat(option:Int, newValue:Float) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+}
+
+function onChangeChoice(option:Int, newValue:Int) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, options[option].choices[newValue]);
+}

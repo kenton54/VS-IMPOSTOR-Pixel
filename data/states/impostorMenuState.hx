@@ -1001,18 +1001,14 @@ function playSoundWindow() {
 
 function changeMainEntry(change:Int) {
     useKeyboard();
-
     curMainEntry = FlxMath.wrap(curMainEntry + change, 0, buttonsTotalLength - 1);
-
     playSoundMain();
 }
 
 function changeWindowEntry(changeColumn:Int, changeRow:Int) {
     useKeyboard();
-
     curWindowEntry[0] = FlxMath.wrap(curWindowEntry[0] + changeColumn, 0, curWindow.length - 1);
     curWindowEntry[1] = FlxMath.wrap(curWindowEntry[1] + changeRow, 0, curWindow[curWindowEntry[0]].length - 1);
-
     playSoundWindow();
 }
 
