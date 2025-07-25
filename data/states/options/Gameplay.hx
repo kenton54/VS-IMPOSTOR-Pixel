@@ -60,6 +60,10 @@ function onChangeBool(option:Int, newValue:Bool) {
     Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
 }
 
+function onChangeInt(option:Int, newValue:Int) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+}
+
 function onChangeFloat(option:Int, newValue:Float) {
     Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
 }
