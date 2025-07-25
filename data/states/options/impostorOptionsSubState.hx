@@ -1362,6 +1362,9 @@ function closeOptions() {
 }
 
 function destroy() {
+    Options.save();
+    FlxG.save.flush();
+
     if (curCategory != null)
         curCategory.destroy();
 
