@@ -1,0 +1,3 @@
+<controls>
+    <control name="Dodge" saveName="dodge" keyP1="SPACE" keyP2=""/>
+</controls>

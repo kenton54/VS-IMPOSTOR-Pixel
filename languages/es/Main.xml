@@ -1,0 +1,22 @@
+<language>
+    <group name="MainMenu" prefix="mainMenu.">
+        <group name="Main">
+            <str id="play">Jugar</str>
+            <str id="achievements">Logros</str>
+            <str id="shop">Tienda</str>
+            <str id="options">Opciones</str>
+            <str id="credits">Créditos</str>
+            <str id="mods">Mods</str>
+            <str id="worldmap">Mundo Abierto</str>
+            <str id="freeplay">Freeplay</str>
+            <str id="tutorial">Como Jugar</str>
+        </group>
+
+        <group name="Editors" prefix="editors.">
+            <str id="charter">Editor de Charts</str>
+            <str id="character">Editor de Personajes</str>
+            <str id="impSequenceManipulator">Impostor Sequence Manipulator</str>
+            <str id="debug">Opciones de Depurador</str>
+        </group>
+    </group>
+</language>

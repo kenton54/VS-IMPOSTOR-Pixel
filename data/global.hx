@@ -8,7 +8,7 @@ import openfl.system.Capabilities;
 var debugMode:Bool = (true && !FlxG.onMobile);
 
 function new() {
-    WindowUtils.winTitle = "VS IMPOSTOR Pixel";
+    //WindowUtils.winTitle = "VS IMPOSTOR Pixel";
     FlxSprite.defaultAntialiasing = false;
 
     initSaveData();
@@ -29,7 +29,7 @@ function new() {
 }
 
 function setWindowParameters() {
-    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
+    //window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
 
     window.minWidth = 1280;
     window.minHeight = 720;
@@ -51,11 +51,13 @@ function initSaveData() {
     FlxG.save.data.impPixelFlags ??= [];
 }
 
+/*
 function update(elapsed:Float) {
     if (debugMode) {
         if (FlxG.keys.justPressed.F5) reloadState();
     }
 }
+*/
 
 function reloadState() {
     FlxG.resetState();

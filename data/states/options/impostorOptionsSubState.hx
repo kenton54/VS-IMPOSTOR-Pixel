@@ -1,6 +1,7 @@
 import flixel.group.FlxTypedSpriteGroup;
 //import flixel.text.FlxInputText; // must wait until next codename update :face_holding_back_tears: (i need flixel +5.9.0)
 import funkin.backend.scripting.Script;
+import funkin.backend.utils.TranslationUtil;
 import funkin.editors.ui.UITextBox;
 import funkin.editors.ui.UIText;
 import funkin.options.Options;
@@ -281,38 +282,51 @@ function changeOptionSelec(change:Int) {
 }
 
 function handleOptions() {
-    for (i => group in curCategoryGrp.members) {
-        if (i == curOption) {
-            group.members[0].alpha = 0.1;
+    if (categories[curCategoryIndex] == "Controls") {}
+    else if (categories[curCategoryIndex] == "Languages") {
+        for (i => group in curCategoryGrp.members) {
+            if (i == curOption)
+                group.members[0].alpha = 0.1;
+            else
+                group.members[0].alpha = 0;
 
-            if (curCategoryOptions[i].type == "bool") {
-                handleBoolean(i, group.members[2]);
-            }
-            if (curCategoryOptions[i].type == "integer") {
-                group.members[2].visible = true;
-                group.members[3].visible = true;
-                handleAdditions(i, group.members[2], group.members[3], group.members[5]);
-            }
-            if (curCategoryOptions[i].type == "percent") {
-                group.members[2].visible = true;
-                group.members[3].visible = true;
-                handlePercentage(i, group.members[2], group.members[3], group.members[5]);
-            }
-            if (curCategoryOptions[i].type == "choice") {
-                group.members[2].visible = true;
-                group.members[3].visible = true;
-                handleChoices(i, group.members[2], group.members[3], group.members[5]);
-            }
-            if (curCategoryOptions[i].type == "function") {
-                handleFunction(i);
-            }
+            handleLanguages(i);
         }
-        else {
-            group.members[0].alpha = 0;
+    }
+    else {
+        for (i => group in curCategoryGrp.members) {
+            if (i == curOption) {
+                group.members[0].alpha = 0.1;
 
-            if (curCategoryOptions[i].type == "integer" || curCategoryOptions[i].type == "percent" || curCategoryOptions[i].type == "choice") {
-                group.members[2].visible = false;
-                group.members[3].visible = false;
+                if (curCategoryOptions[i].type == "bool") {
+                    handleBoolean(i, group.members[2]);
+                }
+                if (curCategoryOptions[i].type == "integer") {
+                    group.members[2].visible = true;
+                    group.members[3].visible = true;
+                    handleAdditions(i, group.members[2], group.members[3], group.members[5]);
+                }
+                if (curCategoryOptions[i].type == "percent") {
+                    group.members[2].visible = true;
+                    group.members[3].visible = true;
+                    handlePercentage(i, group.members[2], group.members[3], group.members[5]);
+                }
+                if (curCategoryOptions[i].type == "choice") {
+                    group.members[2].visible = true;
+                    group.members[3].visible = true;
+                    handleChoices(i, group.members[2], group.members[3], group.members[5]);
+                }
+                if (curCategoryOptions[i].type == "function") {
+                    handleFunction(i);
+                }
+            }
+            else {
+                group.members[0].alpha = 0;
+
+                if (curCategoryOptions[i].type == "integer" || curCategoryOptions[i].type == "percent" || curCategoryOptions[i].type == "choice") {
+                    group.members[2].visible = false;
+                    group.members[3].visible = false;
+                }
             }
         }
     }
@@ -321,9 +335,13 @@ function handleOptions() {
 }
 
 function updateDescription() {
-    if (categories[curCategoryIndex] == "Options" || curCategoryOptions != null && curCategoryOptions.length < 1) {
+    if (categories[curCategoryIndex] == "Controls" || curCategoryOptions != null && curCategoryOptions.length < 1) {
         descriptionGroup.members[0].visible = false;
         descriptionGroup.members[1].visible = false;
+    }
+    else if (categories[curCategoryIndex] == "Languages") {
+        var posBox:Float = 138 - 30 * 2;
+        descriptionGroup.members[0].y = categoryBounds[0] + posBox - descriptionGroup.members[0].height;
     }
     else {
         try {
@@ -1108,6 +1126,15 @@ function handleFunction(position:Int) {
     }
 }
 
+function handleLanguages(index:Int) {
+    if (index == curOption) {
+        if (usingKeyboard && controls.ACCEPT) {
+            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
+        }
+    }
+}
+
 function playSound() {
     if (curOption != lastOption) {
         CoolUtil.playMenuSFX(0);
@@ -1142,7 +1169,7 @@ function updateCategory() {
         if (FlxG.onMobile && categories[curCategoryIndex] == "Gameplay") {
             curCategoryOptions.insert(1, {
                 name: "Middlescroll",
-                description: "If checked, your notes will be centered.",
+                description: "If checked, your notes will be centered, making the notes easier to read (for mobile users).",
                 type: "bool",
                 savevar: "middlescroll",
                 savepoint: FlxG.save.data
@@ -1164,7 +1191,17 @@ function updateCategory() {
 
         startTxt.visible = false;
 
-        createCategory();
+        if (categories[curCategoryIndex] == "Controls") {
+            curCategory.call("createGroup");
+            curCategory.get("group");
+        }
+        else if (categories[curCategoryIndex] == "Languages") {
+            setupLanguages();
+        }
+        else
+            createCategory();
+
+        trace(curCategoryOptions);
     }
     else {
         CoolUtil.playMenuSFX(2);
@@ -1346,6 +1383,29 @@ function createCategory() {
             group.add(inputBox);
             group.add(inputTxt);
         }
+    }
+}
+
+function setupLanguages() {
+    for (i in 0...curCategoryOptions.length) {
+        var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        curCategoryGrp.add(group);
+
+        var language:String = curCategoryOptions[i].split("/")[1];
+
+        var height:Float = 52;
+        var iHeight:Float = height * i;
+        var x:Float = 0;
+        var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);
+        bg.alpha = 0;
+        bg.blend = 9;
+        group.add(bg);
+
+        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, language, 30);
+        languageLabel.font = Paths.font("yoster-island.ttf");
+        languageLabel.borderSize = 3;
+        languageLabel.y -= languageLabel.height / 2;
+        group.add(languageLabel);
     }
 }
 

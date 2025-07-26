@@ -4,6 +4,7 @@ import flixel.tweens.FlxTweenType;
 import flixel.ui.FlxButton;
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.utils.DiscordUtil;
+import funkin.backend.utils.TranslationUtil;
 //import funkin.backend.utils.HttpUtil;
 import funkin.backend.MusicBeatTransition;
 import funkin.editors.character.CharacterSelection;
@@ -31,21 +32,21 @@ var lightLight:FlxSprite;
 
 var mainButtons:Array<Dynamic> = [
     {
-        name: "Play",
+        name: TranslationUtil.translate("mainMenu.play", null, "Play"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/play"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: "Achievements",
+        name: TranslationUtil.translate("mainMenu.achievements", null, "Achievements"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/achievements"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: "Shop",
+        name: TranslationUtil.translate("mainMenu.shop", null, "Shop"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/shop"),
         colorIdle: 0xFF0A3C33,
@@ -54,14 +55,14 @@ var mainButtons:Array<Dynamic> = [
 ];
 var otherButtons:Array<Dynamic> = [
     {
-        name: "Options",
+        name: TranslationUtil.translate("mainMenu.options", null, "Options"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/options"),
         colorIdle: 0xFFAAE2DC,
         colorHover: 0xFFFFFFFF
     },
     {
-        name: "Credits",
+        name: TranslationUtil.translate("mainMenu.credits", null, "Credits"),
         available: (storyState[storySequence] == "start") ? false : true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
@@ -70,7 +71,7 @@ var otherButtons:Array<Dynamic> = [
 ];
 var modButton:Array<Dynamic> = [
     {
-        name: "Mods",
+        name: TranslationUtil.translate("mainMenu.mods", null, "Mods"),
         available: true,
         colorIdle: 0xFFFFFFFF,
         colorHover: 0xFFFFFFFF
@@ -88,7 +89,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "World Map",
+                name: TranslationUtil.translate("mainMenu.worldmap", null, "World Map"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/worldmap"),
                 colorIdle: 0xFF0A3C33,
@@ -96,7 +97,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
                 transition: "data/transitions/closingSharpCircle"
             },
             {
-                name: "Freeplay",
+                name: TranslationUtil.translate("mainMenu.freeplay", null, "Freeplay"),
                 available: (storyState[storySequence] == "start") ? false : true,
                 image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
                 colorIdle: 0xFF0A3C33,
@@ -108,7 +109,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "How to Play",
+                name: TranslationUtil.translate("mainMenu.tutorial", null, "How to Play"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/tutorial"),
                 colorIdle: 0xFFAAE2DC,
@@ -123,7 +124,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "Chart Editor",
+                name: TranslationUtil.translate("mainMenu.editors.charter", null, "Chart Editor"),
                 image: Paths.image("editors/icons/chart"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
@@ -132,7 +133,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "Character Editor",
+                name: TranslationUtil.translate("mainMenu.editors.character", null, "Character Editor"),
                 image: Paths.image("editors/icons/character"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
@@ -141,7 +142,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "Debug Options",
+                name: TranslationUtil.translate("mainMenu.editors.debug", null, "Debug Options"),
                 image: Paths.image("editors/icons/options"),
                 transition: "data/transitions/right2leftSharpCircle"
             }

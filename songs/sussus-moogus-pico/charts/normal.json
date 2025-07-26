@@ -1,7 +1,13 @@
 {
+	"stage": "polus1",
+	"scrollSpeed": 2.2,
+	"chartVersion": "1.6.0",
 	"codenameChart": true,
 	"strumLines": [
 		{
+			"keyCount": 4,
+			"strumScale": 1,
+			"position": "dad",
 			"notes": [
 				{
 					"id": 0,
@@ -1301,7 +1307,7 @@
 				},
 				{
 					"id": 0,
-					"sLen": 290.322580645166,
+					"sLen": 290.322580645152,
 					"time": 104903.225806452,
 					"type": 0
 				},
@@ -1343,7 +1349,7 @@
 				},
 				{
 					"id": 3,
-					"sLen": 290.322580645166,
+					"sLen": 290.322580645181,
 					"time": 107612.903225806,
 					"type": 0
 				},
@@ -1391,7 +1397,7 @@
 				},
 				{
 					"id": 0,
-					"sLen": 290.322580645254,
+					"sLen": 290.322580645239,
 					"time": 117290.322580645,
 					"type": 0
 				},
@@ -1744,23 +1750,20 @@
 					"type": 0
 				}
 			],
+			"characters": [
+				"red-crewmate"
+			],
+			"type": 0,
 			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"position": "dad",
-			"strumScale": 1,
 			"vocalsSuffix": "",
-			"strumLinePos": 0.25,
-			"type": 0,
-			"characters": [
-				"red-crewmate"
-			]
+			"strumLinePos": 0.25
 		},
 		{
-			"strumScale": 1,
-			"position": "boyfriend",
+			"keyCount": 4,
 			"notes": [
 				{
 					"id": 0,
@@ -2400,7 +2403,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 96.7741935483864,
+					"sLen": 96.7741935483937,
 					"time": 52451.6129032258,
 					"type": 0
 				},
@@ -3156,7 +3159,7 @@
 				},
 				{
 					"id": 0,
-					"sLen": 290.322580645152,
+					"sLen": 290.322580645166,
 					"time": 101419.35483871,
 					"type": 0
 				},
@@ -3186,19 +3189,19 @@
 				},
 				{
 					"id": 0,
-					"sLen": 483.870967741939,
+					"sLen": 483.870967741925,
 					"time": 108967.741935484,
 					"type": 0
 				},
 				{
 					"id": 1,
-					"sLen": 870.96774193547,
+					"sLen": 870.967741935456,
 					"time": 109548.387096774,
 					"type": 0
 				},
 				{
 					"id": 3,
-					"sLen": 483.870967741837,
+					"sLen": 483.870967741823,
 					"time": 110516.129032258,
 					"type": 0
 				},
@@ -3252,7 +3255,7 @@
 				},
 				{
 					"id": 3,
-					"sLen": 290.322580645166,
+					"sLen": 290.322580645152,
 					"time": 113806.451612903,
 					"type": 0
 				},
@@ -3839,20 +3842,20 @@
 					"type": 0
 				}
 			],
+			"position": "boyfriend",
+			"strumScale": 1,
+			"visible": true,
+			"type": 1,
 			"characters": [
 				"playable-bf"
 			],
-			"type": 1,
-			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "",
-			"strumLinePos": 0.75
+			"strumLinePos": 0.75,
+			"vocalsSuffix": ""
 		}
 	],
-	"stage": "polus1",
-	"scrollSpeed": 2.2,
 	"noteTypes": []
 }
