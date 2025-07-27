@@ -21,7 +21,9 @@ import openfl.ui.Mouse;
 import PixelStars;
 importScript("data/variables");
 
-var modVersion:String = "0.0.0";
+var discordIntegration:Bool = false;
+
+var modVersion:String = "0.3.0";
 
 var discordAvatar:FlxSprite;
 var discordUsername:FunkinText;
@@ -32,21 +34,21 @@ var lightLight:FlxSprite;
 
 var mainButtons:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.play", null, "Play"),
+        name: TranslationUtil.translate("mainMenu.play"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/play"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: TranslationUtil.translate("mainMenu.achievements", null, "Achievements"),
+        name: TranslationUtil.translate("mainMenu.achievements"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/achievements"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: TranslationUtil.translate("mainMenu.shop", null, "Shop"),
+        name: TranslationUtil.translate("mainMenu.shop"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/shop"),
         colorIdle: 0xFF0A3C33,
@@ -55,14 +57,14 @@ var mainButtons:Array<Dynamic> = [
 ];
 var otherButtons:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.options", null, "Options"),
+        name: TranslationUtil.translate("mainMenu.options"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/options"),
         colorIdle: 0xFFAAE2DC,
         colorHover: 0xFFFFFFFF
     },
     {
-        name: TranslationUtil.translate("mainMenu.credits", null, "Credits"),
+        name: TranslationUtil.translate("mainMenu.credits"),
         available: (storyState[storySequence] == "start") ? false : true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
@@ -71,7 +73,7 @@ var otherButtons:Array<Dynamic> = [
 ];
 var modButton:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.mods", null, "Mods"),
+        name: TranslationUtil.translate("mainMenu.mods"),
         available: true,
         colorIdle: 0xFFFFFFFF,
         colorHover: 0xFFFFFFFF
@@ -89,7 +91,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.worldmap", null, "World Map"),
+                name: TranslationUtil.translate("mainMenu.worldmap"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/worldmap"),
                 colorIdle: 0xFF0A3C33,
@@ -97,7 +99,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
                 transition: "data/transitions/closingSharpCircle"
             },
             {
-                name: TranslationUtil.translate("mainMenu.freeplay", null, "Freeplay"),
+                name: TranslationUtil.translate("mainMenu.freeplay"),
                 available: (storyState[storySequence] == "start") ? false : true,
                 image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
                 colorIdle: 0xFF0A3C33,
@@ -109,7 +111,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.tutorial", null, "How to Play"),
+                name: TranslationUtil.translate("mainMenu.tutorial"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/tutorial"),
                 colorIdle: 0xFFAAE2DC,
@@ -124,7 +126,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.editors.charter", null, "Chart Editor"),
+                name: "Chart Editor",
                 image: Paths.image("editors/icons/chart"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
@@ -133,7 +135,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.editors.character", null, "Character Editor"),
+                name: "Character Editor",
                 image: Paths.image("editors/icons/character"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
@@ -142,7 +144,7 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.editors.debug", null, "Debug Options"),
+                name: "Debug Options",
                 image: Paths.image("editors/icons/options"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
@@ -236,7 +238,7 @@ function create() {
     add(topLeft);
     add(topRight);
 
-    if (!FlxG.onMobile) {
+    if (!FlxG.onMobile && discordIntegration) {
         discordAvatar = new FlxSprite(topLeft.x + 6 * baseScale, topLeft.y + 2.5 * baseScale);
 
         if (DiscordUtil.ready) {
@@ -279,7 +281,7 @@ function create() {
         lightThing.color = 0xFF43A25A;
         lightGlow.color = 0xFF43A25A;
     }
-    else {
+    else if (discordIntegration) {
         discordUsername = new FunkinText(0, 0, 0, "", 32);
         discordUsername.borderSize = 4;
         discordUsername.font = Paths.font("pixeloidsans.ttf");
@@ -305,6 +307,10 @@ function create() {
         discordUsername.alignment = "center";
         discordUsername.setPosition((lightThing.x + lightThing.width) + 2 * baseScale, topLeft.y + 5 * baseScale);
     }
+    else {
+        lightThing.color = 0xFF43A25A;
+        lightGlow.color = 0xFF43A25A;
+    }
 
     add(lightGlow);
     add(lightThing);
@@ -325,17 +331,8 @@ function create() {
     topButtonsGroup.add(statsButton);
 
     if (!FlxG.onMobile) {
-        var discordButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
-        discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
-        discordButton.animation.add("idle", [0], 0, false);
-        discordButton.animation.add("click", [1], 0, false);
-        discordButton.scale.set(baseScale, baseScale);
-        discordButton.updateHitbox();
-        discordButton.x -= 4 * baseScale;
-        topButtonsGroup.add(discordButton);
-
         if (debugMode) {
-            var debugButton:FlxSprite = new FlxSprite(discordButton.x - discordButton.width, discordButton.y);
+            var debugButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
             debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
             debugButton.animation.add("idle", [0], 0, false);
             debugButton.animation.add("click", [1], 0, false);
@@ -343,6 +340,17 @@ function create() {
             debugButton.updateHitbox();
             debugButton.x -= 4 * baseScale;
             topButtonsGroup.add(debugButton);
+        }
+
+        if (discordIntegration) {
+            var discordButton:FlxSprite = new FlxSprite(debugButton.x - debugButton.width, debugButton.y);
+            discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
+            discordButton.animation.add("idle", [0], 0, false);
+            discordButton.animation.add("click", [1], 0, false);
+            discordButton.scale.set(baseScale, baseScale);
+            discordButton.updateHitbox();
+            discordButton.x -= 4 * baseScale;
+            topButtonsGroup.add(discordButton);
         }
     }
 
@@ -453,7 +461,7 @@ function create() {
     windowGroup.camera = spaceCam;
     add(windowGroup);
 
-    var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, "Mod Version: " + modVersion/* + '\nCodename Version: ' + Main.releaseVersion*/, 18);
+    var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, "VS IMPOSTOR Pixel v" + modVersion /*+ '\nCodename Version: ' + Main.releaseVersion*/, 18);
     version.font = Paths.font("pixeloidsans.ttf");
     version.alignment = "center";
     version.borderSize = 2;
@@ -885,7 +893,7 @@ function handleTopButtons() {
                 if (button == topButtonsGroup.members[0]) {
                     statsMenu();
                 }
-                if (button == topButtonsGroup.members[1]) {
+                if (button == topButtonsGroup.members[2]) {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
                     if (DiscordUtil.ready) {
                         shutdownDiscordRPC();
@@ -894,7 +902,7 @@ function handleTopButtons() {
                         initDiscordRPC();
                     }
                 }
-                else if (button == topButtonsGroup.members[2]) {
+                else if (button == topButtonsGroup.members[1]) {
                     FlxG.sound.play(Paths.sound("menu/select"), 1);
                     openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
                         var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
@@ -977,7 +985,6 @@ function handleTopButtons() {
 }
 
 function statsMenu() {
-    disableInput();
     FlxG.sound.play(Paths.sound("menu/select"), 1);
     openSubState(new ModSubState("statsMenuSubState"));
     persistentUpdate = persistentDraw = true;
@@ -1021,7 +1028,7 @@ function checkSelectedMainEntry() {
     if (buttonsIconGroup.members[curMainEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curMainEntry], 1, 0.05, true, true);
 
     switch(curMainEntry) {
-        case 0: openWindowSection("Play", playSectionButtons, function(posH, posV, group) {
+        case 0: openWindowSection(TranslationUtil.translate("mainMenu.play"), playSectionButtons, function(posH, posV, group) {
                 var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
                 var thirdButtonYPos:Float = 0;
                 for (c => column in playSectionButtons) {
@@ -1044,14 +1051,15 @@ function checkSelectedMainEntry() {
                             worldMapButton.updateHitbox();
                             worldMapGroup.add(worldMapButton);
 
-                            var worldMapTxt:FunkinText = new FunkinText(1.2 * baseScale, worldMapButton.height, worldMapButton.width, "World Map", 32, false);
+                            var worldMapTxt:FunkinText = new FunkinText(0.1 * baseScale, worldMapButton.height, worldMapButton.width * 2, row.name, 32, false);
                             worldMapTxt.font = Paths.font("pixeloidsans.ttf");
                             worldMapTxt.alignment = "center";
                             worldMapTxt.color = row.colorIdle;
+                            worldMapTxt.x -= worldMapButton.width / 2;
                             worldMapTxt.y -= worldMapTxt.height + 2.6 * baseScale;
                             worldMapGroup.add(worldMapTxt);
 
-                            worldMapGroup.x -= (worldMapGroup.width / 2) - 1 * baseScale;
+                            worldMapGroup.x -= (worldMapButton.width / 2) - 1 * baseScale;
 
                             thirdButtonYPos = worldMapGroup.height;
                         }
@@ -1067,14 +1075,15 @@ function checkSelectedMainEntry() {
                             freeplayButton.updateHitbox();
                             freeplayGroup.add(freeplayButton);
 
-                            var freeplayTxt:FunkinText = new FunkinText(1.2 * baseScale, freeplayButton.height, freeplayButton.width, "Freeplay", 32, false);
+                            var freeplayTxt:FunkinText = new FunkinText(0.1 * baseScale, freeplayButton.height, freeplayButton.width * 2, row.name, 32, false);
                             freeplayTxt.font = Paths.font("pixeloidsans.ttf");
                             freeplayTxt.alignment = "center";
                             freeplayTxt.color = column[1].colorIdle;
+                            freeplayTxt.x -= freeplayButton.width / 2;
                             freeplayTxt.y -= freeplayTxt.height + 2.6 * baseScale;
                             freeplayGroup.add(freeplayTxt);
 
-                            freeplayGroup.x -= (freeplayGroup.width / 2) - 2 * baseScale;
+                            freeplayGroup.x -= (freeplayButton.width / 2) - 2 * baseScale;
                         }
                         else {
                             var howToPlayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX + 2, thirdButtonYPos + 6 * baseScale);
@@ -1087,7 +1096,7 @@ function checkSelectedMainEntry() {
                             howToPlayBtn.updateHitbox();
                             howToPlayGroup.add(howToPlayBtn);
 
-                            var howToPlayTxt:FunkinText = new FunkinText(0, howToPlayBtn.height, howToPlayBtn.width, "How to Play", 32, false);
+                            var howToPlayTxt:FunkinText = new FunkinText(0, howToPlayBtn.height, howToPlayBtn.width, row.name, 32, false);
                             howToPlayTxt.font = Paths.font("pixeloidsans.ttf");
                             howToPlayTxt.alignment = "center";
                             howToPlayTxt.color = column[0].colorIdle;
@@ -1256,7 +1265,6 @@ function checkSelectedMainEntry() {
         case 1:
         case 2:
         case 3:
-            disableInput();
             openSubState(new ModSubState("options/impostorOptionsSubState"));
             persistentUpdate = persistentDraw = true;
         case 4:
@@ -1269,7 +1277,7 @@ function checkSelectedMainEntry() {
                 modsArray[i] = [];
                 modsArray[i][0] = mod;
             }
-            openWindowSection("Mods", modsArray, function(posH, posV, group) {
+            openWindowSection(TranslationUtil.translate("mainMenu.mods"), modsArray, function(posH, posV, group) {
                 var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / modsArray.length;
                 for (c => column in modsArray) {
                     var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
@@ -1284,7 +1292,7 @@ function checkSelectedMainEntry() {
                         bg.alpha = 0;
                         rowGroup.add(bg);
 
-                        var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? "Disable Mods" : row, 28);
+                        var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? TranslationUtil.translate("mods.disableMods") : row, 28);
                         daMod.font = Paths.font("retrogaming.ttf");
                         daMod.borderSize = 3;
                         if (daHeight < 30) {
@@ -1465,8 +1473,6 @@ function closeWindowSection() {
 function checkSelectedWindowEntry() {
     if (curWindow == null) return;
 
-    disableInput();
-
     var trans:String = "";
     try {
         trans = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
@@ -1533,6 +1539,10 @@ function updateDiscordUserStatus(fetchInfo:Bool) {
         lightGlow.visible = false;
         lightLight.visible = false;
     }
+}
+
+function onOpenSubState(event) {
+    disableInput();
 }
 
 function onCloseSubstate() {

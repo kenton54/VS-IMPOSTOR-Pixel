@@ -1,9 +1,8 @@
 import flixel.group.FlxTypedSpriteGroup;
 //import flixel.text.FlxInputText; // must wait until next codename update :face_holding_back_tears: (i need flixel +5.9.0)
 import funkin.backend.scripting.Script;
+import funkin.backend.system.Logs;
 import funkin.backend.utils.TranslationUtil;
-import funkin.editors.ui.UITextBox;
-import funkin.editors.ui.UIText;
 import funkin.options.Options;
 import sys.FileSystem;
 importScript("data/variables");
@@ -31,6 +30,8 @@ var lastOption:Int = -1;
 var closeButton:FlxSprite;
 
 var scale:Float = 5;
+
+var lastLang:String = TranslationUtil.curLanguage;
 
 function create() {
     var path:String = FileSystem.absolutePath(Assets.getPath(Paths.getPath("data/states/options")));
@@ -71,7 +72,7 @@ function create() {
     optionsBox.alpha = 0.2;
     optionsBox.blend = 0;
 
-    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, "Options", 65, false);
+    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, TranslationUtil.translate("mainMenu.options"), 65, false);
     phoneTitle.font = Paths.font("pixeloidsans.ttf");
     phoneTitle.color = FlxColor.BLACK;
     phoneTitle.alignment = "right";
@@ -98,7 +99,8 @@ function create() {
         bg.alpha = 0.6;
         categoryGrp.add(bg);
 
-        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, categories[i], 33, false);
+        var catTrans:String = TranslationUtil.translate("options.section." + StringTools.replace(categories[i].toLowerCase(), " ", ""));
+        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, catTrans, 33, false);
         title.font = Paths.font("pixeloidsans.ttf");
         title.color = FlxColor.BLACK;
         title.alignment = "center";
@@ -106,7 +108,7 @@ function create() {
         categoryGrp.add(title);
     }
 
-    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBox.height / 2, optionsBox.width, "Select a category to continue", 32, false);
+    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBox.height / 2, optionsBox.width, TranslationUtil.translate("options.selectCategory"), 32, false);
     startTxt.alignment = "center";
     startTxt.font = Paths.font("pixeloidsans.ttf");
     startTxt.color = FlxColor.BLACK;
@@ -166,7 +168,6 @@ function update(elapsed:Float) {
     if (!canInteract) return;
 
     handleOptions();
-    checkFinishedCheckboxAnim();
 
     handleKeyboard();
     if (FlxG.onMobile)
@@ -276,9 +277,6 @@ function changeOptionSelec(change:Int) {
     useKeyboard();
     curOption = FlxMath.wrap(curOption + change, 0, curCategoryOptions.length - 1);
     playSound();
-
-    curCheckbox = null;
-    checkboxValue = null;
 }
 
 function handleOptions() {
@@ -290,7 +288,7 @@ function handleOptions() {
             else
                 group.members[0].alpha = 0;
 
-            handleLanguages(i);
+            handleLanguages(i, group.members[2]);
         }
     }
     else {
@@ -340,10 +338,19 @@ function updateDescription() {
         descriptionGroup.members[1].visible = false;
     }
     else if (categories[curCategoryIndex] == "Languages") {
-        var posBox:Float = 138 - 30 * 2;
+        var posBox:Float = 138 - 30;
+        var posTxt:Float = 138 - 32;
         descriptionGroup.members[0].y = categoryBounds[0] + posBox - descriptionGroup.members[0].height;
+        descriptionGroup.members[1].y = categoryBounds[0] + posTxt - descriptionGroup.members[0].height + 7;
+        descriptionGroup.members[1].alignment = "left";
+
+        var curLangData:Map<String, Dynamic> = TranslationUtil.getConfig(curCategoryOptions[curOption].split("/")[0]);
+        descriptionGroup.members[1].text = " " + TranslationUtil.translate("options.language.translator", [curLangData["credits"]]);
+        descriptionGroup.members[1].text += '\n ' + TranslationUtil.translate("version") + ': ' + curLangData["version"];
     }
     else {
+        descriptionGroup.members[1].alignment = "center";
+
         try {
             descriptionGroup.members[0].visible = true;
             descriptionGroup.members[1].visible = true;
@@ -382,16 +389,6 @@ function updateDescription() {
     }
 }
 
-var curCheckbox:FlxSprite;
-var checkboxValue:Null<Bool> = null;
-function checkFinishedCheckboxAnim() {
-    if (curCheckbox == null && checkboxValue == null) return;
-
-    if (curCheckbox.animation.finished) {
-        curCheckbox.animation.play(Std.string(checkboxValue));
-    }
-}
-
 function handleBoolean(position:Int, checkbox:FlxSprite) {
     if (usingKeyboard) {
         if (controls.ACCEPT) {
@@ -405,8 +402,6 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
             curCategory.call("onChangeBool", [position, newValue]);
 
             checkbox.animation.play("trans " + Std.string(newValue), true);
-            curCheckbox = checkbox;
-            checkboxValue = newValue;
         }
         return;
     }
@@ -426,8 +421,6 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
                 curCategory.call("onChangeBool", [position, newValue]);
 
                 checkbox.animation.play("trans " + Std.string(newValue), true);
-                curCheckbox = checkbox;
-                checkboxValue = newValue;
             }
         }
     }
@@ -443,8 +436,6 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
             curCategory.call("onChangeBool", [position, newValue]);
 
             checkbox.animation.play("trans " + Std.string(newValue), true);
-            curCheckbox = checkbox;
-            checkboxValue = newValue;
         }
     }
 }
@@ -1126,12 +1117,53 @@ function handleFunction(position:Int) {
     }
 }
 
-function handleLanguages(index:Int) {
+function handleLanguages(index:Int, dot:FlxSprite) {
+    var language:String = curCategoryOptions[index].split("/");
+
     if (index == curOption) {
-        if (usingKeyboard && controls.ACCEPT) {
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
-            TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
+        if (usingKeyboard) {
+            if (controls.ACCEPT) {
+                if (language[0] != TranslationUtil.curLanguage) {
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
+                    dot.animation.play(Std.string("trans true"));
+                }
+            }
+            return;
         }
+        if (FlxG.onMobile) {
+            for (touch in FlxG.touches.list) {
+                if (touch.overlaps(curCategoryGrp.members[index].members[0])) {
+                    if (touch.justReleased) {
+                        if (language[0] != TranslationUtil.curLanguage) {
+                            FlxG.sound.play(Paths.sound("menu/select"), 1);
+                            TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
+                            dot.animation.play(Std.string("trans true"));
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            if (FlxG.mouse.overlaps(curCategoryGrp.members[index].members[0])) {
+                if (FlxG.mouse.justReleased) {
+                    if (language[0] != TranslationUtil.curLanguage) {
+                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
+                        dot.animation.play(Std.string("trans true"));
+                    }
+                }
+            }
+        }
+    }
+
+    if (language[0] == TranslationUtil.curLanguage) {
+        if (StringTools.endsWith(dot.animation.name, "false") && !StringTools.startsWith(dot.animation.name, "true"))
+            dot.animation.play(Std.string("trans true"));
+    }
+    else {
+        if (StringTools.endsWith(dot.animation.name, "true") && !StringTools.startsWith(dot.animation.name, "false"))
+            dot.animation.play("trans false");
     }
 }
 
@@ -1153,8 +1185,6 @@ function updateCategory() {
         lastCategoryIndex = curCategoryIndex;
         curOption = 0;
         lastOption = 0;
-        curCheckbox = null;
-        checkboxValue = null;
         descriptionGroup.visible = true;
 
         deleteCategory();
@@ -1200,8 +1230,6 @@ function updateCategory() {
         }
         else
             createCategory();
-
-        trace(curCategoryOptions);
     }
     else {
         CoolUtil.playMenuSFX(2);
@@ -1209,8 +1237,6 @@ function updateCategory() {
         curCategoryIndex = -1;
         curOption = 0;
         lastOption = -1;
-        curCheckbox = null;
-        checkboxValue = null;
         descriptionGroup.visible = false;
 
         deleteCategory();
@@ -1232,6 +1258,7 @@ function updateCategory() {
 }
 
 var curCategoryOptions:Array<Dynamic> = [];
+var optionsFont:String = Paths.font("pixelarial-bold.ttf");
 function createCategory() {
     for (i in 0...curCategoryOptions.length) {
         var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
@@ -1245,10 +1272,10 @@ function createCategory() {
         bg.blend = 9;
         group.add(bg);
 
-        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, curCategoryOptions[i].name, 30);
-        label.font = Paths.font("yoster-island.ttf");
+        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, curCategoryOptions[i].name, 22);
+        label.font = optionsFont;
         label.borderSize = 3;
-        label.y -= label.height / 2;
+        label.y -= label.height / 2 - 2;
         group.add(label);
 
         var optionTypeScale:Float = 2;
@@ -1386,14 +1413,15 @@ function createCategory() {
     }
 }
 
+var langData:Array<Dynamic> = [];
 function setupLanguages() {
     for (i in 0...curCategoryOptions.length) {
         var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         curCategoryGrp.add(group);
 
-        var language:String = curCategoryOptions[i].split("/")[1];
+        var language:String = curCategoryOptions[i].split("/");
 
-        var height:Float = 52;
+        var height:Float = 40;
         var iHeight:Float = height * i;
         var x:Float = 0;
         var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);
@@ -1401,11 +1429,25 @@ function setupLanguages() {
         bg.blend = 9;
         group.add(bg);
 
-        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, language, 30);
-        languageLabel.font = Paths.font("yoster-island.ttf");
+        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, TranslationUtil.translate("options.language." + language[0]), 22);
+        languageLabel.font = optionsFont;
         languageLabel.borderSize = 3;
-        languageLabel.y -= languageLabel.height / 2;
+        languageLabel.y -= languageLabel.height / 2 - 2;
         group.add(languageLabel);
+
+        var dotScale:Float = 2;
+        var dot:FlxSprite = new FlxSprite(x + bg.width, iHeight + bg.height / 2);
+        dot.frames = Paths.getFrames("menus/options/dotChoice");
+        dot.animation.addByPrefix("false", "blank", 0, true);
+        dot.animation.addByPrefix("trans true", "transition chosen", 24, false);
+        dot.animation.addByPrefix("true", "chosen", 0, true);
+        dot.animation.addByPrefix("trans false", "transition blank", 24, false);
+        dot.animation.play(Std.string(language[0] == TranslationUtil.curLanguage));
+        dot.scale.set(dotScale, dotScale);
+        dot.updateHitbox();
+        dot.x -= dot.width * 1.2;
+        dot.y -= dot.height / 1.6;
+        group.add(dot);
     }
 }
 
@@ -1430,4 +1472,14 @@ function destroy() {
 
     FlxG.cameras.remove(optionsCam);
     optionsCam.destroy();
+
+    if (TranslationUtil.curLanguage != lastLang) {
+        Logs.traceColored([
+            Logs.logText("[Language] ", 9),
+            Logs.logText("New language detected! Changes can't take immediate effect!")
+        ], 1);
+        new FlxTimer().start(0.05, _ -> {
+            FlxG.state.openSubState(new ModSubState("warnings/newLanguageWarning"));
+        });
+    }
 }

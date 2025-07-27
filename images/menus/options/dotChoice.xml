@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="dotChoice.png" width="110" height="83">
+	<SubTexture name="blank1" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="chosen1" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank1" x="0" y="0" width="23" height="12" frameX="-0" frameY="-19" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank10" x="57" y="14" width="27" height="17" rotated="true" frameX="-3" frameY="-2" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank11" x="84" y="15" width="23" height="17" rotated="true" frameX="-3" frameY="-6" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank12" x="0" y="26" width="18" height="17" rotated="true" frameX="-3" frameY="-11" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank13" x="18" y="29" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank14" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank15" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank16" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank17" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank18" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank19" x="23" y="12" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank2" x="46" y="0" width="23" height="14" frameX="-0" frameY="-19" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank3" x="35" y="31" width="23" height="17" rotated="true" frameX="-3" frameY="-5" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank4" x="58" y="31" width="26" height="17" rotated="true" frameX="-3" frameY="-2" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank5" x="18" y="48" width="30" height="17" rotated="true" frameX="-3" frameY="-1" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank6" x="48" y="48" width="28" height="17" rotated="true" frameX="-3" frameY="-1" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank7" x="76" y="49" width="29" height="17" rotated="true" frameX="-3" frameY="-0" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank8" x="76" y="49" width="29" height="17" rotated="true" frameX="-3" frameY="-0" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition blank9" x="57" y="14" width="27" height="17" rotated="true" frameX="-3" frameY="-2" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen1" x="23" y="0" width="23" height="12" frameX="-0" frameY="-19" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen10" x="84" y="32" width="22" height="17" rotated="true" frameX="-3" frameY="-7" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen11" x="84" y="32" width="22" height="17" rotated="true" frameX="-3" frameY="-7" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen12" x="0" y="43" width="18" height="17" rotated="true" frameX="-3" frameY="-11" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen13" x="69" y="0" width="23" height="14" frameX="-0" frameY="-16" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen14" x="69" y="0" width="23" height="14" frameX="-0" frameY="-16" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen15" x="92" y="0" width="18" height="15" rotated="true" frameX="-4" frameY="-11" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen16" x="92" y="0" width="18" height="15" rotated="true" frameX="-4" frameY="-11" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen17" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen18" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen19" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen2" x="0" y="12" width="23" height="14" frameX="-0" frameY="-19" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen20" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen21" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen22" x="40" y="14" width="17" height="17" frameX="-3" frameY="-12" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen3" x="0" y="60" width="17" height="19" frameX="-3" frameY="-9" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen4" x="17" y="65" width="19" height="17" rotated="true" frameX="-3" frameY="-9" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen5" x="36" y="65" width="24" height="17" rotated="true" frameX="-3" frameY="-7" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen6" x="60" y="66" width="23" height="17" rotated="true" frameX="-3" frameY="-6" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen7" x="60" y="66" width="23" height="17" rotated="true" frameX="-3" frameY="-6" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen8" x="83" y="66" width="24" height="17" rotated="true" frameX="-3" frameY="-5" frameWidth="23" frameHeight="33"/>
+	<SubTexture name="transition chosen9" x="83" y="66" width="24" height="17" rotated="true" frameX="-3" frameY="-5" frameWidth="23" frameHeight="33"/>
+</TextureAtlas>

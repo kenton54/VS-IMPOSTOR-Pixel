@@ -1,4 +1,15 @@
 <language>
+    <group name="Generic">
+        <str id="version">Versión</str>
+        <str id="press">Presiona {0}</str>
+        <str id="click">Has click con el Ratón</str>
+        <str id="touch">Toca la Pantalla</str>
+    </group>
+
+    <group name="TitleScreen" prefix="title.">
+        <str id="2playSuffix">para Jugar</str>
+	</group>
+
     <group name="MainMenu" prefix="mainMenu.">
         <group name="Main">
             <str id="play">Jugar</str>
@@ -7,16 +18,63 @@
             <str id="options">Opciones</str>
             <str id="credits">Créditos</str>
             <str id="mods">Mods</str>
+        </group>
+
+        <group name="Sections">
             <str id="worldmap">Mundo Abierto</str>
-            <str id="freeplay">Freeplay</str>
+            <str id="freeplay">Juego Libre</str>
             <str id="tutorial">Como Jugar</str>
         </group>
 
-        <group name="Editors" prefix="editors.">
-            <str id="charter">Editor de Charts</str>
-            <str id="character">Editor de Personajes</str>
-            <str id="impSequenceManipulator">Impostor Sequence Manipulator</str>
-            <str id="debug">Opciones de Depurador</str>
+        <group name="Statistics" prefix="stats.">
+            <str id="storyProgress">Current Story Progression</str>
+            <str id="totalNotes">Total Note Hits</str>
+            <str id="perfectNotes">Perfect Note Hits</str>
+            <str id="sickNotes">Sick Note Hits</str>
+            <str id="goodNotes">Good Note Hits</str>
+            <str id="badNotes">Bad Note Hits</str>
+            <str id="shitNotes">Shit Note Hits</str>
         </group>
     </group>
+
+    <group name="Mods" prefix="mods.">
+		<str id="disableMods">Desactivar Mods</str>
+	</group>
+
+    <group name="Options" prefix="options.">
+        <str id="selectCategory">Selecciona una categoría</str>
+
+        <group name="Sections" prefix="section.">
+            <str id="controls">Controles</str>
+            <str id="gameplay">Jugabilidad</str>
+            <str id="graphicsandvisuals">Gráficos y Visuales</str>
+            <str id="languages">Idiomas</str>
+            <str id="miscellaneous">Misceláneos</str>
+        </group>
+
+        <group name="Language" prefix="language.">
+            <str id="translator">Traducción por: {0}</str>
+            <str id="en">Inglés</str>
+            <str id="es">Español</str>
+            <str id="fr">Francés</str>
+            <str id="pt">Portugués</str>
+            <str id="ja">Japonés</str>
+            <str id="ru">Ruso</str>
+            <str id="de">Alemán</str>
+        </group>
+        
+        <group name="LanguageWarning" prefix="langWarn.">
+            <str id="line1">ADVERTENCIA: Se ha establecido un nuevo idioma!</str>
+            <str id="line2">El menú debe ser recargado para que los efectos se apliquen!</str>
+            <str id="line3">para recarga el menú.</str>
+        </group>
+    </group>
+
+    <group name="Difficulties" prefix="diff.">
+		<str id="easy">Fácil</str>
+		<str id="normal">Normal</str>
+		<str id="hard">Difícil</str>
+		<str id="erect">Erecto</str>
+		<str id="nightmare">Pesadilla</str>
+	</group>
 </language>

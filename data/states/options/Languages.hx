@@ -3,4 +3,4 @@ import funkin.options.Options;
 
 var options:Array<Dynamic> = TranslationUtil.foundLanguages;
 
-// this is added dynamically
+// the rest is managed inside the options substate script

@@ -8,7 +8,6 @@ import openfl.system.Capabilities;
 var debugMode:Bool = (true && !FlxG.onMobile);
 
 function new() {
-    //WindowUtils.winTitle = "VS IMPOSTOR Pixel";
     FlxSprite.defaultAntialiasing = false;
 
     initSaveData();
@@ -29,7 +28,8 @@ function new() {
 }
 
 function setWindowParameters() {
-    //window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
+    WindowUtils.winTitle = "VS IMPOSTOR Pixel";
+    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
 
     window.minWidth = 1280;
     window.minHeight = 720;

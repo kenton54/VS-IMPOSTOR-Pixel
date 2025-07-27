@@ -1,4 +1,5 @@
 import flixel.util.FlxStringUtil;
+import funkin.backend.utils.TranslationUtil;
 import AmongUsBox;
 importScript("data/variables");
 
@@ -17,6 +18,21 @@ var statsLabels:Array<String> = [
     "Tasks Speedrun PB (Polus)",
     "Tasks Speedrun PB (Airship)",
     "Total Tasks Completed"
+];
+var statsLabelsTrans:Array<String> = [
+    "storyProgress",
+    "totalNotes",
+    "perfectNotes",
+    "sickNotes",
+    "goodNotes",
+    "badNotes",
+    "shitNotes",
+    "attacksDodged",
+    "taskSpeedrunSkeld",
+    "taskSpeedrunMira",
+    "taskSpeedrunPolus",
+    "taskSpeedrunAirship",
+    "totalTasks"
 ];
 var defaultStats:Map<String, Dynamic> = [
     "Current Story Progression" => storyState[storySequence],
@@ -57,11 +73,10 @@ function create() {
     statsTitle.y += 8 * scale;
     add(statsTitle);
 
-    var i:Int = 0;
-    for (stat in statsLabels) {
+    for (i => stat in statsLabelsTrans) {
         var yPos:Float = (statsTitle.y + statsTitle.height) + (3 * scale) + (i * 22);
         var color:FlxColor = (i % 2 == 0) ? FlxColor.WHITE : 0xFF999999;
-        var daStat:FunkinText = new FunkinText(statsTitle.x + 8 * scale, yPos, buttonsBack.width, stat, 22, false);
+        var daStat:FunkinText = new FunkinText(statsTitle.x + 8 * scale, yPos, buttonsBack.width, TranslationUtil.translate("mainMenu.stats." + stat), 22, false);
         daStat.font = Paths.font("retrogaming.ttf");
         daStat.color = color;
         daStat.camera = statsCam;
@@ -69,16 +84,14 @@ function create() {
 
         var value:Dynamic;
         value = stats[statsLabels[i]] ?? defaultStats[statsLabels[i]];
-        if (StringTools.contains(stat, "Story Progression")) value = '"'+value+'"';
-        if (StringTools.contains(stat, "Speedrun")) value = FlxStringUtil.formatTime(value, true);
+        if (StringTools.contains(statsLabels[i], "Story Progression")) value = '"'+value+'"';
+        if (StringTools.contains(statsLabels[i], "Speedrun")) value = FlxStringUtil.formatTime(value, true);
         var statValue:FunkinText = new FunkinText(statsTitle.x + 4 * scale, yPos, buttonsBack.width, Std.string(value), 22, false);
         statValue.alignment = "right";
         statValue.font = Paths.font("retrogaming.ttf");
         statValue.color = color;
         statValue.camera = statsCam;
         add(statValue);
-
-        i++;
     }
 
     closeButton = new FlxSprite(buttonsBack.box.x, buttonsBack.box.y).loadGraphic(Paths.image("menus/mainmenu/x"));

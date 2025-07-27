@@ -95,7 +95,8 @@ function update(elapsed:Float) {
             FlxG.switchState(new MainMenuState());
         }
         else if (!transitionTimer.active && !transitioning) {
-            pressStart.text = FlxG.onMobile ? "TOUCH THE SCREEN TO PLAY" : "CLICK TO PLAY";
+            pressStart.text = FlxG.onMobile ? TranslationUtil.translate("touch").toUpperCase() : TranslationUtil.translate("click").toUpperCase();
+            pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
             accept();
         }
     }
@@ -107,7 +108,8 @@ function update(elapsed:Float) {
             FlxG.switchState(new MainMenuState());
         }
         else if (!transitionTimer.active && !transitioning) {
-            pressStart.text = "PRESS " + CoolUtil.keyToString(acceptKey) + " TO PLAY";
+            pressStart.text = TranslationUtil.translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
+            pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
             accept();
         }
     }
@@ -125,7 +127,8 @@ var mouseTxt:Bool = false;
 function tweenPressStart() {
     pressStart.borderColor = colorArray[FlxG.random.int(0, colorArray.length - 1)];
     if (FlxG.onMobile) {
-        pressStart.text = "TOUCH THE SCREEN TO PLAY";
+        pressStart.text = TranslationUtil.translate("touch").toUpperCase();
+        pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
         tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
             tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
                 tweenPressStart();
@@ -134,11 +137,12 @@ function tweenPressStart() {
     }
     else {
         if (!mouseTxt) {
-            pressStart.text = "PRESS " + CoolUtil.keyToString(acceptKey).toUpperCase() + " TO PLAY";
+            pressStart.text = TranslationUtil.translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
         }
         else {
-            pressStart.text = "CLICK TO PLAY";
+            pressStart.text = TranslationUtil.translate("click").toUpperCase();
         }
+        pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
         tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
             tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
                 tweenPressStart();

@@ -1,4 +1,15 @@
 <language>
+    <group name="Generic">
+        <str id="version">Version</str>
+        <str id="press">Press {0}</str>
+        <str id="click">Click the Mouse</str>
+        <str id="touch">Touch the Screen</str>
+    </group>
+
+    <group name="TitleScreen" prefix="title.">
+        <str id="2playSuffix">to Play</str>
+	</group>
+
     <group name="MainMenu" prefix="mainMenu.">
         <group name="Main">
             <str id="play">Play</str>
@@ -7,16 +18,77 @@
             <str id="options">Options</str>
             <str id="credits">Credits</str>
             <str id="mods">Mods</str>
+        </group>
+
+        <group name="Sections">
             <str id="worldmap">World Map</str>
             <str id="freeplay">Freeplay</str>
             <str id="tutorial">How to Play</str>
         </group>
 
-        <group name="Editors" prefix="editors.">
-            <str id="charter">Chart Editor</str>
-            <str id="character">Character Editor</str>
-            <str id="impSequenceManipulator">Impostor Sequence Manipulator</str>
-            <str id="debug">Debug Options</str>
+        <group name="Statistics" prefix="stats.">
+            <str id="storyProgress">Current Story Progression</str>
+            <str id="totalNotes">Total Note Hits</str>
+            <str id="perfectNotes">Perfect Note Hits</str>
+            <str id="sickNotes">Sick Note Hits</str>
+            <str id="goodNotes">Good Note Hits</str>
+            <str id="badNotes">Bad Note Hits</str>
+            <str id="shitNotes">Shit Note Hits</str>
+            <str id="attacksDodged">Total Attacks Dodged</str>
+            <str id="taskSpeedrunSkeld">Tasks Speedrun PB (Skeld)</str>
+            <str id="taskSpeedrunMira">Tasks Speedrun PB (Mira HQ)</str>
+            <str id="taskSpeedrunPolus">Tasks Speedrun PB (Polus)</str>
+            <str id="taskSpeedrunAirship">Tasks Speedrun PB (Airship)</str>
+            <str id="totalTasks">Total Tasks Completed</str>
         </group>
     </group>
+
+    <group name="Mods" prefix="mods.">
+		<str id="disableMods">Disable Mods</str>
+	</group>
+
+    <group name="Options" prefix="options.">
+        <str id="selectCategory">Select a category</str>
+
+        <group name="Sections" prefix="section.">
+            <str id="controls">Controls</str>
+            <str id="gameplay">Gameplay</str>
+            <str id="graphicsandvisuals">Graphics and Visuals</str>
+            <str id="languages">Languages</str>
+            <str id="miscellaneous">Miscellaneous</str>
+        </group>
+
+        <group name="Language" prefix="language.">
+            <str id="translator">Translation by: {0}</str>
+            <str id="en">English</str>
+            <str id="es">Spanish</str>
+            <str id="fr">French</str>
+            <str id="pt">Portuguese</str>
+            <str id="ja">Japanese</str>
+            <str id="ru">Russian</str>
+            <str id="de">German</str>
+            <str id="it">Italian</str>
+            <str id="pl">Polish</str>
+            <str id="vi">Vietnamese</str>
+        </group>
+
+        <group name="LanguageWarning" prefix="langWarn.">
+            <str id="line1">WARNING: A new language has been set!</str>
+            <str id="line2">The menu must be reloaded for the changes to apply!</str>
+            <str id="line3">{0} to reload the menu.</str>
+        </group>
+    </group>
+
+    <group name="Freeplay" prefix="freeplay.">
+		<str id="score">HIGHSCORE</str>
+        <str id="player2">PLAYER 2</str>
+	</group>
+
+    <group name="Difficulties" prefix="diff.">
+		<str id="easy">Easy</str>
+		<str id="normal">Normal</str>
+		<str id="hard">Hard</str>
+		<str id="erect">Erect</str>
+		<str id="nightmare">Nightmare</str>
+	</group>
 </language>
