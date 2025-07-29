@@ -47,38 +47,6 @@
 		<str id="disableMods">Disable Mods</str>
 	</group>
 
-    <group name="Options" prefix="options.">
-        <str id="selectCategory">Select a category</str>
-
-        <group name="Sections" prefix="section.">
-            <str id="controls">Controls</str>
-            <str id="gameplay">Gameplay</str>
-            <str id="graphicsandvisuals">Graphics and Visuals</str>
-            <str id="languages">Languages</str>
-            <str id="miscellaneous">Miscellaneous</str>
-        </group>
-
-        <group name="Language" prefix="language.">
-            <str id="translator">Translation by: {0}</str>
-            <str id="en">English</str>
-            <str id="es">Spanish</str>
-            <str id="fr">French</str>
-            <str id="pt">Portuguese</str>
-            <str id="ja">Japanese</str>
-            <str id="ru">Russian</str>
-            <str id="de">German</str>
-            <str id="it">Italian</str>
-            <str id="pl">Polish</str>
-            <str id="vi">Vietnamese</str>
-        </group>
-
-        <group name="LanguageWarning" prefix="langWarn.">
-            <str id="line1">WARNING: A new language has been set!</str>
-            <str id="line2">The menu must be reloaded for the changes to apply!</str>
-            <str id="line3">{0} to reload the menu.</str>
-        </group>
-    </group>
-
     <group name="Freeplay" prefix="freeplay.">
 		<str id="score">HIGHSCORE</str>
         <str id="player2">PLAYER 2</str>

@@ -338,6 +338,9 @@ function updateDescription() {
         descriptionGroup.members[1].visible = false;
     }
     else if (categories[curCategoryIndex] == "Languages") {
+        descriptionGroup.members[0].visible = true;
+        descriptionGroup.members[1].visible = true;
+
         var posBox:Float = 138 - 30;
         var posTxt:Float = 138 - 32;
         descriptionGroup.members[0].y = categoryBounds[0] + posBox - descriptionGroup.members[0].height;
@@ -350,12 +353,11 @@ function updateDescription() {
     }
     else {
         descriptionGroup.members[1].alignment = "center";
+        descriptionGroup.members[0].visible = true;
+        descriptionGroup.members[1].visible = true;
 
         try {
-            descriptionGroup.members[0].visible = true;
-            descriptionGroup.members[1].visible = true;
-
-            descriptionGroup.members[1].text = curCategoryOptions[curOption].description;
+            descriptionGroup.members[1].text = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
 
             var posBox:Float = 138;
             var posTxt:Float = 138;
@@ -1196,15 +1198,6 @@ function updateCategory() {
         curCategory.setParent(this);
         curCategory.load();
         curCategoryOptions = curCategory.get("options");
-        if (FlxG.onMobile && categories[curCategoryIndex] == "Gameplay") {
-            curCategoryOptions.insert(1, {
-                name: "Middlescroll",
-                description: "If checked, your notes will be centered, making the notes easier to read (for mobile users).",
-                type: "bool",
-                savevar: "middlescroll",
-                savepoint: FlxG.save.data
-            });
-        }
 
         for (i => category in categoriesGroup.members) {
             if (i == curCategoryIndex) {
@@ -1229,7 +1222,7 @@ function updateCategory() {
             setupLanguages();
         }
         else
-            createCategory();
+            createCategory(categories[curCategoryIndex]);
     }
     else {
         CoolUtil.playMenuSFX(2);
@@ -1259,7 +1252,7 @@ function updateCategory() {
 
 var curCategoryOptions:Array<Dynamic> = [];
 var optionsFont:String = Paths.font("pixelarial-bold.ttf");
-function createCategory() {
+function createCategory(category:String) {
     for (i in 0...curCategoryOptions.length) {
         var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         curCategoryGrp.add(group);
@@ -1272,7 +1265,7 @@ function createCategory() {
         bg.blend = 9;
         group.add(bg);
 
-        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, curCategoryOptions[i].name, 22);
+        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, TranslationUtil.translate("options." + StringTools.replace(category.toLowerCase(), " ", "") + "." + curCategoryOptions[i].name + "-name"), 22);
         label.font = optionsFont;
         label.borderSize = 3;
         label.y -= label.height / 2 - 2;

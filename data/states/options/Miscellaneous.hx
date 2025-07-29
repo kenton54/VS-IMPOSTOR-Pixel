@@ -2,6 +2,13 @@ import funkin.options.Options;
 import funkin.savedata.FunkinSave;
 
 var options:Array<Dynamic> = [
+    {
+        name: "devMode",
+        description: "devMode",
+        type: "checkbox",
+        savevar: "devMode",
+        savepoint: Options
+    }
     /*
     {
         name: "Reset Save Data",

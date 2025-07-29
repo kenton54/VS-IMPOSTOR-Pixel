@@ -1,0 +1,59 @@
+<language>
+    <group name="Options" prefix="options.">
+        <str id="selectCategory">Select a category</str>
+
+        <group name="Sections" prefix="section.">
+            <str id="controls">Controls</str>
+            <str id="gameplay">Gameplay</str>
+            <str id="graphicsandvisuals">Graphics and Visuals</str>
+            <str id="languages">Languages</str>
+            <str id="miscellaneous">Miscellaneous</str>
+        </group>
+
+        <group name="Gameplay" prefix="gameplay.">
+            <str id="downscroll-name">Downscroll</str>
+            <str id="downscroll-desc">If checked, notes will go from up to down instead of down to up, as if they're falling.</str>
+
+            <str id="middlescroll-name">Middlescroll</str>
+            <str id="middlescroll-desc">If checked, your notes will be centered, making the notes easier to read (for mobile users at least).</str>
+
+            <str id="ghostTapping-name">Ghost Tapping</str>
+            <str id="ghostTapping-desc">If unchecked, hitting any strum that has no note on it (that can be hit) will cause a fake miss, it will only deplete your health and lower your score, but won't affect your rating.</str>
+
+            <str id="songOffset-name">Song Offset</str>
+            <str id="songOffset-name">Changes the offset that songs should start with.</str>
+
+            <str id="naughtyness-name">Sentitive Content</str>
+            <str id="naughtyness-desc">If unchecked, blood, gore and strong language will be toned down.</str>
+
+            <str id="camZoomOnBeat-name">Zoom Camera on Beat</str>
+            <str id="camZoomOnBeat-desc">If checked, the camera will zoom on each beat.</str>
+
+            <str id="timeBar-name">Time Bar</str>
+            <str id="timeBar-desc">If checked, will show a bar that tracks the current song position, as well as its percentage from completion.</str>
+
+            <str id="strumsBG-name">StrumLines' Background</str>
+            <str id="strumsBG-desc">Give the strumline a semi-(or fully)-transparent background.</str>
+        </group>
+
+        <group name="Language" prefix="language.">
+            <str id="translator">Translation by: {0}</str>
+            <str id="en">English</str>
+            <str id="es">Spanish</str>
+            <str id="fr">French</str>
+            <str id="pt">Portuguese</str>
+            <str id="ja">Japanese</str>
+            <str id="ru">Russian</str>
+            <str id="de">German</str>
+            <str id="it">Italian</str>
+            <str id="pl">Polish</str>
+            <str id="vi">Vietnamese</str>
+        </group>
+
+        <group name="LanguageWarning" prefix="langWarn.">
+            <str id="line1">WARNING: A new language has been set!</str>
+            <str id="line2">The menu must be reloaded for the changes to apply!</str>
+            <str id="line3">{0} to reload the menu.</str>
+        </group>
+    </group>
+</language>
