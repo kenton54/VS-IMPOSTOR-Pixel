@@ -36,6 +36,30 @@
             <str id="strumsBG-desc">Give the strumline a semi-(or fully)-transparent background.</str>
         </group>
 
+        <group name="Graphics and Visuals" prefix="graphicsandvisuals.">
+            <str id="framerate-name">Framerate</str>
+            <str id="framerate-desc">Pretty self explanatory, isn't it?</str>
+
+            <str id="colorHealthBar-name">Colored Health Bar</str>
+            <str id="colorHealthBar-desc">If unchecked, the game will use the orginal red and green health bar from the Base Game (also known as V-Slice).</str>
+
+            <str id="gameplayShaders-name">Intensive Shaders</str>
+            <str id="gameplayShaders-desc">If checked, songs that use shaders that have more impact on the framerate will be loaded. Leave unchecked for a smoother experience.</str>
+
+            <str id="flashingMenu-name">Flashing Lights</str>
+            <str id="flashingMenu-desc">If unchecked, will make flashes less "flashy". Leave unchecked if you're sentitive to these.</str>
+
+            <str id="lowMemoryMode-name">Low Memory Mode</str>
+            <str id="lowMemoryMode-desc">If checked, will reduce the amount of detail each part of the mod has to reduce memory usage.</str>
+
+            <str id="gpuOnlyBitmaps-name">GPU Sprite Storing</str>
+            <str id="gpuOnlyBitmaps-desc">If checked, will store loaded bitmaps (or more known as sprites) in the GPU, heavily reducing memory usage.</str>
+
+            <str id="autoPause-name">Pause on Unfocus</str>
+            <str id="autoPause-desc">If checked, going to another window will freeze the game until you come back.</str>
+            <str id="autoPause-desc-mobile">If checked, opening the notification bar will freeze the game until you come back.</str>
+        </group>
+
         <group name="Language" prefix="language.">
             <str id="translator">Translation by: {0}</str>
             <str id="en">English</str>
@@ -50,10 +74,18 @@
             <str id="vi">Vietnamese</str>
         </group>
 
-        <group name="LanguageWarning" prefix="langWarn.">
-            <str id="line1">WARNING: A new language has been set!</str>
-            <str id="line2">The menu must be reloaded for the changes to apply!</str>
-            <str id="line3">{0} to reload the menu.</str>
+        <group name="Miscellaneous" prefix="miscellaneous.">
+            <str id="devMode-name">Developer Mode</str>
+            <str id="devMode-desc">If checked, you will be able to access developer features like certain keybinds, editors, developer options, state reloads, console and more.</str>
+        </group>
+
+        <group name="Warnings" prefix="warning.">
+            <str id="menuReload">The menu must be reloaded for the changes to apply!</str>
+            <str id="pressSuffix">{0} to reload the menu.</str>
+
+            <str id="language">WARNING: A new language has been set!</str>
+            <str id="dev-on">WARNING: Developer mode has been activated!</str>
+            <str id="dev-off">WARNING: Developer mode has been deactivated!</str>
         </group>
     </group>
 </language>

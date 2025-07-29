@@ -41,35 +41,6 @@
 		<str id="disableMods">Desactivar Mods</str>
 	</group>
 
-    <group name="Options" prefix="options.">
-        <str id="selectCategory">Selecciona una categoría</str>
-
-        <group name="Sections" prefix="section.">
-            <str id="controls">Controles</str>
-            <str id="gameplay">Jugabilidad</str>
-            <str id="graphicsandvisuals">Gráficos y Visuales</str>
-            <str id="languages">Idiomas</str>
-            <str id="miscellaneous">Misceláneos</str>
-        </group>
-
-        <group name="Language" prefix="language.">
-            <str id="translator">Traducción por: {0}</str>
-            <str id="en">Inglés</str>
-            <str id="es">Español</str>
-            <str id="fr">Francés</str>
-            <str id="pt">Portugués</str>
-            <str id="ja">Japonés</str>
-            <str id="ru">Ruso</str>
-            <str id="de">Alemán</str>
-        </group>
-        
-        <group name="LanguageWarning" prefix="langWarn.">
-            <str id="line1">ADVERTENCIA: Se ha establecido un nuevo idioma!</str>
-            <str id="line2">El menú debe ser recargado para que los efectos se apliquen!</str>
-            <str id="line3">{0} para recarga el menú.</str>
-        </group>
-    </group>
-
     <group name="Difficulties" prefix="diff.">
 		<str id="easy">Fácil</str>
 		<str id="normal">Normal</str>

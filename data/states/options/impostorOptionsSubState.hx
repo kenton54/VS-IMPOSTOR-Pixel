@@ -32,6 +32,7 @@ var closeButton:FlxSprite;
 var scale:Float = 5;
 
 var lastLang:String = TranslationUtil.curLanguage;
+var lastDev:Bool = Options.devMode;
 
 function create() {
     var path:String = FileSystem.absolutePath(Assets.getPath(Paths.getPath("data/states/options")));
@@ -357,7 +358,12 @@ function updateDescription() {
         descriptionGroup.members[1].visible = true;
 
         try {
-            descriptionGroup.members[1].text = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
+            var daTranslation:String = "";
+            if (TranslationUtil.exists("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (FlxG.onMobile ? "-mobile" : "")))
+                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (FlxG.onMobile ? "-mobile" : ""));
+            else
+                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
+            descriptionGroup.members[1].text = daTranslation;
 
             var posBox:Float = 138;
             var posTxt:Float = 138;
@@ -1473,6 +1479,15 @@ function destroy() {
         ], 1);
         new FlxTimer().start(0.05, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/newLanguageWarning"));
+        });
+    }
+    if (lastDev != Options.devMode) {
+        Logs.traceColored([
+            Logs.logText("[Others] ", 10),
+            Logs.logText("Developer Mode has been set!")
+        ], 1);
+        new FlxTimer().start(0.05, _ -> {
+            FlxG.state.openSubState(new ModSubState("warnings/devToolsWarning"));
         });
     }
 }

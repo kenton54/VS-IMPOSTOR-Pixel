@@ -4,7 +4,6 @@ import funkin.savedata.FunkinSave;
 var options:Array<Dynamic> = [
     {
         name: "devMode",
-        description: "devMode",
         type: "bool",
         savevar: "devMode",
         savepoint: Options
