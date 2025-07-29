@@ -1,0 +1,94 @@
+<language>
+    <group name="Generic">
+        <str id="version">Version</str>
+        <str id="press">Drücke {0}</str>
+        <str id="click">Klicke mit der Maus</str>
+        <str id="touch">Tippe den Bildschirm</str>
+    </group>
+
+    <group name="TitleScreen" prefix="title.">
+        <str id="2playSuffix">um zu spielen</str>
+    </group>
+
+    <group name="MainMenu" prefix="mainMenu.">
+        <group name="Main">
+            <str id="play">Spielen</str>
+            <str id="achievements">Erfolge</str>
+            <str id="shop">Shop</str>
+            <str id="options">Optionen</str>
+            <str id="credits">Credits</str>
+            <str id="mods">Mods</str>
+        </group>
+
+        <group name="Sections">
+            <str id="worldmap">Weltkarte</str>
+            <str id="freeplay">Freeplay</str>
+            <str id="tutorial">So spielt man</str>
+        </group>
+
+        <group name="Statistics" prefix="stats.">
+            <str id="storyProgress">Aktueller Story-Fortschritt</str>
+            <str id="totalNotes">Gesamtanzahl der Treffer</str>
+            <str id="perfectNotes">Perfekte Treffer</str>
+            <str id="sickNotes">Super Treffer</str>
+            <str id="goodNotes">Gute Treffer</str>
+            <str id="badNotes">Schlechte Treffer</str>
+            <str id="shitNotes">Kritische Treffer</str>
+            <str id="attacksDodged">Gesamtzahl der Ausweichmanöver</str>
+            <str id="taskSpeedrunSkeld">Speedrun Rekord Aufgaben (Skeld)</str>
+            <str id="taskSpeedrunMira">Speedrun Rekord Aufgaben (Mira HQ)</str>
+            <str id="taskSpeedrunPolus">Speedrun Rekord Aufgaben (Polus)</str>
+            <str id="taskSpeedrunAirship">Speedrun Rekord Aufgaben (Airship)</str>
+            <str id="totalTasks">Gesamtzahl der erledigten Aufgaben</str>
+        </group>
+    </group>
+
+    <group name="Mods" prefix="mods.">
+        <str id="disableMods">Mods deaktivieren</str>
+    </group>
+
+    <group name="Options" prefix="options.">
+        <str id="selectCategory">Wähle eine Kategorie</str>
+
+        <group name="Sections" prefix="section.">
+            <str id="controls">Steuerung</str>
+            <str id="gameplay">Spielmechanik</str>
+            <str id="graphicsandvisuals">Grafik und Visuals</str>
+            <str id="languages">Sprachen</str>
+            <str id="miscellaneous">Sonstiges</str>
+        </group>
+
+        <group name="Language" prefix="language.">
+            <str id="translator">Übersetzung von: {0}</str>
+            <str id="en">Englisch</str>
+            <str id="es">Spanisch</str>
+            <str id="fr">Französisch</str>
+            <str id="pt">Portugiesisch</str>
+            <str id="ja">Japanisch</str>
+            <str id="ru">Russisch</str>
+            <str id="de">Deutsch</str>
+            <str id="it">Italienisch</str>
+            <str id="pl">Polnisch</str>
+            <str id="vi">Vietnamesisch</str>
+        </group>
+
+        <group name="LanguageWarning" prefix="langWarn.">
+            <str id="line1">WARNUNG: Eine neue Sprache wurde festgelegt!</str>
+            <str id="line2">Das Menü muss neu geladen werden, damit die Änderungen angewendet werden!</str>
+            <str id="line3">{0} um das Menü neu zu laden.</str>
+        </group>
+    </group>
+
+    <group name="Freeplay" prefix="freeplay.">
+        <str id="score">HIGHSCORE</str>
+        <str id="player2">SPIELER 2</str>
+    </group>
+
+    <group name="Difficulties" prefix="diff.">
+        <str id="easy">Einfach</str>
+        <str id="normal">Normal</str>
+        <str id="hard">Schwierig</str>
+        <str id="erect">Erektion</str>
+        <str id="nightmare">Albtraum</str>
+    </group>
+</language>
