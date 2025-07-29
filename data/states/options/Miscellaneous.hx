@@ -5,7 +5,7 @@ var options:Array<Dynamic> = [
     {
         name: "devMode",
         description: "devMode",
-        type: "checkbox",
+        type: "bool",
         savevar: "devMode",
         savepoint: Options
     }
@@ -17,6 +17,10 @@ var options:Array<Dynamic> = [
     }
     */
 ];
+
+function onChangeBool(option:Int, newValue:Bool) {
+    Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+}
 
 function onCallFunction(option:Int) {
     if (options[option].name == "Reset Save Data") {
