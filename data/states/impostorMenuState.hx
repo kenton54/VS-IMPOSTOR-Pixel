@@ -13,6 +13,7 @@ import funkin.editors.EditorPicker;
 import funkin.menus.credits.CreditsMain;
 import funkin.menus.ModSwitchMenu;
 import funkin.options.categories.DebugOptions;
+import funkin.options.Options;
 import lime.graphics.Image;
 import openfl.filters.ShaderFilter;
 import openfl.ui.Mouse;
@@ -331,7 +332,7 @@ function create() {
     topButtonsGroup.add(statsButton);
 
     if (!FlxG.onMobile) {
-        if (debugMode) {
+        if (Options.devMode) {
             var debugButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
             debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
             debugButton.animation.add("idle", [0], 0, false);

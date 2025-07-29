@@ -5,7 +5,7 @@ import funkin.backend.utils.WindowUtils;
 import lime.graphics.Image;
 import openfl.system.Capabilities;
 
-var debugMode:Bool = (true && !FlxG.onMobile);
+var debugMode:Bool = Options.devMode;
 
 function new() {
     FlxSprite.defaultAntialiasing = false;
@@ -50,14 +50,6 @@ function initSaveData() {
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= [];
 }
-
-/*
-function update(elapsed:Float) {
-    if (debugMode) {
-        if (FlxG.keys.justPressed.F5) reloadState();
-    }
-}
-*/
 
 function reloadState() {
     FlxG.resetState();
