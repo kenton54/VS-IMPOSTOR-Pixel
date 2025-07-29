@@ -66,7 +66,7 @@
         <group name="LanguageWarning" prefix="langWarn.">
             <str id="line1">ADVERTENCIA: Se ha establecido un nuevo idioma!</str>
             <str id="line2">El menú debe ser recargado para que los efectos se apliquen!</str>
-            <str id="line3">para recarga el menú.</str>
+            <str id="line3">{0} para recarga el menú.</str>
         </group>
     </group>
 

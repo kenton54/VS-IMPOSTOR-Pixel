@@ -31,8 +31,6 @@ public static var windowSizeMult:Float = 1;
 public static var windowSizeRatio:Float = 1;
 //public static var windowSizeHeightMult:Float = 1;
 
-public static var debugMode:Bool = (true && !FlxG.onMobile);
-
 function new() {
     storySequence = FlxG.save.data.impPixelStorySequence;
     stats = FlxG.save.data.impPixelStats;
