@@ -449,6 +449,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
 
 var optHoldTimer:Float = 0;
 var optMaxHeldTime:Float = 0.5;
+var optMaxFastHeldTime:Float = 1.5;
 var optFrameDelayer:Int = 0;
 var optMaxDelay:Int = 5;
 function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, valueTxt:FunkinText) {
@@ -471,11 +472,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 else
                     optFrameDelayer++;
 
-                if (optHoldTimer >= optMaxHeldTime * 3)
-                    optMaxDelay = 2;
-                if (optHoldTimer >= optMaxHeldTime * 6)
-                    optMaxDelay = 1;
-                if (optHoldTimer >= optMaxHeldTime * 9)
+                if (optHoldTimer >= optMaxFastHeldTime)
                     optMaxDelay = 0;
             }
             optHoldTimer += FlxG.elapsed;
@@ -509,11 +506,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 else
                     optFrameDelayer++;
 
-                if (optHoldTimer >= optMaxHeldTime * 3)
-                    optMaxDelay = 2;
-                if (optHoldTimer >= optMaxHeldTime * 6)
-                    optMaxDelay = 1;
-                if (optHoldTimer >= optMaxHeldTime * 9)
+                if (optHoldTimer >= optMaxFastHeldTime)
                     optMaxDelay = 0;
             }
             optHoldTimer += FlxG.elapsed;
@@ -559,11 +552,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                         else
                             optFrameDelayer++;
 
-                        if (optHoldTimer >= optMaxHeldTime * 3)
-                            optMaxDelay = 2;
-                        if (optHoldTimer >= optMaxHeldTime * 6)
-                            optMaxDelay = 1;
-                        if (optHoldTimer >= optMaxHeldTime * 9)
+                        if (optHoldTimer >= optMaxFastHeldTime)
                             optMaxDelay = 0;
                     }
                     optHoldTimer += FlxG.elapsed;
@@ -608,11 +597,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                         else
                             optFrameDelayer++;
 
-                        if (optHoldTimer >= optMaxHeldTime * 3)
-                            optMaxDelay = 2;
-                        if (optHoldTimer >= optMaxHeldTime * 6)
-                            optMaxDelay = 1;
-                        if (optHoldTimer >= optMaxHeldTime * 9)
+                        if (optHoldTimer >= optMaxFastHeldTime)
                             optMaxDelay = 0;
                     }
                     optHoldTimer += FlxG.elapsed;
@@ -659,11 +644,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     else
                         optFrameDelayer++;
 
-                    if (optHoldTimer >= optMaxHeldTime * 3)
-                        optMaxDelay = 2;
-                    if (optHoldTimer >= optMaxHeldTime * 6)
-                        optMaxDelay = 1;
-                    if (optHoldTimer >= optMaxHeldTime * 9)
+                    if (optHoldTimer >= optMaxFastHeldTime)
                         optMaxDelay = 0;
                 }
                 optHoldTimer += FlxG.elapsed;
@@ -708,11 +689,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     else
                         optFrameDelayer++;
 
-                    if (optHoldTimer >= optMaxHeldTime * 3)
-                        optMaxDelay = 2;
-                    if (optHoldTimer >= optMaxHeldTime * 6)
-                        optMaxDelay = 1;
-                    if (optHoldTimer >= optMaxHeldTime * 9)
+                    if (optHoldTimer >= optMaxFastHeldTime)
                         optMaxDelay = 0;
                 }
                 optHoldTimer += FlxG.elapsed;

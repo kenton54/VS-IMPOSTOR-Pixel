@@ -12,7 +12,7 @@ var options:Array<Dynamic> = [
         type: "bool",
         savevar: "middlescroll",
         savepoint: FlxG.save.data
-    }
+    },
     {
         name: "ghostTapping",
         type: "bool",

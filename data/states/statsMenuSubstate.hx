@@ -83,7 +83,7 @@ function create() {
         add(daStat);
 
         var value:Dynamic;
-        value = stats[statsLabels[i]] ?? defaultStats[statsLabels[i]];
+        value = impostorStats[statsLabels[i]] ?? defaultStats[statsLabels[i]];
         if (StringTools.contains(statsLabels[i], "Story Progression")) value = '"'+value+'"';
         if (StringTools.contains(statsLabels[i], "Speedrun")) value = FlxStringUtil.formatTime(value, true);
         var statValue:FunkinText = new FunkinText(statsTitle.x + 4 * scale, yPos, buttonsBack.width, Std.string(value), 22, false);

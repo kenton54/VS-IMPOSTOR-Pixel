@@ -14,7 +14,7 @@ public static var storyState:Array<String> = [
 ];
 public static var storySequence:Int = 0;
 
-public static var stats:Map<String, Dynamic> = [];
+public static var impostorStats:Map<String, Dynamic> = [];
 
 public static var playablesList:Map<String, Bool> = ["bf" => true];
 public static var skinsList:Map<String, Map<String, Bool>> = [/*character => [skin => bought]*/];
@@ -33,7 +33,7 @@ public static var windowSizeRatio:Float = 1;
 
 function new() {
     storySequence = FlxG.save.data.impPixelStorySequence;
-    stats = FlxG.save.data.impPixelStats;
+    impostorStats = FlxG.save.data.impPixelStats;
     playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
     skinsList = FlxG.save.data.impPixelSkinsUnlocked;
     pixelBeans = FlxG.save.data.impPixelBeans;

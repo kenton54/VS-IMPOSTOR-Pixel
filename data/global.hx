@@ -7,6 +7,22 @@ import openfl.system.Capabilities;
 
 var debugMode:Bool = Options.devMode;
 
+var defaultStats:Map<String, Dynamic> = [
+    "Current Story Progression" => "start",
+    "Total Note Hits" => 0,
+    "Perfect Note Hits" => 0,
+    "Sick Note Hits" => 0,
+    "Good Note Hits" => 0,
+    "Bad Note Hits" => 0,
+    "Shit Note Hits" => 0,
+    "Total Attacks Dodged" => 0,
+    "Tasks Speedrun PB (Skeld)" => 0.0,
+    "Tasks Speedrun PB (Mira HQ)" => 0.0,
+    "Tasks Speedrun PB (Polus)" => 0.0,
+    "Tasks Speedrun PB (Airship)" => 0.0,
+    "Total Tasks Completed" => 0
+];
+
 function new() {
     FlxSprite.defaultAntialiasing = false;
 
@@ -44,7 +60,7 @@ function initSaveData() {
     // Mod Source
     FlxG.save.data.impPixelStorySequence ??= 0;
     FlxG.save.data.impPixelBeans ??= 0;
-    FlxG.save.data.impPixelStats = [];
+    FlxG.save.data.impPixelStats ??= defaultStats;
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
@@ -76,6 +92,10 @@ function resizeGame(width:Int, height:Int) {
     FlxG.height = height;
 }
 
+function resizeWindow(width:Int, height:Int) {
+    window.resize(width, height);
+}
+
 function closeGame() {}
 
 function destroy() {
@@ -84,7 +104,8 @@ function destroy() {
     Application.current.window.minWidth = null;
     Application.current.window.minHeight = null;
 
-    if (FlxG.onMobile) {
-        resizeGame(1280, 720);
-    }
+    resizeGame(1280, 720);
+    resizeWindow(1280, 720);
+
+    FlxSprite.defaultAntialiasing = true;
 }
