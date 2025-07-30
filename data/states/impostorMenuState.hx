@@ -932,7 +932,7 @@ function handleTopButtons() {
                     }
                     else if (button == topButtonsGroup.members[1]) {
                         FlxG.sound.play(Paths.sound("menu/select"), 1);
-                        openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
+                        openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
                             var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
                             var maxHeight:Float = 88;
                             for (c => column in debugOptions) {
