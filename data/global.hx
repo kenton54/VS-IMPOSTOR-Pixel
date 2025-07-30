@@ -2,10 +2,10 @@ import funkin.backend.system.framerate.Framerate;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
+import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
 import openfl.system.Capabilities;
-
-var debugMode:Bool = Options.devMode;
+importScript("data/utils");
 
 var defaultStats:Map<String, Dynamic> = [
     "Current Story Progression" => "start",
@@ -67,8 +67,23 @@ function initSaveData() {
     FlxG.save.data.impPixelFlags ??= [];
 }
 
-function reloadState() {
-    FlxG.resetState();
+function update(elapsed:Float) {
+    if (fakeMobile) {
+        if (FlxG.keys.justPressed.F8) {
+            MusicBeatTransition.script = "data/transitions/closingSharpCircle";
+            FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
+        }
+    }
+}
+
+function postStateSwitch() {
+    if (fakeMobile) {
+        var mobilePreviewTxt:FunkinText = new FunkinText(FlxG.width * 0.02, FlxG.height * 0.98, 0, 'Mobile Preview, menus may look different in the real thing!\nPress F8 to exit the preview', 32, true);
+        mobilePreviewTxt.font = Paths.font("pixeloidsans.ttf");
+        mobilePreviewTxt.borderSize = 3;
+        mobilePreviewTxt.y -= mobilePreviewTxt.height;
+        FlxG.game._state.add(mobilePreviewTxt);
+    }
 }
 
 // da states
@@ -106,6 +121,9 @@ function destroy() {
 
     resizeGame(1280, 720);
     resizeWindow(1280, 720);
+
+    isMobile = FlxG.onMobile;
+    fakeMobile = false;
 
     FlxSprite.defaultAntialiasing = true;
 }

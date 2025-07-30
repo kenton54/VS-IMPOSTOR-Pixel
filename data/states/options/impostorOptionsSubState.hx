@@ -6,6 +6,7 @@ import funkin.backend.utils.TranslationUtil;
 import funkin.options.Options;
 import sys.FileSystem;
 importScript("data/variables");
+importScript("data/utils");
 
 var optionsCam:FlxCamera;
 
@@ -159,7 +160,7 @@ function removeExtension(s:String):String {
 }
 
 function postCreate() {
-    if (!FlxG.onMobile) FlxG.mouse.visible = true;
+    if (!isMobile) FlxG.mouse.visible = true;
 }
 
 // prevents from opening a category IMMEDIATLY after opening this substate
@@ -170,13 +171,13 @@ function update(elapsed:Float) {
     handleOptions();
 
     handleKeyboard();
-    if (FlxG.onMobile)
+    if (isMobile)
         handleTouch();
     else
         handleMouse();
 }
 
-var usingKeyboard:Bool = !FlxG.onMobile;
+var usingKeyboard:Bool = !isMobile;
 function handleKeyboard() {
     if (controls.UP_P)
         changeOptionSelec(-1);
@@ -358,8 +359,8 @@ function updateDescription() {
 
         try {
             var daTranslation:String = "";
-            if (TranslationUtil.exists("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (FlxG.onMobile ? "-mobile" : "")))
-                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (FlxG.onMobile ? "-mobile" : ""));
+            if (TranslationUtil.exists("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (isMobile ? "-mobile" : "")))
+                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (isMobile ? "-mobile" : ""));
             else
                 daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
             descriptionGroup.members[1].text = daTranslation;
@@ -415,7 +416,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
 
     if (hoveringOverCategory) return;
 
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
                 FlxG.sound.play(Paths.sound("menu/select"), 1);
@@ -531,7 +532,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
 
         return;
     }
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(subtractBtn)) {
                 if (touch.pressed) {
@@ -791,7 +792,7 @@ function handlePercentage(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite,
 
         return;
     }
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(subtractBtn)) {
                 if (touch.pressed) {
@@ -1007,7 +1008,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
 
         return;
     }
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(subtractBtn)) {
                 if (touch.pressed) {
@@ -1085,7 +1086,7 @@ function handleFunction(position:Int) {
         FlxG.sound.play(Paths.sound("menu/select"), 1);
         curCategory.call("onCallFunction", [position]);
     }
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
                 FlxG.sound.play(Paths.sound("menu/select"), 1);
@@ -1115,7 +1116,7 @@ function handleLanguages(index:Int, dot:FlxSprite) {
             }
             return;
         }
-        if (FlxG.onMobile) {
+        if (isMobile) {
             for (touch in FlxG.touches.list) {
                 if (touch.overlaps(curCategoryGrp.members[index].members[0])) {
                     if (touch.justReleased) {

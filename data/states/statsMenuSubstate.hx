@@ -103,11 +103,11 @@ function create() {
 }
 
 function postCreate() {
-    if (!FlxG.onMobile) FlxG.mouse.visible = true;
+    if (!isMobile) FlxG.mouse.visible = true;
 }
 
 function update(elapsed:Float) {
-    if (controls.BACK || (!FlxG.onMobile ? (FlxG.mouse.overlaps(closeButton) && FlxG.mouse.justPressed) : (FlxG.touches.getFirst() != null && FlxG.touches.getFirst().overlaps(closeButton) && FlxG.touches.getFirst().justPressed))) {
+    if (controls.BACK || (!isMobile ? (FlxG.mouse.overlaps(closeButton) && FlxG.mouse.justPressed) : (FlxG.touches.getFirst() != null && FlxG.touches.getFirst().overlaps(closeButton) && FlxG.touches.getFirst().justPressed))) {
         CoolUtil.playMenuSFX(2);
         close();
     }

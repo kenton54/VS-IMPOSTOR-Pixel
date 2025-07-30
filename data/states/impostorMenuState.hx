@@ -15,6 +15,7 @@ import lime.graphics.Image;
 import openfl.ui.Mouse;
 import PixelStars;
 importScript("data/variables");
+importScript("data/utils");
 
 var discordIntegration:Bool = false;
 
@@ -144,6 +145,15 @@ var debugOptions:Array<Array<Dynamic>> = [
                 transition: "data/transitions/right2leftSharpCircle"
             }
         ];
+    },
+    {
+        [
+            {
+                name: "Mobile Emulator",
+                image: Paths.image("editors/icons/mobile"),
+                transition: "data/transitions/closingSharpCircle"
+            }
+        ];
     }
 ];
 
@@ -233,7 +243,7 @@ function create() {
     add(topLeft);
     add(topRight);
 
-    if (!FlxG.onMobile && discordIntegration) {
+    if (!isMobile && discordIntegration) {
         discordAvatar = new FlxSprite(topLeft.x + 6 * baseScale, topLeft.y + 2.5 * baseScale);
 
         if (DiscordUtil.ready) {
@@ -272,7 +282,7 @@ function create() {
     lightLight.camera = mainCam;
     lightLight.blend = 0;
 
-    if (FlxG.onMobile) {
+    if (isMobile) {
         lightThing.color = 0xFF43A25A;
         lightGlow.color = 0xFF43A25A;
     }
@@ -325,7 +335,7 @@ function create() {
     statsButton.y -= statsButton.height + 2 * baseScale;
     topButtonsGroup.add(statsButton);
 
-    if (!FlxG.onMobile) {
+    if (!isMobile) {
         if (Options.devMode) {
             var debugButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
             debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
@@ -551,7 +561,7 @@ function createFinalButtons(x:Float, y:Float) {
 var backButton:FlxSprite;
 var pressedBack:Bool = false;
 function postCreate() {
-    var backBtnScale:Float = FlxG.onMobile ? 4 : 3;
+    var backBtnScale:Float = isMobile ? 4 : 3;
     backButton = new FlxSprite(FlxG.width * 0.975, FlxG.height);
     backButton.frames = Paths.getFrames("app/backButton");
     backButton.animation.addByPrefix("idle", "idle normal", 0, true);
@@ -569,7 +579,11 @@ function postCreate() {
     add(backButton);
 
     FlxG.mouse.visible = !usingKeyboard;
-    if (FlxG.onMobile) FlxG.mouse.visible = false;
+    if (isMobile) FlxG.mouse.visible = false;
+
+    if (fakeMobile) {
+
+    }
 }
 
 var checkTimer:Float = 0;
@@ -585,7 +599,7 @@ function update(elapsed:Float) {
         handleWindow();
 
     handleKeyboard(elapsed);
-    if (FlxG.onMobile)
+    if (isMobile)
         handleTouch();
     else
         handleMouse();
@@ -610,7 +624,7 @@ var curWindowLogic:Void = null;
 var curWindowChooseBehaviour:Void = null;
 
 var allowKeyboard:Bool = true;
-var usingKeyboard:Bool = !FlxG.onMobile;
+var usingKeyboard:Bool = !isMobile;
 var holdTimer:Float = 0;
 var maxHeldTime:Float = 0.5;
 var frameDelayer:Int = 0;
@@ -815,7 +829,7 @@ function handleMainButtons() {
         return;
     }
 
-    if (FlxG.onMobile) {
+    if (isMobile) {
         isTouchingButton = false;
 
         if (!allowTouch) return;
@@ -874,107 +888,135 @@ function handleTopButtons() {
     if (currentSelectionMode != "main") return;
 
     topButtonsGroup.forEach(function(button) {
-        if (FlxG.mouse.overlaps(button)) {
-            if (connecting) return;
-
-            if (FlxG.mouse.pressed) {
-                button.animation.play("click");
-            }
-            else {
-                button.animation.play("idle");
-            }
-
-            if (FlxG.mouse.justReleased) {
-                if (button == topButtonsGroup.members[0]) {
-                    statsMenu();
-                }
-                if (button == topButtonsGroup.members[2]) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    if (DiscordUtil.ready) {
-                        shutdownDiscordRPC();
+        if (isMobile) {
+            for (touch in FlxG.touches.list) {
+                if (touch.overlaps(button)) {
+                    if (touch.pressed) {
+                        button.animation.play("click");
                     }
                     else {
-                        initDiscordRPC();
+                        button.animation.play("idle");
                     }
-                }
-                else if (button == topButtonsGroup.members[1]) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
-                        var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
-                        for (c => column in debugOptions) {
-                            var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
-                            group.add(columnGroup);
 
-                            for (row in column) {
-                                var rowGroup = new FlxTypedSpriteGroup();
-                                columnGroup.add(rowGroup);
-
-                                var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
-                                bg.alpha = 0;
-                                rowGroup.add(bg);
-
-                                var toolLabel:FunkinText = new FunkinText(32 * baseScale, bg.height / 2, 0, row.name, 32);
-                                toolLabel.font = Paths.font("pixeloidsans.ttf");
-                                toolLabel.borderSize = 3;
-                                toolLabel.y -= toolLabel.height / 2;
-
-                                var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
-                                toolIcon.scale.set(baseScale, baseScale);
-                                toolIcon.updateHitbox();
-                                toolIcon.x = 15 * baseScale - toolIcon.width / 2;
-                                toolIcon.y -= toolIcon.height / 2;
-
-                                rowGroup.add(toolIcon);
-                                rowGroup.add(toolLabel);
-                            }
+                    if (touch.justReleased) {
+                        if (button == topButtonsGroup.members[0]) {
+                            statsMenu();
                         }
-                    }, function() {
-                        mouseIsOverABtn = false;
-
-                        if (!allowMouse) return;
-
-                        var col:Int = 0;
-                        windowGroup.forEach(function(column) {
-                            if (column is FlxTypedSpriteGroup) {
-                                var rw:Int = 0;
-                                column.forEach(function(row) {
-                                    if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                        row.members[0].alpha = 0.25;
-
-                                        mouseIsOverABtn = true;
-                                        curWindowEntry[0] = col;
-                                        curWindowEntry[1] = rw;
-                                        playSoundWindow();
-                                    }
-                                    else {
-                                        row.members[0].alpha = 0;
-                                    }
-                                    rw++;
-                                });
-                                col++;
-                            }
-                        });
-                    }, function() {
-                        CoolUtil.playMenuSFX(1);
-
-                        if (curWindowEntry[1] == 0) {
-                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
-                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
-
-                            new FlxTimer().start(1, _ -> {
-                                switch(curWindowEntry[0]) {
-                                    case 0: FlxG.switchState(new CharterSelection());
-                                    case 1: FlxG.switchState(new CharacterSelection());
-                                    case 2: FlxG.switchState(new StageSelection());
-                                }
-                            });
-                        }
-                    });
+                    }
                 }
             }
         }
         else {
-            button.animation.play("idle");
+            if (FlxG.mouse.overlaps(button)) {
+                if (connecting) return;
+
+                if (FlxG.mouse.pressed) {
+                    button.animation.play("click");
+                }
+                else {
+                    button.animation.play("idle");
+                }
+
+                if (FlxG.mouse.justReleased) {
+                    if (button == topButtonsGroup.members[0]) {
+                        statsMenu();
+                    }
+                    if (button == topButtonsGroup.members[2]) {
+                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        if (DiscordUtil.ready) {
+                            shutdownDiscordRPC();
+                        }
+                        else {
+                            initDiscordRPC();
+                        }
+                    }
+                    else if (button == topButtonsGroup.members[1]) {
+                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        openWindowSection('Debug Tools', debugOptions, function(posH, posV, group) {
+                            var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
+                            var maxHeight:Float = 88;
+                            for (c => column in debugOptions) {
+                                var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
+                                group.add(columnGroup);
+
+                                for (row in column) {
+                                    var rowGroup = new FlxTypedSpriteGroup();
+                                    columnGroup.add(rowGroup);
+
+                                    var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
+                                    bg.alpha = 0;
+                                    rowGroup.add(bg);
+
+                                    var toolLabel:FunkinText = new FunkinText(32 * baseScale, bg.height / 2, 0, row.name, 32);
+                                    toolLabel.font = Paths.font("pixeloidsans.ttf");
+                                    toolLabel.borderSize = 3;
+                                    toolLabel.y -= toolLabel.height / 2;
+
+                                    var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
+                                    toolIcon.scale.set(baseScale, baseScale);
+                                    toolIcon.updateHitbox();
+                                    toolIcon.x = 15 * baseScale - toolIcon.width / 2;
+
+                                    if (toolIcon.height > maxHeight) {
+                                        toolIcon.scale.y = baseScale * (maxHeight / toolIcon.height);
+                                        toolIcon.updateHitbox();
+                                    }
+
+                                    toolIcon.y -= toolIcon.height / 2;
+
+                                    rowGroup.add(toolIcon);
+                                    rowGroup.add(toolLabel);
+                                }
+                            }
+                        }, function() {
+                            mouseIsOverABtn = false;
+
+                            if (!allowMouse) return;
+
+                            var col:Int = 0;
+                            windowGroup.forEach(function(column) {
+                                if (column is FlxTypedSpriteGroup) {
+                                    var rw:Int = 0;
+                                    column.forEach(function(row) {
+                                        if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                            row.members[0].alpha = 0.25;
+
+                                            mouseIsOverABtn = true;
+                                            curWindowEntry[0] = col;
+                                            curWindowEntry[1] = rw;
+                                            playSoundWindow();
+                                        }
+                                        else {
+                                            row.members[0].alpha = 0;
+                                        }
+                                        rw++;
+                                    });
+                                    col++;
+                                }
+                            });
+                        }, function() {
+                            CoolUtil.playMenuSFX(1);
+
+                            if (curWindowEntry[1] == 0) {
+                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
+                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
+
+                                new FlxTimer().start(1, _ -> {
+                                    switch(curWindowEntry[0]) {
+                                        case 0: FlxG.switchState(new CharterSelection());
+                                        case 1: FlxG.switchState(new CharacterSelection());
+                                        case 2: FlxG.switchState(new StageSelection());
+                                        case 3: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+            else {
+                button.animation.play("idle");
+            }
         }
     });
 }
@@ -1143,7 +1185,7 @@ function checkSelectedMainEntry() {
                     });
                     return;
                 }
-                if (FlxG.onMobile) {
+                if (isMobile) {
                     isTouchingButton = false;
 
                     if (allowTouch) {
@@ -1322,7 +1364,7 @@ function checkSelectedMainEntry() {
                     });
                     return;
                 }
-                if (FlxG.onMobile) {
+                if (isMobile) {
                     isTouchingButton = false;
 
                     for (touch in FlxG.touches.list) {
@@ -1384,7 +1426,7 @@ function checkSelectedMainEntry() {
                 var dur:Float = 1;
                 FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
                 new FlxTimer().start(dur, _ -> {
-                    if (!FlxG.onMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
+                    if (!isMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
                     ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
                 });
             });
@@ -1430,7 +1472,7 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
 function handleWindow() {
     curWindowLogic();
 
-    if (FlxG.onMobile) {
+    if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (windowGroup.members[windowGroup.length - 1].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
                 if (touch.justReleased)

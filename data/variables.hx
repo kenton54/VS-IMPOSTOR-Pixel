@@ -58,7 +58,7 @@ function customGameResize(width:Int, height:Int) {
 
 function flushSaveData() {
     FlxG.save.data.impPixelStorySequence = storySequence;
-    FlxG.save.data.impPixelStats = stats;
+    FlxG.save.data.impPixelStats = impostorStats;
     FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
@@ -72,10 +72,6 @@ function flushSaveData() {
         Logs.logText("Data succesfully saved!")
     ]);
     */
-}
-
-function destroy() {
-    Application.current.onExit.remove(closeGame);
 }
 
 function closeGame() flushSaveData();

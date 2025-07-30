@@ -9,6 +9,7 @@ import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
 import PixelStars;
 importScript("data/variables");
+importScript("data/utils");
 
 var stars:PixelStars;
 
@@ -95,7 +96,7 @@ function update(elapsed:Float) {
             FlxG.switchState(new MainMenuState());
         }
         else if (!transitionTimer.active && !transitioning) {
-            pressStart.text = FlxG.onMobile ? TranslationUtil.translate("touch").toUpperCase() : TranslationUtil.translate("click").toUpperCase();
+            pressStart.text = isMobile ? TranslationUtil.translate("touch").toUpperCase() : TranslationUtil.translate("click").toUpperCase();
             pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
             accept();
         }
@@ -126,7 +127,7 @@ var colorArray:Array<FlxColor> = [
 var mouseTxt:Bool = false;
 function tweenPressStart() {
     pressStart.borderColor = colorArray[FlxG.random.int(0, colorArray.length - 1)];
-    if (FlxG.onMobile) {
+    if (isMobile) {
         pressStart.text = TranslationUtil.translate("touch").toUpperCase();
         pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
         tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
