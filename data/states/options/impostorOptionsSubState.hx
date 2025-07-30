@@ -1,5 +1,5 @@
 import flixel.group.FlxTypedSpriteGroup;
-//import flixel.text.FlxInputText; // must wait until next codename update :face_holding_back_tears: (i need flixel +5.9.0)
+//import flixel.text.FlxInputText; // i need flixel +5.9.0 :face_holding_back_tears:
 import funkin.backend.scripting.Script;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.TranslationUtil;
@@ -89,7 +89,6 @@ function create() {
     phoneScreen.add(categoriesGroup);
 
     var categoriesHeight:Float = optionsBox.height / categories.length;
-    //trace(categoriesHeight);
     for (i in 0...categories.length) {
         var categoryGrp:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(0, categoriesHeight * i);
         categoriesGroup.add(categoryGrp);
@@ -1263,7 +1262,7 @@ function createCategory(category:String) {
         var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         curCategoryGrp.add(group);
 
-        var height:Float = 52;
+        var height:Float = 40;
         var iHeight:Float = height * i; // this is necessary otherwise positions will get fucked up
         var x:Float = 0;
         var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);

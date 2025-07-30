@@ -1,7 +1,6 @@
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTweenType;
-import flixel.ui.FlxButton;
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.TranslationUtil;
@@ -9,16 +8,11 @@ import funkin.backend.utils.TranslationUtil;
 import funkin.backend.MusicBeatTransition;
 import funkin.editors.character.CharacterSelection;
 import funkin.editors.charter.CharterSelection;
-import funkin.editors.EditorPicker;
+import funkin.editors.stage.StageSelection;
 import funkin.menus.credits.CreditsMain;
-import funkin.menus.ModSwitchMenu;
-import funkin.options.categories.DebugOptions;
 import funkin.options.Options;
 import lime.graphics.Image;
-import openfl.filters.ShaderFilter;
 import openfl.ui.Mouse;
-//import sys.net.Socket;
-//import sys.Http;
 import PixelStars;
 importScript("data/variables");
 
@@ -145,8 +139,8 @@ var debugOptions:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: "Debug Options",
-                image: Paths.image("editors/icons/options"),
+                name: "Stage Editor",
+                image: Paths.image("editors/icons/stage"),
                 transition: "data/transitions/right2leftSharpCircle"
             }
         ];
@@ -919,7 +913,7 @@ function handleTopButtons() {
                                 bg.alpha = 0;
                                 rowGroup.add(bg);
 
-                                var toolLabel:FunkinText = new FunkinText(30 * baseScale, bg.height / 2, 0, row.name, 32);
+                                var toolLabel:FunkinText = new FunkinText(32 * baseScale, bg.height / 2, 0, row.name, 32);
                                 toolLabel.font = Paths.font("pixeloidsans.ttf");
                                 toolLabel.borderSize = 3;
                                 toolLabel.y -= toolLabel.height / 2;
@@ -927,7 +921,7 @@ function handleTopButtons() {
                                 var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
                                 toolIcon.scale.set(baseScale, baseScale);
                                 toolIcon.updateHitbox();
-                                toolIcon.x = 1.5 * baseScale + (daHeight - toolIcon.width) / 2;
+                                toolIcon.x = 15 * baseScale - toolIcon.width / 2;
                                 toolIcon.y -= toolIcon.height / 2;
 
                                 rowGroup.add(toolIcon);
@@ -971,7 +965,7 @@ function handleTopButtons() {
                                 switch(curWindowEntry[0]) {
                                     case 0: FlxG.switchState(new CharterSelection());
                                     case 1: FlxG.switchState(new CharacterSelection());
-                                    case 2: FlxG.switchState(new DebugOptions());
+                                    case 2: FlxG.switchState(new StageSelection());
                                 }
                             });
                         }
