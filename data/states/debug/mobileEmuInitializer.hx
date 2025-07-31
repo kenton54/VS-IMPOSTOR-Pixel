@@ -7,11 +7,13 @@ importScript("data/utils");
 function create() {
     if (isMobile) {
         resizeGame(1280, 720);
-        resizeWindow(1280, 720);
+        if (!Application.current.window.maximized)
+            resizeWindow(1280, 720);
     }
     else {
         resizeGame(1600, 720);
-        resizeWindow(1600, 720);
+        if (!Application.current.window.maximized)
+            resizeWindow(1600, 720);
     }
 
     isMobile = !isMobile;

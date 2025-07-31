@@ -4,6 +4,7 @@ import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
+import lime.system.Clipboard;
 import openfl.system.Capabilities;
 importScript("data/utils");
 
@@ -41,6 +42,8 @@ function new() {
         setWindowParameters();
         FlxG.mouse.visible = true;
     }
+
+    //Application.current.window.__attributes.context.vsync = true;
 }
 
 function setWindowParameters() {
@@ -100,17 +103,6 @@ function preStateSwitch() {
             FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
 
-function resizeGame(width:Int, height:Int) {
-    FlxG.initialWidth = width;
-    FlxG.initialHeight = height;
-    FlxG.width = width;
-    FlxG.height = height;
-}
-
-function resizeWindow(width:Int, height:Int) {
-    window.resize(width, height);
-}
-
 function closeGame() {}
 
 function destroy() {
@@ -120,7 +112,9 @@ function destroy() {
     Application.current.window.minHeight = null;
 
     resizeGame(1280, 720);
-    resizeWindow(1280, 720);
+
+    if (fakeMobile && !Application.current.window.maximized)
+        resizeWindow(1280, 720);
 
     isMobile = FlxG.onMobile;
     fakeMobile = false;
