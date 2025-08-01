@@ -52,6 +52,32 @@ var options:Array<Dynamic> = [
         change: 0.05,
         savevar: "impPixelStrumBG",
         savepoint: FlxG.save.data
+    },
+    {
+        name: "volumeMusic",
+        type: "percent",
+        change: 0.05,
+        savevar: "volumeMusic",
+        savepoint: Options
+    },
+    {
+        name: "volumeSFX",
+        type: "percent",
+        change: 0.05,
+        savevar: "volumeSFX",
+        savepoint: Options
+    },
+    {
+        name: "streamedMusic",
+        type: "bool",
+        savevar: "streamedMusic",
+        savepoint: Options
+    },
+    {
+        name: "streamedVocals",
+        type: "bool",
+        savevar: "streamedVocals",
+        savepoint: Options
     }
 ];
 

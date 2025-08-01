@@ -1233,6 +1233,7 @@ function updateCategory() {
     }
 }
 
+var globalHeight:Float = 38;
 var curCategoryOptions:Array<Dynamic> = [];
 var optionsFont:String = Paths.font("pixelarial-bold.ttf");
 function createCategory(category:String) {
@@ -1240,7 +1241,7 @@ function createCategory(category:String) {
         var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
         curCategoryGrp.add(group);
 
-        var height:Float = 40;
+        var height:Float = globalHeight;
         var iHeight:Float = height * i; // this is necessary otherwise positions will get fucked up
         var x:Float = 0;
         var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);
@@ -1397,7 +1398,7 @@ function setupLanguages() {
 
         var language:String = curCategoryOptions[i].split("/");
 
-        var height:Float = 40;
+        var height:Float = globalHeight;
         var iHeight:Float = height * i;
         var x:Float = 0;
         var bg:FlxSprite = new FlxSprite(x, iHeight).makeGraphic(categoryBounds[2], Std.int(height), FlxColor.BLACK);
