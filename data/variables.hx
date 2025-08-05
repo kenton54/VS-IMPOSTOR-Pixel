@@ -1,7 +1,6 @@
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.system.Logs;
 import lime.app.Application;
-import ImpostorFlags;
 
 public static var storyState:Array<String> = [
     "start",
@@ -25,8 +24,6 @@ public static var pixelPlayable:String = "bf";
 
 public static var pixelBeans:Int = 0;
 
-public static var flags:ImpostorFlags;
-
 public static var windowSizeMult:Float = 1;
 public static var windowSizeRatio:Float = 1;
 //public static var windowSizeHeightMult:Float = 1;
@@ -37,7 +34,6 @@ function new() {
     playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
     skinsList = FlxG.save.data.impPixelSkinsUnlocked;
     pixelBeans = FlxG.save.data.impPixelBeans;
-    flags = new ImpostorFlags();
 
     //customGameResize(FlxG.width, FlxG.height);
 
@@ -62,7 +58,6 @@ function flushSaveData() {
     FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
-    flags.save();
 
     FlxG.save.flush();
 

@@ -6,6 +6,7 @@ import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
 import lime.system.Clipboard;
 import openfl.system.Capabilities;
+import ImpostorFlags;
 importScript("data/utils");
 
 var defaultStats:Map<String, Dynamic> = [
@@ -68,6 +69,8 @@ function initSaveData() {
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= [];
+
+    ImpostorFlags.load(FlxG.save.data.impPixelFlags);
 }
 
 function update(elapsed:Float) {

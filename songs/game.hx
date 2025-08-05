@@ -15,8 +15,6 @@ import openfl.filters.ShaderFilter;
 import Date;
 import ImpostorFlags;
 
-var flags:ImpostorFlags = new ImpostorFlags();
-
 public var taskbarBG:FlxSprite;
 public var taskbar:FlxSprite;
 public var taskbarTxt:FunkinText;
@@ -126,7 +124,7 @@ function postCreate() {
 
     insert(members.length, splashHandler.getSplashGroup("impostorPixel-default"));
 
-    WindowUtils.suffix = " - " + SONG.meta.displayName + (!flags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
+    WindowUtils.suffix = " - " + SONG.meta.displayName + (!ImpostorFlags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
 
     scripts.call("postPostCreate");
 
