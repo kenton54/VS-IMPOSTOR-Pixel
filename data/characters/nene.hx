@@ -1,12 +1,12 @@
-import flixel.group.FlxTypedSpriteGroup;
 import flixel.sound.FlxSound;
-//import funkin.backend.scripting.events.PlayAnimEvent.PlayAnimContext;
+import funkin.backend.utils.AudioAnalyzer;
 import StringTools;
 
-public var abot:FlxTypedSpriteGroup;
-var vizGroup:FlxTypedSpriteGroup;
-
-var analyzer:Null<SpectralAnalyzer> = null;
+public var abot:FlxSpriteGroup;
+var vizGroup:FlxSpriteGroup;
+var analyzer:AudioAnalyzer;
+var analyzerLevelsCache:Array<Float>;
+var analyzerTimeCache:Float;
 
 var volumes:Array<Float> = [];
 
@@ -58,7 +58,7 @@ final MAX_BLINK_DELAY:Int = 7;
 var blinkCountdown:Int = MIN_BLINK_DELAY;
 
 function create() {
-    abot = new FlxTypedSpriteGroup();
+    abot = new FlxSpriteGroup();
 
     var abotMain:FunkinSprite = new FunkinSprite(0, 0, Paths.image("characters/partners/speakers/abot/abot"));
     abotMain.animation.addByPrefix("idle", "abot bop", 24, false);
@@ -66,11 +66,11 @@ function create() {
     abotMain.animation.play("idle");
     abotMain.beatAnims.push({name: "idle", forced: true});
     abotMain.beatInterval = 1;
-    abotMain.scale.set(this.scale.x, this.scale.y);
+    abotMain.scale.set(10, 10);
     abotMain.updateHitbox();
 
     var abotBG:FlxSprite = new FlxSprite(abotMain.x + 240, abotMain.y + 60).loadGraphic(Paths.image("characters/partners/speakers/abot/bg"));
-    abotBG.scale.set(this.scale.x, this.scale.y);
+    abotBG.scale.set(10, 10);
     abotBG.updateHitbox();
 
     var abotHead:FunkinSprite = new FunkinSprite(abotMain.x, abotMain.y, Paths.image("characters/partners/speakers/abot/abotHead"));
@@ -79,31 +79,27 @@ function create() {
     abotHead.animation.addByPrefix("idle right", "abot head right idle", 24, false);
     abotHead.animation.addByPrefix("trans right", "abot head right trans", 24, false);
     abotHead.animation.play("idle right");
-    abotHead.scale.set(this.scale.x, this.scale.y);
+    abotHead.scale.set(10, 10);
     abotHead.updateHitbox();
 
     abot.add(abotHead);
     abot.add(abotBG);
 
-    vizGroup = new FlxTypedSpriteGroup(abotBG.x + 147, abotBG.y + 102);
+    vizGroup = new FlxSpriteGroup(abotBG.x + 147, abotBG.y + 102);
     abot.add(vizGroup);
 
-    var visFrms = Paths.getFrames("characters/partners/speakers/abot/abotViz");
     for (index in 1...BAR_COUNT + 1) {
-        // pushes initial value
-        volumes.push(0.0);
-
         var viz:FunkinSprite = new FunkinSprite();
-        viz.frames = visFrms;
+        viz.frames = Paths.getFrames("characters/partners/speakers/abot/abotViz");
         viz.antialiasing = false;
         viz.scale.set(abotMain.scale.x, abotMain.scale.y);
         vizGroup.add(viz);
 
         var visStr = 'abot viz ';
-        viz.animation.addByPrefix('VIZ', Std.string(visStr + index), 0);
+        viz.animation.addByPrefix('VIZ', visStr + Std.string(index), 0);
         viz.animation.play('VIZ', false, false, 0);
 
-        viz.visible = false;
+        //viz.visible = false;
     }
 
     abot.add(abotMain);
@@ -132,25 +128,8 @@ function getCountAnims(prefix:String):Array<Int> {
     return result;
 }
 
-function initVisualizer() {
-    snd = FlxG.sound.music;
-    trace(snd);
-
-    analyzer = new SpectralAnalyzer(snd._channel.__audioSource, BAR_COUNT, 0.1, 40);
-    // A-Bot tuning...
-    analyzer.setMinDb(-65);
-    analyzer.setMaxDb(-25);
-    analyzer.maxFreq = 22000;
-    // we use a very low minFreq since some songs use low low subbass like a boss
-    analyzer.minFreq = 10;
-
-    #if desktop
-    // On desktop it uses FFT stuff that isn't as optimized as the direct browser stuff we use on HTML5
-    // So we want to manually change it!
-    analyzer.setFFTN(256);
-    #end
-
-    trace(analyzer);
+function onStartSong() {
+    analyzer = new AudioAnalyzer(FlxG.sound.music, 256);
 }
 
 var added:Bool = false;
@@ -159,7 +138,7 @@ function update(elapsed:Float) {
         added = true;
         abot.setPosition(this.x - 420, this.y + 66);
         abot.forEach(function(spr) {
-            if (spr is FlxTypedSpriteGroup) {
+            if (spr is FlxSpriteGroup) {
                 spr.forEach(function(viz) {
                     viz.camera = this.camera;
                 });
@@ -177,45 +156,26 @@ function update(elapsed:Float) {
 
     transitionState();
 
-    //drawFFT();
+    updateFFT();
 }
 
-function drawFFT()
-{
-    var levels = (analyzer != null) ? analyzer.getLevels() : getDefaultLevels();
+function updateFFT() {
+	if (analyzer != null && FlxG.sound.music.playing) {
+		var time = FlxG.sound.music.time;
+		if (analyzerTimeCache != time)
+			analyzerLevelsCache = analyzer.getLevels(analyzerTimeCache = time, FlxG.sound.music.calcTransformVolume(), vizGroup.group.members.length, analyzerLevelsCache, CoolUtil.getFPSRatio(0.4), -65, -10, 500, 20000);
+	}
+	else {
+		if (analyzerLevelsCache == null) analyzerLevelsCache = [];
+		analyzerLevelsCache.resize(vizGroup.group.members.length);
+	}
 
-    for (i in 0...min(vizGroup.members.length, levels.length))
-    {
-        var animFrame:Int = Math.round(levels[i].value * 6);
-
-        // don't display if we're at 0 volume from the level
-        vizGroup.members[i].visible = animFrame > 0;
-
-        // decrement our animFrame, so we can get a value from 0-5 for animation frames
-        animFrame -= 1;
-
-        animFrame = Math.floor(Math.min(5, animFrame));
-        animFrame = Math.floor(Math.max(0, animFrame));
-
-        animFrame = Std.int(Math.abs(animFrame - 5)); // shitty dumbass flip, cuz dave got da shit backwards lol!
-
-        vizGroup.members[i].animation.curAnim.curFrame = animFrame;
-    }
-}
-
-static function min(x:Int, y:Int):Int {
-    return x > y ? y : x;
-}
-
-static function getDefaultLevels():Array<Dynamic> {
-    var result:Array<Dynamic> = [];
-
-    for (i in 0...BAR_COUNT)
-    {
-        result.push({value: 0, peak: 0.0});
-    }
-
-    return result;
+	for (i in 0...analyzerLevelsCache.length) {
+		var animFrame:Int = CoolUtil.bound(Math.round(analyzerLevelsCache[i] * 6), 0, 6);
+		if (vizGroup.group.members[i].visible = animFrame > 0) {
+			vizGroup.group.members[i].animation.curAnim.curFrame = 5 - (animFrame - 1);
+		}
+	}
 }
 
 function onDance(event) {

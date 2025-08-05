@@ -22,7 +22,7 @@ function onEvent(event) {
         if (duration == 0)
             camGame.zoom = actualZoom;
         else
-            FlxTween.tween(camGame, {zoom: actualZoom}, duration, {ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType)});
+            FlxTween.tween(camGame, {zoom: actualZoom}, duration, {ease: easing});
 
         defaultCamZoom = actualZoom;
     }
