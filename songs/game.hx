@@ -14,6 +14,8 @@ import funkin.options.Options;
 import openfl.filters.ShaderFilter;
 import Date;
 import ImpostorFlags;
+import 
+import VSliceCharacter;
 
 public var taskbarBG:FlxSprite;
 public var taskbar:FlxSprite;
@@ -25,14 +27,20 @@ public var camMovementSpeed:Float = 1;
 
 public var songPercent:Float = 0;
 
-var strumlineBackground:FlxSprite;
+var strumlineBackgrounds:Array<FlxSprite> = [];
 
-var notesHit:Float = 0;
+var totalNotes:Int = 0;
+var notesHit:Int = 0;
 var sickHits:Int = 0;
 var notesMissed:Int = 0;
+var combosBroken:Int = 0;
 
 var healthLerp:Float = 0;
-var maxHealth:Float = 2;
+public var maxHealth:Float = 2;
+
+function onPostNoteCreation(event) {
+    totalNotes++;
+}
 
 function create() {
     taskbarBG = new FlxSprite(45).loadGraphic(Paths.image("game/taskBar"));
@@ -74,7 +82,7 @@ function postCreate() {
     healthBarBG.scale.set(4.68, 4.68);
     healthBarBG.updateHitbox();
     healthBarBG.screenCenter(FlxAxes.X);
-    healthBarBG.y = FlxG.height * 0.89;
+    healthBarBG.y = FlxG.height * 0.9;
 
     var leftColor:FlxColor = (dad != null && dad.iconColor != null && Options.colorHealthBar) ? dad.iconColor : (PlayState.opponentMode ? 0xFF66FF33 : 0xFFFF0000);
     var rightColor:FlxColor = (boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar) ? boyfriend.iconColor : (PlayState.opponentMode ? 0xFFFF0000 : 0xFF66FF33);
@@ -119,37 +127,33 @@ function postCreate() {
     add(ratingHitTxt);
 
     for (strumline in strumLines.members) {
-        insert(members.length, strumline);
+        for (character in strumline.characters) {
+            var lastIndex:Int = members.indexOf(character);
+        }
     }
+
+    for (strumline in strumLines.members)
+        insert(members.length, strumline);
 
     insert(members.length, splashHandler.getSplashGroup("impostorPixel-default"));
 
     WindowUtils.suffix = " - " + SONG.meta.displayName + (!ImpostorFlags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
 
-    scripts.call("postPostCreate");
-
-    /*
-    if (FlxG.save.data.impPixelxBRZ) {
-        forEach(function(spr) {
-            if (spr is FunkinSprite) {
-                if (spr.camera == camGame) {
-                    if (spr.shader == null) {
-                        var xbrzShader:CustomShader = new CustomShader("6xbrz");
-                        xbrzShader.precisionHint = 0;
-                        spr.shader = xbrzShader;
-                    }
-                }
-            }
-        });
-    }
-    */
-
+    // add backgrounds to the strumlines
     if (FlxG.save.data.impPixelStrumBG > 0) {
-        strumlineBackground = new FlxSprite(playerStrums.members[0].x).makeGraphic(playerStrums.members[0].width * (playerStrums.members.length - 1) - 10, FlxG.height, FlxColor.BLACK);
-        strumlineBackground.alpha = FlxG.save.data.impPixelStrumBG;
-        strumlineBackground.camera = camHUD;
-        insert(members.indexOf(playerStrums), strumlineBackground);
+        for (strumline in strumLines.members) {
+            if (!strumline.visible) continue;
+
+            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(strumline.members[0].width * (strumline.members.length - 1) - 8, FlxG.height, FlxColor.BLACK);
+            strumBG.alpha = FlxG.save.data.impPixelStrumBG;
+            strumBG.camera = camHUD;
+            trace(members.indexOf(strumline));
+            insert(members.indexOf(strumline), strumBG);
+            strumlineBackgrounds.push(strumBG);
+        }
     }
+
+    scripts.call("postPostCreate");
 }
 
 function update(elapsed:Float) {
@@ -248,7 +252,7 @@ function onPlayerHit(event) {
         health += health2gain;
         if (daRating == "sick" || daRating == "perfect")
             sickHits++;
-        notesHit++;
+        impostorStats.set("totalNotes", impostorStats.get("totalNotes") + 1);
         recalculateAccuracy();
 
         if (event.countAsCombo)
@@ -412,16 +416,27 @@ function healthJudge(timing:Float):Float {
 
 function ratingJudge(timing:Float):String {
     var rating:String = "";
-    if (timing < perfectThreshold)
+
+    if (timing < perfectThreshold) {
         rating = "perfect";
-    else if (timing < sickThreshold)
+        impostorStats.set("perfectNotes", impostorStats.get("perfectNotes") + 1);
+    }
+    else if (timing < sickThreshold) {
         rating = "sick";
-    else if (timing < goodThreshold)
+        impostorStats.set("sickNotes", impostorStats.get("sickNotes") + 1);
+    }
+    else if (timing < goodThreshold) {
         rating = "good";
-    else if (timing < badThreshold)
+        impostorStats.set("goodNotes", impostorStats.get("goodNotes") + 1);
+    }
+    else if (timing < badThreshold) {
         rating = "bad";
-    else if (timing < shitThreshold)
+        impostorStats.set("badNotes", impostorStats.get("badNotes") + 1);
+    }
+    else if (timing < shitThreshold) {
         rating = "shit";
+        impostorStats.set("shitNotes", impostorStats.get("shitNotes") + 1);
+    }
     else
         rating = "miss";
 
@@ -450,7 +465,6 @@ function onPlayerMiss(event) {
             health += missHealth;
             scor = missScore;
             notesMissed++;
-            notesHit++;
         }
         breakCombo();
     }
@@ -475,7 +489,7 @@ function onPlayerMiss(event) {
 }
 
 function recalculateAccuracy() {
-    accuracy = Math.min(1, Math.max(0, sickHits / notesHit));
+    accuracy = Math.min(1, Math.max(0, sickHits / totalNotes));
 }
 
 var ratingTimer:FlxTimer = new FlxTimer();
@@ -496,11 +510,13 @@ function displayRating(rating:String, score:Int) {
         FlxTween.tween(ratingHitTxt, {alpha: 0}, 0.5);
     });
 
+    /*
     if (gf != null)
-        gf.scripts.call("playComboAnim", [combo]);
+        gf.playComboAnim(combo);
+    */
 }
 
-function breakCombo(ignoreCurCombo:Bool = false) {
+public function breakCombo(ignoreCurCombo:Bool = false) {
     if (combo >= 10 || ignoreCurCombo) {
         var combBrokenTxt:FunkinText = new FunkinText(0, ratingHitTxt.y, 400, "Combo Broken", ratingHitTxt.size, true);
         combBrokenTxt.font = ratingHitTxt.font;
@@ -522,10 +538,12 @@ function breakCombo(ignoreCurCombo:Bool = false) {
                 combBrokenTxt.destroy();
             }});
         });
+
+        combosBroken++;
     }
     scripts.call("preComboBroken", [combo]);
 
-    gf.scripts.call("playComboDropAnim", [combo]);
+    //gf.playDropAnim(combo);
     combo = 0;
 
     scripts.call("onComboBroken", [combo]);
@@ -536,13 +554,13 @@ function getRatingDisplay(rating:String):String {
     if (rating == "perfect")
         ratin = "Perfect!!!";
     else if (rating == "sick")
-        ratin = "Sussy!!";
+        ratin = "Sick!!";
     else if (rating == "good")
-        ratin = "Sus!";
+        ratin = "Good!";
     else if (rating == "bad")
         ratin = "Bad";
     else if (rating == "shit")
-        ratin = "Ass!";
+        ratin = "Shit";
     else
         ratin = "Miss...";
 

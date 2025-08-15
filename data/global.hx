@@ -1,5 +1,5 @@
+import funkin.backend.system.Flags;
 import funkin.backend.system.framerate.Framerate;
-import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
@@ -8,22 +8,6 @@ import lime.system.Clipboard;
 import openfl.system.Capabilities;
 import ImpostorFlags;
 importScript("data/utils");
-
-var defaultStats:Map<String, Dynamic> = [
-    "Current Story Progression" => "start",
-    "Total Note Hits" => 0,
-    "Perfect Note Hits" => 0,
-    "Sick Note Hits" => 0,
-    "Good Note Hits" => 0,
-    "Bad Note Hits" => 0,
-    "Shit Note Hits" => 0,
-    "Total Attacks Dodged" => 0,
-    "Tasks Speedrun PB (Skeld)" => 0.0,
-    "Tasks Speedrun PB (Mira HQ)" => 0.0,
-    "Tasks Speedrun PB (Polus)" => 0.0,
-    "Tasks Speedrun PB (Airship)" => 0.0,
-    "Total Tasks Completed" => 0
-];
 
 function new() {
     FlxSprite.defaultAntialiasing = false;
@@ -40,7 +24,7 @@ function new() {
         resizeGame(1600, 720);
     }
     else {
-        setWindowParameters();
+        //setWindowParameters();
         FlxG.mouse.visible = true;
     }
 
@@ -64,13 +48,28 @@ function initSaveData() {
     // Mod Source
     FlxG.save.data.impPixelStorySequence ??= 0;
     FlxG.save.data.impPixelBeans ??= 0;
-    FlxG.save.data.impPixelStats ??= defaultStats;
+    FlxG.save.data.impPixelStats ??= getStats(true);
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= [];
 
     ImpostorFlags.load(FlxG.save.data.impPixelFlags);
+    initVars();
+}
+
+function initVars() {
+    storySequence = FlxG.save.data.impPixelStorySequence;
+    setStats(FlxG.save.data.impPixelStats);
+    playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
+    skinsList = FlxG.save.data.impPixelSkinsUnlocked;
+    pixelBeans = FlxG.save.data.impPixelBeans;
+}
+
+static function setStats(data:Map<String, Dynamic>) {
+    for (stat in data.keyValueIterator()) {
+        impostorStats.set(stat.key, stat.value);
+    }
 }
 
 function update(elapsed:Float) {
@@ -80,18 +79,14 @@ function update(elapsed:Float) {
             FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
         }
     }
-}
 
-function postStateSwitch() {
-    if (fakeMobile) {
-        var mobilePreviewTxt:FunkinText = new FunkinText(FlxG.width * 0.02, FlxG.height * 0.98, 0, 'Mobile Preview, menus may look different in the real thing!\nPress F8 to exit the preview', 32, true);
-        mobilePreviewTxt.font = Paths.font("pixeloidsans.ttf");
-        mobilePreviewTxt.borderSize = 3;
-        mobilePreviewTxt.y -= mobilePreviewTxt.height;
-        FlxG.game._state.add(mobilePreviewTxt);
+    if (FlxG.keys.justPressed.F10) {
+        FlxG.save.erase();
+        FlxG.resetGame();
     }
 }
 
+/*
 // da states
 var redirectStates:Map<FlxState, String> = [
     TitleState => "impostorTitleState",
@@ -105,22 +100,42 @@ function preStateSwitch() {
         if (FlxG.game._requestedState is redirectState)
             FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
+*/
 
-function closeGame() {}
+function postStateSwitch() {
+    if (fakeMobile) {
+        var mobilePreviewTxt:FunkinText = new FunkinText(FlxG.width * 0.02, FlxG.height * 0.98, 0, 'Mobile Preview, menus may look different in the real thing!\nPress F8 to exit the preview', 32, true);
+        mobilePreviewTxt.font = Paths.font("pixeloidsans.ttf");
+        mobilePreviewTxt.borderSize = 3;
+        mobilePreviewTxt.y -= mobilePreviewTxt.height;
+        FlxG.game._state.add(mobilePreviewTxt);
+    }
+
+    ImpostorFlags.save();
+    saveImpostor();
+}
+
+function closeGame() {
+    ImpostorFlags.save();
+    saveImpostor();
+    FlxG.save.flush();
+}
 
 function destroy() {
     Application.current.onExit.remove(closeGame);
+
+    closeGame();
 
     Application.current.window.minWidth = null;
     Application.current.window.minHeight = null;
 
     resizeGame(1280, 720);
 
-    if (fakeMobile && !Application.current.window.maximized)
+    if (TranslationUtil.fakeMobile && !Application.current.window.maximized)
         resizeWindow(1280, 720);
 
     isMobile = FlxG.onMobile;
-    fakeMobile = false;
+    setMobile(false);
 
     FlxSprite.defaultAntialiasing = true;
 }

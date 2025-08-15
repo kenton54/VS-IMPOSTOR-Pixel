@@ -215,15 +215,13 @@ function ddance() {
                     this.playAnim("knife idle");
                     blinkCountdown = FlxG.random.int(MIN_BLINK_DELAY, MAX_BLINK_DELAY);
                 }
-                else {
+                else
                     blinkCountdown--;
-                }
             default:
         }
     }
-    else {
+    else
         playAnim(((ddanced = !ddanced) ? 'danceLeft' : 'danceRight') + idleSuffix, true, "DANCE");
-    }
 }
 
 function onPlayAnim(event) {

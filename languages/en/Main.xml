@@ -27,6 +27,7 @@
         </group>
 
         <group name="Statistics" prefix="stats.">
+            <str id="title">Statistics</str>
             <str id="storyProgress">Current Story Progression</str>
             <str id="totalNotes">Total Note Hits</str>
             <str id="perfectNotes">Perfect Note Hits</str>

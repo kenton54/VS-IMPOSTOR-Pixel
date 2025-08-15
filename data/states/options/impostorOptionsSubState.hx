@@ -5,8 +5,6 @@ import funkin.backend.system.Logs;
 import funkin.backend.utils.TranslationUtil;
 import funkin.options.Options;
 import sys.FileSystem;
-importScript("data/variables");
-importScript("data/utils");
 
 var optionsCam:FlxCamera;
 

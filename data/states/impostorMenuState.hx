@@ -14,8 +14,6 @@ import funkin.options.Options;
 import lime.graphics.Image;
 import openfl.ui.Mouse;
 import PixelStars;
-importScript("data/variables");
-importScript("data/utils");
 
 var discordIntegration:Bool = false;
 
@@ -61,7 +59,7 @@ var otherButtons:Array<Dynamic> = [
     },
     {
         name: TranslationUtil.translate("mainMenu.credits"),
-        available: (storyState[storySequence] == "start") ? false : true,
+        available: (storyStates[storySequence] == "start") ? false : true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
         colorHover: 0xFFFFFFFF
@@ -96,7 +94,7 @@ var playSectionButtons:Array<Array<Dynamic>> = [
             },
             {
                 name: TranslationUtil.translate("mainMenu.freeplay"),
-                available: (storyState[storySequence] == "start") ? false : true,
+                available: (storyStates[storySequence] == "start") ? false : true,
                 image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
                 colorIdle: 0xFF0A3C33,
                 colorHover: 0xFF10584B,
@@ -580,10 +578,6 @@ function postCreate() {
 
     FlxG.mouse.visible = !usingKeyboard;
     if (isMobile) FlxG.mouse.visible = false;
-
-    if (fakeMobile) {
-
-    }
 }
 
 var checkTimer:Float = 0;
@@ -606,7 +600,7 @@ function update(elapsed:Float) {
 }
 
 function postUpdate(elapsed:Float) {
-    if (storyState[storySequence] == "postWeek1")
+    if (storyStates[storySequence] == "postWeek1")
         floatSus();
 }
 
@@ -1426,14 +1420,14 @@ function checkSelectedMainEntry() {
                 var dur:Float = 1;
                 FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
                 new FlxTimer().start(dur, _ -> {
-                    if (!isMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
+                    //if (!isMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
                     ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
                 });
             });
     }
 }
 
-function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, membersCreation:(correctHorPos:Float, subMenuVerPos:Float, group:FlxTypedSpriteGroup) -> Void, updateLogic:Void, onChoose:Void) {
+function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, membersCreation:Float->Float->FlxTypedSpriteGroup->Void, updateLogic:Void, onChoose:Void) {
     currentSelectionMode = "window";
     curWindow = windowArray;
     curWindowLogic = updateLogic;

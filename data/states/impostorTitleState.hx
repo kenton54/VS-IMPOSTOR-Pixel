@@ -8,8 +8,6 @@ import funkin.backend.MusicBeatState;
 import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
 import PixelStars;
-importScript("data/variables");
-importScript("data/utils");
 
 var stars:PixelStars;
 
@@ -27,15 +25,15 @@ function create() {
 
     MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
 
-    if (storyState[storySequence] == "start" || storyState[storySequence] == "postLobbyShowcase") {
+    MusicBeatState.skipTransIn = true;
+
+    if (storyStates[storySequence] == "start" || storyStates[storySequence] == "postLobbyShowcase") {
         title();
     }
     else {
         CoolUtil.playMenuSong(true);
         intro();
     }
-
-    MusicBeatState.skipTransIn = true;
 
     camFollow = new FlxObject(FlxG.width / 2, FlxG.height / 2);
     add(camFollow);
@@ -123,34 +121,29 @@ var tweenIn:FlxTween = null;
 var tweenOut:FlxTween = null;
 var colorArray:Array<FlxColor> = [
     0xFF0CF0A0, 0xFF27F6CD, 0xFF33FFFF, 0xFF33DAF6, 0xFF33B5ED,
-    0xFF3387E1, 0xFF3362D8, 0xFF3333CC, 0xFF4422DD, 0xFF420DDD];
+    0xFF3387E1, 0xFF3362D8, 0xFF3333CC, 0xFF4422DD, 0xFF420DDD
+];
 var mouseTxt:Bool = false;
 function tweenPressStart() {
     pressStart.borderColor = colorArray[FlxG.random.int(0, colorArray.length - 1)];
     if (isMobile) {
         pressStart.text = TranslationUtil.translate("touch").toUpperCase();
         pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
-        tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
-            tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
-                tweenPressStart();
-            }});
-        }});
     }
     else {
-        if (!mouseTxt) {
+        if (mouseTxt = !mouseTxt)
             pressStart.text = TranslationUtil.translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
-        }
-        else {
+        else
             pressStart.text = TranslationUtil.translate("click").toUpperCase();
-        }
+        
         pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
-        tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
-            tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
-                tweenPressStart();
-            }});
-        }});
-        mouseTxt = !mouseTxt;
     }
+
+    tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
+        tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
+            tweenPressStart();
+        }});
+    }});
 }
 
 function beatHit(curBeat:Int) {

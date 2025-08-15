@@ -1,3 +1,5 @@
+import funkin.backend.system.Logs;
+
 class ImpostorFlags {
     // ———————————————————— Story Mode ———————————————————— //
     public static var week1Completed:Map<String, Bool> = ["bf" => false];
@@ -21,14 +23,19 @@ class ImpostorFlags {
         map.set("week1Completed", week1Completed);
         map.set("week2Completed", week2Completed);
 
-        map.set("playingVersus", playingVersus);
-
         map.set("unlockedVideos", unlockedVideos);
 
         return map;
     }
 
     public static function save() {
-        FlxG.save.data.impPixelFlags = getFlags();
+        FlxG.save.data.impPixelFlags = getFlags().copy();
+
+        /*
+        Logs.traceColored([
+            {text: "[VS IMPOSTOR Pixel] ", color: 12},
+            {text: "Flags saved!", color: -1}
+        ]);
+        */
     }
 }
