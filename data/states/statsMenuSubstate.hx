@@ -11,6 +11,8 @@ var stats:Array<String> = [
     "goodNotes",
     "badNotes",
     "shitNotes",
+    "missedNotes",
+    "combosBroken",
     "attacksDodged",
     "taskSpeedrunSkeld",
     "taskSpeedrunMira",
@@ -42,20 +44,18 @@ function create() {
     statsTitle.y += 8 * scale;
     add(statsTitle);
 
-    trace(impostorStats);
-
-    for (i => stat in impostorStats.keyValueIterator()) {
+    for (i => stat in stats) {
         var yPos:Float = (statsTitle.y + statsTitle.height) + (3 * scale) + (i * 22);
         var color:FlxColor = (i % 2 == 0) ? FlxColor.WHITE : 0xFF999999;
-        var daStat:FunkinText = new FunkinText(statsTitle.x + 8 * scale, yPos, buttonsBack.width, getStatName(stat.key), 22, false);
+        var daStat:FunkinText = new FunkinText(statsTitle.x + 8 * scale, yPos, buttonsBack.width, getStatName(stat), 22, false);
         daStat.font = Paths.font("retrogaming.ttf");
         daStat.color = color;
         daStat.camera = statsCam;
         add(daStat);
 
-        var value:Dynamic = getStatValue(stat.key);
-        if (StringTools.contains(stat.key, "storyProgress")) value = '"'+value+'"';
-        if (StringTools.contains(stat.key, "Speedrun")) value = FlxStringUtil.formatTime(value, true);
+        var value:Dynamic = getStatValue(stat);
+        if (StringTools.contains(stat, "storyProgress")) value = '"'+value+'"';
+        if (StringTools.contains(stat, "Speedrun")) value = FlxStringUtil.formatTime(value, true);
         var statValue:FunkinText = new FunkinText(statsTitle.x + 4 * scale, yPos, buttonsBack.width, Std.string(value), 22, false);
         statValue.alignment = "right";
         statValue.font = Paths.font("retrogaming.ttf");

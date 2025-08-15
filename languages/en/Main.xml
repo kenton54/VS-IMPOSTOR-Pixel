@@ -35,6 +35,8 @@
             <str id="goodNotes">Good Note Hits</str>
             <str id="badNotes">Bad Note Hits</str>
             <str id="shitNotes">Shit Note Hits</str>
+            <str id="missedNotes">Total Notes Missed</str>
+            <str id="combosBroken">Total Combos Broken</str>
             <str id="attacksDodged">Total Attacks Dodged</str>
             <str id="taskSpeedrunSkeld">Tasks Speedrun PB (Skeld)</str>
             <str id="taskSpeedrunMira">Tasks Speedrun PB (Mira HQ)</str>

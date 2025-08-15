@@ -14,7 +14,6 @@ import funkin.options.Options;
 import openfl.filters.ShaderFilter;
 import Date;
 import ImpostorFlags;
-import 
 import VSliceCharacter;
 
 public var taskbarBG:FlxSprite;
@@ -275,6 +274,8 @@ function onPlayerHit(event) {
         }
 
         displayRating(daRating, score2add);
+
+        grantNoteStat(daRating);
     }
     else {
         if (!event.animCancelled || event.noteType != "No Anim Note") {
@@ -417,26 +418,16 @@ function healthJudge(timing:Float):Float {
 function ratingJudge(timing:Float):String {
     var rating:String = "";
 
-    if (timing < perfectThreshold) {
+    if (timing < perfectThreshold)
         rating = "perfect";
-        impostorStats.set("perfectNotes", impostorStats.get("perfectNotes") + 1);
-    }
-    else if (timing < sickThreshold) {
+    else if (timing < sickThreshold)
         rating = "sick";
-        impostorStats.set("sickNotes", impostorStats.get("sickNotes") + 1);
-    }
-    else if (timing < goodThreshold) {
+    else if (timing < goodThreshold)
         rating = "good";
-        impostorStats.set("goodNotes", impostorStats.get("goodNotes") + 1);
-    }
-    else if (timing < badThreshold) {
+    else if (timing < badThreshold)
         rating = "bad";
-        impostorStats.set("badNotes", impostorStats.get("badNotes") + 1);
-    }
-    else if (timing < shitThreshold) {
+    else if (timing < shitThreshold)
         rating = "shit";
-        impostorStats.set("shitNotes", impostorStats.get("shitNotes") + 1);
-    }
     else
         rating = "miss";
 
@@ -540,6 +531,7 @@ public function breakCombo(ignoreCurCombo:Bool = false) {
         });
 
         combosBroken++;
+        impostorStats.set("combosBroken", impostorStats.get("combosBroken") + 1);
     }
     scripts.call("preComboBroken", [combo]);
 
@@ -590,6 +582,25 @@ function onNewCameraMove(position:FlxPoint, strumLine:StrumLine, focusedChars:In
         for (char in strumline.characters) {
             char.scripts.call("cameraPositionChange", [position]);
         }
+    }
+}
+
+function grantNoteStat(rating:String) {
+    switch (rating) {
+        case "perfect":
+            impostorStats.set("perfectNotes", impostorStats.get("perfectNotes") + 1);
+        case "sick":
+            impostorStats.set("sickNotes", impostorStats.get("sickNotes") + 1);
+        case "good":
+            impostorStats.set("goodNotes", impostorStats.get("goodNotes") + 1);
+        case "bad":
+            impostorStats.set("badNotes", impostorStats.get("badNotes") + 1);
+        case "shit":
+            impostorStats.set("shitNotes", impostorStats.get("shitNotes") + 1);
+        case "miss":
+            impostorStats.set("missedNotes", impostorStats.get("missedNotes") + 1);
+        default:
+            // do nothing
     }
 }
 

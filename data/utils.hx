@@ -10,7 +10,7 @@ public static var storyStates:Array<String> = [
 ];
 public static var storySequence:Int = 0;
 
-public static var defaultStats(default, null):Map<String, Dynamic> = [
+static var defaultStats:Map<String, Dynamic> = [
     "storyProgress" => "start",
     "totalNotes" => 0,
     "perfectNotes" => 0,
@@ -18,6 +18,8 @@ public static var defaultStats(default, null):Map<String, Dynamic> = [
     "goodNotes" => 0,
     "badNotes" => 0,
     "shitNotes" => 0,
+    "missedNotes" => 0,
+    "combosBroken" => 0,
     "attacksDodged" => 0,
     "taskSpeedrunSkeld" => 0.0,
     "taskSpeedrunMira" => 0.0,
@@ -118,7 +120,7 @@ public static function resizeWindow(width:Int, height:Int) {
 
 public static function saveImpostor() {
     FlxG.save.data.impPixelStorySequence = storySequence;
-    FlxG.save.data.impPixelStats = impostorStats.copy();
+    FlxG.save.data.impPixelStats = impostorStats;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
     FlxG.save.data.impPixelBeans = pixelBeans;

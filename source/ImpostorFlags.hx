@@ -29,7 +29,7 @@ class ImpostorFlags {
     }
 
     public static function save() {
-        FlxG.save.data.impPixelFlags = getFlags().copy();
+        FlxG.save.data.impPixelFlags = getFlags();
 
         /*
         Logs.traceColored([
