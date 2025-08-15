@@ -1,5 +1,4 @@
 import flixel.util.FlxStringUtil;
-import funkin.backend.utils.TranslationUtil;
 import AmongUsBox;
 
 // the only reason these are here is becuz maps fuck up the order
@@ -27,6 +26,8 @@ var buttonsBack:AmongUsBox;
 var closeButton:FlxSprite;
 
 function create() {
+    changeDiscordMenuStatus("Viewing his Stats");
+
     statsCam = new FlxCamera();
     statsCam.bgColor = 0x80000000;
     FlxG.cameras.add(statsCam, false);
@@ -37,7 +38,7 @@ function create() {
     buttonsBack.box.camera = statsCam;
     add(buttonsBack.box);
 
-    var statsTitle:FunkinText = new FunkinText(buttonsBack.box.x, buttonsBack.box.y, buttonsBack.box.width, TranslationUtil.translate("mainMenu.stats.title"), 48);
+    var statsTitle:FunkinText = new FunkinText(buttonsBack.box.x, buttonsBack.box.y, buttonsBack.box.width, translate("mainMenu.stats.title"), 48);
     statsTitle.font = Paths.font("pixeloidsans.ttf");
     statsTitle.alignment = "center";
     statsTitle.camera = statsCam;

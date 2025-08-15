@@ -1,6 +1,5 @@
 import funkin.backend.system.Flags;
 import funkin.backend.system.framerate.Framerate;
-import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
@@ -24,7 +23,8 @@ function new() {
         resizeGame(1600, 720);
     }
     else {
-        //setWindowParameters();
+        window.minWidth = 1280;
+        window.minHeight = 720;
         FlxG.mouse.visible = true;
     }
 
@@ -34,9 +34,6 @@ function new() {
 function setWindowParameters() {
     WindowUtils.winTitle = "VS IMPOSTOR Pixel";
     window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
-
-    window.minWidth = 1280;
-    window.minHeight = 720;
 }
 
 function initSaveData() {
@@ -75,7 +72,7 @@ static function setStats(data:Map<String, Dynamic>) {
 function update(elapsed:Float) {
     if (fakeMobile) {
         if (FlxG.keys.justPressed.F8) {
-            MusicBeatTransition.script = "data/transitions/closingSharpCircle";
+            setTransition("bottom2topSmoothSquare");
             FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
         }
     }
@@ -85,22 +82,6 @@ function update(elapsed:Float) {
         FlxG.resetGame();
     }
 }
-
-/*
-// da states
-var redirectStates:Map<FlxState, String> = [
-    TitleState => "impostorTitleState",
-    MainMenuState => "impostorMenuState",
-    FreeplayState => "impostorFreeplayState"
-];
-
-// the actual state modification
-function preStateSwitch() {
-    for (redirectState in redirectStates.keys())
-        if (FlxG.game._requestedState is redirectState)
-            FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
-}
-*/
 
 function postStateSwitch() {
     if (fakeMobile) {
@@ -131,7 +112,7 @@ function destroy() {
 
     resizeGame(1280, 720);
 
-    if (TranslationUtil.fakeMobile && !Application.current.window.maximized)
+    if (fakeMobile && !Application.current.window.maximized)
         resizeWindow(1280, 720);
 
     isMobile = FlxG.onMobile;

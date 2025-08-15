@@ -3,4 +3,7 @@ function create(event) {
     new FlxTimer().start(2, _ -> {
         finish();
     });
+
+    if (event.transOut)
+        setTransition("");
 }

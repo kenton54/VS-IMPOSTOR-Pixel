@@ -85,6 +85,9 @@ function create(event) {
             }
         });
     }
+
+    if (event.transOut)
+        setTransition("");
 }
 
 function destroy() {

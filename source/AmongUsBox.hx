@@ -1,7 +1,7 @@
-import flixel.group.FlxTypedSpriteGroup;
+import flixel.group.FlxSpriteGroup;
 
 class AmongUsBox {
-    public var box:FlxTypedSpriteGroup;
+    public var box:FlxSpriteGroup;
 
     public var width:Int;
     public var height:Int;
@@ -10,7 +10,7 @@ class AmongUsBox {
         if (style == null) style = "simple";
         if (scale == null) scale = 4;
 
-        box = new FlxTypedSpriteGroup(x, y);
+        box = new FlxSpriteGroup(x, y);
 
         var topLeftCorner:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/amongusBoxCorner-"+style));
         var startingX:Float = x + topLeftCorner.width * scale;

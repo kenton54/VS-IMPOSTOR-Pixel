@@ -24,4 +24,7 @@ function create(event) {
             finish();
         }
     });
+
+    if (event.transOut)
+        setTransition("");
 }

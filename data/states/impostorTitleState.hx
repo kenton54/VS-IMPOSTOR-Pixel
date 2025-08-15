@@ -1,11 +1,8 @@
 import flixel.effects.FlxFlicker;
-import flixel.group.FlxTypedSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxGradient;
 import flixel.FlxObject;
-import funkin.backend.utils.DiscordUtil;
 import funkin.backend.MusicBeatState;
-import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
 import PixelStars;
 
@@ -13,17 +10,23 @@ var stars:PixelStars;
 
 var camFollow:FlxObject;
 
-var title:FlxTypedSpriteGroup;
+var title:FlxSpriteGroup;
 var baseScale:Float = 4;
 
 var pressStart:FunkinText;
 
 static var gameStarted:Bool = false;
 
-function create() {
-    DiscordUtil.call("onMenuLoaded", ["Title Screen"]);
+var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
+var pressTxt = translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
+var clickTxt = translate("click").toUpperCase();
+var touchTxt = translate("touch").toUpperCase();
+var playSuffix = translate("title.2playSuffix").toUpperCase();
 
-    MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
+function create() {
+    changeDiscordMenuStatus("Title Screen");
+
+    setTransition("bottom2topSmoothSquare");
 
     MusicBeatState.skipTransIn = true;
 
@@ -42,7 +45,7 @@ function create() {
     stars.setScrollFactor(0.2, 0.2);
     stars.addStars();
 
-    title = new FlxTypedSpriteGroup();
+    title = new FlxSpriteGroup();
     add(title);
 
     var titleColor:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/title/color"));
@@ -79,8 +82,6 @@ function create() {
     gameStarted = true;
 }
 
-var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
-
 var transitioning:Bool = false;
 var pressedWithKeyboard:Bool = false;
 function update(elapsed:Float) {
@@ -94,8 +95,8 @@ function update(elapsed:Float) {
             FlxG.switchState(new MainMenuState());
         }
         else if (!transitionTimer.active && !transitioning) {
-            pressStart.text = isMobile ? TranslationUtil.translate("touch").toUpperCase() : TranslationUtil.translate("click").toUpperCase();
-            pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
+            pressStart.text = isMobile ? touchTxt : clickTxt;
+            pressStart.text += " " + playSuffix;
             accept();
         }
     }
@@ -107,8 +108,8 @@ function update(elapsed:Float) {
             FlxG.switchState(new MainMenuState());
         }
         else if (!transitionTimer.active && !transitioning) {
-            pressStart.text = TranslationUtil.translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
-            pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
+            pressStart.text = pressTxt;
+            pressStart.text += " " + playSuffix;
             accept();
         }
     }
@@ -127,16 +128,16 @@ var mouseTxt:Bool = false;
 function tweenPressStart() {
     pressStart.borderColor = colorArray[FlxG.random.int(0, colorArray.length - 1)];
     if (isMobile) {
-        pressStart.text = TranslationUtil.translate("touch").toUpperCase();
-        pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
+        pressStart.text = touchTxt;
+        pressStart.text += " " + playSuffix;
     }
     else {
         if (mouseTxt = !mouseTxt)
-            pressStart.text = TranslationUtil.translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
+            pressStart.text = pressTxt;
         else
-            pressStart.text = TranslationUtil.translate("click").toUpperCase();
+            pressStart.text = clickTxt;
         
-        pressStart.text += " " + TranslationUtil.translate("title.2playSuffix");
+        pressStart.text += " " + playSuffix;
     }
 
     tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {

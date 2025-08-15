@@ -1,5 +1,7 @@
 import funkin.backend.system.Logs;
+import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.TranslationUtil;
+import funkin.backend.MusicBeatTransition;
 
 public static var storyStates:Array<String> = [
     "start",
@@ -54,6 +56,24 @@ public static function setMobile(bool:Bool) {
     }
 }
 
+final defaultTransition:String = "bottom2topSmoothSquare";
+public static function setTransition(transitionID:String) {
+    trace("Setting transition to: " + (transitionID == "" ? "Default" : transitionID));
+
+    if (transitionID == "")
+        MusicBeatTransition.script = "data/transitions/" + defaultTransition;
+    else
+        MusicBeatTransition.script = "data/transitions/" + transitionID;
+}
+
+public static function translate(id:String, ?customValues:Array<Dynamic> = []):String {
+    return TranslationUtil.translate(id, customValues);
+}
+
+public static function changeDiscordMenuStatus(menu:String) {
+    DiscordUtil.call("onMenuLoaded", [menu]);
+}
+
 public static function getStats(?def:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
 
@@ -77,7 +97,7 @@ public static function getStatName(id:String):Null<String> {
     for (stat in impostorStats.keys()) {
         if (stat == id) {
             success = true;
-            return TranslationUtil.translate("mainMenu.stats." + stat);
+            return translate("mainMenu.stats." + stat);
         }
     }
 
@@ -87,7 +107,7 @@ public static function getStatName(id:String):Null<String> {
         for (stat in defaultStats.keys()) {
             if (stat == id) {
                 success = true;
-                return TranslationUtil.translate("mainMenu.stats." + stat);
+                return translate("mainMenu.stats." + stat);
             }
         }
     }

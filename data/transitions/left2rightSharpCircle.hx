@@ -1,7 +1,7 @@
 function create(event) {
     event.cancel();
 
-    blackSpr = new FlxSprite(event.transOut ? -transitionCamera.width : transitionCamera.width, 0).makeGraphic(1, 1, FlxColor.BLACK);
+    blackSpr = new FlxSprite(event.transOut ? transitionCamera.width : -transitionCamera.width, 0).makeGraphic(1, 1, FlxColor.BLACK);
     blackSpr.scale.set(transitionCamera.width, transitionCamera.height);
     blackSpr.updateHitbox();
     blackSpr.camera = transitionCamera;
@@ -14,7 +14,7 @@ function create(event) {
     transitionSprite.screenCenter(FlxAxes.Y);
     transitionSprite.camera = transitionCamera;
     transitionSprite.x = event.transOut ? 0 : transitionSprite.width * 2.58;
-    transitionSprite.flipX = !event.transOut;
+    transitionSprite.flipX = event.transOut;
     add(transitionSprite);
 
     transitionCamera.scroll.x = transitionCamera.width;

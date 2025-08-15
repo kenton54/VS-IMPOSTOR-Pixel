@@ -1,4 +1,3 @@
-import flixel.group.FlxTypedSpriteGroup;
 //import flixel.text.FlxInputText; // i need flixel +5.9.0 :face_holding_back_tears:
 import funkin.backend.scripting.Script;
 import funkin.backend.system.Logs;
@@ -10,11 +9,11 @@ var optionsCam:FlxCamera;
 
 var startTxt:FunkinText;
 
-var theEntireThing:FlxTypedSpriteGroup; // this thing exists only for the tween intro LOL
+var theEntireThing:FlxSpriteGroup; // this thing exists only for the tween intro LOL
 var phoneSpr:FlxSprite;
-var phoneScreen:FlxTypedSpriteGroup;
-var categoriesGroup:FlxTypedSpriteGroup;
-var descriptionGroup:FlxTypedSpriteGroup;
+var phoneScreen:FlxSpriteGroup;
+var categoriesGroup:FlxSpriteGroup;
+var descriptionGroup:FlxSpriteGroup;
 
 var selectionMode:String = "contents";
 var categories:Array<String> = [];
@@ -22,7 +21,7 @@ var curCategory:Script;
 var curCategoryIndex:Int = -1;
 var lastCategoryIndex:Int = -1;
 var categoryBounds:Array<Float> = []; // its actually used for multiple things, not for what its var name stands for lol
-var curCategoryGrp:FlxTypedSpriteGroup;
+var curCategoryGrp:FlxSpriteGroup;
 var curOption:Int = 0;
 var lastOption:Int = -1;
 
@@ -34,6 +33,8 @@ var lastLang:String = TranslationUtil.curLanguage;
 var lastDev:Bool = Options.devMode;
 
 function create() {
+    changeDiscordMenuStatus("Options Menu");
+
     var path:String = FileSystem.absolutePath(Assets.getPath(Paths.getPath("data/states/options")));
     for (category in FileSystem.readDirectory(path)) {
         category = removeExtension(category);
@@ -45,7 +46,7 @@ function create() {
     optionsCam.bgColor = 0x00000000;
     FlxG.cameras.add(optionsCam, false);
 
-    theEntireThing = new FlxTypedSpriteGroup(0, FlxG.height);
+    theEntireThing = new FlxSpriteGroup(0, FlxG.height);
     add(theEntireThing);
 
     phoneSpr = new FlxSprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.image("menus/options/phone"));
@@ -55,7 +56,7 @@ function create() {
     phoneSpr.x -= phoneSpr.width / 2;
     phoneSpr.y -= phoneSpr.height / 2;
 
-    phoneScreen = new FlxTypedSpriteGroup(phoneSpr.x + 10 * scale, phoneSpr.y + 9 * scale);
+    phoneScreen = new FlxSpriteGroup(phoneSpr.x + 10 * scale, phoneSpr.y + 9 * scale);
     phoneScreen.camera = optionsCam;
 
     theEntireThing.add(phoneScreen);
@@ -72,7 +73,7 @@ function create() {
     optionsBox.alpha = 0.2;
     optionsBox.blend = 0;
 
-    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, TranslationUtil.translate("mainMenu.options"), 65, false);
+    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, translate("mainMenu.options"), 65, false);
     phoneTitle.font = Paths.font("pixeloidsans.ttf");
     phoneTitle.color = FlxColor.BLACK;
     phoneTitle.alignment = "right";
@@ -84,12 +85,12 @@ function create() {
     phoneScreen.add(optionsBox);
     phoneScreen.add(phoneTitle);
 
-    categoriesGroup = new FlxTypedSpriteGroup(0, titleVerBounds);
+    categoriesGroup = new FlxSpriteGroup(0, titleVerBounds);
     phoneScreen.add(categoriesGroup);
 
     var categoriesHeight:Float = optionsBox.height / categories.length;
     for (i in 0...categories.length) {
-        var categoryGrp:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(0, categoriesHeight * i);
+        var categoryGrp:FlxSpriteGroup = new FlxSpriteGroup(0, categoriesHeight * i);
         categoriesGroup.add(categoryGrp);
 
         var bg:FlxSprite = new FlxSprite().makeGraphic(generalWidth, categoriesHeight, FlxColor.WHITE);
@@ -98,7 +99,7 @@ function create() {
         bg.alpha = 0.6;
         categoryGrp.add(bg);
 
-        var catTrans:String = TranslationUtil.translate("options.section." + StringTools.replace(categories[i].toLowerCase(), " ", ""));
+        var catTrans:String = translate("options.section." + StringTools.replace(categories[i].toLowerCase(), " ", ""));
         var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, catTrans, 33, false);
         title.font = Paths.font("pixeloidsans.ttf");
         title.color = FlxColor.BLACK;
@@ -107,7 +108,7 @@ function create() {
         categoryGrp.add(title);
     }
 
-    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBox.height / 2, optionsBox.width, TranslationUtil.translate("options.selectCategory"), 32, false);
+    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBox.height / 2, optionsBox.width, translate("options.selectCategory"), 32, false);
     startTxt.alignment = "center";
     startTxt.font = Paths.font("pixeloidsans.ttf");
     startTxt.color = FlxColor.BLACK;
@@ -115,10 +116,10 @@ function create() {
     phoneScreen.add(startTxt);
 
     categoryBounds = [0, titleVerBounds, optionsBox.width, optionsBox.height];
-    curCategoryGrp = new FlxTypedSpriteGroup(generalWidth, titleVerBounds);
+    curCategoryGrp = new FlxSpriteGroup(generalWidth, titleVerBounds);
     phoneScreen.add(curCategoryGrp);
 
-    descriptionGroup = new FlxTypedSpriteGroup(generalWidth, titleVerBounds);
+    descriptionGroup = new FlxSpriteGroup(generalWidth, titleVerBounds);
     phoneScreen.add(descriptionGroup);
 
     var descPos:Float = optionsBox.height;
@@ -347,8 +348,8 @@ function updateDescription() {
         descriptionGroup.members[1].alignment = "left";
 
         var curLangData:Map<String, Dynamic> = TranslationUtil.getConfig(curCategoryOptions[curOption].split("/")[0]);
-        descriptionGroup.members[1].text = " " + TranslationUtil.translate("options.language.translator", [curLangData["credits"]]);
-        descriptionGroup.members[1].text += '\n ' + TranslationUtil.translate("version") + ': ' + curLangData["version"];
+        descriptionGroup.members[1].text = " " + translate("options.language.translator", [curLangData["credits"]]);
+        descriptionGroup.members[1].text += '\n ' + translate("version") + ': ' + curLangData["version"];
     }
     else {
         descriptionGroup.members[1].alignment = "center";
@@ -358,9 +359,9 @@ function updateDescription() {
         try {
             var daTranslation:String = "";
             if (TranslationUtil.exists("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (isMobile ? "-mobile" : "")))
-                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (isMobile ? "-mobile" : ""));
+                daTranslation = translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc" + (isMobile ? "-mobile" : ""));
             else
-                daTranslation = TranslationUtil.translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
+                daTranslation = translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
             descriptionGroup.members[1].text = daTranslation;
 
             var posBox:Float = 138;
@@ -1236,7 +1237,7 @@ var curCategoryOptions:Array<Dynamic> = [];
 var optionsFont:String = Paths.font("pixelarial-bold.ttf");
 function createCategory(category:String) {
     for (i in 0...curCategoryOptions.length) {
-        var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        var group:FlxSpriteGroup = new FlxSpriteGroup();
         curCategoryGrp.add(group);
 
         var height:Float = globalHeight;
@@ -1247,7 +1248,7 @@ function createCategory(category:String) {
         bg.blend = 9;
         group.add(bg);
 
-        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, TranslationUtil.translate("options." + StringTools.replace(category.toLowerCase(), " ", "") + "." + curCategoryOptions[i].name + "-name"), 22);
+        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, translate("options." + StringTools.replace(category.toLowerCase(), " ", "") + "." + curCategoryOptions[i].name + "-name"), 22);
         label.font = optionsFont;
         label.borderSize = 3;
         label.y -= label.height / 2 - 2;
@@ -1391,7 +1392,7 @@ function createCategory(category:String) {
 var langData:Array<Dynamic> = [];
 function setupLanguages() {
     for (i in 0...curCategoryOptions.length) {
-        var group:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+        var group:FlxSpriteGroup = new FlxSpriteGroup();
         curCategoryGrp.add(group);
 
         var language:String = curCategoryOptions[i].split("/");
@@ -1404,7 +1405,7 @@ function setupLanguages() {
         bg.blend = 9;
         group.add(bg);
 
-        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, TranslationUtil.translate("options.language." + language[0]), 22);
+        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, translate("options.language." + language[0]), 22);
         languageLabel.font = optionsFont;
         languageLabel.borderSize = 3;
         languageLabel.y -= languageLabel.height / 2 - 2;

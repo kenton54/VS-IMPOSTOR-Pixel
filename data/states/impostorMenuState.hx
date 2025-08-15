@@ -1,11 +1,7 @@
 import flixel.effects.FlxFlicker;
-import flixel.group.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTweenType;
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.utils.DiscordUtil;
-import funkin.backend.utils.TranslationUtil;
-//import funkin.backend.utils.HttpUtil;
-import funkin.backend.MusicBeatTransition;
 import funkin.editors.character.CharacterSelection;
 import funkin.editors.charter.CharterSelection;
 import funkin.editors.stage.StageSelection;
@@ -28,21 +24,21 @@ var lightLight:FlxSprite;
 
 var mainButtons:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.play"),
+        name: translate("mainMenu.play"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/play"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: TranslationUtil.translate("mainMenu.achievements"),
+        name: translate("mainMenu.achievements"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/achievements"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
-        name: TranslationUtil.translate("mainMenu.shop"),
+        name: translate("mainMenu.shop"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/shop"),
         colorIdle: 0xFF0A3C33,
@@ -51,14 +47,14 @@ var mainButtons:Array<Dynamic> = [
 ];
 var otherButtons:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.options"),
+        name: translate("mainMenu.options"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/options"),
         colorIdle: 0xFFAAE2DC,
         colorHover: 0xFFFFFFFF
     },
     {
-        name: TranslationUtil.translate("mainMenu.credits"),
+        name: translate("mainMenu.credits"),
         available: (storyStates[storySequence] == "start") ? false : true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
@@ -67,7 +63,7 @@ var otherButtons:Array<Dynamic> = [
 ];
 var modButton:Array<Dynamic> = [
     {
-        name: TranslationUtil.translate("mainMenu.mods"),
+        name: translate("mainMenu.mods"),
         available: true,
         colorIdle: 0xFFFFFFFF,
         colorHover: 0xFFFFFFFF
@@ -76,41 +72,41 @@ var modButton:Array<Dynamic> = [
 
 var allButtonsArray:Array<Dynamic> = [];
 var buttonsTotalLength:Int = mainButtons.length + otherButtons.length + modButton.length;
-var buttonGroup:FlxTypedSpriteGroup;
-var buttonsMainGroup:FlxTypedSpriteGroup;
-var buttonsLabelGroup:FlxTypedSpriteGroup;
-var buttonsIconGroup:FlxTypedSpriteGroup;
+var buttonGroup:FlxSpriteGroup;
+var buttonsMainGroup:FlxSpriteGroup;
+var buttonsLabelGroup:FlxSpriteGroup;
+var buttonsIconGroup:FlxSpriteGroup;
 
 var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.worldmap"),
+                name: translate("mainMenu.worldmap"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/worldmap"),
                 colorIdle: 0xFF0A3C33,
                 colorHover: 0xFF10584B,
-                transition: "data/transitions/closingSharpCircle"
+                transition: "closingSharpCircle"
             },
             {
-                name: TranslationUtil.translate("mainMenu.freeplay"),
+                name: translate("mainMenu.freeplay"),
                 available: (storyStates[storySequence] == "start") ? false : true,
                 image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
                 colorIdle: 0xFF0A3C33,
                 colorHover: 0xFF10584B,
-                transition: "data/transitions/right2leftSharpCircle"
+                transition: "right2leftSharpCircle"
             }
         ];
     },
     {
         [
             {
-                name: TranslationUtil.translate("mainMenu.tutorial"),
+                name: translate("mainMenu.tutorial"),
                 available: true,
                 image: Paths.image("menus/mainmenu/bigButtons/tutorial"),
                 colorIdle: 0xFFAAE2DC,
                 colorHover: 0xFFFFFFFF,
-                transition: "data/transitions/closingSharpCircle"
+                transition: "closingSharpCircle"
             }
         ];
     }
@@ -122,7 +118,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Chart Editor",
                 image: Paths.image("editors/icons/chart"),
-                transition: "data/transitions/right2leftSharpCircle"
+                transition: "right2leftSharpCircle"
             }
         ];
     },
@@ -131,7 +127,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Character Editor",
                 image: Paths.image("editors/icons/character"),
-                transition: "data/transitions/right2leftSharpCircle"
+                transition: "right2leftSharpCircle"
             }
         ];
     },
@@ -140,7 +136,7 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Stage Editor",
                 image: Paths.image("editors/icons/stage"),
-                transition: "data/transitions/right2leftSharpCircle"
+                transition: "right2leftSharpCircle"
             }
         ];
     },
@@ -149,18 +145,18 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Mobile Emulator",
                 image: Paths.image("editors/icons/mobile"),
-                transition: "data/transitions/closingSharpCircle"
+                transition: "closingSharpCircle"
             }
         ];
     }
 ];
 
-var topButtonsGroup:FlxTypedSpriteGroup;
+var topButtonsGroup:FlxSpriteGroup;
 
 var mainCam:FlxCamera;
 var spaceCam:FlxCamera;
-var spaceGroup:FlxTypedSpriteGroup;
-var windowGroup:FlxTypedSpriteGroup;
+var spaceGroup:FlxSpriteGroup;
+var windowGroup:FlxSpriteGroup;
 
 var baseScale:Float = 5;
 
@@ -170,7 +166,9 @@ public function new(keyboardQM:Bool) {
 }
 
 function create() {
-    DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
+    changeDiscordMenuStatus("Main Menu");
+
+    setTransition("");
 
     subStateClosed.add(onCloseSubstate);
 
@@ -319,7 +317,7 @@ function create() {
     add(lightThing);
     add(lightLight);
 
-    topButtonsGroup = new FlxTypedSpriteGroup();
+    topButtonsGroup = new FlxSpriteGroup();
     topButtonsGroup.camera = mainCam;
     add(topButtonsGroup);
 
@@ -385,17 +383,17 @@ function create() {
 
     var posH:Float = buttonsBack.x + 3 * baseScale;
     var posV:Float = buttonsBack.y + 3 * baseScale;
-    buttonGroup = new FlxTypedSpriteGroup(posH, posV);
+    buttonGroup = new FlxSpriteGroup(posH, posV);
     buttonGroup.camera = mainCam;
     add(buttonGroup);
 
-    buttonsMainGroup = new FlxTypedSpriteGroup();
+    buttonsMainGroup = new FlxSpriteGroup();
     buttonGroup.add(buttonsMainGroup);
 
-    buttonsLabelGroup = new FlxTypedSpriteGroup();
+    buttonsLabelGroup = new FlxSpriteGroup();
     buttonGroup.add(buttonsLabelGroup);
 
-    buttonsIconGroup = new FlxTypedSpriteGroup();
+    buttonsIconGroup = new FlxSpriteGroup();
     buttonGroup.add(buttonsIconGroup);
 
     createMainButtons(3 * baseScale, 3 * baseScale);
@@ -453,14 +451,14 @@ function create() {
     windowBorderShadowL.camera = frontCam;
     windowBorderShadowM.camera = frontCam;
 
-    spaceGroup = new FlxTypedSpriteGroup();
+    spaceGroup = new FlxSpriteGroup();
     spaceGroup.camera = spaceCam;
     add(spaceGroup);
 
     var starField:PixelStars = new PixelStars(-20, 2, 2);
     starField.addStarsToGroup(spaceGroup);
 
-    windowGroup = new FlxTypedSpriteGroup();
+    windowGroup = new FlxSpriteGroup();
     windowGroup.camera = spaceCam;
     add(windowGroup);
 
@@ -671,7 +669,7 @@ function handleKeyboard(elapsed:Float) {
             checkSelectedMainEntry();
 
         if (controls.BACK) {
-            MusicBeatTransition.script = "data/transitions/bottom2topSmoothSquare";
+            setTransition("bottom2topSmoothSquare");
             FlxG.switchState(new ModState("impostorTitleState"));
         }
     }
@@ -930,11 +928,11 @@ function handleTopButtons() {
                             var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
                             var maxHeight:Float = 88;
                             for (c => column in debugOptions) {
-                                var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
+                                var columnGroup = new FlxSpriteGroup(posH, posV + c * daHeight);
                                 group.add(columnGroup);
 
                                 for (row in column) {
-                                    var rowGroup = new FlxTypedSpriteGroup();
+                                    var rowGroup = new FlxSpriteGroup();
                                     columnGroup.add(rowGroup);
 
                                     var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
@@ -969,7 +967,7 @@ function handleTopButtons() {
 
                             var col:Int = 0;
                             windowGroup.forEach(function(column) {
-                                if (column is FlxTypedSpriteGroup) {
+                                if (column is FlxSpriteGroup) {
                                     var rw:Int = 0;
                                     column.forEach(function(row) {
                                         if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
@@ -1054,24 +1052,26 @@ function changeWindowEntry(changeColumn:Int, changeRow:Int) {
 function checkSelectedMainEntry() {
     CoolUtil.playMenuSFX(1);
 
+    disableInput();
+
     FlxFlicker.flicker(buttonsMainGroup.members[curMainEntry], 1, 0.05, true, true);
     FlxFlicker.flicker(buttonsLabelGroup.members[curMainEntry], 1, 0.05, true, true);
     if (buttonsIconGroup.members[curMainEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curMainEntry], 1, 0.05, true, true);
 
     switch(curMainEntry) {
-        case 0: openWindowSection(TranslationUtil.translate("mainMenu.play"), playSectionButtons, function(posH, posV, group) {
+        case 0: openWindowSection(translate("mainMenu.play"), playSectionButtons, function(posH, posV, group) {
                 var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
                 var thirdButtonYPos:Float = 0;
                 for (c => column in playSectionButtons) {
-                    var columnGroup = new FlxTypedSpriteGroup(posH, posV);
+                    var columnGroup = new FlxSpriteGroup(posH, posV);
                     group.add(columnGroup);
 
                     for (r => row in column) {
-                        var rowGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup();
+                        var rowGroup:FlxSpriteGroup = new FlxSpriteGroup();
                         columnGroup.add(rowGroup);
 
                         if (c == 0 && r == 0) {
-                            var worldMapGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
+                            var worldMapGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 5 * baseScale);
                             worldMapGroup.x -= 28 * baseScale;
                             rowGroup.add(worldMapGroup);
 
@@ -1095,7 +1095,7 @@ function checkSelectedMainEntry() {
                             thirdButtonYPos = worldMapGroup.height;
                         }
                         else if (c == 0 && r == 1) {
-                            var freeplayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX, 5 * baseScale);
+                            var freeplayGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 5 * baseScale);
                             freeplayGroup.x += 28 * baseScale;
                             rowGroup.add(freeplayGroup);
 
@@ -1117,7 +1117,7 @@ function checkSelectedMainEntry() {
                             freeplayGroup.x -= (freeplayButton.width / 2) - 2 * baseScale;
                         }
                         else {
-                            var howToPlayGroup:FlxTypedSpriteGroup = new FlxTypedSpriteGroup(centerX + 2, thirdButtonYPos + 6 * baseScale);
+                            var howToPlayGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX + 2, thirdButtonYPos + 6 * baseScale);
                             rowGroup.add(howToPlayGroup);
 
                             var howToPlayBtn:FlxSprite = new FlxSprite().loadGraphic(column[0].image, true, 66, 12);
@@ -1142,11 +1142,11 @@ function checkSelectedMainEntry() {
                 if (usingKeyboard) {
                     var col:Int = 0;
                     windowGroup.forEach(function(column) {
-                        if (column is FlxTypedSpriteGroup) {
+                        if (column is FlxSpriteGroup) {
                             var rw:Int = 0;
                             if (col == curWindowEntry[0]) {
                                 column.forEach(function(row) {
-                                    if (row is FlxTypedSpriteGroup) {
+                                    if (row is FlxSpriteGroup) {
                                         if (rw == curWindowEntry[1]) {
                                             row.forEach(function(grp) {
                                                 grp.members[0].animation.play("hover");
@@ -1165,7 +1165,7 @@ function checkSelectedMainEntry() {
                             }
                             else {
                                 column.forEach(function(row) {
-                                    if (row is FlxTypedSpriteGroup) {
+                                    if (row is FlxSpriteGroup) {
                                         row.forEach(function(grp) {
                                             grp.members[0].animation.play("idle");
                                             grp.members[1].color = curWindow[col][rw].colorIdle;
@@ -1186,12 +1186,12 @@ function checkSelectedMainEntry() {
                         for (touch in FlxG.touches.list) {
                             var col:Int = 0;
                             windowGroup.forEach(function(column) {
-                                if (column is FlxTypedSpriteGroup) {
+                                if (column is FlxSpriteGroup) {
                                     var rw:Int = 0;
                                     column.forEach(function(row) {
-                                        if (row is FlxTypedSpriteGroup) {
+                                        if (row is FlxSpriteGroup) {
                                             row.forEach(function(grp) {
-                                                if (grp is FlxTypedSpriteGroup) {
+                                                if (grp is FlxSpriteGroup) {
                                                     if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
                                                         grp.members[0].animation.play("hover");
                                                         grp.members[1].color = curWindow[col][rw].colorHover;
@@ -1222,12 +1222,12 @@ function checkSelectedMainEntry() {
                     if (allowMouse) {
                         var col:Int = 0;
                         windowGroup.forEach(function(column) {
-                            if (column is FlxTypedSpriteGroup) {
+                            if (column is FlxSpriteGroup) {
                                 var rw:Int = 0;
                                 column.forEach(function(row) {
-                                    if (row is FlxTypedSpriteGroup) {
+                                    if (row is FlxSpriteGroup) {
                                         row.forEach(function(grp) {
-                                            if (grp is FlxTypedSpriteGroup) {
+                                            if (grp is FlxSpriteGroup) {
                                                 if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
                                                     grp.members[0].animation.play("hover");
                                                     grp.members[1].color = curWindow[col][rw].colorHover;
@@ -1256,7 +1256,7 @@ function checkSelectedMainEntry() {
 
                 var col:Int = 0;
                 windowGroup.forEach(function(column) {
-                    if (column is FlxTypedSpriteGroup) {
+                    if (column is FlxSpriteGroup) {
                         var rw:Int = 0;
                         if (col != curWindowEntry[0]) {
                             col++;
@@ -1264,7 +1264,7 @@ function checkSelectedMainEntry() {
                         }
                         else {
                             column.forEach(function(row) {
-                                if (row is FlxTypedSpriteGroup) {
+                                if (row is FlxSpriteGroup) {
                                     if (rw != curWindowEntry[1]) {
                                         rw++;
                                         return;
@@ -1308,14 +1308,14 @@ function checkSelectedMainEntry() {
                 modsArray[i] = [];
                 modsArray[i][0] = mod;
             }
-            openWindowSection(TranslationUtil.translate("mainMenu.mods"), modsArray, function(posH, posV, group) {
+            openWindowSection(translate("mainMenu.mods"), modsArray, function(posH, posV, group) {
                 var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / modsArray.length;
                 for (c => column in modsArray) {
-                    var columnGroup = new FlxTypedSpriteGroup(posH, posV + c * daHeight);
+                    var columnGroup = new FlxSpriteGroup(posH, posV + c * daHeight);
                     group.add(columnGroup);
 
                     for (row in column) {
-                        var rowGroup = new FlxTypedSpriteGroup();
+                        var rowGroup = new FlxSpriteGroup();
                         columnGroup.add(rowGroup);
 
                         var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
@@ -1323,7 +1323,7 @@ function checkSelectedMainEntry() {
                         bg.alpha = 0;
                         rowGroup.add(bg);
 
-                        var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? TranslationUtil.translate("mods.disableMods") : row, 28);
+                        var daMod:FunkinText = new FunkinText(4 * baseScale, bg.height / 2, 0, (row == null) ? translate("mods.disableMods") : row, 28);
                         daMod.font = Paths.font("retrogaming.ttf");
                         daMod.borderSize = 3;
                         if (daHeight < 30) {
@@ -1338,7 +1338,7 @@ function checkSelectedMainEntry() {
                 if (usingKeyboard) {
                     var col:Int = 0;
                     windowGroup.forEach(function(column) {
-                        if (column is FlxTypedSpriteGroup) {
+                        if (column is FlxSpriteGroup) {
                             var rw:Int = 0;
                             if (col == curWindowEntry[0]) {
                                 column.forEach(function(row) {
@@ -1365,7 +1365,7 @@ function checkSelectedMainEntry() {
                         if (allowTouch) {
                             var col:Int = 0;
                             windowGroup.forEach(function(column) {
-                                if (column is FlxTypedSpriteGroup) {
+                                if (column is FlxSpriteGroup) {
                                     var rw:Int = 0;
                                     column.forEach(function(row) {
                                         if (row.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
@@ -1393,7 +1393,7 @@ function checkSelectedMainEntry() {
                     if (allowMouse) {
                         var col:Int = 0;
                         windowGroup.forEach(function(column) {
-                            if (column is FlxTypedSpriteGroup) {
+                            if (column is FlxSpriteGroup) {
                                 var rw:Int = 0;
                                 column.forEach(function(row) {
                                     if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
@@ -1427,7 +1427,7 @@ function checkSelectedMainEntry() {
     }
 }
 
-function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, membersCreation:Float->Float->FlxTypedSpriteGroup->Void, updateLogic:Void, onChoose:Void) {
+function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, membersCreation:Float->Float->FlxSpriteGroup->Void, updateLogic:Void, onChoose:Void) {
     currentSelectionMode = "window";
     curWindow = windowArray;
     curWindowLogic = updateLogic;
@@ -1461,6 +1461,8 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     windowGroup.add(division);
     windowGroup.add(titleSpr);
     windowGroup.add(xButton);
+
+    enableInput();
 }
 
 function handleWindow() {
@@ -1504,15 +1506,17 @@ function closeWindowSection() {
 function checkSelectedWindowEntry() {
     if (curWindow == null) return;
 
+    disableInput();
+
     var trans:String = "";
     try {
         trans = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
     }
     catch(e:Dynamic) {
-        trans = "data/transitions/closingSharpCircle";
+        trans = "closingSharpCircle";
     }
 
-    MusicBeatTransition.script = trans;
+    setTransition(trans);
     curWindowChooseBehaviour();
 }
 
@@ -1542,7 +1546,7 @@ function initDiscordRPC() {
 var userCurrentStatus:String = "";
 function updateDiscordUserStatus(fetchInfo:Bool) {
     if (fetchInfo && DiscordUtil.ready) {
-        DiscordUtil.call("onMenuLoaded", ["Main Menu"]);
+        changeDiscordMenuStatus("Main Menu");
 
         try {
             discordAvatar.loadGraphic(DiscordUtil.user.getAvatar(64));
@@ -1577,6 +1581,7 @@ function onOpenSubState(event) {
 }
 
 function onCloseSubstate() {
+    changeDiscordMenuStatus("Main Menu");
     enableInput();
 }
 
