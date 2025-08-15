@@ -125,10 +125,32 @@ function postCreate() {
     ratingHitTxt.alpha = 0;
     add(ratingHitTxt);
 
-    for (strumline in strumLines.members) {
-        for (character in strumline.characters) {
-            var lastIndex:Int = members.indexOf(character);
+    // old chars get removed
+    for (i => strumline in strumLines.members) {
+        for (char in strumline.characters)
+            remove(char);
+    }
+
+    // then get replaced with the new ones :smiling_imp:
+    for (i => strL in SONG.strumLines) {
+        if (strL == null) continue;
+
+        var chars:Array<VSliceCharacter> = [];
+        var charPos:String = strL.position == null ? (switch(strL.type) {
+            case 0: "dad";
+            case 1: "boyfriend";
+            case 2: "girlfriend";
+        }) : strL.position;
+
+        if (strL.characters != null) {
+            for (c => char in strL.characters) {
+                var character:VSliceCharacter = new VSliceCharacter(0, 0, char, stage.isCharFlipped(stage.characterPoses[char] != null ? char : charPos, strL.type == 1));
+                stage.applyCharStuff(character, charPos, c);
+                chars.push(character);
+            }
         }
+
+        strumLines.members[i].characters = chars;
     }
 
     for (strumline in strumLines.members)
@@ -501,10 +523,8 @@ function displayRating(rating:String, score:Int) {
         FlxTween.tween(ratingHitTxt, {alpha: 0}, 0.5);
     });
 
-    /*
     if (gf != null)
         gf.playComboAnim(combo);
-    */
 }
 
 public function breakCombo(ignoreCurCombo:Bool = false) {
@@ -535,7 +555,7 @@ public function breakCombo(ignoreCurCombo:Bool = false) {
     }
     scripts.call("preComboBroken", [combo]);
 
-    //gf.playDropAnim(combo);
+    gf.playDropAnim(combo);
     combo = 0;
 
     scripts.call("onComboBroken", [combo]);

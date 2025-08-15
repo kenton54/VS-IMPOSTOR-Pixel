@@ -14,9 +14,6 @@ public var snd:Null<FlxSound> = null;
 
 static final BAR_COUNT:Int = 7;
 
-var comboAnimsList:Array<Int> = [];
-var dropAnimsList:Array<Int> = [];
-
 var knifeThreshold:Float = 25 / 100 * 2; // at 25% health
 
 /**
@@ -104,28 +101,9 @@ function create() {
 
     abot.add(abotMain);
 
-    comboAnimsList = getCountAnims("combo");
-    dropAnimsList = getCountAnims("drop");
-
     this.animation.finishCallback = function(name:String) {
         transitionState();
     };
-    //trace(this.animation.finishCallback);
-}
-
-function getCountAnims(prefix:String):Array<Int> {
-    var result:Array<Int> = [];
-    var anims:Array<String> = this.animation.getNameList();
-    for (anim in anims) {
-        if (StringTools.startsWith(anim, prefix)) {
-            var comboNum:Int = Std.parseInt(anim.substring(prefix.length));
-            if (comboNum != null) {
-                result.push(comboNum);
-            }
-        }
-    }
-    result.sort((a, b) -> a - b);
-    return result;
 }
 
 function onStartSong() {
@@ -231,25 +209,6 @@ function onPlayAnim(event) {
             abot.members[0].playAnim("idle", true);
             abot.members[0].animation.finishCallback = null;
         };
-    }
-}
-
-function playComboAnim(count:Int) {
-    var animName:String = "combo" + count;
-    if (this.animation.exists(animName)) {
-        this.playAnim(animName, true);
-    }
-}
-
-function playComboDropAnim(count:Int) {
-    var animName:Null<String> = null;
-    for (cnt in dropAnimsList) {
-        if (cnt >= count) {
-            animName = "drop" + count;
-        }
-    }
-    if (animName != null) {
-        this.playAnim(animName, true);
     }
 }
 

@@ -2,9 +2,15 @@ import StringTools;
 import flixel.animation.FlxAnimation;
 
 class VSliceCharacter extends Character {
-    public var comboNoteCounts:Array<Int> = [];
+    /**
+     * This character plays a given animation when hitting these specific combo numbers.
+     */
+    public var comboNoteCounts(default, null):Array<Int> = [];
 
-    public var dropNoteCounts:Array<Int> = [];
+    /**
+     * This character plays a given animation when dropping combos larger than these numbers.
+     */
+    public var dropNoteCounts(default, null):Array<Int> = [];
 
     public function new(x:Float, y:Float, ?character:String, isPlayer:Bool = false, switchAnims:Bool = true) {
         super(x, y, character, isPlayer, switchAnims, false);
@@ -43,18 +49,21 @@ class VSliceCharacter extends Character {
         return result;
     }
 
-    private function playComboAnim(count:Int) {
-        var animName:String = "combo" + Std.string(count);
+    private function playComboAnim(comboCount:Int) {
+        var animName:String = "combo" + Std.string(comboCount);
         if (hasAnimation(animName)) {
             this.playAnim(animName, true);
         }
     }
 
-    private function playDropAnim(count:Int) {
+    private function playDropAnim(comboCount:Int) {
         var animName:Null<String> = null;
-        for (cnt in dropAnimsList) {
-            if (cnt >= count) {
-                animName = "drop" + Std.string(count);
+
+        // Chooses the combo drop animation to play.
+        // If they're several animations, the highest one will be played.
+        for (dropCount in dropNoteCounts) {
+            if (comboCount >= dropCount) {
+                animName = "drop" + Std.string(dropCount);
             }
         }
         if (animName != null) {
