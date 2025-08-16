@@ -1,5 +1,3 @@
-import StringTools;
-
 public var speakers:FunkinSprite;
 
 function create() {

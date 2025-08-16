@@ -1450,19 +1450,19 @@ function destroy() {
     optionsCam.destroy();
 
     if (TranslationUtil.curLanguage != lastLang) {
-        Logs.traceColored([
-            Logs.logText("[Language] ", 9),
-            Logs.logText("New language detected! Changes can't take immediate effect!")
-        ], 1);
+        logTraceColored([
+            {text: "[Language] ", color: getLogColor("blue")},
+            {text: "New language detected! Changes can't take immediate effect!"}
+        ], "warning");
         new FlxTimer().start(0.05, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/newLanguageWarning"));
         });
     }
     if (lastDev != Options.devMode) {
-        Logs.traceColored([
-            Logs.logText("[Others] ", 10),
-            Logs.logText("Developer Mode has been set!")
-        ], 1);
+        logTraceColored([
+            {text: "[Others] ", color: getLogColor("green")},
+            {text: "Developer Mode has been set!"}
+        ], "warning");
         new FlxTimer().start(0.05, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/devToolsWarning"));
         });

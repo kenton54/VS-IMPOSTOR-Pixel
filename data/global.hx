@@ -3,7 +3,6 @@ import funkin.backend.system.framerate.Framerate;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
-import lime.system.Clipboard;
 import openfl.system.Capabilities;
 import ImpostorFlags;
 importScript("data/utils");

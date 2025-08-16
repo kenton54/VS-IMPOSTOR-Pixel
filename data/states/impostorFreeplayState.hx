@@ -1,4 +1,3 @@
-import StringTools;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxTypedSpriteGroup;
 import flixel.math.FlxRect;

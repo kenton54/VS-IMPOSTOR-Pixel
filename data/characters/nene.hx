@@ -1,6 +1,4 @@
-import flixel.sound.FlxSound;
 import funkin.backend.utils.AudioAnalyzer;
-import StringTools;
 
 public var abot:FlxSpriteGroup;
 var vizGroup:FlxSpriteGroup;
@@ -9,8 +7,6 @@ var analyzerLevelsCache:Array<Float>;
 var analyzerTimeCache:Float;
 
 var volumes:Array<Float> = [];
-
-public var snd:Null<FlxSound> = null;
 
 static final BAR_COUNT:Int = 7;
 
@@ -141,7 +137,7 @@ function updateFFT() {
 	if (analyzer != null && FlxG.sound.music.playing) {
 		var time = FlxG.sound.music.time;
 		if (analyzerTimeCache != time)
-			analyzerLevelsCache = analyzer.getLevels(analyzerTimeCache = time, FlxG.sound.music.calcTransformVolume(), vizGroup.group.members.length, analyzerLevelsCache, CoolUtil.getFPSRatio(0.4), -65, -10, 500, 20000);
+			analyzerLevelsCache = analyzer.getLevels(analyzerTimeCache = time, 1, vizGroup.group.members.length, analyzerLevelsCache, CoolUtil.getFPSRatio(0.2), -30, 0, 100, 24000);
 	}
 	else {
 		if (analyzerLevelsCache == null) analyzerLevelsCache = [];

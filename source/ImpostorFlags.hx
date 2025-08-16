@@ -32,8 +32,8 @@ class ImpostorFlags {
         FlxG.save.data.impPixelFlags = getFlags();
 
         /*
-        Logs.traceColored([
-            {text: "[VS IMPOSTOR Pixel] ", color: 12},
+        logTraceColored([
+            {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
             {text: "Flags saved!", color: -1}
         ]);
         */

@@ -1,0 +1,35 @@
+{
+    "sprite": "game/covers/default",
+    "alpha": 1,
+    "scale": 5.55,
+    "strums": [
+        {
+            "id": 0,
+            "animations": [
+                {"name": "coverLeft1-loop", "anim": "cover hold purple", "fps": 24, "x": 1, "y": 2},
+                {"name": "coverLeft1-end", "anim": "cover splash purple", "fps": 24, "x": 1, "y": 2}
+            ]
+        },
+        {
+            "id": 1,
+            "animations": [
+                {"name": "coverDown1-loop", "anim": "cover hold blue", "fps": 24, "x": 1, "y": 2},
+                {"name": "coverDown1-end", "anim": "cover splash blue", "fps": 24, "x": 1, "y": 2}
+            ]
+        },
+        {
+            "id": 2,
+            "animations": [
+                {"name": "coverUp1-loop", "anim": "cover hold green", "fps": 24, "x": 1, "y": 2},
+                {"name": "coverUp1-end", "anim": "cover splash green", "fps": 24, "x": 1, "y": 2}
+            ]
+        },
+        {
+            "id": 3,
+            "animations": [
+                {"name": "coverRight1-loop", "anim": "cover hold red", "fps": 24, "x": 1, "y": 2},
+                {"name": "coverRight1-end", "anim": "cover splash red", "fps": 24, "x": 1, "y": 2}
+            ]
+        }
+    ]
+}

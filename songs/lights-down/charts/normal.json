@@ -1,11 +1,31 @@
 {
-	"stage": "polus1",
-	"scrollSpeed": 2.9,
-	"codenameChart": true,
+	"meta": {
+		"customValues": {
+			"ratingsChart": {
+				"easy": 7,
+				"hard": 12,
+				"normal": 10
+			}
+		},
+		"color": "#AF2121",
+		"opponentModeAllowed": true,
+		"difficulties": [
+			"easy",
+			"normal",
+			"hard"
+		],
+		"icon": "red-impostor-pixel",
+		"coopAllowed": true,
+		"stepsPerBeat": 4,
+		"displayName": "Lights Down",
+		"needsVoices": true,
+		"beatsPerMeasure": 4,
+		"bpm": 170
+	},
+	"events": [],
 	"strumLines": [
 		{
-			"strumScale": 1,
-			"position": "dad",
+			"keyCount": 4,
 			"notes": [
 				{
 					"id": 3,
@@ -7166,21 +7186,22 @@
 					"type": 0
 				}
 			],
+			"position": "dad",
+			"strumScale": 1,
+			"visible": true,
+			"type": 0,
 			"characters": [
 				"red-impostor"
 			],
-			"type": 0,
-			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "-green",
-			"strumLinePos": 0.25
+			"strumLinePos": 0.25,
+			"vocalsSuffix": "-green"
 		},
 		{
-			"strumScale": 1,
-			"position": "boyfriend",
+			"keyCount": 4,
 			"notes": [
 				{
 					"id": 3,
@@ -10718,7 +10739,7 @@
 				},
 				{
 					"id": 1,
-					"sLen": 267.000000000116,
+					"sLen": 267.000000000131,
 					"time": 115411.764705882,
 					"type": 0
 				},
@@ -14059,34 +14080,41 @@
 					"type": 0
 				}
 			],
+			"position": "boyfriend",
+			"strumScale": 1,
+			"visible": true,
+			"type": 1,
 			"characters": [
 				"pico"
 			],
-			"type": 1,
-			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "-bf",
-			"strumLinePos": 0.75
+			"strumLinePos": 0.75,
+			"vocalsSuffix": "-bf"
 		},
 		{
-			"strumScale": 1,
-			"position": "girlfriend",
+			"keyCount": 4,
 			"notes": [],
+			"position": "girlfriend",
+			"strumScale": 1,
+			"visible": false,
+			"type": 2,
 			"characters": [
 				"nene"
 			],
-			"type": 2,
-			"visible": false,
 			"strumPos": [
 				0,
 				50
 			],
-			"vocalsSuffix": "",
-			"strumLinePos": 0.25
+			"strumLinePos": 0.25,
+			"vocalsSuffix": ""
 		}
 	],
+	"codenameChart": true,
+	"stage": "polus1",
+	"scrollSpeed": 2.9,
+	"chartVersion": "1.6.0",
 	"noteTypes": []
 }

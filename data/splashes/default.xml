@@ -1,0 +1,15 @@
+<!DOCTYPE codename-engine-splashes>
+<splashes sprite="game/splashes/default" alpha="1" scale="5.55" antialiasing="false">
+	<strum id="0">
+		<anim name="splashLeft1" anim="splash 1 purple" fps="24" x="0" y="8" />
+	</strum>
+	<strum id="1">
+		<anim name="splashDown1" anim="splash 1 blue" fps="24" x="0" y="8" />
+	</strum>
+	<strum id="2">
+		<anim name="splashUp1" anim="splash 1 green" fps="24" x="0" y="8" />
+	</strum>
+	<strum id="3">
+		<anim name="splashRight1" anim="splash 1 red" fps="24" x="0" y="8" />
+	</strum>
+</splashes>

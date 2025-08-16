@@ -13,12 +13,14 @@ import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
 import openfl.filters.ShaderFilter;
 import Date;
+import HoldCoverHandler;
 import ImpostorFlags;
 import VSliceCharacter;
 
 public var taskbarBG:FlxSprite;
 public var taskbar:FlxSprite;
 public var taskbarTxt:FunkinText;
+public var overrideTaskbarTxt:Bool = false;
 
 public var ratingHitTxt:FunkinText;
 
@@ -37,9 +39,14 @@ var combosBroken:Int = 0;
 var healthLerp:Float = 0;
 public var maxHealth:Float = 2;
 
-function onPostNoteCreation(event) {
-    totalNotes++;
-}
+var noteScale:Float = 5.55;
+
+var noteArray:Array<String> = ["left", "down", "up", "right"];
+var noteColor:Array<String> = ["purple", "blue", "green", "red"];
+
+public var holdCoverHandlers:Array<HoldCoverHandler> = [];
+
+public var noteStyle:String;
 
 function create() {
     taskbarBG = new FlxSprite(45).loadGraphic(Paths.image("game/taskBar"));
@@ -70,10 +77,70 @@ function create() {
     camZooming = true;
     validScore = true;
     curCameraTarget = -1;
+
+    if (Reflect.hasField(SONG.meta.customValues, "noteStyle")) {
+        noteStyle = SONG.meta.customValues.noteStyle;
+    }
+    else {
+        noteStyle = "default";
+        logTraceColored([
+            {text: "[PlayState] ", color: getLogColor("cyan")},
+            {text: "No style for the strumlines, notes, splashes and hold covers found in the song's metadata, using default..."}
+        ]);
+    }
+}
+
+function onNoteCreation(event) {
+	event.cancel();
+
+	var pixelNote = event.note;
+
+	if (pixelNote.isSustainNote) {
+		pixelNote.frames = Paths.getFrames("game/notes/" + noteStyle + "/sustains");
+		pixelNote.animation.addByPrefix("hold", "sustain hold " + noteColor[event.strumID]);
+		pixelNote.animation.addByPrefix("holdend", "sustain end " + noteColor[event.strumID]);
+	}
+	else {
+		pixelNote.frames = Paths.getFrames("game/notes/" + noteStyle + "/notes");
+		pixelNote.animation.addByPrefix("scroll", "note " + noteArray[event.strumID]);
+	}
+	pixelNote.scale.set(noteScale, noteScale);
+	pixelNote.updateHitbox();
+}
+
+function onStrumCreation(event) {
+	event.cancel();
+
+	var daStrum = event.strum;
+
+	daStrum.frames = Paths.getFrames("game/notes/" + noteStyle + "/strums");
+	daStrum.animation.addByPrefix("static", "strum idle " + noteArray[event.strumID], 24, false);
+	daStrum.animation.addByPrefix("pressed", "strum press " + noteArray[event.strumID], 12, false);
+	daStrum.animation.addByPrefix("confirm", "strum hit " + noteArray[event.strumID], 24, false);
+
+	daStrum.scale.set(noteScale, noteScale);
+	daStrum.updateHitbox();
+
+	daStrum.x -= 32;
+}
+
+function onPostNoteCreation(event) {
+	event.note.splash = noteStyle;
+
+    if (event.note.isSustainNote)
+        event.note.alpha = 1;
+    else
+        totalNotes++;
 }
 
 function postCreate() {
     camGame.snapToTarget();
+
+    for (strumline in strumLines.members) {
+        if (!strumline.visible) continue;
+        var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
+        holdCoverHandlers.push(coverHandler);
+    }
 
     healthLerp = health;
 
@@ -156,7 +223,7 @@ function postCreate() {
     for (strumline in strumLines.members)
         insert(members.length, strumline);
 
-    insert(members.length, splashHandler.getSplashGroup("impostorPixel-default"));
+    insert(members.length, splashHandler.getSplashGroup(noteStyle));
 
     WindowUtils.suffix = " - " + SONG.meta.displayName + (!ImpostorFlags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
 
@@ -174,7 +241,7 @@ function postCreate() {
         }
     }
 
-    scripts.call("postPostCreate");
+    scripts.call("postUIOverhaul");
 }
 
 function update(elapsed:Float) {
@@ -192,7 +259,12 @@ function updateHealthBar() {
 }
 
 function postUpdate(elapsed:Float) {
-    taskbarTxt.text = SONG.meta.displayName + " (" + Math.round(songPercent * 100) + "%)";
+    if (!overrideTaskbarTxt) {
+        taskbarTxt.text = SONG.meta.displayName;
+        taskbarTxt.text += " (" + Math.round(songPercent * 100) + "%)";
+    }
+
+    // this must be done like this becuz base codename sets the text every frame for whatever reason
     scoreTxt.text = songScore;
 
     if (!inCutscene)
@@ -228,12 +300,23 @@ var vsliceScoringOffset:Float = 54.99;
 var vsliceScoringSlope:Float = 0.08;
 
 function processNotes(elapsed:Float) {
-    for (playerNote in playerStrums.notes.members) {
-        if (playerNote == null || !playerNote.alive) continue;
+    for (strumline in strumLines.members) {
+        if (!strumline.cpu) {
+            for (playerNote in strumline.notes.members) {
+                if (playerNote == null || !playerNote.alive) continue;
 
-        if (playerNote.wasGoodHit && playerNote.isSustainNote && playerNote.sustainLength > 0) {
-            health += holdHealthBonus * elapsed;
-            songScore += Std.int(holdScoreBonus * elapsed);
+                if (playerNote.wasGoodHit) {
+                    if (playerNote.isSustainNote && playerNote.sustainLength > 0) {
+                        health += holdHealthBonus * elapsed;
+                        songScore += Std.int(holdScoreBonus * elapsed);
+                    }
+                }
+            }
+        }
+        else {
+            for (opponentNote in strumline.notes.members) {
+                if (opponentNote == null || !opponentNote.alive) continue;
+            }
         }
     }
 }
@@ -299,38 +382,12 @@ function onPlayerHit(event) {
 
         grantNoteStat(daRating);
     }
-    else {
-        if (!event.animCancelled || event.noteType != "No Anim Note") {
-            for (char in event.characters) {
-                if (char != null) {
-                    var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
-                    if (char.animation.exists(animName))
-                        char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
-                    else {
-                        char.playSingAnim(event.direction, event.animSuffix, "SING", false);
-                        char.animation.finish();
-                    }
-                }
-            }
-        }
-
-        if (event.note.__strum != null) {
-            event.note.__strum.press(event.note.strumTime);
-            event.note.__strum.animation.finish();
-        }
-    }
-
-    if (event.autoHitLastSustain) {
-        if (event.note.nextSustain != null && event.note.nextSustain.nextSustain == null) {
-            // its a tail
-            event.note.nextSustain.wasGoodHit = true;
-        }
-    }
 
     if (event.deleteNote)
         strumline.deleteNote(event.note);
 
     scripts.call("onNewPlayerHit", [event]);
+    scripts.call("onNewNoteHit", [event]);
 }
 
 function onDadHit(event) {
@@ -365,38 +422,12 @@ function onDadHit(event) {
             event.note.__strum.press(event.note.strumTime);
         }
     }
-    else {
-        if (!event.animCancelled || event.noteType != "No Anim Note") {
-            for (char in event.characters) {
-                if (char != null) {
-                    var animName:String = char.singAnims[event.direction % char.singAnims.length] + event.animSuffix + "-loop";
-                    if (char.animation.exists(animName))
-                        char.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
-                    else {
-                        char.playSingAnim(event.direction, event.animSuffix, "SING", false);
-                        char.animation.finish();
-                    }
-                }
-            }
-        }
-
-        if (event.note.__strum != null) {
-            event.note.__strum.press(event.note.strumTime);
-            event.note.__strum.animation.finish();
-        }
-    }
-
-    if (event.autoHitLastSustain) {
-        if (event.note.nextSustain != null && event.note.nextSustain.nextSustain == null) {
-            // its a tail
-            event.note.nextSustain.wasGoodHit = true;
-        }
-    }
 
     if (event.deleteNote)
         strumline.deleteNote(event.note);
 
     scripts.call("onNewOpponentHit", [event]);
+    scripts.call("onNewNoteHit", [event]);
 }
 
 var exactThreshold:Float = 5;
@@ -621,6 +652,25 @@ function grantNoteStat(rating:String) {
             impostorStats.set("missedNotes", impostorStats.get("missedNotes") + 1);
         default:
             // do nothing
+    }
+}
+
+function onNewNoteHit(event) {
+    if (!event.note.isSustainNote) {
+        if (event.note.nextNote != null && event.note.nextNote.isSustainNote) {
+            holdCoverHandlers[strumLines.members.indexOf(event.note.strumLine)].showHoldCover(event.note.__strum);
+        }
+    }
+    else {
+        if (event.note.__strum != null) {
+            event.note.__strum.lastHit = Conductor.songPosition + 30;
+        }
+
+        for (i in 0...event.characters.length) {
+            event.characters[i].lastHit = Conductor.songPosition + 30;
+        }
+
+        holdCoverHandlers[strumLines.members.indexOf(event.note.strumLine)].checkNote(event.note, event.note.strumLine.cpu == false);
     }
 }
 
