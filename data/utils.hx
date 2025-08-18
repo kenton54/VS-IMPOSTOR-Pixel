@@ -1,7 +1,10 @@
+import funkin.backend.system.Flags;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.TranslationUtil;
 import funkin.backend.MusicBeatTransition;
+import funkin.options.Options;
+import openfl.display.BlendMode;
 
 public static var storyStates:Array<String> = [
     "start",
@@ -127,6 +130,58 @@ public static function getStatValue(id:String):Dynamic {
         return defaultStats.get(id);
 }
 
+public static function setBlendMode(blend:String):BlendMode {
+    switch(blend) {
+        case "add": return BlendMode.ADD;
+        case "alpha": return BlendMode.ALPHA;
+        case "darken": return BlendMode.DARKEN;
+        case "difference": return BlendMode.DIFFERENCE;
+        case "erase": return BlendMode.ERASE;
+        case "hardlight": return BlendMode.HARDLIGHT;
+        case "invert": return BlendMode.INVERT;
+        case "layer": return BlendMode.LAYER;
+        case "lighten": return BlendMode.LIGHTEN;
+        case "multiply": return BlendMode.MULTIPLY;
+        case "normal": return BlendMode.NORMAL;
+        case "overlay": return BlendMode.OVERLAY;
+        case "screen": return BlendMode.SCREEN;
+        case "shader": return BlendMode.SHADER;
+        case "subtract": return BlendMode.SUBTRACT;
+        default: return null;
+    }
+}
+
+public static function playSound(sound:String, ?volume:Float) {
+    volume = (volume == null) ? 1 : volume;
+    FlxG.sound.play(Paths.sound(sound), volume * Options.volumeSFX);
+}
+
+public static function playMenuSound(sound:String, ?volume:Float) {
+    volume = (volume == null) ? 1 : volume;
+    var soundID:Int = switch(sound) {
+        case "scroll": 0;
+        case "confirm": 1;
+        case "cancel": 2;
+        case "checked": 3;
+        case "unchecked": 4;
+        case "warning": 5;
+        default: 0; // scroll
+    }
+
+    CoolUtil.playMenuSFX(soundID, volume);
+}
+
+public static function createMultiLineText(texts:Array<String>):String {
+    var wholeText:String = "";
+    var max:Int = texts.length - 1;
+    for (i => text in texts) {
+        wholeText += text;
+        if (!(i >= max)) wholeText += '\n';
+    }
+
+    return wholeText;
+}
+
 public static function logTraceColored(text:Array<LogText>, ?level:String) {
     Logs.traceColored(text, getLogLevel(level));
 }
@@ -179,13 +234,29 @@ public static function resizeWindow(width:Int, height:Int) {
 
 public static function saveImpostor() {
     FlxG.save.data.impPixelStorySequence = storySequence;
+    FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelStats = impostorStats;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
-    FlxG.save.data.impPixelBeans = pixelBeans;
 
     logTraceColored([
         {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
         {text: "Data Saved!"}
     ]);
+}
+
+public static function eraseImpostorSaveData() {
+    storySequence = 0;
+    impostorStats.clear();
+    playablesList.clear();
+    playablesList.set("bf", true);
+    skinsList.clear();
+    pixelBeans = 0;
+
+    FlxG.save.data.impPixelStorySequence = null;
+    FlxG.save.data.impPixelBeans = null;
+    FlxG.save.data.impPixelStats = null;
+    FlxG.save.data.impPixelPlayablesUnlocked = null;
+    FlxG.save.data.impPixelSkinsUnlocked = null;
+    FlxG.save.data.impPixelFlags = null;
 }

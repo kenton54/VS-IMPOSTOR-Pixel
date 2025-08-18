@@ -1,8 +1,11 @@
+import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
+import flixel.math.FlxRect;
 //import flixel.text.FlxInputText; // i need flixel +5.9.0 :face_holding_back_tears:
 import funkin.backend.scripting.Script;
-import funkin.backend.system.Logs;
 import funkin.backend.utils.TranslationUtil;
 import funkin.options.Options;
+import funkin.savedata.FunkinSave;
+import openfl.filters.ShaderFilter;
 import sys.FileSystem;
 
 var optionsCam:FlxCamera;
@@ -28,19 +31,17 @@ var lastOption:Int = -1;
 var closeButton:FlxSprite;
 
 var scale:Float = 5;
+var generalWidth:Int = 312;
 
 var lastLang:String = TranslationUtil.curLanguage;
 var lastDev:Bool = Options.devMode;
 
+static var lastCategory:Null<String> = null;
+
 function create() {
     changeDiscordMenuStatus("Options Menu");
 
-    var path:String = FileSystem.absolutePath(Assets.getPath(Paths.getPath("data/states/options")));
-    for (category in FileSystem.readDirectory(path)) {
-        category = removeExtension(category);
-        categories.push(category);
-    }
-    categories.remove(categories[categories.indexOf("impostorOptionsSubState")]);
+    createCategories();
 
     optionsCam = new FlxCamera();
     optionsCam.bgColor = 0x00000000;
@@ -67,9 +68,9 @@ function create() {
     var phoneBack:FlxSprite = new FlxSprite().makeGraphic(boxWidth, heightCorrect, 0xFFAEC3C3);
 
     var titleVerBounds:Float = phoneBack.y + 24 * scale;
-    var generalWidth:Int = 312;
-    var optionsBox:FlxSprite = new FlxSprite(phoneBack.x + generalWidth, phoneBack.y + phoneBack.height).makeGraphic(phoneBack.width - generalWidth, phoneBack.height - titleVerBounds, FlxColor.WHITE);
-    optionsBox.y -= optionsBox.height;
+    var optionsBox:FlxSprite = new FlxSprite(phoneBack.x + generalWidth, phoneBack.y + phoneBack.height).makeGraphic(phoneBack.width - generalWidth, (phoneBack.height - titleVerBounds) + 4, FlxColor.WHITE);
+    var optionsBoxHeight:Float = optionsBox.height - 4; // to prevent misplacements
+    optionsBox.y -= optionsBoxHeight;
     optionsBox.alpha = 0.2;
     optionsBox.blend = 0;
 
@@ -88,50 +89,32 @@ function create() {
     categoriesGroup = new FlxSpriteGroup(0, titleVerBounds);
     phoneScreen.add(categoriesGroup);
 
-    var categoriesHeight:Float = optionsBox.height / categories.length;
-    for (i in 0...categories.length) {
-        var categoryGrp:FlxSpriteGroup = new FlxSpriteGroup(0, categoriesHeight * i);
-        categoriesGroup.add(categoryGrp);
+    rearrangeCategories();
 
-        var bg:FlxSprite = new FlxSprite().makeGraphic(generalWidth, categoriesHeight, FlxColor.WHITE);
-        bg.color = FlxColor.BLACK;
-        bg.blend = 9;
-        bg.alpha = 0.6;
-        categoryGrp.add(bg);
-
-        var catTrans:String = translate("options.section." + StringTools.replace(categories[i].toLowerCase(), " ", ""));
-        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, catTrans, 33, false);
-        title.font = Paths.font("pixeloidsans.ttf");
-        title.color = FlxColor.BLACK;
-        title.alignment = "center";
-        title.y -= title.height / 2;
-        categoryGrp.add(title);
-    }
-
-    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBox.height / 2, optionsBox.width, translate("options.selectCategory"), 32, false);
+    startTxt = new FunkinText(generalWidth, titleVerBounds + optionsBoxHeight / 2, optionsBox.width, translate("options.selectCategory"), 32, false);
     startTxt.alignment = "center";
     startTxt.font = Paths.font("pixeloidsans.ttf");
     startTxt.color = FlxColor.BLACK;
     startTxt.y -= startTxt.height / 2;
     phoneScreen.add(startTxt);
 
-    categoryBounds = [0, titleVerBounds, optionsBox.width, optionsBox.height];
+    categoryBounds = [0, titleVerBounds, optionsBox.width, optionsBoxHeight];
     curCategoryGrp = new FlxSpriteGroup(generalWidth, titleVerBounds);
     phoneScreen.add(curCategoryGrp);
 
     descriptionGroup = new FlxSpriteGroup(generalWidth, titleVerBounds);
     phoneScreen.add(descriptionGroup);
 
-    var descPos:Float = optionsBox.height;
-    var descBox:FlxSprite = new FlxSprite(0, descPos).makeGraphic(optionsBox.width, 128, FlxColor.BLACK);
+    var descPos:Float = optionsBoxHeight;
+    var descBox:FlxSprite = new FlxSprite(0, descPos).makeGraphic(optionsBox.width, 98, FlxColor.BLACK);
     descBox.alpha = 0.4;
     descBox.y -= descBox.height / 3;
     descriptionGroup.add(descBox);
     categoryBounds[0] = descBox.y - 720;
 
-    var descTxt:FunkinText = new FunkinText(0, descPos - (descBox.height / 3) / 2, descBox.width, "Lorem ipsum dolor sit amet", 18);
+    var descTxt:FunkinText = new FunkinText(0, descPos - (descBox.height / 3) / 2, descBox.width, "Lorem ipsum dolor sit amet", 16);
     descTxt.font = Paths.font("pixelarial-bold.ttf");
-    descTxt.borderSize = 3;
+    descTxt.borderSize = 2;
     descTxt.alignment = "center";
     descTxt.y -= descTxt.height / 2.5;
     descriptionGroup.add(descTxt);
@@ -150,7 +133,42 @@ function create() {
         canInteract = true;
     }});
 
+    if (lastCategory != null && lastCategory != "") {
+        curCategoryIndex = categories.indexOf(lastCategory);
+        lastCategory = null;
+    }
+
     updateCategory();
+}
+
+function createCategories() {
+    for (category in Paths.getFolderContent("data/states/options", false, 1, true)) {
+        categories.push(category);
+    }
+    categories.remove(categories[categories.indexOf("impostorOptionsSubState")]);
+    if (!Options.devMode) categories.remove(categories[categories.indexOf("Debug")]);
+}
+
+function rearrangeCategories() {
+    var categoriesHeight:Float = phoneScreen.members[1].height / categories.length;
+    for (i in 0...categories.length) {
+        var categoryGrp:FlxSpriteGroup = new FlxSpriteGroup(0, categoriesHeight * i);
+        categoriesGroup.add(categoryGrp);
+
+        var bg:FlxSprite = new FlxSprite().makeGraphic(generalWidth, categoriesHeight, FlxColor.WHITE);
+        bg.color = FlxColor.BLACK;
+        bg.blend = 9;
+        bg.alpha = 0.6;
+        categoryGrp.add(bg);
+
+        var catTrans:String = translate("options.section." + StringTools.replace(categories[i].toLowerCase(), " ", ""));
+        var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, catTrans, 33, false);
+        title.font = Paths.font("pixeloidsans.ttf");
+        title.color = FlxColor.BLACK;
+        title.alignment = "center";
+        title.y -= title.height / 2;
+        categoryGrp.add(title);
+    }
 }
 
 function removeExtension(s:String):String {
@@ -165,6 +183,11 @@ function postCreate() {
 // prevents from opening a category IMMEDIATLY after opening this substate
 var canInteract:Bool = false;
 function update(elapsed:Float) {
+    checkCurrentCategory(elapsed);
+
+    if (categories[curCategoryIndex] == "Gameplay")
+        checkVolume();
+
     if (!canInteract) return;
 
     handleOptions();
@@ -302,12 +325,10 @@ function handleOptions() {
                 if (curCategoryOptions[i].type == "integer") {
                     group.members[2].visible = true;
                     group.members[3].visible = true;
-                    handleAdditions(i, group.members[2], group.members[3], group.members[5]);
+                    handleAdditions(i, group.members[2], group.members[3], group.members[4]);
                 }
                 if (curCategoryOptions[i].type == "percent") {
-                    group.members[2].visible = true;
-                    group.members[3].visible = true;
-                    handlePercentage(i, group.members[2], group.members[3], group.members[5]);
+                    handlePercentage(i, group.members[4], group.members[5], group.members[2]);
                 }
                 if (curCategoryOptions[i].type == "choice") {
                     group.members[2].visible = true;
@@ -321,11 +342,14 @@ function handleOptions() {
             else {
                 group.members[0].alpha = 0;
 
-                if (curCategoryOptions[i].type == "integer" || curCategoryOptions[i].type == "percent" || curCategoryOptions[i].type == "choice") {
+                if (curCategoryOptions[i].type == "integer" || curCategoryOptions[i].type == "choice") {
                     group.members[2].visible = false;
                     group.members[3].visible = false;
                 }
             }
+
+            if (curCategoryOptions[i].type == "percent")
+                group.members[5].playAnim(usingKeyboard ? "normal" : "fat");
         }
     }
 
@@ -341,8 +365,8 @@ function updateDescription() {
         descriptionGroup.members[0].visible = true;
         descriptionGroup.members[1].visible = true;
 
-        var posBox:Float = 138 - 30;
-        var posTxt:Float = 138 - 32;
+        var posBox:Float = 101 - 21;
+        var posTxt:Float = 101 - 25.5;
         descriptionGroup.members[0].y = categoryBounds[0] + posBox - descriptionGroup.members[0].height;
         descriptionGroup.members[1].y = categoryBounds[0] + posTxt - descriptionGroup.members[0].height + 7;
         descriptionGroup.members[1].alignment = "left";
@@ -364,26 +388,27 @@ function updateDescription() {
                 daTranslation = translate("options." + StringTools.replace(categories[curCategoryIndex].toLowerCase(), " ", "") + "." + curCategoryOptions[curOption].name + "-desc");
             descriptionGroup.members[1].text = daTranslation;
 
-            var posBox:Float = 138;
-            var posTxt:Float = 138;
+            var posBox:Float = 101;
+            var posTxt:Float = 101;
             var mult:Int = 1;
             var offset:Float = 0;
             if (descriptionGroup.members[1].height > 32) {
-                posBox -= 30;
-                posTxt -= 32;
+                posBox -= 22;
+                posTxt -= 25.5;
                 mult *= 2;
-                offset += 3;
+                offset += 2;
             }
             if (descriptionGroup.members[1].height > 60) {
-                posBox -= 30;
-                posTxt -= 32;
+                posBox -= 22;
+                posTxt -= 25.5;
                 mult *= 2;
                 offset += 1;
             }
             if (descriptionGroup.members[1].height > 88) {
-                posBox -= 30;
-                posTxt -= 32;
+                posBox -= 22;
+                posTxt -= 25.5;
                 mult *= 2;
+                offset += -8;
             }
 
             descriptionGroup.members[0].y = categoryBounds[0] + posBox - descriptionGroup.members[0].height;
@@ -717,250 +742,58 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
     }
 }
 
-function handlePercentage(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, valueTxt:FunkinText) {
+var barOffset:Float = 0;
+var percentChangeDelay:Bool = false;
+function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, percentTxt:FunkinText) {
     if (usingKeyboard) {
         if (controls.LEFT) {
-            subtractBtn.animation.play("press");
-            if (optHoldTimer >= optMaxHeldTime) {
-                if (optFrameDelayer >= optMaxDelay) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+            if (percentChangeDelay = !percentChangeDelay) {
+                var percent:Float = Std.parseFloat(percentTxt.text) / 100;
+                var newValue:Int = percent - 0.01;
+                if (newValue < 0) newValue = 0;
 
-                    var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                    var newValue:Float = float - 0.05;
-                    if (newValue < 0) newValue = 0;
-                    valueTxt.text = Std.string(newValue * 100);
+                var barPos:Float = bar.frameWidth * newValue;
+                bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
+                theThing.x = (bar.x + (bar.width * newValue)) - barOffset;
+                percentTxt.text = Std.string(newValue * 100) + "%";
 
-                    curCategory.call("onChangeFloat", [position, newValue]);
-
-                    optFrameDelayer = 0;
-                }
-                else
-                    optFrameDelayer++;
+                curCategory.call("onChangeFloat", [position, newValue]);
             }
-            else
-                optHoldTimer += FlxG.elapsed;
-        }
-        else if (controls.LEFT_R) {
-            subtractBtn.animation.play("idle");
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-            var float:Float = Std.parseFloat(valueTxt.text) / 100;
-            var newValue:Float = float - 0.05;
-            if (newValue < 0) newValue = 0;
-            valueTxt.text = Std.string(newValue * 100);
-
-            curCategory.call("onChangeFloat", [position, newValue]);
         }
         else if (controls.RIGHT) {
-            addBtn.animation.play("press");
-            if (optHoldTimer >= optMaxHeldTime) {
-                if (optFrameDelayer >= optMaxDelay) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+            if (percentChangeDelay = !percentChangeDelay) {
+                var percent:Float = Std.parseFloat(percentTxt.text) / 100;
+                var newValue:Int = percent + 0.01;
+                if (newValue > 1) newValue = 1;
 
-                    var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                    var newValue:Float = float + 0.05;
-                    if (newValue > 1) newValue = 1;
-                    valueTxt.text = Std.string(newValue * 100);
+                var barPos:Float = bar.frameWidth * newValue;
+                bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
+                theThing.x = (bar.x + (bar.width * newValue)) - barOffset;
+                percentTxt.text = Std.string(newValue * 100) + "%";
 
-                    curCategory.call("onChangeFloat", [position, newValue]);
-
-                    optFrameDelayer = 0;
-                }
-                else
-                    optFrameDelayer++;
+                curCategory.call("onChangeFloat", [position, newValue]);
             }
-            else
-                optHoldTimer += FlxG.elapsed;
-        }
-        else if (controls.RIGHT_R) {
-            addBtn.animation.play("idle");
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-            var float:Float = Std.parseFloat(valueTxt.text) / 100;
-            var newValue:Float = float + 0.05;
-            if (newValue > 1) newValue = 1;
-            valueTxt.text = Std.string(newValue * 100);
-
-            curCategory.call("onChangeFloat", [position, newValue]);
-        }
-        else {
-            subtractBtn.animation.play("idle");
-            addBtn.animation.play("idle");
-            optHoldTimer = 0;
         }
 
         return;
     }
+
     if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (touch.overlaps(subtractBtn)) {
-                if (touch.pressed) {
-                    subtractBtn.animation.play("press");
-                    if (optHoldTimer >= optMaxHeldTime) {
-                        if (optFrameDelayer >= optMaxDelay) {
-                            FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                            var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                            var newValue:Float = float - 0.05;
-                            if (newValue < 0) newValue = 0;
-                            valueTxt.text = Std.string(newValue * 100);
-
-                            curCategory.call("onChangeFloat", [position, newValue]);
-
-                            optFrameDelayer = 0;
-                        }
-                        else
-                            optFrameDelayer++;
-                    }
-                    else
-                        optHoldTimer += FlxG.elapsed;
-                }
-                else if (touch.justReleased) {
-                    subtractBtn.animation.play("idle");
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                    var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                    var newValue:Float = float - 0.05;
-                    if (newValue < 0) newValue = 0;
-                    valueTxt.text = Std.string(newValue * 100);
-
-                    curCategory.call("onChangeFloat", [position, newValue]);
-                }
-                else {
-                    subtractBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                }
-            }
-            else {
-                subtractBtn.animation.play("idle");
-            }
-
-            if (touch.overlaps(addBtn)) {
-                if (touch.pressed) {
-                    addBtn.animation.play("press");
-                    if (optHoldTimer >= optMaxHeldTime) {
-                        if (optFrameDelayer >= optMaxDelay) {
-                            FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                            var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                            var newValue:Float = float + 0.05;
-                            if (newValue > 1) newValue = 1;
-                            valueTxt.text = Std.string(newValue * 100);
-
-                            curCategory.call("onChangeFloat", [position, newValue]);
-
-                            optFrameDelayer = 0;
-                        }
-                        else
-                            optFrameDelayer++;
-                    }
-                    else
-                        optHoldTimer += FlxG.elapsed;
-                }
-                else if (touch.justReleased) {
-                    addBtn.animation.play("idle");
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                    var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                    var newValue:Float = float + 0.05;
-                    if (newValue > 1) newValue = 1;
-                    valueTxt.text = Std.string(newValue * 100);
-
-                    curCategory.call("onChangeFloat", [position, newValue]);
-                }
-                else {
-                    addBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                }
-            }
-            else {
-                addBtn.animation.play("idle");
-            }
-        }
+        for (touch in FlxG.touches.list) {}
     }
     else {
-        if (FlxG.mouse.overlaps(subtractBtn)) {
-            if (FlxG.mouse.pressed) {
-                subtractBtn.animation.play("press");
-                if (optHoldTimer >= optMaxHeldTime) {
-                    if (optFrameDelayer >= optMaxDelay) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+        if (FlxG.mouse.overlaps(theThing) && FlxG.mouse.pressed) {
+            var min:Float = bar.x - barOffset;
+            var max:Float = bar.x + bar.width - barOffset;
+            theThing.x = FlxMath.bound(FlxG.mouse.x - barOffset, min, max);
+            var posCalc:Float = (theThing.x - min) / bar.width;
+            var newValue:Float = FlxMath.roundDecimal(posCalc, 2);
 
-                        var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                        var newValue:Float = float - 0.05;
-                        if (newValue < 0) newValue = 0;
-                        valueTxt.text = Std.string(newValue * 100);
+            var barPos:Float = bar.frameWidth * newValue;
+            bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
+            percentTxt.text = Std.string(newValue * 100) + "%";
 
-                        curCategory.call("onChangeFloat", [position, newValue]);
-
-                        optFrameDelayer = 0;
-                    }
-                    else
-                        optFrameDelayer++;
-                }
-                else
-                    optHoldTimer += FlxG.elapsed;
-            }
-            else if (FlxG.mouse.justReleased) {
-                subtractBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                var newValue:Float = float - 0.05;
-                if (newValue < 0) newValue = 0;
-                valueTxt.text = Std.string(newValue * 100);
-
-                curCategory.call("onChangeFloat", [position, newValue]);
-            }
-            else {
-                subtractBtn.animation.play("idle");
-                optHoldTimer = 0;
-            }
-        }
-        else {
-            subtractBtn.animation.play("idle");
-        }
-
-        if (FlxG.mouse.overlaps(addBtn)) {
-            if (FlxG.mouse.pressed) {
-                addBtn.animation.play("press");
-                if (optHoldTimer >= optMaxHeldTime) {
-                    if (optFrameDelayer >= optMaxDelay) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                        var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                        var newValue:Float = float + 0.05;
-                        if (newValue > 1) newValue = 1;
-                        valueTxt.text = Std.string(newValue * 100);
-
-                        curCategory.call("onChangeFloat", [position, newValue]);
-
-                        optFrameDelayer = 0;
-                    }
-                    else
-                        optFrameDelayer++;
-                }
-                else
-                    optHoldTimer += FlxG.elapsed;
-            }
-            else if (FlxG.mouse.justReleased) {
-                addBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
-
-                var float:Float = Std.parseFloat(valueTxt.text) / 100;
-                var newValue:Float = float + 0.05;
-                if (newValue > 1) newValue = 1;
-                valueTxt.text = Std.string(newValue * 100);
-
-                curCategory.call("onChangeFloat", [position, newValue]);
-            }
-            else {
-                addBtn.animation.play("idle");
-                optHoldTimer = 0;
-            }
-        }
-        else {
-            addBtn.animation.play("idle");
+            curCategory.call("onChangeFloat", [position, newValue]);
         }
     }
 }
@@ -1232,9 +1065,13 @@ function updateCategory() {
     }
 }
 
-var globalHeight:Float = 38;
+var globalHeight:Float = 30;
+var labelSize:Float = 18;
 var curCategoryOptions:Array<Dynamic> = [];
 var optionsFont:String = Paths.font("pixelarial-bold.ttf");
+var optionTypeScale:Float = 1.5;
+var invisBoxWidth:Float = 48 * optionTypeScale;
+var invisBoxHeight:Float = 17 * optionTypeScale;
 function createCategory(category:String) {
     for (i in 0...curCategoryOptions.length) {
         var group:FlxSpriteGroup = new FlxSpriteGroup();
@@ -1248,13 +1085,13 @@ function createCategory(category:String) {
         bg.blend = 9;
         group.add(bg);
 
-        var label:FunkinText = new FunkinText(x + 12, iHeight + bg.height / 2, 0, translate("options." + StringTools.replace(category.toLowerCase(), " ", "") + "." + curCategoryOptions[i].name + "-name"), 22);
+        var labelOffset:Float = x + 12;
+        var label:FunkinText = new FunkinText(labelOffset + 8, iHeight + bg.height / 2, 0, translate("options." + StringTools.replace(category.toLowerCase(), " ", "") + "." + curCategoryOptions[i].name + "-name"), labelSize);
         label.font = optionsFont;
-        label.borderSize = 3;
-        label.y -= label.height / 2 - 2;
+        label.borderSize = 2.1;
+        label.y -= label.height / 2 - 1;
         group.add(label);
 
-        var optionTypeScale:Float = 2;
         if (curCategoryOptions[i].type == "bool") {
             var checkbox:FlxSprite = new FlxSprite(x + bg.width, iHeight + bg.height / 2);
             checkbox.frames = Paths.getFrames("menus/options/checkbox");
@@ -1265,28 +1102,24 @@ function createCategory(category:String) {
             checkbox.animation.play(Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar)));
             checkbox.scale.set(optionTypeScale, optionTypeScale);
             checkbox.updateHitbox();
-            checkbox.x -= checkbox.width;
+            checkbox.x -= checkbox.width + 32 * optionTypeScale;
             checkbox.y -= checkbox.height / 1.5;
             group.add(checkbox);
         }
         else if (curCategoryOptions[i].type == "integer") {
-            var inputBox:FlxSprite = new FlxSprite(x + bg.width - 2 * optionTypeScale, iHeight + bg.height / 2).loadGraphic(Paths.image("menus/options/inputBox"));
-            inputBox.scale.set(optionTypeScale, optionTypeScale);
-            inputBox.updateHitbox();
-            inputBox.x -= inputBox.width;
-            inputBox.y -= inputBox.height / 2;
+            var thisX:Float = x + bg.width - 24 * optionTypeScale - invisBoxWidth;
+            var thisY:Float = iHeight + bg.height / 2 - invisBoxHeight / 2;
 
-            var rightBtn:FlxSprite = new FlxSprite(inputBox.x - 2 * optionTypeScale, inputBox.y);
+            var rightBtn:FlxSprite = new FlxSprite(thisX + invisBoxWidth + 2 * optionTypeScale, thisY);
             rightBtn.frames = Paths.getFrames("menus/options/buttons");
             rightBtn.animation.addByIndices("idle", "add", [1], "", 0, true);
             rightBtn.animation.addByIndices("press", "add", [2], "", 0, true);
             rightBtn.animation.play("idle");
             rightBtn.scale.set(optionTypeScale, optionTypeScale);
             rightBtn.updateHitbox();
-            rightBtn.x -= rightBtn.width;
             rightBtn.visible = false;
 
-            var leftBtn:FlxSprite = new FlxSprite(rightBtn.x - 2 * optionTypeScale, rightBtn.y);
+            var leftBtn:FlxSprite = new FlxSprite(thisX - 2 * optionTypeScale, rightBtn.y);
             leftBtn.frames = Paths.getFrames("menus/options/buttons");
             leftBtn.animation.addByIndices("idle", "subtract", [1], "", 0, true);
             leftBtn.animation.addByIndices("press", "subtract", [2], "", 0, true);
@@ -1297,55 +1130,64 @@ function createCategory(category:String) {
             leftBtn.visible = false;
 
             // change this when new codename update arrives
-            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y, inputBox.width, "", 24);
-            inputTxt.font = Paths.font("retrogaming.ttf");
+            var inputTxt:FunkinText = new FunkinText(thisX, thisY + invisBoxHeight / 2, invisBoxWidth, "", labelSize + 4);
+            inputTxt.font = Paths.font("pixeloidsans.ttf");
+            inputTxt.letterSpacing = -1;
             inputTxt.borderSize = 2.2;
             inputTxt.alignment = "center";
             inputTxt.text = Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar));
+            inputTxt.y -= inputTxt.height / 2;
 
             group.add(leftBtn);
             group.add(rightBtn);
-            group.add(inputBox);
             group.add(inputTxt);
         }
         else if (curCategoryOptions[i].type == "percent") {
-            var inputBox:FlxSprite = new FlxSprite(x + bg.width - 2 * optionTypeScale, iHeight + bg.height / 2).loadGraphic(Paths.image("menus/options/percentBox"));
-            inputBox.scale.set(optionTypeScale, optionTypeScale);
-            inputBox.updateHitbox();
-            inputBox.x -= inputBox.width;
-            inputBox.y -= inputBox.height / 2;
+            var thisX:Float = x + bg.width - 2 * optionTypeScale - invisBoxWidth;
+            var thisY:Float = iHeight + bg.height / 2;
 
-            var rightBtn:FlxSprite = new FlxSprite(inputBox.x - 2 * optionTypeScale, inputBox.y);
-            rightBtn.frames = Paths.getFrames("menus/options/buttons");
-            rightBtn.animation.addByIndices("idle", "add", [1], "", 0, true);
-            rightBtn.animation.addByIndices("press", "add", [2], "", 0, true);
-            rightBtn.animation.play("idle");
-            rightBtn.scale.set(optionTypeScale, optionTypeScale);
-            rightBtn.updateHitbox();
-            rightBtn.x -= rightBtn.width;
-            rightBtn.visible = false;
+            var value:Null<Float> = Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar);
+            if (value == null) value = FlxG.sound.volume;
 
-            var leftBtn:FlxSprite = new FlxSprite(rightBtn.x - 2 * optionTypeScale, rightBtn.y);
-            leftBtn.frames = Paths.getFrames("menus/options/buttons");
-            leftBtn.animation.addByIndices("idle", "subtract", [1], "", 0, true);
-            leftBtn.animation.addByIndices("press", "subtract", [2], "", 0, true);
-            leftBtn.animation.play("idle");
-            leftBtn.scale.set(optionTypeScale, optionTypeScale);
-            leftBtn.updateHitbox();
-            leftBtn.x -= leftBtn.width;
-            leftBtn.visible = false;
+            if (curCategoryOptions[i].savevar == "volume" && (FlxG.save.data.mute || FlxG.sound.muted))
+                value = 0;
 
-            // change this when new codename update arrives
-            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y, inputBox.width - 15 * optionTypeScale, "", 24);
-            inputTxt.font = Paths.font("retrogaming.ttf");
-            inputTxt.borderSize = 2.2;
-            inputTxt.alignment = "center";
-            inputTxt.text = Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar) * 100);
+            var percentTxt:FunkinText = new FunkinText(thisX, thisY, invisBoxWidth, "", labelSize + 4);
+            percentTxt.font = Paths.font("pixeloidsans.ttf");
+            percentTxt.letterSpacing = -1;
+            percentTxt.borderSize = 2.2;
+            percentTxt.alignment = "center";
+            percentTxt.text = Std.string(Math.round(value * 100));
+            percentTxt.text += "%";
+            percentTxt.y -= percentTxt.height / 2;
 
-            group.add(leftBtn);
-            group.add(rightBtn);
-            group.add(inputBox);
-            group.add(inputTxt);
+            var barBG:FlxSprite = new FlxSprite(thisX, thisY).loadGraphic(Paths.image("menus/options/barBack"));
+            barBG.scale.set(optionTypeScale, optionTypeScale);
+            barBG.updateHitbox();
+            barBG.x -= barBG.width + 5 * optionTypeScale;
+            barBG.y -= barBG.height / 2;
+
+            var barPro:FlxSprite = new FlxSprite(barBG.x, barBG.y).loadGraphic(Paths.image("menus/options/barOverlay"));
+            barPro.scale.set(optionTypeScale, optionTypeScale);
+            barPro.updateHitbox();
+
+            var barPos:Float = barPro.frameWidth * value;
+            barPro.clipRect = new FlxRect(0, 0, barPos, barPro.frameHeight);
+
+            barOffset = 7.5 * optionTypeScale;
+            var whateverThisIsCalled:FunkinSprite = new FunkinSprite(barPro.x + (barPro.width * value), barPro.y + (barPro.height / 2)).loadGraphic(Paths.image("menus/options/barThing"), true, 15, 15);
+            whateverThisIsCalled.animation.add("normal", [0], 0, false);
+            whateverThisIsCalled.animation.add("fat", [1], 0, false);
+            whateverThisIsCalled.playAnim("normal");
+            whateverThisIsCalled.scale.set(optionTypeScale, optionTypeScale);
+            whateverThisIsCalled.updateHitbox();
+            whateverThisIsCalled.x -= barOffset;
+            whateverThisIsCalled.y -= whateverThisIsCalled.height / 2;
+
+            group.add(percentTxt);
+            group.add(barBG);
+            group.add(barPro);
+            group.add(whateverThisIsCalled);
         }
         else if (curCategoryOptions[i].type == "choice") {
             var inputBox:FlxSprite = new FlxSprite(x + bg.width - 2 * optionTypeScale, iHeight + bg.height / 2).loadGraphic(Paths.image("menus/options/largeBox"));
@@ -1375,11 +1217,12 @@ function createCategory(category:String) {
             leftBtn.visible = false;
 
             // change this when new codename update arrives
-            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y, inputBox.width, "", 24);
+            var inputTxt:FunkinText = new FunkinText(inputBox.x, inputBox.y + inputBox.height / 2, inputBox.width, "", labelSize);
             inputTxt.font = Paths.font("retrogaming.ttf");
             inputTxt.borderSize = 2.2;
             inputTxt.alignment = "center";
             inputTxt.text = Std.string(Reflect.getProperty(curCategoryOptions[i].savepoint, curCategoryOptions[i].savevar));
+            inputTxt.y -= inputTxt.height / 2;
 
             group.add(leftBtn);
             group.add(rightBtn);
@@ -1405,13 +1248,13 @@ function setupLanguages() {
         bg.blend = 9;
         group.add(bg);
 
-        var languageLabel:FunkinText = new FunkinText(x + 12, iHeight + (bg.height / 2), bg.width, translate("options.language." + language[0]), 22);
+        var labelOffset:Float = x + 12;
+        var languageLabel:FunkinText = new FunkinText(labelOffset + 8, iHeight + (bg.height / 2), bg.width, translate("options.language." + language[0]), labelSize);
         languageLabel.font = optionsFont;
-        languageLabel.borderSize = 3;
-        languageLabel.y -= languageLabel.height / 2 - 2;
+        languageLabel.borderSize = 2;
+        languageLabel.y -= languageLabel.height / 2 - 1;
         group.add(languageLabel);
 
-        var dotScale:Float = 2;
         var dot:FlxSprite = new FlxSprite(x + bg.width, iHeight + bg.height / 2);
         dot.frames = Paths.getFrames("menus/options/dotChoice");
         dot.animation.addByPrefix("false", "blank", 0, true);
@@ -1419,12 +1262,145 @@ function setupLanguages() {
         dot.animation.addByPrefix("true", "chosen", 0, true);
         dot.animation.addByPrefix("trans false", "transition blank", 24, false);
         dot.animation.play(Std.string(language[0] == TranslationUtil.curLanguage));
-        dot.scale.set(dotScale, dotScale);
+        dot.scale.set(optionTypeScale, optionTypeScale);
         dot.updateHitbox();
-        dot.x -= dot.width * 1.2;
+        dot.x -= dot.width;
+        dot.x -= 10 * optionTypeScale;
         dot.y -= dot.height / 1.6;
         group.add(dot);
     }
+}
+
+function checkVolume() {
+    for (i => optionGrp in curCategoryGrp.members) {
+        if (curCategoryOptions[i].type != "percent") continue;
+        if (curCategoryOptions[i].savepoint != FlxG.save.data) continue;
+        if (curCategoryOptions[i].savevar != "volume") continue;
+
+        var value:Float = FlxG.sound.volume;
+        if (FlxG.save.data.mute || FlxG.sound.muted) value = 0;
+        var barPos:Float = optionGrp.members[4].frameWidth * value;
+        optionGrp.members[4].clipRect = new FlxRect(0, 0, barPos, optionGrp.members[3].frameHeight);
+        optionGrp.members[5].x = (optionGrp.members[4].x + (optionGrp.members[4].width * value)) - barOffset;
+        optionGrp.members[2].text = Std.string(Math.round(value * 100)) + "%";
+    }
+}
+
+var willDeleteData:Bool = false;
+var dataDeletionScript:Script;
+var dataDeleteSubmenuInit:Bool = false;
+var willCloseScript:Bool = true;
+var dataDeleteGroup:FlxSpriteGroup;
+var ohNoDataWillRIP:Bool = false;
+var mosaicShader:CustomShader;
+function checkCurrentCategory(elapsed:Float) {
+    if (categories[curCategoryIndex] == "Miscellaneous") {
+        if (!willDeleteData)
+            willDeleteData = curCategory.get("queuedDataDeletion");
+        else {
+            if (!dataDeleteSubmenuInit) {
+                dataDeleteSubmenuInit = true;
+                canInteract = false;
+
+                dataDeletionScript = Script.create(Paths.script("data/states/warnings/dataDeletion"));
+                dataDeletionScript.setParent(this);
+                dataDeletionScript.load();
+                dataDeletionScript.call("create");
+
+                dataDeleteGroup = new FlxSpriteGroup();
+                dataDeleteGroup.camera = optionsCam;
+                add(dataDeleteGroup);
+
+                dataDeleteGroup.add(dataDeletionScript.get("backGrp"));
+
+                /*
+                var maxScale:Float = 20;
+                var daEmitter:FlxTypedEmitter = new FlxTypedEmitter(FlxG.width + maxScale * scale * 2, dataDeletionScript.get("backGradient").y);
+                daEmitter.loadParticles(Paths.image("menus/dataDeletion/fade"), 100);
+                daEmitter.launchAngle.set(180);
+                daEmitter.angle.set(90);
+                daEmitter.speed.set(4000);
+                daEmitter.scale.set(2, maxScale / 4, 8, maxScale);
+                daEmitter.height = dataDeletionScript.get("backGradient").height;
+                daEmitter.blend = setBlendMode("add");
+                daEmitter.alpha.set(0.1, 0.5);
+                daEmitter.start(false, 0.005);
+                dataDeleteGroup.add(daEmitter);
+                */
+
+                dataDeleteGroup.add(dataDeletionScript.get("frontGrp"));
+            }
+            else {
+                dataDeletionScript.call("update", [elapsed]);
+
+                if (!willCloseScript) {
+                    willCloseScript = dataDeletionScript.get("wasDestroyed");
+                }
+                else {
+                    ohNoDataWillRIP = dataDeletionScript.get("willEraseData");
+
+                    if (ohNoDataWillRIP) {
+                        curCategory.set("queuedDataDeletion", false);
+                        willDeleteData = false;
+                        willCloseScript = false;
+                        dataDeleteSubmenuInit = false;
+
+                        var black:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+                        black.camera = optionsCam;
+                        black.alpha = 0;
+                        add(black);
+
+                        var dur:Float = 2;
+                        FlxTween.tween(black, {alpha: 1}, dur);
+
+                        mosaicShader = new CustomShader("mosaic");
+                        optionsCam.setFilters([new ShaderFilter(mosaicShader)]);
+
+                        for (i in 0...60) {
+                            setMosaicTimer(i, i + 1, i + 1);
+                        }
+
+                        new FlxTimer().start(dur + 0.25, _ -> {
+                            FunkinSave.save.erase();
+                            FunkinSave.highscores.clear();
+                            FlxG.save.erase();
+                            eraseImpostorSaveData();
+
+                            FunkinSave.flush();
+                            FlxG.save.flush();
+
+                            FlxG.resetGame();
+
+                            logTraceColored([
+                                {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
+                                {text: "DATA HAS BEEN ERASED", color: getLogColor("red")}
+                            ]);
+                        });
+                    }
+                    else {
+                        curCategory.set("queuedDataDeletion", false);
+                        willDeleteData = false;
+                        willCloseScript = false;
+                        dataDeleteSubmenuInit = false;
+                        canInteract = true;
+
+                        remove(dataDeleteGroup);
+                        dataDeletionScript.destroy();
+                        dataDeleteGroup.destroy();
+                    }
+                }
+            }
+        }
+    }
+}
+
+function setMosaicTimer(frame:Int, forceX:Float, forceY:Float) {
+	var daX:Float = forceX ?? 10 * FlxG.random.int(1, 4);
+	var daY:Float = forceY ?? 10 * FlxG.random.int(1, 4);
+
+	new FlxTimer().start(frame / 30, () -> {
+		mosaicShader.uBlocksize = [daX, daY];
+	});
 }
 
 function deleteCategory() {
@@ -1439,8 +1415,10 @@ function closeOptions() {
     }});
 }
 
+var openWarningDelay:Float = 0.01;
 function destroy() {
     Options.save();
+    FunkinSave.flush();
     FlxG.save.flush();
 
     if (curCategory != null)
@@ -1454,7 +1432,7 @@ function destroy() {
             {text: "[Language] ", color: getLogColor("blue")},
             {text: "New language detected! Changes can't take immediate effect!"}
         ], "warning");
-        new FlxTimer().start(0.05, _ -> {
+        new FlxTimer().start(openWarningDelay, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/newLanguageWarning"));
         });
     }
@@ -1463,7 +1441,7 @@ function destroy() {
             {text: "[Others] ", color: getLogColor("green")},
             {text: "Developer Mode has been set!"}
         ], "warning");
-        new FlxTimer().start(0.05, _ -> {
+        new FlxTimer().start(openWarningDelay, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/devToolsWarning"));
         });
     }

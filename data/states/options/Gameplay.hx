@@ -2,55 +2,10 @@ import funkin.options.Options;
 
 var options:Array<Dynamic> = [
     {
-        name: "downscroll",
-        type: "bool",
-        savevar: "downscroll",
-        savepoint: Options
-    },
-    {
-        name: "middlescroll",
-        type: "bool",
-        savevar: "middlescroll",
-        savepoint: FlxG.save.data
-    },
-    {
-        name: "ghostTapping",
-        type: "bool",
-        savevar: "ghostTapping",
-        savepoint: Options
-    },
-    {
-        name: "songOffset",
-        type: "integer",
-        min: -1000,
-        max: 1000,
-        change: 1,
-        savevar: "songOffset",
-        savepoint: Options
-    },
-    {
-        name: "naughtyness",
-        type: "bool",
-        savevar: "naughtyness",
-        savepoint: Options
-    },
-    {
-        name: "camZoomOnBeat",
-        type: "bool",
-        savevar: "camZoomOnBeat",
-        savepoint: Options
-    },
-    {
-        name: "timeBar",
-        type: "bool",
-        savevar: "impPixelTimeBar",
-        savepoint: FlxG.save.data
-    },
-    {
-        name: "strumsBG",
+        name: "volumeGlobal",
         type: "percent",
         change: 0.05,
-        savevar: "impPixelStrumBG",
+        savevar: "volume",
         savepoint: FlxG.save.data
     },
     {
@@ -78,6 +33,58 @@ var options:Array<Dynamic> = [
         type: "bool",
         savevar: "streamedVocals",
         savepoint: Options
+    },
+    {
+        name: "downscroll",
+        type: "bool",
+        savevar: "downscroll",
+        savepoint: Options
+    },
+    {
+        name: "middlescroll",
+        type: "bool",
+        savevar: "middlescroll",
+        savepoint: FlxG.save.data
+    },
+    {
+        name: "timeBar",
+        type: "bool",
+        savevar: "impPixelTimeBar",
+        savepoint: FlxG.save.data
+    },
+    {
+        name: "strumsBG",
+        type: "percent",
+        change: 0.05,
+        savevar: "impPixelStrumBG",
+        savepoint: FlxG.save.data
+    },
+    {
+        name: "ghostTapping",
+        type: "bool",
+        savevar: "ghostTapping",
+        savepoint: Options
+    },
+    {
+        name: "songOffset",
+        type: "integer",
+        min: -1000,
+        max: 1000,
+        change: 10,
+        savevar: "songOffset",
+        savepoint: Options
+    },
+    {
+        name: "naughtyness",
+        type: "bool",
+        savevar: "naughtyness",
+        savepoint: Options
+    },
+    {
+        name: "camZoomOnBeat",
+        type: "bool",
+        savevar: "camZoomOnBeat",
+        savepoint: Options
     }
 ];
 
@@ -91,4 +98,9 @@ function onChangeInt(option:Int, newValue:Int) {
 
 function onChangeFloat(option:Int, newValue:Float) {
     Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
+
+    if (options[option].savevar == "volume") {
+        FlxG.sound.volume = newValue;
+        FlxG.save.data.volume = newValue;
+    }
 }

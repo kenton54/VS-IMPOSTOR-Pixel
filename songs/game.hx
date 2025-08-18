@@ -11,7 +11,6 @@ import funkin.menus.StoryMenuState;
 import funkin.savedata.FunkinSave;
 import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
-import openfl.filters.ShaderFilter;
 import Date;
 import HoldCoverHandler;
 import ImpostorFlags;

@@ -7,22 +7,20 @@ var options:Array<Dynamic> = [
         type: "bool",
         savevar: "devMode",
         savepoint: Options
-    }
-    /*
+    },
     {
-        name: "Reset Save Data",
+        name: "resetSaveData",
         description: 'Select this option to delete all your progress (including song scores).\nWARNING: SELECTING THIS OPTION WILL RESTART THE GAME!',
         type: "function"
     }
-    */
 ];
 
 function onChangeBool(option:Int, newValue:Bool) {
     Reflect.setProperty(options[option].savepoint, options[option].savevar, newValue);
 }
 
+var queuedDataDeletion:Bool = false;
 function onCallFunction(option:Int) {
-    if (options[option].name == "Reset Save Data") {
-        FlxG.resetGame();
-    }
+    if (options[option].name == "resetSaveData")
+        queuedDataDeletion = true;
 }

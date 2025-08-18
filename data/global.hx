@@ -75,11 +75,6 @@ function update(elapsed:Float) {
             FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
         }
     }
-
-    if (FlxG.keys.justPressed.F10) {
-        FlxG.save.erase();
-        FlxG.resetGame();
-    }
 }
 
 function postStateSwitch() {

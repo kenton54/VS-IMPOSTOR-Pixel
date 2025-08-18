@@ -4,6 +4,8 @@
         <str id="press">Press {0}</str>
         <str id="click">Click the Mouse</str>
         <str id="touch">Touch the Screen</str>
+        <str id="no">No</str>
+        <str id="yes">Yes</str>
     </group>
 
     <group name="TitleScreen" prefix="title.">
