@@ -213,4 +213,12 @@ function accept() {
 function destroy() {
     stars.destroy();
     stars = null;
+
+    tweenIn.destroy();
+    tweenOut.destroy();
+    transitionTimer.destroy();
+
+    camFollow.destroy();
+    title.destroy();
+    pressStart.destroy();
 }

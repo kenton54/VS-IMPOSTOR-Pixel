@@ -24,6 +24,8 @@ var statsCam:FlxCamera;
 
 var buttonsBack:AmongUsBox;
 var closeButton:FlxSprite;
+var statsTitle:FunkinText;
+var statsGroup:FlxGroup;
 
 function create() {
     changeDiscordMenuStatus("Viewing his Stats");
@@ -38,12 +40,15 @@ function create() {
     buttonsBack.box.camera = statsCam;
     add(buttonsBack.box);
 
-    var statsTitle:FunkinText = new FunkinText(buttonsBack.box.x, buttonsBack.box.y, buttonsBack.box.width, translate("mainMenu.stats.title"), 48);
+    statsTitle = new FunkinText(buttonsBack.box.x, buttonsBack.box.y, buttonsBack.box.width, translate("mainMenu.stats.title"), 48);
     statsTitle.font = Paths.font("pixeloidsans.ttf");
     statsTitle.alignment = "center";
     statsTitle.camera = statsCam;
     statsTitle.y += 8 * scale;
     add(statsTitle);
+
+    statsGroup = new FlxGroup();
+    add(statsGroup);
 
     for (i => stat in stats) {
         var yPos:Float = (statsTitle.y + statsTitle.height) + (3 * scale) + (i * 22);
@@ -52,7 +57,7 @@ function create() {
         daStat.font = Paths.font("retrogaming.ttf");
         daStat.color = color;
         daStat.camera = statsCam;
-        add(daStat);
+        statsGroup.add(daStat);
 
         var value:Dynamic = getStatValue(stat);
         if (StringTools.contains(stat, "storyProgress")) value = '"'+value+'"';
@@ -62,7 +67,7 @@ function create() {
         statValue.font = Paths.font("retrogaming.ttf");
         statValue.color = color;
         statValue.camera = statsCam;
-        add(statValue);
+        statsGroup.add(statValue);
     }
 
     closeButton = new FlxSprite(buttonsBack.box.x, buttonsBack.box.y).loadGraphic(Paths.image("menus/mainmenu/x"));
@@ -87,7 +92,11 @@ function update(elapsed:Float) {
 function destroy() {
     FlxG.mouse.visible = false;
 
+    statsTitle.destroy();
+    statsGroup.destroy();
     buttonsBack.destroy();
+    closeButton.destroy();
+
     FlxG.cameras.remove(statsCam);
     statsCam.destroy();
 }

@@ -247,5 +247,8 @@ function kill() {
         wasDestroyed = true;
         backGrp.destroy();
         frontGrp.destroy();
+
+        if (yesShake != null)
+            yesShake.destroy();
     }
 }

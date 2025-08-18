@@ -155,6 +155,7 @@ var topButtonsGroup:FlxSpriteGroup;
 
 var mainCam:FlxCamera;
 var spaceCam:FlxCamera;
+var frontCam:FlxCamera;
 var spaceGroup:FlxSpriteGroup;
 var windowGroup:FlxSpriteGroup;
 
@@ -431,7 +432,7 @@ function create() {
     var camHeight:Float = 112 * baseScale - 4 * baseScale * 2;
     spaceCam = new FlxCamera(spaceHpos, spaceVpos, camWidth, camHeight);
 
-    var frontCam:FlxCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+    frontCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
     frontCam.bgColor = 0x00000000;
 
     FlxG.cameras.add(spaceCam, false);
@@ -567,7 +568,7 @@ function postCreate() {
     backButton.animation.play("idle");
     backButton.scale.set(backBtnScale, backBtnScale);
     backButton.updateHitbox();
-    backButton.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
+    backButton.camera = frontCam;
     backButton.visible = !usingKeyboard;
 
     backButton.x -= backButton.width;
@@ -1418,7 +1419,7 @@ function checkSelectedMainEntry() {
                 playMenuSound("cancel");
 
                 var dur:Float = 1;
-                FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
+                frontCam.fade(FlxColor.BLACK, dur, false);
                 new FlxTimer().start(dur, _ -> {
                     //if (!isMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
                     ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
@@ -1597,4 +1598,35 @@ function disableInput() {
     allowTouch = false;
     FlxG.mouse.visible = false;
     Mouse.cursor = "arrow";
+}
+
+function destroy() {
+    buttonGroup.destroy();
+    buttonsMainGroup.destroy();
+    buttonsLabelGroup.destroy();
+    buttonsIconGroup.destroy();
+    topButtonsGroup.destroy();
+
+    // discord stuff
+    if (discordIntegration) {
+        discordAvatar.destroy();
+        discordUsername.destroy();
+
+        lightThing.destroy();
+        lightGlow.destroy();
+        lightLight.destroy();
+    }
+
+    spaceGroup.destroy();
+    windowGroup.destroy();
+
+    backButton.destroy();
+
+    FlxG.cameras.remove(mainCam);
+    FlxG.cameras.remove(spaceCam);
+    FlxG.cameras.remove(frontCam);
+
+    mainCam.destroy();
+    spaceCam.destroy();
+    frontCam.destroy();
 }
