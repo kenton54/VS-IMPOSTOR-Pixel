@@ -424,7 +424,7 @@ function updateDescription() {
 function handleBoolean(position:Int, checkbox:FlxSprite) {
     if (usingKeyboard) {
         if (controls.ACCEPT) {
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var value:Bool;
             if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
@@ -443,7 +443,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
     if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
 
                 var value:Bool;
                 if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
@@ -458,7 +458,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
     }
     else {
         if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justPressed) {
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var value:Bool;
             if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
@@ -483,7 +483,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             subtractBtn.animation.play("press");
             if (optHoldTimer >= optMaxHeldTime) {
                 if (optFrameDelayer >= optMaxDelay) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
                     var newValue:Int = integer - curCategoryOptions[position].change;
@@ -504,7 +504,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
         }
         else if (controls.LEFT_R) {
             subtractBtn.animation.play("idle");
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var integer:Int = Std.parseInt(valueTxt.text);
             var newValue:Int = integer - curCategoryOptions[position].change;
@@ -517,7 +517,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             addBtn.animation.play("press");
             if (optHoldTimer >= optMaxHeldTime) {
                 if (optFrameDelayer >= optMaxDelay) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
                     var newValue:Int = integer + curCategoryOptions[position].change;
@@ -538,7 +538,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
         }
         else if (controls.RIGHT_R) {
             addBtn.animation.play("idle");
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var integer:Int = Std.parseInt(valueTxt.text);
             var newValue:Int = integer + curCategoryOptions[position].change;
@@ -563,7 +563,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     subtractBtn.animation.play("press");
                     if (optHoldTimer >= optMaxHeldTime) {
                         if (optFrameDelayer >= optMaxDelay) {
-                            FlxG.sound.play(Paths.sound("menu/select"), 1);
+                            playMenuSound("select");
 
                             var integer:Int = Std.parseInt(valueTxt.text);
                             var newValue:Int = integer - curCategoryOptions[position].change;
@@ -584,7 +584,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 }
                 else if (touch.justReleased) {
                     subtractBtn.animation.play("idle");
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
                     var newValue:Int = integer - curCategoryOptions[position].change;
@@ -608,7 +608,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     addBtn.animation.play("press");
                     if (optHoldTimer >= optMaxHeldTime) {
                         if (optFrameDelayer >= optMaxDelay) {
-                            FlxG.sound.play(Paths.sound("menu/select"), 1);
+                            playMenuSound("select");
 
                             var integer:Int = Std.parseInt(valueTxt.text);
                             var newValue:Int = integer + curCategoryOptions[position].change;
@@ -629,7 +629,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 }
                 else if (touch.justReleased) {
                     addBtn.animation.play("idle");
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
                     var newValue:Int = integer + curCategoryOptions[position].change;
@@ -655,7 +655,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 subtractBtn.animation.play("press");
                 if (optHoldTimer >= optMaxHeldTime) {
                     if (optFrameDelayer >= optMaxDelay) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        playMenuSound("select");
 
                         var integer:Int = Std.parseInt(valueTxt.text);
                         var newValue:Int = integer - curCategoryOptions[position].change;
@@ -676,7 +676,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             }
             else if (FlxG.mouse.justReleased) {
                 subtractBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
 
                 var integer:Int = Std.parseInt(valueTxt.text);
                 var newValue:Int = integer - curCategoryOptions[position].change;
@@ -700,7 +700,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                 addBtn.animation.play("press");
                 if (optHoldTimer >= optMaxHeldTime) {
                     if (optFrameDelayer >= optMaxDelay) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        playMenuSound("select");
 
                         var integer:Int = Std.parseInt(valueTxt.text);
                         var newValue:Int = integer + curCategoryOptions[position].change;
@@ -721,7 +721,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             }
             else if (FlxG.mouse.justReleased) {
                 addBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
 
                 var integer:Int = Std.parseInt(valueTxt.text);
                 var newValue:Int = integer + curCategoryOptions[position].change;
@@ -806,7 +806,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
         else if (controls.LEFT_R) {
             leftBtn.animation.play("idle");
             /*
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var integer:Int = Std.parseInt(valueTxt.text);
             var newValue:Int = integer - curCategoryOptions[position].change;
@@ -822,7 +822,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
         else if (controls.RIGHT_R) {
             rightBtn.animation.play("idle");
             /*
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
 
             var integer:Int = Std.parseInt(valueTxt.text);
             var newValue:Int = integer + curCategoryOptions[position].change;
@@ -864,7 +864,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
                 }
                 else if (touch.justReleased) {
                     addBtn.animation.play("idle");
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
                 }
                 else {
                     addBtn.animation.play("idle");
@@ -883,7 +883,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
             }
             else if (FlxG.mouse.justReleased) {
                 subtractBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
             }
             else {
                 subtractBtn.animation.play("idle");
@@ -900,7 +900,7 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
             }
             else if (FlxG.mouse.justReleased) {
                 addBtn.animation.play("idle");
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
             }
             else {
                 addBtn.animation.play("idle");
@@ -915,20 +915,20 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
 
 function handleFunction(position:Int) {
     if (usingKeyboard && controls.ACCEPT) {
-        FlxG.sound.play(Paths.sound("menu/select"), 1);
+        playMenuSound("select");
         curCategory.call("onCallFunction", [position]);
     }
     if (isMobile) {
         for (touch in FlxG.touches.list) {
             if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
-                FlxG.sound.play(Paths.sound("menu/select"), 1);
+                playMenuSound("select");
                 curCategory.call("onCallFunction", [position]);
             }
         }
     }
     else {
         if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justReleased) {
-            FlxG.sound.play(Paths.sound("menu/select"), 1);
+            playMenuSound("select");
             curCategory.call("onCallFunction", [position]);
         }
     }
@@ -941,7 +941,7 @@ function handleLanguages(index:Int, dot:FlxSprite) {
         if (usingKeyboard) {
             if (controls.ACCEPT) {
                 if (language[0] != TranslationUtil.curLanguage) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playMenuSound("select");
                     TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
                     dot.animation.play(Std.string("trans true"));
                 }
@@ -953,7 +953,7 @@ function handleLanguages(index:Int, dot:FlxSprite) {
                 if (touch.overlaps(curCategoryGrp.members[index].members[0])) {
                     if (touch.justReleased) {
                         if (language[0] != TranslationUtil.curLanguage) {
-                            FlxG.sound.play(Paths.sound("menu/select"), 1);
+                            playMenuSound("select");
                             TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
                             dot.animation.play(Std.string("trans true"));
                         }
@@ -965,7 +965,7 @@ function handleLanguages(index:Int, dot:FlxSprite) {
             if (FlxG.mouse.overlaps(curCategoryGrp.members[index].members[0])) {
                 if (FlxG.mouse.justReleased) {
                     if (language[0] != TranslationUtil.curLanguage) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
+                        playMenuSound("select");
                         TranslationUtil.setLanguage(curCategoryOptions[index].split("/")[0]);
                         dot.animation.play(Std.string("trans true"));
                     }
@@ -986,7 +986,7 @@ function handleLanguages(index:Int, dot:FlxSprite) {
 
 function playSound() {
     if (curOption != lastOption) {
-        CoolUtil.playMenuSFX(0);
+        playMenuSound("scroll");
         lastOption = curOption;
     }
 }
@@ -998,7 +998,7 @@ function changeCategory(change:Int) {
 
 function updateCategory() {
     if (lastCategoryIndex != curCategoryIndex) {
-        FlxG.sound.play(Paths.sound("menu/select"), 1);
+        playMenuSound("select");
         lastCategoryIndex = curCategoryIndex;
         curOption = 0;
         lastOption = 0;
@@ -1040,7 +1040,7 @@ function updateCategory() {
             createCategory(categories[curCategoryIndex]);
     }
     else {
-        CoolUtil.playMenuSFX(2);
+        playMenuSound("cancel");
         lastCategoryIndex = -1;
         curCategoryIndex = -1;
         curOption = 0;
@@ -1408,7 +1408,7 @@ function deleteCategory() {
 }
 
 function closeOptions() {
-    CoolUtil.playMenuSFX(2);
+    playMenuSound("cancel");
     canInteract = false;
     FlxTween.tween(theEntireThing, {y: FlxG.height}, 0.4, {ease: FlxEase.quartIn, onComplete: _ -> {
         close();

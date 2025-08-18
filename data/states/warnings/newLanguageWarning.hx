@@ -10,9 +10,14 @@ function create() {
     warnCam.bgColor = 0x88000000;
     FlxG.cameras.add(warnCam, false);
 
-    warnTxt = new FunkinText(0, 0, FlxG.width, translate("options.warning.language") + '\n\n' + translate("options.warning.menuReload"), 40);
     var pressOrTouch:String = FlxG.onMobile ? translate("touch") : translate("press", [CoolUtil.keyToString(acceptKey)]) + " or " + translate("click");
-    warnTxt.text += '\n\n' + translate("options.warning.pressSuffix", [pressOrTouch]);
+    warnTxt = new FunkinText(0, 0, FlxG.width, createMultiLineText([
+        translate("options.warning.language"),
+        "",
+        translate("options.warning.menuReload"),
+        "",
+        translate("options.warning.pressSuffix", [pressOrTouch])
+    ]), 40);
     warnTxt.alignment = "center";
     warnTxt.font = Paths.font("pixeloidsans.ttf");
     warnTxt.borderSize = 5;

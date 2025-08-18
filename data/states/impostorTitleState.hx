@@ -178,7 +178,7 @@ function accept() {
     pressStart.alpha = 1;
     pressStart.borderColor = FlxColor.WHITE;
 
-    CoolUtil.playMenuSFX(1);
+    playMenuSound("confirm");
     FlxG.camera.zoom += 0.08;
 
     var fakePressStart:FunkinText = pressStart.clone();

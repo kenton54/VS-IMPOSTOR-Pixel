@@ -165,10 +165,14 @@ public static function playMenuSound(sound:String, ?volume:Float) {
         case "checked": 3;
         case "unchecked": 4;
         case "warning": 5;
+        case "select": -1;
         default: 0; // scroll
     }
 
-    CoolUtil.playMenuSFX(soundID, volume);
+    if (soundID == -1)
+        playSound("menu/" + sound, volume);
+    else
+        CoolUtil.playMenuSFX(soundID, volume);
 }
 
 public static function createMultiLineText(texts:Array<String>):String {

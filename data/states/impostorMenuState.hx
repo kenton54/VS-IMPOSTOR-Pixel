@@ -741,7 +741,7 @@ function handleMouse() {
         }
         else if (FlxG.mouse.justReleased) {
             pressedBack = true;
-            CoolUtil.playMenuSFX(2);
+            playMenuSound("cancel");
 
             backButton.animation.play("back", true);
             new FlxTimer().start(0.5, _ -> {
@@ -778,7 +778,7 @@ function handleTouch() {
             }
             else if (touch.justReleased) {
                 pressedBack = true;
-                CoolUtil.playMenuSFX(2);
+                playMenuSound("cancel");
 
                 backButton.animation.play("back", true);
                 new FlxTimer().start(0.5, _ -> {
@@ -987,7 +987,7 @@ function handleTopButtons() {
                                 }
                             });
                         }, function() {
-                            CoolUtil.playMenuSFX(1);
+                            playMenuSound("confirm");
 
                             if (curWindowEntry[1] == 0) {
                                 FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
@@ -1021,14 +1021,14 @@ function statsMenu() {
 
 function playSoundMain() {
     if (curMainEntry != lastMainEntry) {
-        CoolUtil.playMenuSFX(0);
+        playMenuSound("scroll");
         lastMainEntry = curMainEntry;
     }
 }
 
 function playSoundWindow() {
     if (curWindowEntry[0] != lastWindowEntry[0] || curWindowEntry[1] != lastWindowEntry[1]) {
-        CoolUtil.playMenuSFX(0);
+        playMenuSound("scroll");
         lastWindowEntry[0] = curWindowEntry[0];
         lastWindowEntry[1] = curWindowEntry[1];
 
@@ -1050,7 +1050,7 @@ function changeWindowEntry(changeColumn:Int, changeRow:Int) {
 }
 
 function checkSelectedMainEntry() {
-    CoolUtil.playMenuSFX(1);
+    playMenuSound("confirm");
 
     disableInput();
 
@@ -1252,7 +1252,7 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
-                CoolUtil.playMenuSFX(1);
+                playMenuSound("confirm");
 
                 var col:Int = 0;
                 windowGroup.forEach(function(column) {
@@ -1415,7 +1415,7 @@ function checkSelectedMainEntry() {
                     }
                 }
             }, function() {
-                CoolUtil.playMenuSFX(2);
+                playMenuSound("cancel");
 
                 var dur:Float = 1;
                 FlxG.cameras.list[FlxG.cameras.list.length - 1].fade(FlxColor.BLACK, dur, false);
@@ -1485,7 +1485,7 @@ function handleWindow() {
 }
 
 function closeWindowSection() {
-    CoolUtil.playMenuSFX(2);
+    playMenuSound("cancel");
     currentSelectionMode = "main";
     curWindow = [];
     curWindowLogic = null;
