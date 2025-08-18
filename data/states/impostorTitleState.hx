@@ -205,7 +205,7 @@ function accept() {
         }});
 
         new FlxTimer().start(1.6, _ -> {
-            FlxG.switchState(new ModState("impostorMenuState", [pressedWithKeyboard]));
+            FlxG.switchState(new ModState("impostorMenuState"));
         });
     });
 }

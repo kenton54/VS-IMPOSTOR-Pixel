@@ -43,6 +43,8 @@ public static var pixelPlayable:String = "bf";
 
 public static var pixelBeans:Int = 0;
 
+public static var globalUsingKeyboard:Bool = false;
+
 public static var isMobile:Bool = FlxG.onMobile;
 public static var fakeMobile:Bool = false;
 

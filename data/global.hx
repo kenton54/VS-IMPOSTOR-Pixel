@@ -69,6 +69,9 @@ static function setStats(data:Map<String, Dynamic>) {
 }
 
 function update(elapsed:Float) {
+    if (FlxG.keys.justPressed.ANY) globalUsingKeyboard = true;
+    if (FlxG.mouse.justMoved) globalUsingKeyboard = false;
+
     if (fakeMobile) {
         if (FlxG.keys.justPressed.F8) {
             setTransition("bottom2topSmoothSquare");

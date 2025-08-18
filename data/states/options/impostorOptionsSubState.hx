@@ -143,6 +143,9 @@ function create() {
     volumeBeep = FlxG.sound.load(Paths.sound("bar"), FlxG.save.data.volume, true);
 
     updateCategory();
+
+    if (globalUsingKeyboard)
+        useKeyboard();
 }
 
 function createCategories() {
@@ -181,7 +184,7 @@ function removeExtension(s:String):String {
 }
 
 function postCreate() {
-    if (!isMobile) FlxG.mouse.visible = true;
+    if (!isMobile && !globalUsingKeyboard) FlxG.mouse.visible = true;
 }
 
 // prevents from opening a category IMMEDIATLY after opening this substate
@@ -203,7 +206,7 @@ function update(elapsed:Float) {
         handleMouse();
 }
 
-var usingKeyboard:Bool = !isMobile;
+var usingKeyboard:Bool = globalUsingKeyboard;
 function handleKeyboard() {
     if (controls.UP_P)
         changeOptionSelec(-1);

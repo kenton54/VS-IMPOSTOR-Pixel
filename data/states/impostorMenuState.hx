@@ -161,11 +161,6 @@ var windowGroup:FlxSpriteGroup;
 
 var baseScale:Float = 5;
 
-// it seems that it doesnt work?
-public function new(keyboardQM:Bool) {
-    usingKeyboard = keyboardQM;
-}
-
 function create() {
     changeDiscordMenuStatus("Main Menu");
 
@@ -615,7 +610,7 @@ var curWindowLogic:Void = null;
 var curWindowChooseBehaviour:Void = null;
 
 var allowKeyboard:Bool = true;
-var usingKeyboard:Bool = !isMobile;
+var usingKeyboard:Bool = globalUsingKeyboard;
 var holdTimer:Float = 0;
 var maxHeldTime:Float = 0.5;
 var frameDelayer:Int = 0;
