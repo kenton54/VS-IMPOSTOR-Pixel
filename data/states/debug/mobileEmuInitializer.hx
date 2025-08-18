@@ -16,7 +16,7 @@ function create() {
             resizeWindow(1600, 720);
     }
 
-    isMobile = !isMobile;
+    setMobile(!isMobile);
 
     new FlxTimer().start(0.01, _ -> {
         FlxG.switchState(new ModState("impostorTitleState"));
