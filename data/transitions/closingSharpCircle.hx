@@ -5,8 +5,12 @@ var extraTween2:FlxTween = null;
 var extraTween3:FlxTween = null;
 var extraTween4:FlxTween = null;
 
+var transOut:Bool = false;
+
 function create(event) {
     event.cancel();
+
+    transOut = event.transOut;
 
     blackSpr = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
     blackSpr.scale.set(transitionCamera.width, transitionCamera.height);
@@ -85,9 +89,6 @@ function create(event) {
             }
         });
     }
-
-    if (event.transOut)
-        setTransition("");
 }
 
 function destroy() {
@@ -95,4 +96,8 @@ function destroy() {
     extraTween2 = FlxDestroyUtil.destroy(extraTween2);
     extraTween3 = FlxDestroyUtil.destroy(extraTween3);
     extraTween4 = FlxDestroyUtil.destroy(extraTween4);
+}
+
+function onPostFinish() {
+    if (!transOut) setTransition("");
 }

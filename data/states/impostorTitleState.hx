@@ -214,8 +214,8 @@ function destroy() {
     stars.destroy();
     stars = null;
 
-    tweenIn.destroy();
-    tweenOut.destroy();
+    if (tweenIn != null) tweenIn.destroy();
+    if (tweenOut != null) tweenOut.destroy();
     transitionTimer.destroy();
 
     camFollow.destroy();

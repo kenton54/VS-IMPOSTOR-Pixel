@@ -1,5 +1,9 @@
+var transOut:Bool = false;
+
 function create(event) {
     event.cancel();
+
+    transOut = event.transOut;
 
     blackSpr = new FlxSprite(0, event.transOut ? transitionCamera.height : -transitionCamera.height).makeGraphic(1, 1, FlxColor.BLACK);
     blackSpr.scale.set(transitionCamera.width, transitionCamera.height);
@@ -24,7 +28,8 @@ function create(event) {
             finish();
         }
     });
+}
 
-    if (event.transOut)
-        setTransition("");
+function onPostFinish() {
+    if (!transOut) setTransition("");
 }

@@ -169,8 +169,6 @@ public function new(keyboardQM:Bool) {
 function create() {
     changeDiscordMenuStatus("Main Menu");
 
-    setTransition("");
-
     subStateClosed.add(onCloseSubstate);
 
     mainCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
