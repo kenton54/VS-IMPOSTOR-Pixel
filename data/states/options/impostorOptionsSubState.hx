@@ -28,6 +28,8 @@ var curCategoryGrp:FlxSpriteGroup;
 var curOption:Int = 0;
 var lastOption:Int = -1;
 
+var volumeBeep:FlxSound;
+
 var closeButton:FlxSprite;
 
 var scale:Float = 5;
@@ -137,6 +139,8 @@ function create() {
         curCategoryIndex = categories.indexOf(lastCategory);
         lastCategory = null;
     }
+
+    volumeBeep = FlxG.sound.load(Paths.sound("bar"), FlxG.save.data.volume, true);
 
     updateCategory();
 }
@@ -747,6 +751,17 @@ var percentChangeDelay:Bool = false;
 function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, percentTxt:FunkinText) {
     if (usingKeyboard) {
         if (controls.LEFT) {
+            if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
+                volumeBeep.play();
+
+                if (StringTools.endsWith(curCategoryOptions[position].name, "Music"))
+                    volumeBeep.volume = Options.volumeMusic;
+                else if (StringTools.endsWith(curCategoryOptions[position].name, "SFX"))
+                    volumeBeep.volume = Options.volumeSFX;
+                else
+                    volumeBeep.volume = FlxG.sound.volume;
+            }
+
             if (percentChangeDelay = !percentChangeDelay) {
                 var percent:Float = Std.parseFloat(percentTxt.text) / 100;
                 var newValue:Int = percent - 0.01;
@@ -761,6 +776,17 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
             }
         }
         else if (controls.RIGHT) {
+            if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
+                volumeBeep.play();
+
+                if (StringTools.endsWith(curCategoryOptions[position].name, "Music"))
+                    volumeBeep.volume = Options.volumeMusic;
+                else if (StringTools.endsWith(curCategoryOptions[position].name, "SFX"))
+                    volumeBeep.volume = Options.volumeSFX;
+                else
+                    volumeBeep.volume = FlxG.sound.volume;
+            }
+
             if (percentChangeDelay = !percentChangeDelay) {
                 var percent:Float = Std.parseFloat(percentTxt.text) / 100;
                 var newValue:Int = percent + 0.01;
@@ -774,6 +800,10 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
                 curCategory.call("onChangeFloat", [position, newValue]);
             }
         }
+        else {
+            if (volumeBeep.playing)
+                volumeBeep.stop();
+        }
 
         return;
     }
@@ -783,6 +813,17 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
     }
     else {
         if (FlxG.mouse.overlaps(theThing) && FlxG.mouse.pressed) {
+            if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
+                volumeBeep.play();
+
+                if (StringTools.endsWith(curCategoryOptions[position].name, "Music"))
+                    volumeBeep.volume = Options.volumeMusic;
+                else if (StringTools.endsWith(curCategoryOptions[position].name, "SFX"))
+                    volumeBeep.volume = Options.volumeSFX;
+                else
+                    volumeBeep.volume = FlxG.sound.volume;
+            }
+
             var min:Float = bar.x - barOffset;
             var max:Float = bar.x + bar.width - barOffset;
             theThing.x = FlxMath.bound(FlxG.mouse.x - barOffset, min, max);
@@ -794,6 +835,10 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
             percentTxt.text = Std.string(newValue * 100) + "%";
 
             curCategory.call("onChangeFloat", [position, newValue]);
+        }
+        else {
+            if (volumeBeep.playing)
+                volumeBeep.stop();
         }
     }
 }
@@ -1421,8 +1466,17 @@ function destroy() {
     FunkinSave.flush();
     FlxG.save.flush();
 
+    volumeBeep.destroy();
+
     if (curCategory != null)
         curCategory.destroy();
+    curCategoryGrp.destroy();
+
+    descriptionGroup.destroy();
+    categoriesGroup.destroy();
+    phoneScreen.destroy();
+    phoneSpr.destroy();
+    theEntireThing.destroy();
 
     FlxG.cameras.remove(optionsCam);
     optionsCam.destroy();
