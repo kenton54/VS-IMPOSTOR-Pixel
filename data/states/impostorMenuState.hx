@@ -5,6 +5,7 @@ import funkin.backend.utils.DiscordUtil;
 import funkin.editors.character.CharacterSelection;
 import funkin.editors.charter.CharterSelection;
 import funkin.editors.stage.StageSelection;
+import funkin.editors.EditorTreeMenu;
 import funkin.menus.credits.CreditsMain;
 import funkin.options.Options;
 import lime.graphics.Image;
@@ -136,6 +137,15 @@ var debugOptions:Array<Array<Dynamic>> = [
             {
                 name: "Stage Editor",
                 image: Paths.image("editors/icons/stage"),
+                transition: "right2leftSharpCircle"
+            }
+        ];
+    },
+    {
+        [
+            {
+                name: "Week Player",
+                image: "",
                 transition: "right2leftSharpCircle"
             }
         ];
@@ -920,7 +930,7 @@ function handleTopButtons() {
                         FlxG.sound.play(Paths.sound("menu/select"), 1);
                         openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
                             var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
-                            var maxHeight:Float = 88;
+                            var maxHeight:Float = 106;
                             for (c => column in debugOptions) {
                                 var columnGroup = new FlxSpriteGroup(posH, posV + c * daHeight);
                                 group.add(columnGroup);
@@ -943,8 +953,8 @@ function handleTopButtons() {
                                     toolIcon.updateHitbox();
                                     toolIcon.x = 15 * baseScale - toolIcon.width / 2;
 
-                                    if (toolIcon.height > maxHeight) {
-                                        toolIcon.scale.y = baseScale * (maxHeight / toolIcon.height);
+                                    if (daHeight < maxHeight) {
+                                        toolIcon.scale.y = baseScale * (daHeight / maxHeight);
                                         toolIcon.updateHitbox();
                                     }
 
@@ -987,12 +997,19 @@ function handleTopButtons() {
                                 FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
                                 FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
 
+                                if (FlxG.sound.music != null) FlxG.sound.music.fadeOut();
+
                                 new FlxTimer().start(1, _ -> {
                                     switch(curWindowEntry[0]) {
                                         case 0: FlxG.switchState(new CharterSelection());
                                         case 1: FlxG.switchState(new CharacterSelection());
                                         case 2: FlxG.switchState(new StageSelection());
-                                        case 3: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
+                                        case 3:
+                                            var state = new EditorTreeMenu();
+                                            state.bgType = "charter";
+                                            state.scriptName = "debug/weekSelector";
+                                            FlxG.switchState(state);
+                                        case 4: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
                                     }
                                 });
                             }

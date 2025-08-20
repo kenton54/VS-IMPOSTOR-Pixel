@@ -770,6 +770,8 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
                 var newValue:Int = percent - 0.01;
                 if (newValue < 0) newValue = 0;
 
+                volumeBeep.pitch = newValue * 1.5;
+
                 var barPos:Float = bar.frameWidth * newValue;
                 bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
                 theThing.x = (bar.x + (bar.width * newValue)) - barOffset;
@@ -795,6 +797,8 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
                 var newValue:Int = percent + 0.01;
                 if (newValue > 1) newValue = 1;
 
+                volumeBeep.pitch = newValue * 1.5;
+
                 var barPos:Float = bar.frameWidth * newValue;
                 bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
                 theThing.x = (bar.x + (bar.width * newValue)) - barOffset;
@@ -804,8 +808,10 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
             }
         }
         else {
-            if (volumeBeep.playing)
+            if (volumeBeep.playing) {
                 volumeBeep.stop();
+                volumeBeep.pitch = 1;
+            }
         }
 
         return;
@@ -833,6 +839,8 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
             var posCalc:Float = (theThing.x - min) / bar.width;
             var newValue:Float = FlxMath.roundDecimal(posCalc, 2);
 
+            volumeBeep.pitch = newValue * 1.5;
+
             var barPos:Float = bar.frameWidth * newValue;
             bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
             percentTxt.text = Std.string(newValue * 100) + "%";
@@ -840,8 +848,10 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
             curCategory.call("onChangeFloat", [position, newValue]);
         }
         else {
-            if (volumeBeep.playing)
+            if (volumeBeep.playing) {
                 volumeBeep.stop();
+                volumeBeep.pitch = 1;
+            }
         }
     }
 }

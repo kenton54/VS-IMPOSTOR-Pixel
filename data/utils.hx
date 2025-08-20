@@ -79,6 +79,19 @@ public static function changeDiscordMenuStatus(menu:String) {
     DiscordUtil.call("onMenuLoaded", [menu]);
 }
 
+public static function changeDiscordEditorStatus(menu:String) {
+    DiscordUtil.call("onEditorTreeLoaded", [menu]);
+}
+
+public static function fpsLerp(value1:Float, value2:Float, ratio:Float, ?fpsSensitive:Bool):Float {
+    if (fpsSensitive == null) fpsSensitive = false;
+
+    if (fpsSensitive)
+        return FlxMath.lerp(value1, value2, ratio);
+    else
+        return CoolUtil.fpsLerp(value1, value2, ratio);
+}
+
 public static function getStats(?def:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
 

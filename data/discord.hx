@@ -32,6 +32,8 @@ function onEditorTreeLoaded(name:String) {
 			DiscordUtil.changePresenceSince("Choosing a Chart", null);
 		case "Stage Editor":
 			DiscordUtil.changePresenceSince("Choosing a Stage", null);
+		case "Week Selector":
+			DiscordUtil.changePresenceSince("Choosing a Week", null);
 	}
 }
 

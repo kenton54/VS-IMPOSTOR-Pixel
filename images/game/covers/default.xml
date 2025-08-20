@@ -2,7 +2,7 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="covers.png" width="255" height="185">
+<TextureAtlas imagePath="dumbass.png" width="255" height="185">
 	<SubTexture name="cover hold blue1" x="235" y="66" width="17" height="12" frameX="-16" frameY="-18" frameWidth="47" frameHeight="54"/>
 	<SubTexture name="cover hold blue2" x="235" y="78" width="17" height="15" frameX="-16" frameY="-16" frameWidth="47" frameHeight="54"/>
 	<SubTexture name="cover hold blue3" x="134" y="133" width="18" height="7" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
@@ -19,36 +19,28 @@ Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 	<SubTexture name="cover hold red2" x="235" y="123" width="17" height="15" frameX="-16" frameY="-16" frameWidth="47" frameHeight="54"/>
 	<SubTexture name="cover hold red3" x="178" y="133" width="7" height="18" rotated="true" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
 	<SubTexture name="cover hold red4" x="235" y="148" width="16" height="10" frameX="-17" frameY="-19" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue1" x="134" y="133" width="18" height="7" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue2" x="134" y="133" width="18" height="7" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue3" x="171" y="152" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue4" x="185" y="0" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue5" x="45" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue6" x="0" y="141" width="45" height="44" rotated="true" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue7" x="47" y="0" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash blue8" x="94" y="47" width="46" height="45" rotated="true" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green1" x="152" y="133" width="18" height="7" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green2" x="152" y="133" width="18" height="7" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green3" x="203" y="152" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green4" x="185" y="38" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green5" x="87" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green6" x="140" y="47" width="45" height="44" rotated="true" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green7" x="47" y="47" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash green8" x="45" y="94" width="45" height="46" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple1" x="171" y="133" width="7" height="18" rotated="true" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple2" x="171" y="133" width="7" height="18" rotated="true" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple3" x="223" y="0" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple4" x="185" y="76" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple5" x="129" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple6" x="90" y="94" width="44" height="46" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple7" x="0" y="0" width="47" height="48" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash purple8" x="0" y="48" width="45" height="47" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red1" x="178" y="133" width="7" height="18" rotated="true" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red2" x="178" y="133" width="7" height="18" rotated="true" frameX="-16" frameY="-21" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red3" x="223" y="33" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red4" x="185" y="114" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red5" x="140" y="91" width="45" height="42" rotated="true" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red6" x="141" y="0" width="44" height="45" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red7" x="94" y="0" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
-	<SubTexture name="cover splash red8" x="0" y="95" width="45" height="46" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue1" x="171" y="152" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue2" x="185" y="0" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue3" x="45" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue4" x="0" y="141" width="45" height="44" rotated="true" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue5" x="47" y="0" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash blue6" x="94" y="47" width="46" height="45" rotated="true" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green1" x="203" y="152" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green2" x="185" y="38" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green3" x="87" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green4" x="140" y="47" width="45" height="44" rotated="true" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green5" x="47" y="47" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash green6" x="45" y="94" width="45" height="46" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple1" x="223" y="0" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple2" x="185" y="76" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple3" x="129" y="140" width="42" height="45" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple4" x="90" y="94" width="44" height="46" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple5" x="0" y="0" width="47" height="48" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash purple6" x="0" y="48" width="45" height="47" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red1" x="223" y="33" width="32" height="33" rotated="true" frameX="-8" frameY="-6" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red2" x="185" y="114" width="38" height="38" frameX="-5" frameY="-5" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red3" x="140" y="91" width="45" height="42" rotated="true" frameX="-2" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red4" x="141" y="0" width="44" height="45" frameX="-1" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red5" x="94" y="0" width="47" height="47" frameX="-0" frameY="-4" frameWidth="47" frameHeight="54"/>
+	<SubTexture name="cover splash red6" x="0" y="95" width="45" height="46" frameX="-1" frameY="-6" frameWidth="47" frameHeight="54"/>
 </TextureAtlas>

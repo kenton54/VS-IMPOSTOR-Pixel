@@ -1,7 +1,6 @@
 import funkin.backend.scripting.EventManager;
 import funkin.backend.scripting.events.CamMoveEvent;
 
-
 function onEvent(sus) {
     if (sus.event.name == "Camera Movement Advanced") {
         curCameraTarget = -1;
