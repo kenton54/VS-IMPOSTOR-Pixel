@@ -21,7 +21,7 @@ var options:Array<Dynamic> = [
         change: 0.05,
         savevar: "volumeSFX",
         savepoint: Options
-    },
+    },/*
     {
         name: "streamedMusic",
         type: "bool",
@@ -33,7 +33,7 @@ var options:Array<Dynamic> = [
         type: "bool",
         savevar: "streamedVocals",
         savepoint: Options
-    },
+    },*/
     {
         name: "downscroll",
         type: "bool",

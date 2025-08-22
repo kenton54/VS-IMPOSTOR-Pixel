@@ -83,7 +83,7 @@ public static function changeDiscordEditorStatus(menu:String) {
     DiscordUtil.call("onEditorTreeLoaded", [menu]);
 }
 
-public static function fpsLerp(value1:Float, value2:Float, ratio:Float, ?fpsSensitive:Bool):Float {
+public static function lerp(value1:Float, value2:Float, ratio:Float, ?fpsSensitive:Bool):Float {
     if (fpsSensitive == null) fpsSensitive = false;
 
     if (fpsSensitive)
@@ -260,7 +260,7 @@ public static function saveImpostor() {
 
     logTraceColored([
         {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
-        {text: "Data Saved!"}
+        {text: "Data saved!", color: getLogColor("green")}
     ]);
 }
 

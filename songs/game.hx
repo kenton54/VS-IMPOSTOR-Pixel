@@ -285,7 +285,7 @@ function update(elapsed:Float) {
 
     // why do i have to do this like this
     if (fixScore) {
-        PlayState.instance.songScore = Math.floor(fpsLerp(PlayState.instance.songScore, 0, 0.25, true));
+        PlayState.instance.songScore = Math.floor(lerp(PlayState.instance.songScore, 0, 0.25, true));
         if (PlayState.instance.songScore <= 0) {
             PlayState.instance.songScore = 0;
             fixScore = false;

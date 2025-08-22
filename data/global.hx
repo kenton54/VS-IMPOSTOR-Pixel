@@ -12,9 +12,12 @@ function new() {
 
     initSaveData();
 
-    //gameResized(Application.current.window.width, Application.current.window.height);
-
     Application.current.onExit.add(closeGame);
+
+    // I have to do this, cuz otherwise it causes crashes (im not kidding)
+    Options.streamedMusic = false;
+    Options.streamedVocals = false;
+    Options.save();
 
     if (FlxG.onMobile) {
         //var screenWidth:Float = Capabilities.screenResolutionX;
