@@ -349,7 +349,7 @@ var vsliceScoringOffset:Float = 54.99;
 var vsliceScoringSlope:Float = 0.08;
 
 function processNotes(elapsed:Float) {
-    for (strumline in strumLines.members) {
+    for (i => strumline in strumLines.members) {
         if (!strumline.cpu) {
             for (playerNote in strumline.notes.members) {
                 if (playerNote == null || !playerNote.alive) continue;
@@ -367,6 +367,15 @@ function processNotes(elapsed:Float) {
             for (opponentNote in strumline.notes.members) {
                 if (opponentNote == null || !opponentNote.alive) continue;
             }
+        }
+
+        var coverHandler:HoldCoverHandler = holdCoverHandlers[i];
+        if (coverHandler == null) continue;
+        for (holdCover in coverHandler.group.members) {
+            if (holdCover == null || !holdCover.beingHeld) continue;
+
+            if (Conductor.songPosition >= holdCover.endTime)
+                holdCover.playEnd();
         }
     }
 }
@@ -690,6 +699,29 @@ function onNewCameraMove(position:FlxPoint, strumLine:StrumLine, focusedChars:In
     }
 }
 
+function onInputUpdate(event) {
+    for (i in 0...event.justReleased.length) {
+        if (event.justReleased[i]) {
+            for (strumline in strumLines.members) {
+                for (note in strumline.notes.members) {
+                    if (note == null || !note.alive) continue;
+
+                    if (note.wasGoodHit && note.isSustainNote) {
+                    }
+                }
+            }
+
+            for (coverHandler in holdCoverHandlers) {
+                if (coverHandler == null) continue;
+                for (holdCover in coverHandler.group.members) {
+                    if (holdCover.strumID == i)
+                        holdCover.killCover();
+                }
+            }
+        }
+    }
+}
+
 function grantNoteStat(rating:String) {
     switch (rating) {
         case "perfect":
@@ -715,21 +747,27 @@ function grantNoteStat(rating:String) {
 }
 
 function onNewNoteHit(event) {
-    if (!event.note.isSustainNote) {
-        if (event.note.nextNote != null && event.note.nextNote.isSustainNote) {
-            holdCoverHandlers[strumLines.members.indexOf(event.note.strumLine)].showHoldCover(event.note.__strum);
+    var noteStrumLine:StrumLine = event.note.strumLine;
+    var noteStrum:Strum = event.note.__strum;
+    var noteID:Int = event.note.noteData;
+    var note:Note = event.note;
+
+    if (!note.isSustainNote) {
+        if (note.nextNote != null && note.nextNote.isSustainNote) {
+            var sustainLength:Float = 0;
+            var nextSustain:Note = note.nextNote;
+            while(nextSustain != null) {
+                sustainLength += nextSustain.sustainLength;
+                nextSustain = nextSustain.nextSustain;
+            }
+
+            holdCoverHandlers[strumLines.members.indexOf(noteStrumLine)].showHoldCover(noteStrum, !noteStrumLine.cpu, note.strumTime + sustainLength);
         }
     }
     else {
-        if (event.note.__strum != null) {
-            event.note.__strum.lastHit = Conductor.songPosition + 30;
-        }
+        if (noteStrum != null) noteStrum.lastHit = Conductor.songPosition + 30;
 
-        for (i in 0...event.characters.length) {
-            event.characters[i].lastHit = Conductor.songPosition + 30;
-        }
-
-        holdCoverHandlers[strumLines.members.indexOf(event.note.strumLine)].checkNote(event.note, event.note.strumLine.cpu == false);
+        for (i in 0...event.characters.length) event.characters[i].lastHit = Conductor.songPosition + 30;
     }
 }
 

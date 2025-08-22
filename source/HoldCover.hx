@@ -1,10 +1,38 @@
 class HoldCover extends FunkinSprite {
+    /**
+     * The Strum this Hold Cover is attached to.
+     * 
+     * This means that it'll follow the Strum to wherever it moves to.
+     */
     public var strum:Null<Strum> = null;
 
+    /**
+     * The ID of the Strum.
+     */
     public var strumID:Null<Int> = null;
+
+    /**
+     * When the Hold Cover plays the ending animation in the current playing song's position.
+     */
+    public var endTime:Null<Float> = null;
+
+    /**
+     * Whether the Hold Cover is from a player Strum or not.
+     * 
+     * If it is, it will play the ending animation, otherwise it will hide immediatly.
+     */
+    public var fromPlayer:Null<Bool> = null;
+
+    /**
+     * Whether the Hold Cover is being held.
+     * 
+     * If it is, it will follow the Strum.
+     */
+    public var beingHeld:Bool = false;
 
     public function new() {
         super(0, 0);
+        endTime = 0;
     }
 
     public function setCoverPosition(strum:Strum):Void {
@@ -22,14 +50,14 @@ class HoldCover extends FunkinSprite {
     override public function update(elapsed:Float) {
         super.update(elapsed);
 
-        if (StringTools.endsWith(getAnimName(), "-start") && isAnimFinished()) {
+        if (StringTools.endsWith(getAnimName(), "-start") && isAnimFinished())
             playLoop();
-        }
-        if (StringTools.endsWith(getAnimName(), "-end") && isAnimFinished()) {
-            killCover();
-        }
 
-        this.setCoverPosition(strum);
+        if (StringTools.endsWith(getAnimName(), "-end") && isAnimFinished())
+            killCover();
+
+        if (beingHeld)
+            this.setCoverPosition(strum);
     }
 
     var curAnim:String = "";
@@ -51,7 +79,9 @@ class HoldCover extends FunkinSprite {
     }
 
     public function playEnd() {
-        if (this.hasAnim(curAnim + "-end"))
+        beingHeld = false;
+
+        if (this.hasAnim(curAnim + "-end") && fromPlayer)
             this.playAnim(curAnim + "-end");
         else
             killCover();
@@ -59,8 +89,17 @@ class HoldCover extends FunkinSprite {
 
     public function killCover() {
         FlxG.state.remove(this);
-        this.strum = null;
-        this.strumID = null;
-        this.active = this.visible = false;
+        strum = null;
+        strumID = null;
+        fromPlayer = null;
+        beingHeld = false;
+        active = visible = false;
+    }
+
+    override public function destroy() {
+        super.destroy();
+        strum = null;
+        strumID = null;
+        endTime = null;
     }
 }

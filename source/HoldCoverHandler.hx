@@ -1,20 +1,30 @@
 import funkin.backend.system.Logs;
 import HoldCover;
+import Xml;
 
 class HoldCoverHandler {
     /**
      * The group of all covers.
+     * 
      * Codename doesn't support extending classes to flixel groups, so this is here.
      */
     public var group:FlxTypedGroup<HoldCover>;
 
+    /**
+     * Whether this handler is allowed to use or not.
+     * 
+     * If it isn't, that means it had errors during the creation process.
+     */
     public var valid:Bool = true;
 
+    /**
+     * The style of the Hold Covers.
+     */
     public var style:String;
 
     public var animationNames:Array<Array<String>> = [];
 
-    private var json:Dynamic;
+    private var xml:Xml;
 
     public function new(style:String, strumline:StrumLine) {
         this.group = new FlxTypedGroup<HoldCover>();
@@ -22,11 +32,11 @@ class HoldCoverHandler {
         this.style = style;
 
         try {
-            this.json = Json.parse(Assets.getText(Paths.json("holdCovers/" + style)));
+            this.xml = Xml.parse(Assets.getText(Paths.xml("holdCovers/" + style))).firstElement();
 
             for (strum in strumline.members) {
-                var cover:HoldCover = createHoldCover(json.sprite);
-                setupAnimations(json, cover);
+                var cover:HoldCover = createHoldCover(xml.get("sprite"));
+                setupAnimations(xml, cover);
                 cover.strum = strum;
                 cover.strumID = strum.ID;
                 group.add(cover);
@@ -39,41 +49,34 @@ class HoldCoverHandler {
     }
 
     var _scale:Float = 1.0;
-    var _alpha:Float = 1.0;
     var _antialiasing:Bool = FlxSprite.defaultAntialiasing;
 
     private function createHoldCover(imagePath:String):HoldCover {
         var cover:HoldCover = new HoldCover();
         cover.active = cover.visible = false;
         cover.loadSprite(Paths.image(imagePath));
-        _scale = CoolUtil.getDefault(Std.parseFloat(json.scale), 1.0);
-        _alpha = CoolUtil.getDefault(Std.parseFloat(json.alpha), 1.0);
-        _antialiasing = CoolUtil.getDefault(Std.parseFloat(json.antialiasing), FlxSprite.defaultAntialiasing);
+        _scale = CoolUtil.getDefault(Std.parseFloat(xml.get("scale")), 1.0);
+        _antialiasing = CoolUtil.getDefault(Std.parseFloat(xml.get("antialiasing")), FlxSprite.defaultAntialiasing);
         return cover;
     }
 
-    private function setupAnimations(json:Dynamic, cover:HoldCover) {
-        for (strum in json.strums) {
-            var id:Null<Int> = strum.id;
+    private function setupAnimations(xml:Xml, cover:HoldCover) {
+        for (strum in xml.elementsNamed("strum")) {
+            var id:Null<Int> = strum.get("id");
             if (id != null) {
                 animationNames[id] = [];
-                for (anim in strum.animations) {
-                    if (!Reflect.hasField(anim, "name")) continue;
+                for (anim in strum.elementsNamed("anim")) {
+                    if (!anim.exists("name")) continue;
 
-                    cover.addAnim(anim.name, anim.anim, CoolUtil.getDefault(Std.parseFloat(anim.fps), 24), StringTools.endsWith(anim.name, "loop"), true);
-                    cover.animOffsets.set(anim.name, FlxPoint.get(anim.x, anim.y));
+                    cover.addAnim(anim.get("name"), anim.get("anim"), CoolUtil.getDefault(Std.parseFloat(anim.get("fps")), 24), StringTools.endsWith(anim.get("name"), "loop"), true);
+                    cover.animOffsets.set(anim.get("name"), FlxPoint.get(anim.get("x"), anim.get("y")));
 
-                    var fixedName = anim.name;
+                    var fixedName = anim.get("name");
                     fixedName = StringTools.replace(fixedName, "-start", "");
                     fixedName = StringTools.replace(fixedName, "-loop", "");
                     fixedName = StringTools.replace(fixedName, "-end", "");
 
-                    var alreadyExists:Bool = false;
-                    for (animName in animationNames[id])
-                        if (animName == fixedName) alreadyExists = true;
-
-                    if (!alreadyExists)
-                        animationNames[id].push(fixedName);
+                    CoolUtil.pushOnce(animationNames[id], fixedName);
                 }
             }
         }
@@ -87,77 +90,32 @@ class HoldCoverHandler {
 		return animNames[FlxG.random.int(0, animNames.length - 1)];
 	}
 
-    public function showHoldCover(strum:Strum) {
+    public function showHoldCover(strum:Strum, fromPlayer:Bool, length:Float) {
         if (!valid) return;
         var choosenCover:HoldCover = group.members[strum.ID];
 
         choosenCover.strum = strum;
         choosenCover.strumID = strum.ID;
+        choosenCover.endTime = length;
+        choosenCover.fromPlayer = fromPlayer;
 
         choosenCover.scale.x = choosenCover.scale.y = _scale;
-        choosenCover.alpha = _alpha;
         choosenCover.antialiasing = _antialiasing;
 
         choosenCover.setCoverPosition(strum);
         choosenCover.cameras = strum.lastDrawCameras;
-        choosenCover.active = choosenCover.visible = true;
+        choosenCover.active = choosenCover.beingHeld = choosenCover.visible = true;
 
         choosenCover.playStart(getCoverAnim(choosenCover.strumID));
 
         FlxG.state.add(choosenCover);
-
-        delay = (Conductor.stepCrochet / 1000) * 1.4;
-        startCoverTimer(choosenCover, strum.strumLine.cpu == false);
-    }
-
-    public function checkNote(note:Note, isPlayer:Bool) {
-        if (!valid) return;
-
-        for (i => cover in group.members) {
-            if (cover.visible && cover.active) {
-                if (note.isSustainNote) {
-                    startCoverTimer(cover, isPlayer);
-                }
-            }
-        }
-    }
-
-    var coverTimers:Array<FlxTimer> = [];
-    var delay:Float = 0;
-    private function startCoverTimer(cover:HoldCover, isPlayer:Bool) {
-        var id:Int = cover.strumID;
-
-        if (coverTimers[id] == null) coverTimers[id] = new FlxTimer();
-        coverTimers[id].cancel();
-        coverTimers[id].start(delay, _ -> {
-            if (isPlayer)
-                cover.playEnd();
-            else
-                cover.killCover();
-        });
-    }
-
-    public function killCover(note:Note) {
-        if (!valid) return;
-
-        for (i => cover in group.members) {
-            var id:Int = cover.strumID;
-
-            if (id != note.noteData) continue;
-
-            if (cover.visible && cover.active) {
-                if (coverTimers[id] == null) coverTimers[id].cancel();
-                cover.killCover();
-            }
-        }
     }
 
     public function destroy() {
         valid = null;
         style = null;
         animationNames = null;
-        json = null;
-        for (timer in coverTimers) timer.destroy();
+        xml = null;
         coverTimers = null;
         group.destroy();
     }
