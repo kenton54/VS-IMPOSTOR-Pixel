@@ -261,7 +261,7 @@ public static function saveImpostor() {
     logTraceColored([
         {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
         {text: "Data saved!", color: getLogColor("green")}
-    ]);
+    ], "verbose");
 }
 
 public static function eraseImpostorSaveData() {

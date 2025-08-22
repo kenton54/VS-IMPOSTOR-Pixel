@@ -380,15 +380,18 @@ function processNotes(elapsed:Float) {
     }
 }
 
-var perfectHealth:Float = 2 / 100 * maxHealth;      // 2% gain
-var sickHealth:Float = 1.5 / 100 * maxHealth;       // 1.5% gain
-var goodHealth:Float = 0.75 / 100 * maxHealth;      // 0.75% gain
-var badHealth:Float = 0 / 100 * maxHealth;          // no gain
-var shitHealth:Float = -1 / 100 * maxHealth;        // 1% loss
-var holdHealthBonus:Float = 4 / 100 * maxHealth;    // 4% gain per second
-var ghostHealth:Float = -2 / 100 * maxHealth;       // 2% loss
-var missHealth:Float = -4 / 100 * maxHealth;        // 4% loss
-var holdHealthDrop:Float = 0.5 / 100 * maxHealth;   // 0.5% gain per sustain length remaining
+// all of these can be modified in any song
+public var perfectHealth:Float = 2 / 100 * maxHealth;       // 2% gain
+public var sickHealth:Float = 1.5 / 100 * maxHealth;        // 1.5% gain
+public var goodHealth:Float = 0.75 / 100 * maxHealth;       // 0.75% gain
+public var badHealth:Float = 0 / 100 * maxHealth;           // no gain
+public var shitHealth:Float = -1 / 100 * maxHealth;         // 1% loss
+public var holdHealthBonus:Float = 4 / 100 * maxHealth;     // 4% gain per second
+public var ghostHealth:Float = -2 / 100 * maxHealth;        // 2% loss
+public var missHealth:Float = -4 / 100 * maxHealth;         // 4% loss
+public var holdHealthDrop:Float = 0.5 / 100 * maxHealth;    // 0.5% gain per sustain length remaining
+public var holdHealthDropMax:Float = 0 / 100 * maxHealth;
+public var holdDropThreshold:Float = 210;
 
 function onPlayerHit(event) {
     event.cancel();
@@ -547,29 +550,71 @@ function ratingJudge(timing:Float):String {
 
 function onPlayerMiss(event) {
     event.cancel();
+    if (event.note == null) return;
 
     var strumline:StrumLine = strumLines.members[event.playerID];
+    if (strumline == null) return;
 
-    FlxG.sound.play(event.missSound, event.missVolume);
-
-    if (event.muteVocals) {
-        vocals.volume = 0;
-	    strumline.vocals.volume = 0;
+    if (event.note.isSustainNote) {
+        var nextSustain:Note = event.note.sustainParent.nextNote;
+        while(nextSustain != null) {
+            strumline.deleteNote(nextSustain);
+            nextSustain = nextSustain.nextSustain;
+        }
+        if (event.note.sustainParent.wasGoodHit) return;
     }
+    else
+        strumline.deleteNote(event.note);
 
     var scor:Int = 0;
-    if (event.ghostMiss) {
+    if (!event.ghostMiss) {
+        if (event.note.isSustainNote) {
+            /*
+            var sustainLength:Float = 0;
+            var nextSustain:Note = event.note.sustainParent.nextNote;
+            while(nextSustain != null) {
+                sustainLength += nextSustain.sustainLength;
+                nextSustain = nextSustain.nextSustain;
+            }
+
+            trace(event.note.strumTime, sustainLength, Conductor.songPosition);
+            var posLength:Float = event.note.strumTime + sustainLength;
+            var remainingLength:Float = posLength - Conductor.songPosition;
+            trace(remainingLength);
+            if (remainingLength > holdDropThreshold) {
+                var remainingLengthSec:Float = remainingLength / 1000;
+                var healthChangeUncapped:Float = remainingLengthSec * holdHealthDrop;
+                var healthChangeMax:Float = holdHealthDropMax - (event.note.wasGoodHit ? missHealth : 0);
+                var healthChange:Float = clamp(healthChangeUncapped, healthChangeMax, 0);
+                scor = Std.int(holdHealthDrop * remainingLengthSec);
+                health -= healthChange;
+                trace(scor, healthChange);
+            }
+            else {
+                logTraceColored([
+                    {text: "[PlayState] ", color: getLogColor("cyan")},
+                    {text: "Hold Note was too short, miss will not be penalized."}
+                ]);
+                return;
+            }
+            */
+        }
+        else {
+            health += missHealth;
+            scor = missScore;
+        }
+        notesMissed++;
+        breakCombo();
+    }
+    else {
         health += ghostHealth;
         scor = ghostScore;
     }
-    else {
-        if (!event.note.isSustainNote) {
-            health += missHealth;
-            scor = missScore;
-            notesMissed++;
-        }
-        breakCombo();
-    }
+
+    //playSound(event.missSound, event.missVolume);
+
+    vocals.volume = 0;
+    strumline.vocals.volume = 0;
 
     songScore += scor;
     updateScore();
@@ -580,13 +625,7 @@ function onPlayerMiss(event) {
             char.playSingAnim(event.direction, event.animSuffix, "MISS", event.forceAnim);
     }
 
-    if (event.note != null && strumline != null) {
-        var timing:Float = Math.abs(Conductor.songPosition - event.note.strumTime);
-
-        strumline.deleteNote(event.note);
-
-        displayRating(ratingJudge(timing), scor);
-    }
+    displayRating(0, scor);
 
     scripts.call("onNewPlayerMiss", [event]);
 }
@@ -703,18 +742,23 @@ function onInputUpdate(event) {
     for (i in 0...event.justReleased.length) {
         if (event.justReleased[i]) {
             for (strumline in strumLines.members) {
-                for (note in strumline.notes.members) {
-                    if (note == null || !note.alive) continue;
+                if (!strumline.cpu) {
+                    var strum:Strum = strumline.members[i];
+                    if (strum.ID != i) continue;
+                    strumline.notes.forEachAlive(function(note) {
+                        if (note.noteData != strum.ID) return;
+                        if (note.sustainParent == null) return;
 
-                    if (note.wasGoodHit && note.isSustainNote) {
-                    }
+                        if (note.sustainParent.wasGoodHit)
+                            noteMiss(strumline, note);
+                    });
                 }
             }
 
             for (coverHandler in holdCoverHandlers) {
                 if (coverHandler == null) continue;
                 for (holdCover in coverHandler.group.members) {
-                    if (holdCover.strumID == i)
+                    if ((holdCover.strumID == i) && !StringTools.endsWith(holdCover.getAnimName(), "-end"))
                         holdCover.killCover();
                 }
             }
@@ -1091,4 +1135,8 @@ function resetTallies() {
     shitHits = 0;
     notesMissed = 0;
     combosBroken = 0;
+}
+
+function clamp(value:Float, min:Float, max:Float):Float {
+    return Math.max(min, Math.min(max, value));
 }
