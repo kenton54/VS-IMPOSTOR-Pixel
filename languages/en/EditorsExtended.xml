@@ -10,5 +10,13 @@
 		<str id="acceptDifficulty">Press ACCEPT to play the week with the selected difficulty.</str>
 		<str id="newWeek">New Week</str>
 		<str id="newWeekDesc">Press ACCEPT to create a new week.</str>
+		<str id="newDifficulty">New Difficulty</str>
+		<str id="newDifficultyDesc">Press ACCEPT to create a new week difficulty.</str>
+	</group>
+
+	<group name="Week Difficulty Creator" prefix="weekDifficultyCreationScreen.">
+		<str id="win-title">Creating New Difficulty</str>
+		<str id="title">New Difficulty</str>
+		<str id="diffName">Difficulty Name</str>
 	</group>
 </language>
