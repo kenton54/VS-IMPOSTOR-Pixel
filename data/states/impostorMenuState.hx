@@ -565,7 +565,7 @@ function postCreate() {
     backButton = new BackButton(FlxG.width * 0.975, FlxG.height, () -> {
         setTransition("bottom2topSmoothSquare");
         FlxG.switchState(new ModState("impostorTitleState"));
-    }, backBtnScale, true);
+    }, backBtnScale, false);
     backButton.camera = frontCam;
     backButton.visible = !usingKeyboard;
     backButton.x -= backButton.width;
