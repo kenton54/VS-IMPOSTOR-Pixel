@@ -3,8 +3,8 @@
 		"customValues": {
 			"ratingsChart": {
 				"easy": 7,
-				"hard": 12,
-				"normal": 10
+				"normal": 10,
+				"hard": 12
 			}
 		},
 		"color": "#000000",
@@ -23,9 +23,12 @@
 		"bpm": 170
 	},
 	"events": [],
+	"codenameChart": true,
 	"strumLines": [
 		{
 			"keyCount": 4,
+			"strumScale": 1,
+			"position": "dad",
 			"notes": [
 				{
 					"id": 3,
@@ -7186,22 +7189,22 @@
 					"type": 0
 				}
 			],
-			"position": "dad",
-			"strumScale": 1,
-			"visible": true,
-			"type": 0,
 			"characters": [
 				"red-impostor"
 			],
+			"type": 0,
+			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"strumLinePos": 0.25,
-			"vocalsSuffix": "-green"
+			"vocalsSuffix": "-green",
+			"strumLinePos": 0.25
 		},
 		{
 			"keyCount": 4,
+			"strumScale": 1,
+			"position": "boyfriend",
 			"notes": [
 				{
 					"id": 3,
@@ -14080,41 +14083,38 @@
 					"type": 0
 				}
 			],
-			"position": "boyfriend",
-			"strumScale": 1,
-			"visible": true,
-			"type": 1,
 			"characters": [
 				"pico"
 			],
+			"type": 1,
+			"visible": true,
 			"strumPos": [
 				0,
 				50
 			],
-			"strumLinePos": 0.75,
-			"vocalsSuffix": "-bf"
+			"vocalsSuffix": "-bf",
+			"strumLinePos": 0.75
 		},
 		{
 			"keyCount": 4,
-			"notes": [],
-			"position": "girlfriend",
 			"strumScale": 1,
-			"visible": false,
-			"type": 2,
+			"position": "girlfriend",
+			"notes": [],
 			"characters": [
 				"nene"
 			],
+			"type": 2,
+			"visible": false,
 			"strumPos": [
 				0,
 				50
 			],
-			"strumLinePos": 0.25,
-			"vocalsSuffix": ""
+			"vocalsSuffix": "",
+			"strumLinePos": 0.25
 		}
 	],
-	"codenameChart": true,
 	"stage": "polus1",
-	"scrollSpeed": 2.9,
 	"chartVersion": "1.6.0",
+	"scrollSpeed": 2.9,
 	"noteTypes": []
 }

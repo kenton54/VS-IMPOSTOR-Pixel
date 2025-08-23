@@ -2,15 +2,15 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="speakers-lightsOut.png" width="74" height="99">
-	<SubTexture name="speakers-lightsOut1" x="0" y="0" width="74" height="33" frameX="-0" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut10" x="0" y="66" width="70" height="33" frameX="-2" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut2" x="0" y="0" width="74" height="33" frameX="-0" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut3" x="0" y="0" width="74" height="33" frameX="-0" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut4" x="0" y="0" width="74" height="33" frameX="-0" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut5" x="0" y="33" width="72" height="33" frameX="-1" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut6" x="0" y="33" width="72" height="33" frameX="-1" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut7" x="0" y="66" width="70" height="33" frameX="-2" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut8" x="0" y="66" width="70" height="33" frameX="-2" frameY="-0" frameWidth="74" frameHeight="33"/>
-	<SubTexture name="speakers-lightsOut9" x="0" y="66" width="70" height="33" frameX="-2" frameY="-0" frameWidth="74" frameHeight="33"/>
+<TextureAtlas imagePath="speakers-lightsOut.png" width="80" height="105">
+	<SubTexture name="bop1" x="0" y="0" width="80" height="35" frameX="-0" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop10" x="0" y="70" width="76" height="35" frameX="-2" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop2" x="0" y="0" width="80" height="35" frameX="-0" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop3" x="0" y="0" width="80" height="35" frameX="-0" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop4" x="0" y="0" width="80" height="35" frameX="-0" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop5" x="0" y="35" width="78" height="35" frameX="-1" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop6" x="0" y="35" width="78" height="35" frameX="-1" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop7" x="0" y="70" width="76" height="35" frameX="-2" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop8" x="0" y="70" width="76" height="35" frameX="-2" frameY="-0" frameWidth="80" frameHeight="35"/>
+	<SubTexture name="bop9" x="0" y="70" width="76" height="35" frameX="-2" frameY="-0" frameWidth="80" frameHeight="35"/>
 </TextureAtlas>

@@ -6,4 +6,7 @@
 	<anim name="combo50" anim="cheer" x="0" y="0" fps="24" loop="false"/>
 	<anim name="drop70" anim="sob" x="0" y="0" fps="24" loop="false"/>
 	<anim name="shock" anim="shock" x="0" y="0" fps="24" loop="false"/>
+	<anim name="countdown3" anim="three" x="0" y="0" fps="24" loop="false"/>
+	<anim name="countdown2" anim="two" x="0" y="0" fps="24" loop="false"/>
+	<anim name="countdown1" anim="one" x="0" y="0" fps="24" loop="false"/>
 </character>

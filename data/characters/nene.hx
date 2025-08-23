@@ -50,35 +50,34 @@ final MIN_BLINK_DELAY:Int = 3;
 final MAX_BLINK_DELAY:Int = 7;
 var blinkCountdown:Int = MIN_BLINK_DELAY;
 
-function create() {
+function postCreate() {
     abot = new FlxSpriteGroup();
 
     var abotMain:FunkinSprite = new FunkinSprite(0, 0, Paths.image("characters/partners/speakers/abot/abot"));
-    abotMain.animation.addByPrefix("idle", "abot bop", 24, false);
-    //abotMain.animation.addByPrefix("flash", "flash", 24, false);
-    abotMain.animation.play("idle");
+    abotMain.addAnim("idle", "abot bop", 24, false);
+    abotMain.playAnim("idle");
     abotMain.beatAnims.push({name: "idle", forced: true});
     abotMain.beatInterval = 1;
-    abotMain.scale.set(10, 10);
+    abotMain.scale.set(scale.x, scale.y);
     abotMain.updateHitbox();
 
-    var abotBG:FlxSprite = new FlxSprite(abotMain.x + 240, abotMain.y + 60).loadGraphic(Paths.image("characters/partners/speakers/abot/bg"));
-    abotBG.scale.set(10, 10);
+    var abotBG:FlxSprite = new FlxSprite(abotMain.x + 240, abotMain.y + 90).loadGraphic(Paths.image("characters/partners/speakers/abot/bg"));
+    abotBG.scale.set(scale.x, scale.y);
     abotBG.updateHitbox();
 
     var abotHead:FunkinSprite = new FunkinSprite(abotMain.x, abotMain.y, Paths.image("characters/partners/speakers/abot/abotHead"));
-    abotHead.animation.addByPrefix("idle left", "abot head left idle", 24, false);
-    abotHead.animation.addByPrefix("trans left", "abot head left trans", 24, false);
-    abotHead.animation.addByPrefix("idle right", "abot head right idle", 24, false);
-    abotHead.animation.addByPrefix("trans right", "abot head right trans", 24, false);
-    abotHead.animation.play("idle right");
-    abotHead.scale.set(10, 10);
+    abotHead.addAnim("idle left", "abot head left idle", 24, false);
+    abotHead.addAnim("trans left", "abot head left trans", 24, false);
+    abotHead.addAnim("idle right", "abot head right idle", 24, false);
+    abotHead.addAnim("trans right", "abot head right trans", 24, false);
+    abotHead.playAnim("idle right");
+    abotHead.scale.set(scale.x, scale.y);
     abotHead.updateHitbox();
 
     abot.add(abotHead);
     abot.add(abotBG);
 
-    vizGroup = new FlxSpriteGroup(abotBG.x + 147, abotBG.y + 102);
+    vizGroup = new FlxSpriteGroup(abotBG.x + 166, abotBG.y + 81);
     abot.add(vizGroup);
 
     for (index in 1...BAR_COUNT + 1) {
@@ -91,13 +90,11 @@ function create() {
         var visStr = 'abot viz ';
         viz.animation.addByPrefix('VIZ', visStr + Std.string(index), 0);
         viz.animation.play('VIZ', false, false, 0);
-
-        //viz.visible = false;
     }
 
     abot.add(abotMain);
 
-    this.animation.finishCallback = function(name:String) {
+    animation.finishCallback = function(name:String) {
         transitionState();
     };
 }
@@ -110,22 +107,22 @@ var added:Bool = false;
 function update(elapsed:Float) {
     if (!added) {
         added = true;
-        abot.setPosition(this.x - 420, this.y + 66);
+        abot.setPosition(x - 410, y + 36);
         abot.forEach(function(spr) {
             if (spr is FlxSpriteGroup) {
                 spr.forEach(function(viz) {
-                    viz.camera = this.camera;
+                    viz.camera = camera;
                 });
             }
             else
-                spr.camera = this.camera;
+                spr.camera = camera;
         });
         FlxG.state.insert(FlxG.state.members.indexOf(this), abot);
     }
 
     abot.forEach(function(botPart) {
-        if (this.alpha != botPart.alpha) botPart.alpha = this.alpha;
-        if (this.visible != botPart.visible) botPart.visible = this.visible;
+        if (alpha != botPart.alpha) botPart.alpha = alpha;
+        if (visible != botPart.visible) botPart.visible = visible;
     });
 
     transitionState();
@@ -182,11 +179,11 @@ function ddance() {
     if (neneCurrentState != STATE_DEFAULT) {
         switch(neneCurrentState) {
             case STATE_PRE_RAISE_KNIFE:
-                this.playAnim("danceLeft");
+                playAnim("danceLeft");
                 ddanced = false;
             case STATE_READY_KNIFE:
                 if (blinkCountdown == 0) {
-                    this.playAnim("knife idle");
+                    playAnim("knife idle");
                     blinkCountdown = FlxG.random.int(MIN_BLINK_DELAY, MAX_BLINK_DELAY);
                 }
                 else
@@ -219,7 +216,7 @@ function transitionState() {
             if (PlayState.instance != null && PlayState.instance.health > knifeThreshold)
                 neneCurrentState = STATE_DEFAULT;
             else if (isAnimFinished()) {
-                this.playAnim("knife raise");
+                playAnim("knife raise");
                 neneCurrentState = STATE_RAISE_KNIFE;
             }
         case STATE_RAISE_KNIFE:
@@ -228,7 +225,7 @@ function transitionState() {
         case STATE_READY_KNIFE:
             if (PlayState.instance != null && PlayState.instance.health > knifeThreshold) {
                 neneCurrentState = STATE_LOWER_KNIFE;
-                this.playAnim("knife lower");
+                playAnim("knife lower");
             }
         case STATE_LOWER_KNIFE:
             if (isAnimFinished())

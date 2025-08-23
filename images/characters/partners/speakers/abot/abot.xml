@@ -2,15 +2,15 @@
 <!--
 Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
 -->
-<TextureAtlas imagePath="abot.png" width="253" height="33">
-	<SubTexture name="abot bop1" x="0" y="0" width="86" height="33" frameX="-0" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop10" x="170" y="0" width="83" height="33" frameX="-2" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop2" x="0" y="0" width="86" height="33" frameX="-0" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop3" x="0" y="0" width="86" height="33" frameX="-0" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop4" x="0" y="0" width="86" height="33" frameX="-0" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop5" x="86" y="0" width="84" height="33" frameX="-1" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop6" x="86" y="0" width="84" height="33" frameX="-1" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop7" x="170" y="0" width="83" height="33" frameX="-2" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop8" x="170" y="0" width="83" height="33" frameX="-2" frameY="-0" frameWidth="86" frameHeight="36"/>
-	<SubTexture name="abot bop9" x="170" y="0" width="83" height="33" frameX="-2" frameY="-0" frameWidth="86" frameHeight="36"/>
+<TextureAtlas imagePath="abot.png" width="265" height="34">
+	<SubTexture name="abot bop1" x="0" y="0" width="90" height="34" frameX="-0" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop10" x="178" y="0" width="87" height="34" frameX="-2" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop2" x="0" y="0" width="90" height="34" frameX="-0" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop3" x="0" y="0" width="90" height="34" frameX="-0" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop4" x="0" y="0" width="90" height="34" frameX="-0" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop5" x="90" y="0" width="88" height="34" frameX="-1" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop6" x="90" y="0" width="88" height="34" frameX="-1" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop7" x="178" y="0" width="87" height="34" frameX="-2" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop8" x="178" y="0" width="87" height="34" frameX="-2" frameY="-3" frameWidth="90" frameHeight="40"/>
+	<SubTexture name="abot bop9" x="178" y="0" width="87" height="34" frameX="-2" frameY="-3" frameWidth="90" frameHeight="40"/>
 </TextureAtlas>

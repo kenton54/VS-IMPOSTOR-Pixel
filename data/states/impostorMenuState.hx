@@ -10,6 +10,7 @@ import funkin.menus.credits.CreditsMain;
 import funkin.options.Options;
 import lime.graphics.Image;
 import openfl.ui.Mouse;
+import BackButton;
 import PixelStars;
 
 var discordIntegration:Bool = false;
@@ -558,25 +559,20 @@ function createFinalButtons(x:Float, y:Float) {
     }
 }
 
-var backButton:FlxSprite;
-var pressedBack:Bool = false;
+var backButton:BackButton;
 function postCreate() {
     var backBtnScale:Float = isMobile ? 4 : 3;
-    backButton = new FlxSprite(FlxG.width * 0.975, FlxG.height);
-    backButton.frames = Paths.getFrames("app/backButton");
-    backButton.animation.addByPrefix("idle", "idle normal", 0, true);
-    backButton.animation.addByPrefix("hover", "hover", 0, true);
-    backButton.animation.addByPrefix("hold", "hold", 0, true);
-    backButton.animation.addByPrefix("back", "spin", 24, false);
-    backButton.animation.play("idle");
-    backButton.scale.set(backBtnScale, backBtnScale);
-    backButton.updateHitbox();
+    backButton = new BackButton(FlxG.width * 0.975, FlxG.height, () -> {
+        setTransition("bottom2topSmoothSquare");
+        FlxG.switchState(new ModState("impostorTitleState"));
+    }, backBtnScale, true);
     backButton.camera = frontCam;
     backButton.visible = !usingKeyboard;
-
     backButton.x -= backButton.width;
     backButton.y -= backButton.height * 1.1;
     add(backButton);
+
+    backButton.onConfirm.add(disableInput);
 
     FlxG.mouse.visible = !usingKeyboard;
     if (isMobile) FlxG.mouse.visible = false;
@@ -585,8 +581,6 @@ function postCreate() {
 var checkTimer:Float = 0;
 var checkLimit:Float = 5;
 function update(elapsed:Float) {
-    if (pressedBack) return;
-
     if (currentSelectionMode == "main") {
         handleMainButtons();
         handleTopButtons();
@@ -738,27 +732,6 @@ function handleMouse() {
         lastWindowEntry[1] = -1;
         Mouse.cursor = "arrow";
     }
-
-    if (FlxG.mouse.overlaps(backButton)) {
-        if (FlxG.mouse.pressed) {
-            backButton.animation.play("hold", true);
-        }
-        else if (FlxG.mouse.justReleased) {
-            pressedBack = true;
-            playMenuSound("cancel");
-
-            backButton.animation.play("back", true);
-            new FlxTimer().start(0.5, _ -> {
-                FlxG.switchState(new ModState("impostorTitleState"));
-            });
-        }
-        else {
-            backButton.animation.play("hover", true);
-        }
-    }
-    else {
-        backButton.animation.play("idle", true);
-    }
 }
 
 var isTouchingButton:Bool = false;
@@ -770,40 +743,6 @@ function handleTouch() {
         if (touch.justReleased) {
             usingKeyboard = false;
             if (currentSelectionMode == "main") backButton.visible = true;
-        }
-    }
-
-    if (usingKeyboard) return;
-
-    for (touch in FlxG.touches.list) {
-        if (touch.overlaps(backButton)) {
-            if (touch.pressed) {
-                backButton.animation.play("hold", true);
-            }
-            else if (touch.justReleased) {
-                pressedBack = true;
-                playMenuSound("cancel");
-
-                backButton.animation.play("back", true);
-                new FlxTimer().start(0.5, _ -> {
-                    FlxG.switchState(new ModState("impostorTitleState"));
-                });
-            }
-            else
-                backButton.animation.play("hover", true);
-        }
-        else
-            backButton.animation.play("idle", true);
-
-        if (isTouchingButton) {
-            if (currentSelectionMode == "main") {
-                if (touch.justReleased)
-                    checkSelectedMainEntry();
-            }
-            else if (currentSelectionMode == "window") {
-                if (touch.justReleased)
-                    checkSelectedWindowEntry();
-            }
         }
     }
 }
@@ -1474,6 +1413,7 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     windowGroup.add(xButton);
 
     enableInput();
+    FlxG.mouse.visible = !usingKeyboard;
 }
 
 function handleWindow() {
@@ -1600,12 +1540,14 @@ function enableInput() {
     allowMouse = true;
     allowKeyboard = true;
     allowTouch = true;
+    backButton.enabled = true;
 }
 
 function disableInput() {
     allowMouse = false;
     allowKeyboard = false;
     allowTouch = false;
+    backButton.enabled = false;
     FlxG.mouse.visible = false;
     Mouse.cursor = "arrow";
 }

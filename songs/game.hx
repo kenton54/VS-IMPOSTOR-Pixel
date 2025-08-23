@@ -331,6 +331,26 @@ function postUpdate(elapsed:Float) {
     }
 }
 
+function onCountdown(event) {
+    trace(event.swagCounter, introLength);
+
+    // girlfriend countdown animation
+    if (!gf.visible || gf.alpha == 0) return;
+
+    var correctCounter:Int = FlxMath.remapToRange(event.swagCounter, 0, introLength-1, introLength-1, 0);
+    var animCounter:Int = correctCounter - 1;
+    if (animCounter != 0) {
+        if (gf.hasAnim("countdown" + animCounter))
+            gf.playAnim("countdown" + animCounter);
+    }
+    else {
+        if (gf.hasAnim("countdownGo"))
+            gf.playAnim("countdownGo");
+        else if (gf.hasAnim("cheer"))
+            gf.playAnim("cheer");
+    }
+}
+
 function onStartSong() {
     FlxTween.tween(taskbarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
@@ -550,26 +570,29 @@ function ratingJudge(timing:Float):String {
 
 function onPlayerMiss(event) {
     event.cancel();
-    if (event.note == null) return;
 
     var strumline:StrumLine = strumLines.members[event.playerID];
-    if (strumline == null) return;
-
-    if (event.note.isSustainNote) {
-        var nextSustain:Note = event.note.sustainParent.nextNote;
-        while(nextSustain != null) {
-            strumline.deleteNote(nextSustain);
-            nextSustain = nextSustain.nextSustain;
-        }
-        if (event.note.sustainParent.wasGoodHit) return;
-    }
-    else
-        strumline.deleteNote(event.note);
 
     var scor:Int = 0;
     if (!event.ghostMiss) {
+        if (event.note == null) return;
+        if (strumline == null) return;
+
         if (event.note.isSustainNote) {
-            /*
+            var nextSustain:Note = event.note.sustainParent.nextNote;
+            while(nextSustain != null) {
+                strumline.deleteNote(nextSustain);
+                nextSustain = nextSustain.nextSustain;
+            }
+            if (event.note.sustainParent.wasGoodHit) return;
+        }
+        else {
+            strumline.deleteNote(event.note);
+            health += missHealth;
+            scor = missScore;
+        }
+
+        /*if (event.note.isSustainNote) {
             var sustainLength:Float = 0;
             var nextSustain:Note = event.note.sustainParent.nextNote;
             while(nextSustain != null) {
@@ -597,12 +620,7 @@ function onPlayerMiss(event) {
                 ]);
                 return;
             }
-            */
-        }
-        else {
-            health += missHealth;
-            scor = missScore;
-        }
+        }*/
         notesMissed++;
         breakCombo();
     }
