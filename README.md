@@ -2,8 +2,6 @@
 
 ![License][license-shield] ![Release][release-shield] ![Repo Size][repoSize-shield] ![Stars][stars-shield]
 
-<a name="VS IMPOSTOR Pixel"></a>
-
 <div align="center">
     <a href="https://github.com/kenton54/VS-IMPOSTOR-Pixel">
         <img src="images/github/logo-hd.png" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 80%;">
