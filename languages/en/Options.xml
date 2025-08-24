@@ -75,8 +75,8 @@
             <str id="autoPause-desc">If checked, going to another window will pause the game.</str>
             <str id="autoPause-desc-mobile">If checked, opening the notification bar or going out of the game will pause it.</str>
 
-            <str id="impPixelFastMenus-name">Quick Transitions</str>
-            <str id="impPixelFastMenus-desc">If checked, transitions between menus will be faster.</str>
+            <str id="fastMenus-name">Quick Transitions</str>
+            <str id="fastMenus-desc">If checked, transitions between menus will be faster.</str>
         </group>
 
         <group name="Language" prefix="language.">

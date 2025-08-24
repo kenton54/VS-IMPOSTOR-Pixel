@@ -47,7 +47,7 @@ var options:Array<Dynamic> = [
         savepoint: Options
     },
     {
-        name: "impPixelFastMenus",
+        name: "fastMenus",
         type: "bool",
         savevar: "impPixelFastMenus",
         savepoint: FlxG.save.data
