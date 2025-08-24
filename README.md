@@ -6,9 +6,7 @@
     <a href="https://github.com/kenton54/VS-IMPOSTOR-Pixel">
         <img src="images/github/logo.png" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 80%;">
     </a>
-    <br/>
-    <br/>
-    <br/>
+    <h3>VS IMPOSTOR Pixel</h3> <!-- this is just here so the table of contents thing shows stuff properly -->
     <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
     <br/>
     <p align="center">
