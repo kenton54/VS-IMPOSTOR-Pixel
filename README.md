@@ -9,25 +9,19 @@
             image-rendering: pixelated;
         ">
     </a>
-    <h2 align="center">Created by <a href="https://github.com/kenton54" style="color:rgb(245, 113, 139)">kenton</a></h2>
     <br/>
-    <p align="center" style="
-        font-size:130%;
-        font-family:arial;
-        font-weight:bold;
-    ">
-        <b>VS IMPOSTOR Pixel</b> is a <b><a href="https://ninja-muffin24.itch.io/funkin" style="color:rgb(247, 51, 154);"><ins>Friday Night Funkin'</ins></a></b> Modification based on the popular mod <b><a href="https://vsimpostor.com" style="color:red;"><ins>VS IMPOSTOR</ins></a></b> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <a href="https://www.innersloth.com/games/among-us" style="color:red;"><ins>Among Us</ins></a> made by <a href="https://www.innersloth.com" style="color:white"><ins>Innersloth</ins></a>.
+    <p align="center">Created by <a href="https://github.com/kenton54">kenton</a></p>
+    <br/>
+    <p align="center">
+        <b>VS IMPOSTOR Pixel</b> is a <b><a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a></b> Modification based on the popular mod <b><a href="https://vsimpostor.com">VS IMPOSTOR</a></b> created by the team IMPOSTORM, which itself is based of the very popular game <small>and cultural meme</small> <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
     </p>
     <br/>
-    <p align="center" style="
-        font-size:125%;
-        font-weight:bold;
-    ">
+    <p align="center">
         Downloads
         <br/>
-        <a href="https://gamebanana.com/mods/506768" style="color:yellow;">Gamebana</a>
+        <a href="https://gamebanana.com/mods/506768">Gamebana</a>
         &middot;
-        <a href="https://gamebanana.com/mods/506768" style="color:green;">Google Drive</a>
+        <a href="https://gamebanana.com/mods/506768">Google Drive</a>
     </p>
 </div>
 
