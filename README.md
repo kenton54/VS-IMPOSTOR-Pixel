@@ -12,7 +12,7 @@
     <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
     <br/>
     <p align="center">
-        <b>VS IMPOSTOR Pixel</b> is a <b><a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a></b> Modification based on the popular mod <b><a href="https://vsimpostor.com">VS IMPOSTOR</a></b> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <b><a href="https://www.innersloth.com/games/among-us">Among Us</a></b> made by <b><a href="https://www.innersloth.com">Innersloth</a></p>.
+        <b>VS IMPOSTOR Pixel</b> is a <b><a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a></b> Modification based on the popular mod <b><a href="https://vsimpostor.com">VS IMPOSTOR</a></b> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <b><a href="https://www.innersloth.com/games/among-us">Among Us</a></b> made by <b><a href="https://www.innersloth.com">Innersloth</a>.</p>
     </p>
     <br/>
     <p align="center">
