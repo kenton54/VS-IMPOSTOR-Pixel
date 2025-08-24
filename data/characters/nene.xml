@@ -1,4 +1,4 @@
-<character sprite="partners/nene" scale="10" antialiasing="false" isGF="true" icon="partners/nene-pixel" holdTime="8" color="#F09CD5" camx="-120" x="-20" y="-88">
+<character sprite="partners/nene" scale="10" antialiasing="false" isGF="true" icon="partners/nene" holdTime="8" color="#F09CD5" camx="-120" x="-20" y="-88">
 	<anim name="danceLeft" anim="bop left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="danceRight" anim="bop right" x="0" y="0" fps="24" loop="false"/>
 	<anim name="knife raise" anim="knife raise" x="0" y="0" fps="24" loop="false"/>

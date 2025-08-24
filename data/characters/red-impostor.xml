@@ -1,4 +1,4 @@
-<character sprite="red-impostor" scale="10" antialiasing="false" icon="red-impostor-pixel" color="#AF2121" holdTime="8">
+<character sprite="red-impostor" scale="10" antialiasing="false" icon="red-impostor" color="#AF2121" holdTime="8">
 	<anim name="idle" anim="idle" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singLEFT" anim="note left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singDOWN" anim="note down" x="0" y="0" fps="24" loop="false"/>

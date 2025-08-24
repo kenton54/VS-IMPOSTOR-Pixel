@@ -1,4 +1,4 @@
-<character sprite="partners/gf-lightsOut" scale="10" antialiasing="false" isGF="true" icon="partners/gf-lightsOut-pixel" holdTime="8" color="#FFFFFF" camx="-120">
+<character sprite="partners/gf-lightsOut" scale="10" antialiasing="false" isGF="true" icon="partners/gf-lightsOut" holdTime="8" color="#FFFFFF" camx="-120">
 	<anim name="danceLeft" anim="bop left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="danceRight" anim="bop right" x="0" y="0" fps="24" loop="false"/>
 	<anim name="sad" anim="sob" x="0" y="0" fps="24" loop="false"/>

@@ -1,4 +1,4 @@
-<character sprite="playables/pico" scale="10" antialiasing="false" flipX="true" isPlayer="true" icon="playables/pico-pixel" holdTime="8" color="#A0D656" x="16" y="-44">
+<character sprite="playables/pico" scale="10" antialiasing="false" flipX="true" isPlayer="true" icon="playables/pico" holdTime="8" color="#A0D656" x="16" y="-44">
 	<anim name="idle" anim="idle" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singLEFT" anim="note left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singDOWN" anim="note down" x="0" y="0" fps="24" loop="false"/>

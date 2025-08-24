@@ -1,4 +1,4 @@
-<character sprite="playables/bf" scale="10" antialiasing="false" flipX="true" isPlayer="true" icon="playables/bf-pixel" holdTime="8" color="#31B0D1">
+<character sprite="playables/bf" scale="10" antialiasing="false" flipX="true" isPlayer="true" icon="playables/bf" holdTime="8" color="#31B0D1">
 	<anim name="idle" anim="idle" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singLEFT" anim="note left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singDOWN" anim="note down" x="0" y="0" fps="24" loop="false"/>

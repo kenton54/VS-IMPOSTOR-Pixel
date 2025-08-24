@@ -1,0 +1,4 @@
+<icon scale="5" antialiasing="false" offsetY="10">
+    <step percent="0" name="losing"/>
+    <step percent="25" name="neutral"/>
+</icon>
