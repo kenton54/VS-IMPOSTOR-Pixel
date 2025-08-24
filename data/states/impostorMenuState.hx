@@ -1244,11 +1244,26 @@ function checkSelectedMainEntry() {
                 });
             });
         case 1:
+            new FlxTimer().start(0.5, _ -> {
+                setTransition("fade");
+                FlxG.switchState(new ModState("impostorAchievementsState"));
+            });
         case 2:
+            new FlxTimer().start(0.5, _ -> {
+                setTransition("fade");
+                FlxG.switchState(new ModState("impostorShopState"));
+            });
         case 3:
             openSubState(new ModSubState("options/impostorOptionsSubState"));
             persistentUpdate = persistentDraw = true;
         case 4:
+            openWindowSection(translate("mainMenu.credits"), [], function(posH, posV, group) {
+                
+            }, function() {
+                
+            }, function() {
+                
+            });
         case 5:
             modsArray = [];
             var mods:Array<String> = [];
@@ -1367,12 +1382,8 @@ function checkSelectedMainEntry() {
             }, function() {
                 playMenuSound("cancel");
 
-                var dur:Float = 1;
-                frontCam.fade(FlxColor.BLACK, dur, false);
-                new FlxTimer().start(dur, _ -> {
-                    //if (!isMobile) window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/funkin64"))));
-                    ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
-                });
+                setTransition("slowFade");
+                ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
             });
     }
 }
@@ -1398,9 +1409,7 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
     titleSpr.x -= titleSpr.width + 8 * baseScale;
     titleSpr.fieldWidth = titleSpr.width + 40;
 
-    var xButton:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, correctCornerPos).loadGraphic(Paths.image("menus/mainmenu/x"));
-    xButton.scale.set(baseScale, baseScale);
-    xButton.updateHitbox();
+    var xButton:BackButton = new BackButton(correctCornerPos + 2 * baseScale, correctCornerPos, () -> closeWindowSection(), baseScale, false, "menus/x", true);
 
     var divisionWidth:Float = spaceCam.width - correctCornerPos - 4 * baseScale;
     var division:FlxSprite = new FlxSprite(correctCornerPos + 2 * baseScale, xButton.y + xButton.height).makeGraphic(Std.int(divisionWidth), baseScale, FlxColor.WHITE);
@@ -1418,21 +1427,6 @@ function openWindowSection(title:String, windowArray:Array<Array<Dynamic>>, memb
 
 function handleWindow() {
     curWindowLogic();
-
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (windowGroup.members[windowGroup.length - 1].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
-                if (touch.justReleased)
-                    closeWindowSection();
-            }
-        }
-    }
-    else {
-        if (windowGroup.members[windowGroup.length - 1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-            if (FlxG.mouse.justPressed)
-                closeWindowSection();
-        }
-    }
 }
 
 function closeWindowSection() {

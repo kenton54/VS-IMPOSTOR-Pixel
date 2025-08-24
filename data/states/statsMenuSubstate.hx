@@ -70,7 +70,7 @@ function create() {
         statsGroup.add(statValue);
     }
 
-    closeButton = new FlxSprite(buttonsBack.box.x, buttonsBack.box.y).loadGraphic(Paths.image("menus/mainmenu/x"));
+    closeButton = new FlxSprite(buttonsBack.box.x, buttonsBack.box.y).loadGraphic(Paths.image("menus/x"));
     closeButton.scale.set(scale, scale);
     closeButton.updateHitbox();
     closeButton.x -= closeButton.width + 2 * scale;

@@ -7,6 +7,7 @@ import funkin.options.Options;
 import funkin.savedata.FunkinSave;
 import openfl.filters.ShaderFilter;
 import sys.FileSystem;
+import BackButton;
 
 var optionsCam:FlxCamera;
 
@@ -30,7 +31,7 @@ var lastOption:Int = -1;
 
 var volumeBeep:FlxSound;
 
-var closeButton:FlxSprite;
+var closeButton:BackButton;
 
 var scale:Float = 5;
 var generalWidth:Int = 312;
@@ -123,15 +124,16 @@ function create() {
 
     //descriptionGroup.y -= descriptionGroup.height;
 
-    closeButton = new FlxSprite(phoneSpr.x - 4 * scale, 0).loadGraphic(Paths.image("menus/mainmenu/x"));
-    closeButton.scale.set(scale, scale);
-    closeButton.updateHitbox();
+    closeButton = new BackButton(phoneSpr.x - 4 * scale, 0, () -> {
+        closeOptions();
+    }, scale, false, "menus/x", true);
     closeButton.camera = optionsCam;
     theEntireThing.add(closeButton);
 
     if (closeButton.x < 0) closeButton.x = 0;
 
-    FlxTween.tween(theEntireThing, {y: 0}, 0.4, {ease: FlxEase.quartOut, onComplete: _ -> {
+    var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.2 : 0.4;
+    FlxTween.tween(theEntireThing, {y: 0}, duration, {ease: FlxEase.quartOut, onComplete: _ -> {
         canInteract = true;
     }});
 
@@ -262,13 +264,6 @@ function handleMouse() {
             playSound();
         }
     }
-
-    if (FlxG.mouse.overlaps(closeButton)) {
-        hoveringOverCategory = true;
-        if (FlxG.mouse.justReleased) {
-            closeOptions();
-        }
-    }
 }
 
 function handleTouch() {
@@ -291,13 +286,6 @@ function handleTouch() {
             if (touch.overlaps(group.members[0])) {
                 curOption = i;
                 playSound();
-            }
-        }
-
-        if (touch.overlaps(closeButton)) {
-            hoveringOverCategory = true;
-            if (touch.justReleased) {
-                closeOptions();
             }
         }
     }
@@ -1468,7 +1456,9 @@ function deleteCategory() {
 function closeOptions() {
     playMenuSound("cancel");
     canInteract = false;
-    FlxTween.tween(theEntireThing, {y: FlxG.height}, 0.4, {ease: FlxEase.quartIn, onComplete: _ -> {
+
+    var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.2 : 0.4;
+    FlxTween.tween(theEntireThing, {y: FlxG.height}, duration, {ease: FlxEase.quartIn, onComplete: _ -> {
         close();
     }});
 }

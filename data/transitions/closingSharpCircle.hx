@@ -49,7 +49,7 @@ function create(event) {
     var circleY:Float = transitionSprite.y;
     var circleWidth:Int = transitionSprite.width;
     var circleHeight:Int = transitionSprite.height;
-    var tweenDur:Float = 2 / 4;
+    var tweenDur:Float = FlxG.save.data.impPixelFastMenus ? 1 / 4 : 2 / 4;
     var tweenEase:FlxEase = event.transOut ? FlxEase.quartOut : FlxEase.quartIn;
     if (event.transOut) {
         blackSpr.y = circleY - blackSpr.height;

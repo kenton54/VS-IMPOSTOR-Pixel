@@ -5,7 +5,7 @@ function create(event) {
 
     transOut = event.transOut;
 
-    var transDur:Float = FlxG.save.data.impPixelFastMenus ? 1 : 2;
+    var transDur:Float = FlxG.save.data.impPixelFastMenus ? 0.125 : 0.25;
     transitionCamera.fade(FlxColor.BLACK, transDur, !transOut);
     new FlxTimer().start(transDur, _ -> {
         finish();

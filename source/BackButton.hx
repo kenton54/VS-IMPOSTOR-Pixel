@@ -48,7 +48,7 @@ class BackButton extends FunkinSprite {
         loadSprite(Paths.image(sprite == null ? "app/backButton" : sprite));
         addAnim("idle", "idle", 0, false);
         addAnim("hold", "hold", 0, false);
-        addAnim("press", "press", 24, false);
+        addAnim("press", "press", FlxG.save.data.impPixelFastMenus ? 48 : 24, false);
         playAnim("idle");
 
         this.scale.set(size, size);
@@ -150,7 +150,7 @@ class BackButton extends FunkinSprite {
         if (!enabled) return;
 
         if (instant) {
-            onConfirmEnd.dispatch();
+            dispatchSignal(onConfirmEnd);
             return;
         }
         else if (_confirmed) return;

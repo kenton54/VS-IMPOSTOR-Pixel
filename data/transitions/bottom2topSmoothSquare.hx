@@ -20,9 +20,10 @@ function create(event) {
     transitionSprite.flipY = true;
     add(transitionSprite);
 
+    var transDur:Float = FlxG.save.data.impPixelFastMenus ? 1 / 5 : 2 / 5;
     transitionCamera.flipY = !event.transOut;
     transitionCamera.scroll.y = -transitionCamera.height;
-    transitionTween = FlxTween.tween(transitionCamera, {"scroll.y": transitionCamera.height}, 2 / 5, {
+    transitionTween = FlxTween.tween(transitionCamera, {"scroll.y": transitionCamera.height}, transDur, {
         ease: FlxEase.sineOut,
         onComplete: _ -> {
             finish();

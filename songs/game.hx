@@ -20,6 +20,8 @@ import HoldCoverHandler;
 import ImpostorFlags;
 import VSliceCharacter;
 
+public var camExtra:FlxCamera;
+
 public var taskbarBG:FlxSprite;
 public var taskbar:FlxSprite;
 public var taskbarTxt:FunkinText;
@@ -154,6 +156,10 @@ function onPostNoteCreation(event) {
 }
 
 function postCreate() {
+    camExtra = new FlxCamera();
+    camExtra.bgColor = FlxColor.TRANSPARENT;
+    FlxG.cameras.add(camExtra, false);
+
     camGame.snapToTarget();
 
     updateRatingStuff = null;

@@ -45,6 +45,12 @@ var options:Array<Dynamic> = [
         type: "bool",
         savevar: "autoPause",
         savepoint: Options
+    },
+    {
+        name: "impPixelFastMenus",
+        type: "bool",
+        savevar: "impPixelFastMenus",
+        savepoint: FlxG.save.data
     }
 ];
 

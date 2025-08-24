@@ -43,6 +43,7 @@ function initSaveData() {
     FlxG.save.data.middlescroll ??= FlxG.onMobile ? true : false;
     FlxG.save.data.impPixelTimeBar ??= true;
     FlxG.save.data.impPixelStrumBG ??= 0;
+    FlxG.save.data.impPixelFastMenus ??= false;
 
     // Mod Source
     FlxG.save.data.impPixelStorySequence ??= 0;
