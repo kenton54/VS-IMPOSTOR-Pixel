@@ -1,6 +1,5 @@
 import funkin.backend.utils.DiscordUtil;
 import hxdiscord_rpc.Types;
-import ImpostorFlags;
 
 function new() {}
 
@@ -15,7 +14,7 @@ function onMenuLoaded(name:String) {
 function onPlayStateUpdate() {
 	DiscordUtil.changeSongPresence(
 		PlayState.instance.detailsText,
-		!ImpostorFlags.playingVersus ? "Playing Solo: " + PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]" : "Competing against a Friend: " + PlayState.SONG.meta.displayName,
+		!isPlayingVersus ? "Playing Solo: " + PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]" : "Competing against a Friend: " + PlayState.SONG.meta.displayName,
 		PlayState.instance.inst
 	);
 }

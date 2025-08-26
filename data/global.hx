@@ -4,7 +4,7 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import lime.graphics.Image;
 import openfl.system.Capabilities;
-import ImpostorFlags;
+importScript("data/flags");
 importScript("data/utils");
 
 function new() {
@@ -52,10 +52,10 @@ function initSaveData() {
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
     //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
-    FlxG.save.data.impPixelFlags ??= [];
+    FlxG.save.data.impPixelFlags ??= getFlags(true);
 
-    ImpostorFlags.load(FlxG.save.data.impPixelFlags);
     initVars();
+    initFlags(FlxG.save.data.impPixelFlags);
 }
 
 function initVars() {
@@ -64,6 +64,12 @@ function initVars() {
     playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
     skinsList = FlxG.save.data.impPixelSkinsUnlocked;
     pixelBeans = FlxG.save.data.impPixelBeans;
+}
+
+function initFlags(data:Map<String, Dynamic>) {
+    weeksCompleted = data.get("weeksCompleted");
+    seenCharacters = data.get("seenCharacters");
+    unlockedVideos = data.get("unlockedVideos");
 }
 
 static function setStats(data:Map<String, Dynamic>) {
@@ -93,15 +99,11 @@ function postStateSwitch() {
         FlxG.game._state.add(mobilePreviewTxt);
     }
 
-    ImpostorFlags.save();
     saveImpostor();
 }
 
-function closeGame() {
-    ImpostorFlags.save();
+function closeGame()
     saveImpostor();
-    FlxG.save.flush();
-}
 
 function destroy() {
     Application.current.onExit.remove(closeGame);

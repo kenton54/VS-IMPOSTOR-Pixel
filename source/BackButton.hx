@@ -150,6 +150,9 @@ class BackButton extends FunkinSprite {
         if (!enabled) return;
 
         if (instant) {
+            _confirmed = true;
+            enabled = false;
+
             dispatchSignal(onConfirmEnd);
             return;
         }

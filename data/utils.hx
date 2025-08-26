@@ -1,3 +1,4 @@
+import flixel.sound.FlxSound;
 import flixel.util.FlxBaseSignal;
 import funkin.backend.system.Flags;
 import funkin.backend.system.Logs;
@@ -45,6 +46,8 @@ public static var pixelPlayable:String = "bf";
 public static var pixelBeans:Int = 0;
 
 public static var globalUsingKeyboard:Bool = false;
+
+public static var isPlayingVersus:Bool = false;
 
 public static var isMobile:Bool = FlxG.onMobile;
 public static var fakeMobile:Bool = false;
@@ -168,27 +171,28 @@ public static function setBlendMode(blend:String):BlendMode {
 }
 
 public static function playSound(sound:String, ?volume:Float) {
-    volume = (volume == null) ? 1 : volume;
+    volume ??= 1;
     FlxG.sound.play(Paths.sound(sound), volume * Options.volumeSFX);
 }
 
+/**
+ * Plays a sound that persists between menus.
+ * 
+ * If you don't understand, the sound won't stop playing when switching states.
+ * 
+ * @param sound The sound file inside the "sounds/menu" folder.
+ * @param volume The volume the sound should play at.
+ */
 public static function playMenuSound(sound:String, ?volume:Float) {
     volume = (volume == null) ? 1 : volume;
-    var soundID:Int = switch(sound) {
-        case "scroll": 0;
-        case "confirm": 1;
-        case "cancel": 2;
-        case "checked": 3;
-        case "unchecked": 4;
-        case "warning": 5;
-        case "select": -1;
-        default: 0; // scroll
-    }
 
-    if (soundID == -1)
-        playSound("menu/" + sound, volume);
-    else
-        CoolUtil.playMenuSFX(soundID, volume);
+    var soundPath:String = Paths.sound("menu/" + sound);
+    var menuSound:FlxSound = new FlxSound().loadEmbedded(soundPath, false, true);
+    menuSound.volume = volume * Options.volumeSFX;
+    menuSound.persist = true;
+    menuSound.play();
+
+    FlxG.sound.list.add(menuSound);
 }
 
 public static function createMultiLineText(texts:Array<String>):String {
@@ -261,14 +265,17 @@ public static function resizeWindow(width:Int, height:Int) {
 public static function saveImpostor() {
     FlxG.save.data.impPixelStorySequence = storySequence;
     FlxG.save.data.impPixelBeans = pixelBeans;
-    FlxG.save.data.impPixelStats = impostorStats;
+    FlxG.save.data.impPixelStats = getStats();
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
+    FlxG.save.data.impPixelFlags = getFlags();
 
     logTraceColored([
         {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
         {text: "Data saved!", color: getLogColor("green")}
     ], "verbose");
+
+    FlxG.save.flush();
 }
 
 public static function eraseImpostorSaveData() {
@@ -278,6 +285,7 @@ public static function eraseImpostorSaveData() {
     playablesList.set("bf", true);
     skinsList.clear();
     pixelBeans = 0;
+    resetFlags();
 
     FlxG.save.data.impPixelStorySequence = null;
     FlxG.save.data.impPixelBeans = null;

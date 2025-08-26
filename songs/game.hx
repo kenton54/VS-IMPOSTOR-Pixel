@@ -17,7 +17,6 @@ import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
 import Date;
 import HoldCoverHandler;
-import ImpostorFlags;
 import VSliceCharacter;
 
 public var camExtra:FlxCamera;
@@ -167,7 +166,7 @@ function postCreate() {
     defaultDisplayCombo = false;
     comboGroup.destroy();
 
-    canDie = !ImpostorFlags.playingVersus;
+    canDie = !isPlayingVersus;
 
     for (strumline in strumLines.members) {
         if (!strumline.visible) continue;
@@ -233,7 +232,7 @@ function postCreate() {
 
     insert(members.length, splashHandler.getSplashGroup(noteStyle));
 
-    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!ImpostorFlags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
+    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
 
     // add backgrounds to the strumlines
     if (FlxG.save.data.impPixelStrumBG > 0) {
@@ -1069,7 +1068,7 @@ function prepareNextSong() {
 
         startingSong = true;
 
-        WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!ImpostorFlags.playingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
+        WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
 
         updateDiscordPresence();
 
