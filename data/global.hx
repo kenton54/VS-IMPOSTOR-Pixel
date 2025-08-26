@@ -67,6 +67,7 @@ function initVars() {
 }
 
 function initFlags(data:Map<String, Dynamic>) {
+    isSussusMoogusComplete = data.get("isSussusMoogusComplete");
     weeksCompleted = data.get("weeksCompleted");
     seenCharacters = data.get("seenCharacters");
     unlockedVideos = data.get("unlockedVideos");
