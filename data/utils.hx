@@ -1,3 +1,4 @@
+import flixel.util.FlxBaseSignal;
 import funkin.backend.system.Flags;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.DiscordUtil;
@@ -237,6 +238,12 @@ public static function getLogColor(color:String):Int {
         case "yellow": return 14;
         case "white": return 15;
         default: return -1;
+    }
+}
+
+public static function dispatchSignal(signal:FlxBaseSignal, ?parameter1:Dynamic, ?parameter2:Dynamic, ?parameter3:Dynamic, ?parameter4:Dynamic, ?parameter5:Dynamic, ?parameter6:Dynamic) {
+    for (handler in signal.handlers) {
+        handler.listener(parameter1, parameter2, parameter3, parameter4, parameter5, parameter6);
     }
 }
 

@@ -172,12 +172,6 @@ class BackButton extends FunkinSprite {
         });
     }
 
-    function dispatchSignal(signal:FlxBaseSignal) {
-        for (handler in signal.handlers) {
-            handler.listener();
-        }
-    }
-
     override public function destroy() {
         super.destroy();
 

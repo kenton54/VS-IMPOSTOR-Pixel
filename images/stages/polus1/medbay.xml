@@ -1,5 +1,5 @@
 <!-- Manually created by kentongus -->
-<TextureAtlas imagePath="medbay.png" width="354" height="146">
-	<SubTexture name="idle normal1" x="0" y="0" width="354" height="73"/>
-	<SubTexture name="idle dark1" x="0" y="73" width="354" height="73"/>
+<TextureAtlas imagePath="medbay.png" width="373" height="208">
+	<SubTexture name="idle normal1" x="0" y="0" width="373" height="104"/>
+	<SubTexture name="idle dark1" x="0" y="104" width="373" height="104"/>
 </TextureAtlas>

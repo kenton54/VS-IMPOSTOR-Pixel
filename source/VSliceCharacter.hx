@@ -1,4 +1,5 @@
 import flixel.animation.FlxAnimation;
+import flixel.util.FlxBaseSignal;
 
 class VSliceCharacter extends Character {
     /**
@@ -10,6 +11,8 @@ class VSliceCharacter extends Character {
      * This character plays a given animation when dropping combos larger than these numbers.
      */
     public var dropNoteCounts(default, null):Array<Int> = [];
+
+    public var onPlayAnim:FlxBaseSignal<(animName:String, forced:Bool, context:Dynamic, reversed:Bool, frame:Int)->Void> = new FlxBaseSignal();
 
     public function new(x:Float, y:Float, ?character:String, isPlayer:Bool = false, switchAnims:Bool = true) {
         super(x, y, character, isPlayer, switchAnims, false);
@@ -56,5 +59,14 @@ class VSliceCharacter extends Character {
         if (animName != null) {
             this.playAnim(animName, true);
         }
+    }
+
+    override public function playAnim(AnimName:String, ?Force:Bool, ?Context:PlayAnimContext, ?Reversed:Bool = false, ?Frame:Int) {
+        Force ??= false;
+        Context ??= null;
+        Reversed ??= false;
+        Frame ??= 0;
+        super.playAnim(AnimName, Force, Context, Reversed, Frame);
+        dispatchSignal(onPlayAnim, AnimName, Force, Context, Reversed, Frame);
     }
 }

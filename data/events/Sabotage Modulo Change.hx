@@ -31,8 +31,7 @@ function beatHit(curBeat:Int) {
     if (curBeat % interval == 0 && !onStep) {
         sabotageFlash.visible = !sabotageFlash.visible;
         if (sabotageFlash.visible)
-            if (shouldPlaySound)
-                FlxG.sound.play(Paths.sound("sabotage"), 0.7);
+            if (shouldPlaySound) playSound("sabotage", 0.7);
     }
 }
 
@@ -40,7 +39,6 @@ function stepHit(curStep:Int) {
     if (curStep % interval == 0 && onStep) {
         sabotageFlash.visible = !sabotageFlash.visible;
         if (sabotageFlash.visible)
-            if (shouldPlaySound)
-                FlxG.sound.play(Paths.sound("sabotage"), 0.7);
+            if (shouldPlaySound) playSound("sabotage", 0.7);
     }
 }

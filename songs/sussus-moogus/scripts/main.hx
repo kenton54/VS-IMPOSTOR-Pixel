@@ -1,8 +1,7 @@
 var stepTime:Float = 0;
 
 function create() {
-    if (curStage == "Polus Lab (Outside)")
-        songUsesLightsSabotage = true;
+    songUsesLightsSabotage = true;
 }
 
 function postCreate() {
@@ -12,7 +11,7 @@ function postCreate() {
     camGame.zoom = 0.4;
     camHUD.alpha = 0;
 
-    camFollow.setPosition(130, -1800);
+    camFollow.setPosition(132, -2400);
     camGame.snapToTarget();
 
     stepTime = (Conductor.stepCrochet / 1000);
@@ -32,7 +31,7 @@ function killCrewmateBesideBF() {
     if (curStage == "Polus Lab (Outside)") {
         dad.playAnim("shoot-front", true);
         boyfriend.playAnim("shock-front", true);
-        polus1Flash();
+        flash();
     }
 }
 
@@ -40,16 +39,14 @@ function killCrewmatePassingBy() {
     if (curStage == "Polus Lab (Outside)") {
         dad.playAnim("shoot-camera", true);
         boyfriend.playAnim("shock-camera", true);
-        polus1Flash();
+        flash();
     }
 }
 
 function lightsOut() {
-    if (curStage == "Polus Lab (Outside)")
-        polus1SabotageLights();
+    sabotageLights();
 }
 
 function lightsBack() {
-    if (curStage == "Polus Lab (Outside)")
-        polus1FixLights();
+    fixLights();
 }

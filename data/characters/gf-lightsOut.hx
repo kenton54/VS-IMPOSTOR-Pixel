@@ -1,12 +1,12 @@
 public var speakers:FunkinSprite;
 
-function create() {
+function postCreate() {
     speakers = new FunkinSprite(0, 0, Paths.image("characters/partners/speakers/speakers-lightsOut"));
     speakers.animation.addByPrefix("idle", "bop", 24, false);
     speakers.animation.play("idle");
     speakers.beatAnims.push({name: "idle", forced: true});
     speakers.beatInterval = 1;
-    speakers.scale.set(this.scale.x, this.scale.y);
+    speakers.scale.set(scale.x, scale.y);
     speakers.updateHitbox();
 }
 
@@ -14,11 +14,11 @@ var added:Bool = false;
 function update(elapsed:Float) {
     if (!added) {
         added = true;
-        speakers.setPosition(this.x - 340, this.y + 66);
-        speakers.camera = this.camera;
+        speakers.setPosition(x - 340, y + 66);
+        speakers.camera = camera;
         FlxG.state.insert(FlxG.state.members.indexOf(this), speakers);
     }
 
-    if (this.alpha != speakers.alpha) speakers.alpha = this.alpha;
-    if (this.visible != speakers.visible) speakers.visible = this.visible;
+    if (alpha != speakers.alpha) speakers.alpha = alpha;
+    if (visible != speakers.visible) speakers.visible = visible;
 }

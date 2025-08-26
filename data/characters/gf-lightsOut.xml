@@ -4,4 +4,5 @@
 	<anim name="sad" anim="sob" x="0" y="0" fps="24" loop="false"/>
 	<anim name="cheer" anim="cheer" x="0" y="0" fps="24" loop="false"/>
 	<anim name="combo50" anim="cheer" x="0" y="0" fps="24" loop="false"/>
+	<anim name="drop70" anim="sob" x="0" y="0" fps="24" loop="false"/>
 </character>

@@ -1,9 +1,5 @@
-import funkin.backend.scripting.EventManager;
-import funkin.backend.scripting.events.CamMoveEvent;
-
 function onEvent(sus) {
     if (sus.event.name == "Camera Movement Advanced") {
-        curCameraTarget = -1;
         var params = {
             target: sus.event.params[0],
             xOffset: sus.event.params[1],
@@ -12,24 +8,39 @@ function onEvent(sus) {
             twnEase: sus.event.params[4],
             twnType: sus.event.params[5]
         }
-        FlxTween.cancelTweensOf(camFollow, ["x", "y"]);
+        var tween = eventsTween.get("cameraMovement");
+        if (tween != null) {
+            if (tween.onComplete != null) tween.onComplete(tween);
+            tween.cancel();
+        }
+
+        curCameraTarget = -1;
         var position:CamPosData = getStrumlineCamPos(params.target);
+
         if (position.amount > 0) {
             var fullXpos:Float = position.pos.x + params.xOffset;
             var fullYpos:Float = position.pos.y + params.yOffset;
+
             if (params.twnEase == "classic") {
-                FlxG.camera.followLerp = 0.04;
                 camFollow.setPosition(fullXpos, fullYpos);
-                if (params.duration == 0) camGame.snapToTarget();
+
+                if (params.duration == 0)
+                    camGame.snapToTarget();
             }
             else {
-                FlxG.camera.followLerp = 1;
-                if (params.duration == 0) {
-                    camFollow.setPosition(fullXpos, fullYpos);
+                camFollow.setPosition(fullXpos, fullYpos);
+                if (params.duration == 0)
                     camGame.snapToTarget();
-                }
                 else {
-                    FlxTween.tween(camFollow, {x: fullXpos, y: fullYpos}, (Conductor.stepCrochet / 1000) * params.duration, {ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType)});
+                    var oldFollow:Bool = FlxG.camera.followEnabled;
+                    FlxG.camera.followEnabled = false;
+
+                    eventsTween.set("cameraMovement", FlxTween.tween(FlxG.camera.scroll, {x: fullXpos - FlxG.camera.width * 0.5, y: fullYpos - FlxG.camera.height * 0.5}, (Conductor.stepCrochet / 1000) * params.duration, {
+                        ease: CoolUtil.flxeaseFromString(params.twnEase, params.twnType),
+                        onComplete: _ -> {
+                            FlxG.camera.followEnabled = oldFollow;
+                        }
+                    }));
                 }
             }
             var camPoint:FlxPoint = FlxPoint.get(fullXpos, fullYpos);
@@ -39,8 +50,7 @@ function onEvent(sus) {
     if (sus.event.name == "Camera Movement") {
         curCameraTarget = -1;
         var position:CamPosData = getStrumlineCamPos(sus.event.params[0]);
-        FlxG.camera.followLerp = 0.04;
         camFollow.setPosition(position.pos.x, position.pos.y);
-        scripts.call("onNewCameraMove", [position.pos, strumLines.members[params.target], position.amount]);
+        scripts.call("onNewCameraMove", [position.pos, strumLines.members[sus.event.params[0]], position.amount]);
     }
 }

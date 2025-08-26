@@ -1,25 +1,23 @@
 {
-	"beatsPerMeasure": 4,
-	"opponentModeAllowed": true,
-	"coopAllowed": true,
-	"stepsPerBeat": 4,
-	"bpm": 155,
-	"difficulties": [
-		"easy",
-		"normal",
-		"hard"
-	],
-	"needsVoices": false,
-	"parsedColor": -5299935,
-	"displayName": "Sussus Moogus",
-	"icon": "red-impostor",
-	"name": "sussus-moogus",
-	"color": "#AF2121",
 	"customValues": {
 		"ratingsChart": {
 			"easy": 2,
 			"normal": 3,
 			"hard": 4
 		}
-	}
+	},
+	"color": "#000000",
+	"opponentModeAllowed": true,
+	"difficulties": [
+		"easy",
+		"normal",
+		"hard"
+	],
+	"icon": "red-impostor",
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"displayName": "Sussus Moogus",
+	"needsVoices": false,
+	"beatsPerMeasure": 4,
+	"bpm": 155
 }

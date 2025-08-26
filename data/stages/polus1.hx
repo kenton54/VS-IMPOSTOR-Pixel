@@ -1,15 +1,14 @@
 import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
 import flixel.util.FlxGradient;
-import funkin.backend.shaders.CustomShader;
 import PixelStars;
-import SolidColorShader;
+import VSliceCharacter;
 
 public var songUsesLightsSabotage:Bool = false;
 public var makeCrowdAppear:Bool = false;
 
-public var darkDadChar:Character;
-public var darkBoyfriendChar:Character;
-public var darkGfChar:Character;
+public var darkDadChar:VSliceCharacter;
+public var darkBoyfriendChar:VSliceCharacter;
+public var darkGfChar:VSliceCharacter;
 
 public var snowParticles:FlxTypedEmitter;
 
@@ -18,10 +17,9 @@ var stars:PixelStars;
 var skyGradient:FlxSprite;
 
 function create() {
-    skyGradient = FlxGradient.createGradientFlxSprite(FlxG.width * 3, FlxG.height * 4, [0x004D3357, 0xFF4D3357]);
-    skyGradient.x = -1400;
-    skyGradient.y = -1000;
-    skyGradient.scrollFactor.set(0.15, 0.15);
+    skyGradient = FlxGradient.createGradientFlxSprite(FlxG.width * 4, FlxG.height * 3, [0x0023193B, 0x8023193B, 0xFF755387]);
+    skyGradient.setPosition(-1400, -1200);
+    skyGradient.scrollFactor.set(0.1, 0.1);
     insert(0, skyGradient);
 
     stars = new PixelStars(-20, 3);
@@ -40,47 +38,62 @@ function create() {
     add(snowParticles);
 }
 
-function postCreate() {
+function postCharacterSetup() {
+    var polusShader = new CustomShader("adjustColor");
+    polusShader.brightness = -12.0;
+    polusShader.hue = -18.0;
+    polusShader.contrast = -30.0;
+    polusShader.saturation = -6.0;
+
+    boyfriend.shader = polusShader;
+    dad.shader = polusShader;
+    gf.shader = polusShader;
+
     if (songUsesLightsSabotage) {
-        darkDadChar = new Character(dad.x, dad.y, dad.curCharacter + "-lightsOut", false);
+        darkDadChar = new VSliceCharacter(dad.x, dad.y, dad.curCharacter + "-lightsOut", false);
         darkDadChar.visible = false;
-        darkBoyfriendChar = new Character(boyfriend.x, boyfriend.y, boyfriend.curCharacter + "-lightsOut", true);
+        dad.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
+            darkDadChar.playAnim(name, force, "LOCK", reverse, frame);
+        });
+
+        darkBoyfriendChar = new VSliceCharacter(boyfriend.x, boyfriend.y, boyfriend.curCharacter + "-lightsOut", true);
         darkBoyfriendChar.visible = false;
-        darkGfChar = new Character(gf.x, gf.y, gf.curCharacter + "-lightsOut", false);
+        boyfriend.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
+            darkBoyfriendChar.playAnim(name, force, "LOCK", reverse, frame);
+        });
+
+        darkGfChar = new VSliceCharacter(gf.x, gf.y, gf.curCharacter + "-lightsOut", false);
         darkGfChar.visible = false;
+        gf.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
+            darkGfChar.playAnim(name, force, "LOCK", reverse, frame);
+        });
+
         insert(members.indexOf(dad) + 1, darkDadChar);
         insert(members.indexOf(boyfriend) + 1, darkBoyfriendChar);
         insert(members.indexOf(gf) + 1, darkGfChar);
     }
 }
 
-public function polus1Flash() {
-    var solidColor1:SolidColorShader = new SolidColorShader(FlxColor.BLACK);
-    var solidColor2:SolidColorShader = new SolidColorShader(FlxColor.BLACK);
-    var solidColor3:SolidColorShader = new SolidColorShader(FlxColor.WHITE);
-    var solidColor4:SolidColorShader = new SolidColorShader(FlxColor.WHITE);
-    medbay_normal.shader = solidColor1.shader;
-    labWall_normal.shader = solidColor2.shader;
-    labEntrance_normal.shader = solidColor3.shader;
-    ground_normal.shader = solidColor3.shader;
+public function flash() {
+    medbay_normal.setColorTransform(0, 0, 0, 1, 0, 0, 0, 1);
+    labWall_normal.setColorTransform(0, 0, 0, 1, 0, 0, 0, 1);
+    labEntrance_normal.setColorTransform(1, 1, 1, 1, 255, 255, 255, 1);
+    ground_normal.setColorTransform(1, 1, 1, 1, 255, 255, 255, 1);
 
     gf.playAnim("shock", true);
 
+    // 2 frames of a 24 animation framerate
     new FlxTimer().start(2 / 24, _ -> {
-        medbay_normal.shader = null;
-        labWall_normal.shader = null;
-        labEntrance_normal.shader = null;
-        ground_normal.shader = null;
-
-        solidColor1.destroy();
-        solidColor2.destroy();
-        solidColor3.destroy();
+        medbay_normal.setColorTransform(1, 1, 1, 1, 0, 0, 0, 1);
+        labWall_normal.setColorTransform(1, 1, 1, 1, 0, 0, 0, 1);
+        labEntrance_normal.setColorTransform(1, 1, 1, 1, 0, 0, 0, 1);
+        ground_normal.setColorTransform(1, 1, 1, 1, 0, 0, 0, 1);
     });
 }
 
 var lightsSabotaged:Bool = false;
 
-public function polus1SabotageLights() {
+public function sabotageLights() {
     if (!songUsesLightsSabotage) return;
 
     camGame.flash();
@@ -96,7 +109,7 @@ public function polus1SabotageLights() {
     lightsSabotaged = true;
 }
 
-public function polus1FixLights() {
+public function fixLights() {
     if (!songUsesLightsSabotage) return;
 
     if (lightsSabotaged) {
@@ -133,71 +146,9 @@ public function polus1FixLights() {
     }
 }
 
-function onNewPlayerHit(event) {
+function update(elapsed:Float) {
     if (songUsesLightsSabotage) {
-        if (!event.note.isSustainNote) {
-            if (!event.animCancelled || event.noteType != "No Anim Note") {
-                darkBoyfriendChar.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
-            }
-        }
-        else {
-            if (!event.animCancelled || event.noteType != "No Anim Note") {
-                var animName:String = darkBoyfriendChar.singAnims[event.direction % darkBoyfriendChar.singAnims.length] + event.animSuffix + "-loop";
-                if (darkBoyfriendChar.animation.exists(animName))
-                    darkBoyfriendChar.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", false);
-                else {
-                    darkBoyfriendChar.playSingAnim(event.direction, event.animSuffix, "SING", false);
-                    darkBoyfriendChar.animation.finish();
-                }
-            }
-        }
-    }
-}
-
-function onNewPlayerMiss(event) {
-    if (songUsesLightsSabotage)
-        darkBoyfriendChar.playSingAnim(event.direction, event.animSuffix, "MISS", event.forceAnim);
-}
-
-function onNewOpponentHit(event) {
-    if (songUsesLightsSabotage) {
-        if (!event.note.isSustainNote) {
-            if (!event.animCancelled || event.noteType != "No Anim Note") {
-                darkDadChar.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
-            }
-        }
-        else {
-            if (!event.animCancelled || event.noteType != "No Anim Note") {
-                var animName:String = darkDadChar.singAnims[event.direction % darkDadChar.singAnims.length] + event.animSuffix + "-loop";
-                if (darkDadChar.animation.exists(animName))
-                    darkDadChar.playSingAnim(event.direction, event.animSuffix + "-loop", "SING", event.forceAnim);
-                else {
-                    darkDadChar.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
-                    darkDadChar.animation.finish();
-                }
-            }
-        }
-    }
-}
-
-function onComboBroken(curCombo:Int) {
-    if (songUsesLightsSabotage)
-        darkGfChar.scripts.call("playComboDropAnim", [curCombo]);
-}
-
-function onEvent(event) {
-    if (event.event.name == "Play Animation") {
-        params = {
-            strumline: event.event.params[0],
-            animation: event.event.params[1],
-            isForced: event.event.params[2],
-        }
-        if (songUsesLightsSabotage) {
-            switch(params.strumline) {
-                case 0: darkDadChar.playAnim(params.animation, params.isForced, null);
-                case 1: darkBoyfriendChar.playAnim(params.animation, params.isForced, null);
-                case 2: darkGfChar.playAnim(params.animation, params.isForced, null);
-            }
-        }
+        darkBoyfriendChar.lastHit = boyfriend.lastHit;
+        darkDadChar.lastHit = dad.lastHit;
     }
 }

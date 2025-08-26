@@ -17,6 +17,7 @@ function update(elapsed:Float) {
         added = true;
         speakers.setPosition(x - 340, y + 56);
         speakers.camera = camera;
+        speakers.shader = shader;
         FlxG.state.insert(FlxG.state.members.indexOf(this), speakers);
     }
 

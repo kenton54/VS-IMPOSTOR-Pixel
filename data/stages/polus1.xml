@@ -1,8 +1,21 @@
 <stage zoom="0.7" name="Polus Lab (Outside)" folder="stages/polus1" startCamPosX="0" startCamPosY="0">
     <extension script="impostorPixel"/>
 
-    <sprite name="moon" sprite="moon" x="-50" y="-200" antialiasing="false" scale="5" scroll="0.1"/>
+    <!-- moon -->
+    <sprite name="moon" sprite="moon" x="320" y="0" zoomfactor="0.2" antialiasing="false" scale="1.5" scroll="0.01"/>
 
+    <!-- rocks -->
+    <sprite name="rocks4" sprite="rocks4" x="180" y="80" antialiasing="false" scroll="0.2" scale="5"/>
+    <sprite name="rocks3" sprite="rocks3" x="100" y="100" antialiasing="false" scroll="0.3" scale="5"/>
+    <sprite name="rocks2" sprite="rocks2" x="100" y="200" antialiasing="false" scroll="0.4" scale="6"/>
+    <sprite name="rocks1" sprite="rocks1" x="-80" y="-200" antialiasing="false" scroll="0.5" scale="7"/>
+
+    <!-- moon bloom -->
+    <sprite name="moonBloom" sprite="moon-bloom" x="320" y="0" zoomfactor="0.2" antialiasing="false" scale="1.5" scroll="0.01" alpha="0.25">
+        <property name="blend" type="integer" value="0"/>
+    </sprite>
+
+    <!-- medbay and the passage to the specimen room -->
     <sprite name="medbay_normal" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
         <anim name="idle" anim="idle normal" loop="true" fps="1"/>
     </sprite>
@@ -11,6 +24,7 @@
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
+    <!-- the laboratory wall -->
     <sprite name="labWall_normal" sprite="lab-wall" x="680" y="-10" antialiasing="false" scale="10" scroll="0.9" >
         <anim name="idle" anim="idle normal" loop="true" fps="1"/>
     </sprite>
@@ -19,6 +33,7 @@
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
+    <!-- ground -->
     <sprite name="ground_normal" sprite="ground" x="16" y="483" antialiasing="false" scale="10" >
         <anim name="idle" anim="idle normal" loop="true" fps="1"/>
     </sprite>
@@ -27,6 +42,7 @@
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
+    <!-- lab entrance + fence -->
     <sprite name="labEntrance_normal" sprite="lab-entrance" x="159" y="-124" antialiasing="false" scale="10" type="loop" >
         <anim name="watch" anim="watch normal" loop="true" fps="4"/>
         <anim name="idle" anim="idle normal" loop="true" fps="1"/>

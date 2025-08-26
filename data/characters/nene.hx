@@ -114,8 +114,10 @@ function update(elapsed:Float) {
                     viz.camera = camera;
                 });
             }
-            else
+            else {
+                spr.shader = shader;
                 spr.camera = camera;
+            }
         });
         FlxG.state.insert(FlxG.state.members.indexOf(this), abot);
     }

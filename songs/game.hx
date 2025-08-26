@@ -211,7 +211,8 @@ function postCreate() {
     scoreTxt.scale.x = 1.2;
     scoreTxt.updateHitbox();
     scoreTxt.screenCenter(FlxAxes.X);
-    scoreTxt.y = (healthBarBG.y + healthBarBG.height) + 1;
+    scoreTxt.y = (healthBarBG.y + healthBarBG.height);
+    scoreTxt.y -= scoreTxt.height / 8;
 
     missesTxt.visible = false;
     accuracyTxt.visible = false;
@@ -278,6 +279,8 @@ function createCharacters() {
 
         strumLines.members[i].characters = chars;
     }
+
+    scripts.call("postCharacterSetup");
 }
 
 function update(elapsed:Float) {
@@ -338,8 +341,6 @@ function postUpdate(elapsed:Float) {
 }
 
 function onCountdown(event) {
-    trace(event.swagCounter, introLength);
-
     // girlfriend countdown animation
     if (!gf.visible || gf.alpha == 0) return;
 
@@ -451,7 +452,7 @@ function onPlayerHit(event) {
 
         if (!event.animCancelled || event.noteType != "No Anim Note") {
             for (char in event.characters) {
-                if (char != null)
+                if (char != null && ((char.lastAnimContext == "SING" || char.lastAnimContext == "DANCE" || char.lastAnimContext == "MISS") || (char.lastAnimContext == null && char.isAnimFinished())) || event.note.extra.get("forceAnim"))
                     char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
             }
         }
@@ -500,7 +501,7 @@ function onDadHit(event) {
     if (!event.note.isSustainNote) {
         if (!event.animCancelled || event.noteType != "No Anim Note") {
             for (char in event.characters) {
-                if (char != null)
+                if (char != null && ((char.lastAnimContext == "SING" || char.lastAnimContext == "DANCE" || char.lastAnimContext == "MISS") || (char.lastAnimContext == null && char.isAnimFinished())) || event.note.extra.get("forceAnim"))
                     char.playSingAnim(event.direction, event.animSuffix, "SING", event.forceAnim);
             }
         }

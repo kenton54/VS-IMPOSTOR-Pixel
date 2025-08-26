@@ -933,12 +933,13 @@ function handleTopButtons() {
                             playMenuSound("confirm");
 
                             if (curWindowEntry[1] == 0) {
-                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], 1, 0.05, true, true);
-                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], 1, 0.05, true, true);
+                                var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.5 : 1;
+                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], duration, 0.05, true, true);
+                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], duration, 0.05, true, true);
 
                                 if (FlxG.sound.music != null) FlxG.sound.music.fadeOut();
 
-                                new FlxTimer().start(1, _ -> {
+                                new FlxTimer().start(duration, _ -> {
                                     switch(curWindowEntry[0]) {
                                         case 0: FlxG.switchState(new CharterSelection());
                                         case 1: FlxG.switchState(new CharacterSelection());
