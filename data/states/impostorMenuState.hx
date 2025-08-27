@@ -57,7 +57,7 @@ var otherButtons:Array<Dynamic> = [
     },
     {
         name: translate("mainMenu.credits"),
-        available: (storyStates[storySequence] == "start") ? false : true,
+        available: true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
         colorHover: 0xFFFFFFFF
@@ -472,9 +472,13 @@ function createMainButtons(x:Float, y:Float) {
         buttonSprite.loadGraphic(Paths.image("menus/mainmenu/mainButton"), true, 90, 12);
         buttonSprite.animation.add("idle", [0], 0, false);
         buttonSprite.animation.add("hover", [1], 0, false);
+        buttonSprite.animation.add("blocked", [2], 0, false);
         buttonSprite.scale.set(baseScale, baseScale);
         buttonSprite.updateHitbox();
         buttonsMainGroup.add(buttonSprite);
+
+        if (!button.available)
+            buttonSprite.animation.play("blocked");
 
         var buttonLabel:FunkinText = new FunkinText(x, yPos + 8, buttonSprite.width, button.name, 32, false);
         buttonLabel.font = Paths.font("pixeloidsans.ttf");
@@ -483,12 +487,21 @@ function createMainButtons(x:Float, y:Float) {
         buttonLabel.x -= 4 * baseScale;
         buttonsLabelGroup.add(buttonLabel);
 
+        if (!button.available)
+            buttonLabel.color = FlxColor.BLACK;
+
         var buttonIcon:FlxSprite = new FlxSprite(x + (buttonSprite.width / 6.5), yPos);
         buttonIcon.loadGraphic(button.icon);
         buttonIcon.scale.set(baseScale, baseScale);
         buttonIcon.updateHitbox();
         buttonIcon.x -= buttonIcon.width / 2;
         buttonsIconGroup.add(buttonIcon);
+
+        if (!button.available) {
+            buttonIcon.color = 0xFF888888;
+            buttonIcon.shader = new CustomShader("grayscale");
+            buttonIcon.shader._amount = 1;
+        }
 
         allButtonsArray.push(button);
     }
@@ -513,12 +526,21 @@ function createOtherButtons(x:Float, y:Float) {
         buttonLabel.x -= 8 * baseScale;
         buttonsLabelGroup.add(buttonLabel);
 
+        if (!button.available)
+            buttonLabel.color = FlxColor.BLACK;
+
         var buttonIcon:FlxSprite = new FlxSprite(x + (buttonSprite.width / 8), yPos);
         buttonIcon.loadGraphic(button.icon);
         buttonIcon.scale.set(baseScale, baseScale);
         buttonIcon.updateHitbox();
         buttonIcon.x -= buttonIcon.width / 2;
         buttonsIconGroup.add(buttonIcon);
+
+        if (!button.available) {
+            buttonIcon.color = 0xFF888888;
+            buttonIcon.shader = new CustomShader("grayscale");
+            buttonIcon.shader._amount = 1;
+        }
 
         allButtonsArray.push(button);
     }
@@ -740,12 +762,16 @@ function handleMainButtons() {
     if (usingKeyboard) {
         for (i in 0...buttonsTotalLength) {
             if (i == curMainEntry) {
-                buttonsMainGroup.members[i].animation.play("hover");
-                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+                if (allButtonsArray[i].available) {
+                    buttonsMainGroup.members[i].animation.play("hover");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+                }
             }
             else {
-                buttonsMainGroup.members[i].animation.play("idle");
-                buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                if (allButtonsArray[i].available) {
+                    buttonsMainGroup.members[i].animation.play("idle");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                }
             }
         }
 
@@ -762,16 +788,20 @@ function handleMainButtons() {
                 var i:Int = 0;
                 buttonsMainGroup.forEach(function(button) {
                     if (touch.overlaps(button)) {
-                        isTouchingButton = true;
-                        button.animation.play("hover");
-                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+                        if (allButtonsArray[i].available) {
+                            isTouchingButton = true;
+                            button.animation.play("hover");
+                            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-                        curMainEntry = i;
-                        playSoundMain();
+                            curMainEntry = i;
+                            playSoundMain();
+                        }
                     }
                     else {
-                        button.animation.play("idle");
-                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                        if (allButtonsArray[i].available) {
+                            button.animation.play("idle");
+                            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                        }
                     }
                     i++;
                 });
@@ -788,16 +818,20 @@ function handleMainButtons() {
             var i:Int = 0;
             buttonsMainGroup.forEach(function(button) {
                 if (FlxG.mouse.overlaps(button)) {
-                    mouseIsOverABtn = true;
-                    button.animation.play("hover");
-                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+                    if (allButtonsArray[i].available) {
+                        mouseIsOverABtn = true;
+                        button.animation.play("hover");
+                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-                    curMainEntry = i;
-                    playSoundMain();
+                        curMainEntry = i;
+                        playSoundMain();
+                    }
                 }
                 else {
-                    button.animation.play("idle");
-                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                    if (allButtonsArray[i].available) {
+                        button.animation.play("idle");
+                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
+                    }
                 }
                 i++;
             });
@@ -978,6 +1012,12 @@ function playSoundWindow() {
 function changeMainEntry(change:Int) {
     useKeyboard();
     curMainEntry = FlxMath.wrap(curMainEntry + change, 0, buttonsTotalLength - 1);
+
+    if (!allButtonsArray[curMainEntry].available) {
+        changeMainEntry(change);
+        return;
+    }
+
     playSoundMain();
 }
 
