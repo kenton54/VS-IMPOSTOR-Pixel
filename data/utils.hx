@@ -191,8 +191,6 @@ public static function playMenuSound(sound:String, ?volume:Float) {
     menuSound.volume = volume * Options.volumeSFX;
     menuSound.persist = true;
     menuSound.play();
-
-    FlxG.sound.list.add(menuSound);
 }
 
 public static function createMultiLineText(texts:Array<String>):String {
