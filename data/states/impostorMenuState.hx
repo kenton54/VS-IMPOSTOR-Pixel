@@ -145,6 +145,8 @@ var baseScale:Float = 5;
 function create() {
     changeDiscordMenuStatus("Main Menu");
 
+    CoolUtil.playMenuSong();
+
     subStateClosed.add(onCloseSubstate);
 
     mainCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
@@ -585,11 +587,6 @@ function update(elapsed:Float) {
         handleTouch();
     else
         handleMouse();
-}
-
-function postUpdate(elapsed:Float) {
-    if (storyStates[storySequence] == "postWeek1")
-        floatSus();
 }
 
 // main, window
@@ -1402,8 +1399,6 @@ function checkSelectedWindowEntry() {
     setTransition(trans);
     curWindowChooseBehaviour();
 }
-
-function floatSus() {}
 
 function shutdownDiscordRPC() {
     DiscordUtil.shutdown();

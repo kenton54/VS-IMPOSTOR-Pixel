@@ -30,13 +30,9 @@ function create() {
 
     MusicBeatState.skipTransIn = true;
 
-    if (storyStates[storySequence] == "start" || storyStates[storySequence] == "postLobbyShowcase") {
-        title();
-    }
-    else {
-        CoolUtil.playMenuSong(true);
-        intro();
-    }
+    CoolUtil.playMenuSong();
+
+    title();
 
     camFollow = new FlxObject(FlxG.width / 2, FlxG.height / 2);
     add(camFollow);
