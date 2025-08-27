@@ -11,7 +11,7 @@ public static var seenCharacters:Array<String> = [/*character*/];
 public static var unlockedVideos:Array<String> = [/*video path*/];
 
 // ————————————————————————————————————— Static Functions ———————————————————————————————————— //
-static function getFlags(?useDefault:Bool):Map<String, Dynamic> {
+public static function getFlags(?useDefault:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
 
     if (useDefault) {
