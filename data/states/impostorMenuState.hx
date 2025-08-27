@@ -34,14 +34,14 @@ var mainButtons:Array<Dynamic> = [
     },
     {
         name: translate("mainMenu.achievements"),
-        available: true,
+        available: false,
         icon: Paths.image("menus/mainmenu/icons/achievements"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
     },
     {
         name: translate("mainMenu.shop"),
-        available: true,
+        available: false,
         icon: Paths.image("menus/mainmenu/icons/shop"),
         colorIdle: 0xFF0A3C33,
         colorHover: 0xFF10584B
@@ -83,31 +83,19 @@ var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
             {
-                name: translate("mainMenu.worldmap"),
+                name: "Sussus Moogus",
                 available: true,
-                image: Paths.image("menus/mainmenu/bigButtons/worldmap"),
-                colorIdle: 0xFF0A3C33,
-                colorHover: 0xFF10584B,
+                image: "menus/icons/red-impostor",
                 transition: "closingSharpCircle"
-            },
-            {
-                name: translate("mainMenu.freeplay"),
-                available: (storyStates[storySequence] == "start") ? false : true,
-                image: Paths.image("menus/mainmenu/bigButtons/freeplay"),
-                colorIdle: 0xFF0A3C33,
-                colorHover: 0xFF10584B,
-                transition: "right2leftSharpCircle"
             }
         ];
     },
     {
         [
             {
-                name: translate("mainMenu.tutorial"),
-                available: true,
-                image: Paths.image("menus/mainmenu/bigButtons/tutorial"),
-                colorIdle: 0xFFAAE2DC,
-                colorHover: 0xFFFFFFFF,
+                name: "Sussus Moogus (Pico Mix)",
+                available: isSussusMoogusComplete,
+                image: "menus/icons/red-impostor",
                 transition: "closingSharpCircle"
             }
         ];
@@ -1000,6 +988,7 @@ function changeWindowEntry(changeColumn:Int, changeRow:Int) {
     playSoundWindow();
 }
 
+var arrow:FunkinText;
 function checkSelectedMainEntry() {
     playMenuSound("confirm");
 
@@ -1010,9 +999,16 @@ function checkSelectedMainEntry() {
     if (buttonsIconGroup.members[curMainEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curMainEntry], 1, 0.05, true, true);
 
     switch(curMainEntry) {
-        case 0: openWindowSection(translate("mainMenu.play"), playSectionButtons, function(posH, posV, group) {
+        case 0:
+            arrow = new FunkinText(60, 0, 0, ">", 64, false);
+            arrow.font = Paths.font("pixeloidsans.ttf");
+            arrow.camera = spaceCam;
+            add(arrow);
+
+            openWindowSection(translate("mainMenu.play"), playSectionButtons, function(posH, posV, group) {
                 var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
                 var thirdButtonYPos:Float = 0;
+                var thisScale:Float = 3;
                 for (c => column in playSectionButtons) {
                     var columnGroup = new FlxSpriteGroup(posH, posV);
                     group.add(columnGroup);
@@ -1021,186 +1017,108 @@ function checkSelectedMainEntry() {
                         var rowGroup:FlxSpriteGroup = new FlxSpriteGroup();
                         columnGroup.add(rowGroup);
 
-                        if (c == 0 && r == 0) {
-                            var worldMapGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 5 * baseScale);
-                            worldMapGroup.x -= 28 * baseScale;
-                            rowGroup.add(worldMapGroup);
+                        if (!StringTools.endsWith(row.name, "(Pico Mix)")) {
+                            var bfGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 10 * baseScale);
+                            rowGroup.add(bfGroup);
 
-                            var worldMapButton:FlxSprite = new FlxSprite().loadGraphic(row.image, true, 56, 55);
-                            worldMapButton.animation.add("idle", [0], 0, false);
-                            worldMapButton.animation.add("hover", [1], 0, false);
-                            worldMapButton.scale.set(baseScale, baseScale);
-                            worldMapButton.updateHitbox();
-                            worldMapGroup.add(worldMapButton);
+                            var panel:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("menus/freeplay/panels/bf"));
+                            panel.scale.set(thisScale, thisScale);
+                            panel.updateHitbox();
 
-                            var worldMapTxt:FunkinText = new FunkinText(0.1 * baseScale, worldMapButton.height, worldMapButton.width * 2, row.name, 32, false);
-                            worldMapTxt.font = Paths.font("pixeloidsans.ttf");
-                            worldMapTxt.alignment = "center";
-                            worldMapTxt.color = row.colorIdle;
-                            worldMapTxt.x -= worldMapButton.width / 2;
-                            worldMapTxt.y -= worldMapTxt.height + 2.6 * baseScale;
-                            worldMapGroup.add(worldMapTxt);
+                            var panelBG:FlxSprite = new FlxSprite(37 * thisScale, 10 * thisScale).loadGraphic(Paths.image("menus/freeplay/panels/panelBg"));
+                            panelBG.scale.set(thisScale, thisScale);
+                            panelBG.updateHitbox();
 
-                            worldMapGroup.x -= (worldMapButton.width / 2) - 1 * baseScale;
+                            bfGroup.add(panelBG);
+                            bfGroup.add(panel);
 
-                            thirdButtonYPos = worldMapGroup.height;
-                        }
-                        else if (c == 0 && r == 1) {
-                            var freeplayGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 5 * baseScale);
-                            freeplayGroup.x += 28 * baseScale;
-                            rowGroup.add(freeplayGroup);
+                            var icon:FlxSprite = new FlxSprite((38 / 2) * thisScale, (38 / 2) * thisScale);
+                            icon.frames = Paths.getFrames(row.image);
+                            icon.animation.addByPrefix("idle", "idle", 10, true);
+                            icon.animation.addByPrefix("confirm", "confirm", 10, false);
+                            icon.animation.play("idle");
+                            icon.scale.set(thisScale, thisScale);
+                            icon.updateHitbox();
+                            icon.offset.x = -170;
+                            icon.offset.y = -40;
+                            bfGroup.add(icon);
 
-                            var freeplayButton:FlxSprite = new FlxSprite().loadGraphic(column[1].image, true, 56, 55);
-                            freeplayButton.animation.add("idle", [0], 0, false);
-                            freeplayButton.animation.add("hover", [1], 0, false);
-                            freeplayButton.scale.set(baseScale, baseScale);
-                            freeplayButton.updateHitbox();
-                            freeplayGroup.add(freeplayButton);
+                            var songTxt:FunkinText = new FunkinText(42 * thisScale, 13 * thisScale, 0, row.name, 28, false);
+                            songTxt.font = Paths.font("pixeloidsans.ttf");
+                            bfGroup.add(songTxt);
 
-                            var freeplayTxt:FunkinText = new FunkinText(0.1 * baseScale, freeplayButton.height, freeplayButton.width * 2, row.name, 32, false);
-                            freeplayTxt.font = Paths.font("pixeloidsans.ttf");
-                            freeplayTxt.alignment = "center";
-                            freeplayTxt.color = column[1].colorIdle;
-                            freeplayTxt.x -= freeplayButton.width / 2;
-                            freeplayTxt.y -= freeplayTxt.height + 2.6 * baseScale;
-                            freeplayGroup.add(freeplayTxt);
+                            bfGroup.x -= bfGroup.width / 3;
 
-                            freeplayGroup.x -= (freeplayButton.width / 2) - 2 * baseScale;
+                            thirdButtonYPos = bfGroup.height / 2;
                         }
                         else {
-                            var howToPlayGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX + 2, thirdButtonYPos + 6 * baseScale);
-                            rowGroup.add(howToPlayGroup);
+                            var freeplayButtonGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, thirdButtonYPos + 4 * baseScale);
+                            rowGroup.add(freeplayButtonGroup);
 
-                            var howToPlayBtn:FlxSprite = new FlxSprite().loadGraphic(column[0].image, true, 66, 12);
-                            howToPlayBtn.animation.add("idle", [0], 0, false);
-                            howToPlayBtn.animation.add("hover", [1], 0, false);
-                            howToPlayBtn.scale.set(baseScale, baseScale);
-                            howToPlayBtn.updateHitbox();
-                            howToPlayGroup.add(howToPlayBtn);
+                            var panel:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("menus/freeplay/panels/pico"));
+                            panel.scale.set(thisScale, thisScale);
+                            panel.updateHitbox();
 
-                            var howToPlayTxt:FunkinText = new FunkinText(0, howToPlayBtn.height, howToPlayBtn.width, row.name, 32, false);
-                            howToPlayTxt.font = Paths.font("pixeloidsans.ttf");
-                            howToPlayTxt.alignment = "center";
-                            howToPlayTxt.color = column[0].colorIdle;
-                            howToPlayTxt.y -= howToPlayTxt.height + 1.7 * baseScale;
-                            howToPlayGroup.add(howToPlayTxt);
+                            var panelBG:FlxSprite = new FlxSprite(37 * thisScale, 10 * thisScale).loadGraphic(Paths.image("menus/freeplay/panels/panelBg"));
+                            panelBG.scale.set(thisScale, thisScale);
+                            panelBG.updateHitbox();
 
-                            howToPlayGroup.x -= howToPlayGroup.width / 2;
+                            freeplayButtonGroup.add(panelBG);
+                            freeplayButtonGroup.add(panel);
+
+                            var icon:FlxSprite = new FlxSprite((38 / 2) * thisScale, (38 / 2) * thisScale);
+                            icon.frames = Paths.getFrames(row.image);
+                            icon.animation.addByPrefix("idle", "idle", 10, true);
+                            icon.animation.addByPrefix("confirm", "confirm", 10, false);
+                            icon.animation.play("idle");
+                            icon.scale.set(thisScale, thisScale);
+                            icon.updateHitbox();
+                            icon.offset.x = -170;
+                            icon.offset.y = -40;
+                            freeplayButtonGroup.add(icon);
+
+                            var songTxt:FunkinText = new FunkinText(42 * thisScale, 13 * thisScale, 0, row.name, 28, false);
+                            songTxt.font = Paths.font("pixeloidsans.ttf");
+                            songTxt.scale.x = 0.8;
+                            songTxt.updateHitbox();
+                            freeplayButtonGroup.add(songTxt);
+
+                            freeplayButtonGroup.x -= freeplayButtonGroup.width / 3;
                         }
                     }
                 }
             }, function() {
-                if (usingKeyboard) {
+                arrow.y = 180 + (165 * curWindowEntry[0]);
+
+                if (usingKeyboard)
+                    return;
+
+                mouseIsOverABtn = false;
+
+                if (allowMouse) {
                     var col:Int = 0;
                     windowGroup.forEach(function(column) {
                         if (column is FlxSpriteGroup) {
                             var rw:Int = 0;
-                            if (col == curWindowEntry[0]) {
-                                column.forEach(function(row) {
-                                    if (row is FlxSpriteGroup) {
-                                        if (rw == curWindowEntry[1]) {
-                                            row.forEach(function(grp) {
-                                                grp.members[0].animation.play("hover");
-                                                grp.members[1].color = curWindow[col][rw].colorHover;
-                                            });
+                            column.forEach(function(row) {
+                                if (row is FlxSpriteGroup) {
+                                    row.forEach(function(grp) {
+                                        if (grp is FlxSpriteGroup) {
+                                            if (grp.members[1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+
+                                                mouseIsOverABtn = true;
+                                                curWindowEntry[0] = col;
+                                                curWindowEntry[1] = rw;
+                                                playSoundWindow();
+                                            }
                                         }
-                                        else {
-                                            row.forEach(function(grp) {
-                                                grp.members[0].animation.play("idle");
-                                                grp.members[1].color = curWindow[col][rw].colorIdle;
-                                            });
-                                        }
-                                        rw++;
-                                    }
-                                });
-                            }
-                            else {
-                                column.forEach(function(row) {
-                                    if (row is FlxSpriteGroup) {
-                                        row.forEach(function(grp) {
-                                            grp.members[0].animation.play("idle");
-                                            grp.members[1].color = curWindow[col][rw].colorIdle;
-                                        });
-                                        rw++;
-                                    }
-                                });
-                            }
+                                    });
+                                    rw++;
+                                }
+                            });
                             col++;
                         }
                     });
-                    return;
-                }
-                if (isMobile) {
-                    isTouchingButton = false;
-
-                    if (allowTouch) {
-                        for (touch in FlxG.touches.list) {
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                if (column is FlxSpriteGroup) {
-                                    var rw:Int = 0;
-                                    column.forEach(function(row) {
-                                        if (row is FlxSpriteGroup) {
-                                            row.forEach(function(grp) {
-                                                if (grp is FlxSpriteGroup) {
-                                                    if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                        grp.members[0].animation.play("hover");
-                                                        grp.members[1].color = curWindow[col][rw].colorHover;
-
-                                                        isTouchingButton = true;
-                                                        curWindowEntry[0] = col;
-                                                        curWindowEntry[1] = rw;
-                                                        playSoundWindow();
-                                                    }
-                                                    else {
-                                                        grp.members[0].animation.play("idle");
-                                                        grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                    }
-                                                }
-                                            });
-                                            rw++;
-                                        }
-                                    });
-                                    col++;
-                                }
-                            });
-                        }
-                    }
-                }
-                else {
-                    mouseIsOverABtn = false;
-
-                    if (allowMouse) {
-                        var col:Int = 0;
-                        windowGroup.forEach(function(column) {
-                            if (column is FlxSpriteGroup) {
-                                var rw:Int = 0;
-                                column.forEach(function(row) {
-                                    if (row is FlxSpriteGroup) {
-                                        row.forEach(function(grp) {
-                                            if (grp is FlxSpriteGroup) {
-                                                if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                    grp.members[0].animation.play("hover");
-                                                    grp.members[1].color = curWindow[col][rw].colorHover;
-
-                                                    mouseIsOverABtn = true;
-                                                    curWindowEntry[0] = col;
-                                                    curWindowEntry[1] = rw;
-                                                    playSoundWindow();
-                                                }
-                                                else {
-                                                    grp.members[0].animation.play("idle");
-                                                    grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                }
-                                            }
-                                        });
-                                        rw++;
-                                    }
-                                });
-                                col++;
-                            }
-                        });
-                    }
                 }
             }, function() {
                 playMenuSound("confirm");
@@ -1222,8 +1140,7 @@ function checkSelectedMainEntry() {
                                     }
                                     else {
                                         row.forEach(function(grp) {
-                                            FlxFlicker.flicker(grp.members[0], 1, 0.05, true, true);
-                                            FlxFlicker.flicker(grp.members[1], 1, 0.05, true, true);
+                                            grp.members[2].animation.play("confirm");
                                         });
                                         rw++;
                                     }
@@ -1236,12 +1153,11 @@ function checkSelectedMainEntry() {
 
                 new FlxTimer().start(1, _ -> {
                     switch(curWindowEntry[0]) {
-                        case 0: switch(curWindowEntry[1]) {
-                            case 0: FlxG.switchState(new ModState("worldmapState", ["lobby"]));
-                            case 1: FlxG.switchState(new ModState("impostorFreeplayState"));
-                        }
-                        case 1: FlxG.switchState(new ModState("game/tutorialPlayState"));
+                        case 0: PlayState.loadSong("sussus-moogus", "normal", null);
+                        case 1: PlayState.loadSong("sussus-moogus", "normal", "pico");
                     }
+
+                    FlxG.switchState(new PlayState());
                 });
             });
         case 1:
@@ -1447,6 +1363,11 @@ function closeWindowSection() {
         spr.destroy();
     });
     windowGroup.clear();
+
+    if (arrow != null) {
+        remove(arrow);
+        arrow.destroy();
+    }
 }
 
 function checkSelectedWindowEntry() {
