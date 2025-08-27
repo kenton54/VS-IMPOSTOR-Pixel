@@ -1,6 +1,0 @@
-﻿<TextureAtlas imagePath="whatever-this-is.png">
-	<SubTexture name="anim0000" x="0" y="0" width="48" height="64"/>
-	<SubTexture name="anim0001" x="0" y="0" width="48" height="64"/>
-	<SubTexture name="anim0002" x="48" y="0" width="48" height="64"/>
-	<SubTexture name="anim0003" x="48" y="0" width="48" height="64"/>
-</TextureAtlas>
