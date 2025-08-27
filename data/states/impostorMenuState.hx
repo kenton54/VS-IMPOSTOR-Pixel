@@ -129,24 +129,6 @@ var debugOptions:Array<Array<Dynamic>> = [
                 transition: "right2leftSharpCircle"
             }
         ];
-    },
-    {
-        [
-            {
-                name: "Week Player",
-                image: "",
-                transition: "right2leftSharpCircle"
-            }
-        ];
-    },
-    {
-        [
-            {
-                name: "Mobile Emulator",
-                image: Paths.image("editors/icons/mobile"),
-                transition: "closingSharpCircle"
-            }
-        ];
     }
 ];
 
@@ -966,12 +948,6 @@ function handleTopButtons() {
                                         case 0: FlxG.switchState(new CharterSelection());
                                         case 1: FlxG.switchState(new CharacterSelection());
                                         case 2: FlxG.switchState(new StageSelection());
-                                        case 3:
-                                            var state = new EditorTreeMenu();
-                                            state.bgType = "charter";
-                                            state.scriptName = "debug/weekSelector";
-                                            FlxG.switchState(state);
-                                        case 4: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
                                     }
                                 });
                             }
