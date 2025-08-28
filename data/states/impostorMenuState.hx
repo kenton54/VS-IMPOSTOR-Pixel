@@ -337,8 +337,9 @@ function create() {
     topButtonsGroup.add(statsButton);
 
     if (!isMobile) {
+        var debugButton:FlxSprite;
         if (Options.devMode) {
-            var debugButton:FlxSprite = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
+            debugButton = new FlxSprite(statsButton.x - statsButton.width, statsButton.y);
             debugButton.loadGraphic(Paths.image("menus/mainmenu/debugButton"), true, 14, 14);
             debugButton.animation.add("idle", [0], 0, false);
             debugButton.animation.add("click", [1], 0, false);
@@ -349,7 +350,9 @@ function create() {
         }
 
         if (discordIntegration) {
-            var discordButton:FlxSprite = new FlxSprite(debugButton.x - debugButton.width, debugButton.y);
+            var xPos:Float = (debugButton != null) ? debugButton.x - debugButton.width : statsButton.x - statsButton.width;
+            var yPos:Float = (debugButton != null) ? debugButton.y : statsButton.y;
+            var discordButton:FlxSprite = new FlxSprite(xPos, yPos);
             discordButton.loadGraphic(Paths.image("menus/mainmenu/discordButton"), true, 14, 14);
             discordButton.animation.add("idle", [0], 0, false);
             discordButton.animation.add("click", [1], 0, false);
