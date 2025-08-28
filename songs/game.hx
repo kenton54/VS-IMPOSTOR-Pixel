@@ -72,7 +72,7 @@ function create() {
     taskbarBG.scale.set(4, 3.5);
     taskbarBG.updateHitbox();
     taskbarBG.alpha = 0;
-    taskbarBG.y = PlayState.downscroll ? 675 : 4;
+    taskbarBG.y = 4;
     taskbarBG.camera = camHUD;
     taskbarBG.visible = FlxG.save.data.pixelTimeBar;
     add(taskbarBG);
@@ -127,6 +127,18 @@ function onNoteCreation(event) {
 	pixelNote.updateHitbox();
 }
 
+function onPostNoteCreation(event) {
+	event.note.splash = noteStyle;
+
+    if (event.note.isSustainNote)
+        event.note.alpha = 1;
+    else {
+        if (event.note.strumLine != null && !event.note.strumLine.cpu)
+            totalNotes++;
+    }
+}
+
+var strumOffset:Float = 6 * noteScale;
 function onStrumCreation(event) {
 	event.cancel();
 
@@ -141,16 +153,17 @@ function onStrumCreation(event) {
 	daStrum.updateHitbox();
 
 	daStrum.x -= 32;
+
+    if (Options.downscroll)
+        daStrum.y -= daStrum.height;
 }
 
-function onPostNoteCreation(event) {
-	event.note.splash = noteStyle;
-
-    if (event.note.isSustainNote)
-        event.note.alpha = 1;
-    else {
-        if (event.note.strumLine != null && !event.note.strumLine.cpu)
-            totalNotes++;
+function onPostStrumCreation(event) {
+    if (Options.devMode) {
+        var box:FlxSprite = new FlxSprite(event.strum.x, event.strum.y + 10).makeGraphic(event.strum.width, event.strum.height, FlxColor.BLUE);
+        box.camera = camHUD;
+        box.alpha = 0.25;
+        add(box);
     }
 }
 
@@ -174,13 +187,16 @@ function postCreate() {
         holdCoverHandlers.push(coverHandler);
     }
 
+    for (strumline in strumLines.members) for (strum in strumline.members)
+        //strum.offset.y += Options.downscroll ? -strumOffset : strumOffset;
+
     healthLerp = health;
 
     healthBarBG.loadGraphic(Paths.image("game/healthBar"));
     healthBarBG.scale.set(4.68, 4.68);
     healthBarBG.updateHitbox();
     healthBarBG.screenCenter(FlxAxes.X);
-    healthBarBG.y = FlxG.height * 0.9;
+    healthBarBG.y = FlxG.height * 0.88;
 
     var leftColor:FlxColor = (dad != null && dad.iconColor != null && Options.colorHealthBar) ? dad.iconColor : (PlayState.opponentMode ? 0xFF66FF33 : 0xFFFF0000);
     var rightColor:FlxColor = (boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar) ? boyfriend.iconColor : (PlayState.opponentMode ? 0xFFFF0000 : 0xFF66FF33);
