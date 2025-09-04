@@ -18,7 +18,7 @@
             <str id="achievements">Achievements</str>
             <str id="shop">Shop</str>
             <str id="options">Options</str>
-            <str id="credits">Credits</str>
+            <str id="extras">Extras</str>
             <str id="mods">Mods</str>
         </group>
 
@@ -26,6 +26,8 @@
             <str id="worldmap">World Map</str>
             <str id="freeplay">Freeplay</str>
             <str id="tutorial">How to Play</str>
+            <str id="credits">Credits</str>
+            <str id="movieTheater">Movie Theater</str>
         </group>
 
         <group name="Statistics" prefix="stats.">

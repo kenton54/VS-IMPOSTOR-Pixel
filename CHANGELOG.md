@@ -1,5 +1,22 @@
 This changelog keeps track of everything that has been added, changed, fixed or deleted in every VS IMPOSTOR Pixel version.
 
+# Developer Build 2
+Second dev version for playtesting, plus preparations for the DEMO release.
+
+## Additions
+- DEMO Build.
+- A license to the mod (that sounds werid to say somehow??).
+- Blockable Main Menu entries, they can be unlocked if certain condicions are met.
+- Credits Menu.
+
+## Changes
+- Improved the Impostor Pixel's Flags system.
+- Sounds persist through menus now, so they don't get cut off when a transition starts.
+
+## Fixes
+- Fixed a hidden feature causing crashes.
+- (TO-DO) Fixed downscroll, specifically strum notes being offset wrong.
+
 # Developer Build 1
 A new version bringing a general overhaul of the entire mod.
 
