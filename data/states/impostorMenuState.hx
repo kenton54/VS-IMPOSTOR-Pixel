@@ -56,7 +56,7 @@ var otherButtons:Array<Dynamic> = [
         colorHover: 0xFFFFFFFF
     },
     {
-        name: translate("mainMenu.credits"),
+        name: translate("mainMenu.extras"),
         available: true,
         icon: Paths.image("menus/mainmenu/icons/credits"),
         colorIdle: 0xFFAAE2DC,
@@ -79,6 +79,8 @@ var buttonsMainGroup:FlxSpriteGroup;
 var buttonsLabelGroup:FlxSpriteGroup;
 var buttonsIconGroup:FlxSpriteGroup;
 
+trace(isSussusMoogusComplete);
+
 var playSectionButtons:Array<Array<Dynamic>> = [
     {
         [
@@ -96,6 +98,28 @@ var playSectionButtons:Array<Array<Dynamic>> = [
                 name: "Sussus Moogus (Pico Mix)",
                 available: isSussusMoogusComplete,
                 image: "menus/icons/red-impostor",
+                transition: "closingSharpCircle"
+            }
+        ];
+    }
+];
+var extrasSectionButtons:Array<Array<Dynamic>> = [
+    {
+        [
+            {
+                name: translate("mainMenu.credits"),
+                available: true,
+                image: Paths.image("menus/mainmenu/bigButtons/credits"),
+                colorIdle: 0xFF0A3C33,
+                colorHover: 0xFF10584B,
+                transition: "fade"
+            },
+            {
+                name: translate("mainMenu.movieTheater"),
+                available: false,
+                image: Paths.image("menus/mainmenu/bigButtons/movieTheater"),
+                colorIdle: 0xFF0A3C33,
+                colorHover: 0xFF10584B,
                 transition: "closingSharpCircle"
             }
         ];
@@ -998,6 +1022,12 @@ function changeWindowEntry(changeColumn:Int, changeRow:Int) {
     useKeyboard();
     curWindowEntry[0] = FlxMath.wrap(curWindowEntry[0] + changeColumn, 0, curWindow.length - 1);
     curWindowEntry[1] = FlxMath.wrap(curWindowEntry[1] + changeRow, 0, curWindow[curWindowEntry[0]].length - 1);
+
+    if (!curWindow[curWindowEntry[0]][curWindowEntry[1]].available) {
+        changeWindowEntry(changeColumn, changeRow);
+        return;
+    }
+
     playSoundWindow();
 }
 
@@ -1045,10 +1075,11 @@ function checkSelectedMainEntry() {
                             bfGroup.add(panelBG);
                             bfGroup.add(panel);
 
-                            var icon:FlxSprite = new FlxSprite((38 / 2) * thisScale, (38 / 2) * thisScale);
+                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -4.4 * thisScale);
                             icon.frames = Paths.getFrames(row.image);
                             icon.animation.addByPrefix("idle", "idle", 10, true);
                             icon.animation.addByPrefix("confirm", "confirm", 10, false);
+                            icon.animation.addByPrefix("blocked", "blocked", 0, false);
                             icon.animation.play("idle");
                             icon.scale.set(thisScale, thisScale);
                             icon.updateHitbox();
@@ -1060,15 +1091,15 @@ function checkSelectedMainEntry() {
                             songTxt.font = Paths.font("pixeloidsans.ttf");
                             bfGroup.add(songTxt);
 
-                            bfGroup.x -= bfGroup.width / 3;
+                            bfGroup.x -= bfGroup.width / 2.5;
 
-                            thirdButtonYPos = bfGroup.height / 2;
+                            thirdButtonYPos = bfGroup.height;
                         }
                         else {
-                            var freeplayButtonGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, thirdButtonYPos + 4 * baseScale);
-                            rowGroup.add(freeplayButtonGroup);
+                            var picoGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, thirdButtonYPos + 4 * baseScale * 3.8);
+                            rowGroup.add(picoGroup);
 
-                            var panel:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("menus/freeplay/panels/pico"));
+                            var panel:FlxSprite = new FlxSprite(0, 0).loadGraphic(!row.available ? Paths.image("menus/freeplay/panels/blocked") : Paths.image("menus/freeplay/panels/pico"));
                             panel.scale.set(thisScale, thisScale);
                             panel.updateHitbox();
 
@@ -1076,31 +1107,70 @@ function checkSelectedMainEntry() {
                             panelBG.scale.set(thisScale, thisScale);
                             panelBG.updateHitbox();
 
-                            freeplayButtonGroup.add(panelBG);
-                            freeplayButtonGroup.add(panel);
+                            picoGroup.add(panelBG);
+                            picoGroup.add(panel);
 
-                            var icon:FlxSprite = new FlxSprite((38 / 2) * thisScale, (38 / 2) * thisScale);
+                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -4.4 * thisScale);
                             icon.frames = Paths.getFrames(row.image);
                             icon.animation.addByPrefix("idle", "idle", 10, true);
                             icon.animation.addByPrefix("confirm", "confirm", 10, false);
-                            icon.animation.play("idle");
+                            icon.animation.addByPrefix("blocked", "blocked", 0, false);
+
+                            if (!row.available)
+                                icon.animation.play("blocked");
+                            else
+                                icon.animation.play("idle");
+
                             icon.scale.set(thisScale, thisScale);
                             icon.updateHitbox();
                             icon.offset.x = -170;
                             icon.offset.y = -40;
-                            freeplayButtonGroup.add(icon);
+                            picoGroup.add(icon);
 
-                            var songTxt:FunkinText = new FunkinText(42 * thisScale, 13 * thisScale, 0, row.name, 28, false);
+                            var songName:String = row.name;
+
+                            var songTxt:FunkinText = new FunkinText(42 * thisScale, 13 * thisScale, 0, songName, 28, false);
                             songTxt.font = Paths.font("pixeloidsans.ttf");
                             songTxt.scale.x = 0.8;
                             songTxt.updateHitbox();
-                            freeplayButtonGroup.add(songTxt);
+                            picoGroup.add(songTxt);
 
-                            freeplayButtonGroup.x -= freeplayButtonGroup.width / 3;
+                            picoGroup.x -= picoGroup.width / 2.5;
                         }
                     }
                 }
             }, function() {
+                var coL:Int = 0;
+                windowGroup.forEach(function(column) {
+                    if (column is FlxSpriteGroup) {
+                        var rW:Int = 0;
+                        column.forEach(function(row) {
+                            if (row is FlxSpriteGroup) {
+                                if (!curWindow[coL][rW].available) {
+                                    row.forEach(function(grp) {
+                                        var charTable:Array<String> = [];
+                                        var newTxt:String = "";
+                                        for (i in 0...grp.members[3].text.length) {
+                                            if (grp.members[3].text.charAt(i) == "(") continue;
+                                            if (grp.members[3].text.charAt(i) == ")") continue;
+                                            charTable.push(grp.members[3].text.charAt(i));
+                                        }
+
+                                        shuffleTable(charTable);
+
+                                        for (char in charTable)
+                                            newTxt += char;
+
+                                        grp.members[3].text = newTxt;
+                                    });
+                                }
+                                rW++;
+                            }
+                        });
+                        coL++;
+                    }
+                });
+
                 arrow.y = 180 + (165 * curWindowEntry[0]);
 
                 if (usingKeyboard)
@@ -1118,11 +1188,12 @@ function checkSelectedMainEntry() {
                                     row.forEach(function(grp) {
                                         if (grp is FlxSpriteGroup) {
                                             if (grp.members[1].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-
-                                                mouseIsOverABtn = true;
-                                                curWindowEntry[0] = col;
-                                                curWindowEntry[1] = rw;
-                                                playSoundWindow();
+                                                if (curWindow[col][rw].available) {
+                                                    mouseIsOverABtn = true;
+                                                    curWindowEntry[0] = col;
+                                                    curWindowEntry[1] = rw;
+                                                    playSoundWindow();
+                                                }
                                             }
                                         }
                                     });
@@ -1187,12 +1258,251 @@ function checkSelectedMainEntry() {
             openSubState(new ModSubState("options/impostorOptionsSubState"));
             persistentUpdate = persistentDraw = true;
         case 4:
-            openWindowSection(translate("mainMenu.credits"), [], function(posH, posV, group) {
-                
+            openWindowSection(translate("mainMenu.extras"), extrasSectionButtons, function(posH, posV, group) {
+                var centerX:Float = ((posH + (spaceCam.width - 4 * baseScale)) / 2) - 3 * baseScale;
+                var thirdButtonYPos:Float = 0;
+                for (c => column in extrasSectionButtons) {
+                    var columnGroup = new FlxSpriteGroup(posH, posV);
+                    group.add(columnGroup);
+
+                    for (r => row in column) {
+                        var rowGroup:FlxSpriteGroup = new FlxSpriteGroup();
+                        columnGroup.add(rowGroup);
+
+                        if (r == 0) {
+                            var creditsGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 9 * baseScale);
+                            creditsGroup.x -= 28 * baseScale;
+                            rowGroup.add(creditsGroup);
+
+                            var creditsBtn:FlxSprite = new FlxSprite().loadGraphic(row.image, true, 56, 55);
+                            creditsBtn.animation.add("idle", [0], 0, false);
+                            creditsBtn.animation.add("hover", [1], 0, false);
+                            creditsBtn.scale.set(baseScale, baseScale);
+                            creditsBtn.updateHitbox();
+                            creditsGroup.add(creditsBtn);
+
+                            var creditsTxt:FunkinText = new FunkinText(0.1 * baseScale, creditsBtn.height, creditsBtn.width * 2, row.name, 32, false);
+                            creditsTxt.font = Paths.font("pixeloidsans.ttf");
+                            creditsTxt.alignment = "center";
+                            creditsTxt.color = row.colorIdle;
+                            creditsTxt.x -= creditsBtn.width / 2;
+                            creditsTxt.y -= creditsTxt.height + 2.6 * baseScale;
+                            creditsGroup.add(creditsTxt);
+
+                            creditsGroup.x -= (creditsBtn.width / 2) - 1 * baseScale;
+
+                            thirdButtonYPos = creditsGroup.height;
+                        }
+                        else {
+                            var movieGroup:FlxSpriteGroup = new FlxSpriteGroup(centerX, 9 * baseScale);
+                            movieGroup.x += 28 * baseScale;
+                            rowGroup.add(movieGroup);
+
+                            var movieButton:FlxSprite = new FlxSprite().loadGraphic(row.image, true, 56, 55);
+                            movieButton.animation.add("idle", [0], 0, false);
+                            movieButton.animation.add("hover", [1], 0, false);
+                            movieButton.animation.add("blocked", [2], 0, false);
+                            movieButton.scale.set(baseScale, baseScale);
+                            movieButton.updateHitbox();
+                            movieGroup.add(movieButton);
+
+                            var movieTxt:FunkinText = new FunkinText(11.5 * baseScale, movieButton.height, movieButton.width * 2, row.name, 32, false);
+                            movieTxt.font = Paths.font("pixeloidsans.ttf");
+                            movieTxt.alignment = "center";
+                            movieTxt.color = row.colorIdle;
+                            movieTxt.x -= movieButton.width / 2;
+                            movieTxt.y -= movieTxt.height + 2.6 * baseScale;
+                            movieTxt.scale.x = 0.8;
+                            movieTxt.updateHitbox();
+                            movieGroup.add(movieTxt);
+
+                            if (!row.available) {
+                                movieButton.animation.play("blocked");
+                                movieTxt.color = FlxColor.BLACK;
+                            }
+
+                            movieGroup.x -= (movieButton.width / 2) - 2 * baseScale;
+                        }
+                    }
+                }
             }, function() {
-                
+                if (usingKeyboard) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxSpriteGroup) {
+                            var rw:Int = 0;
+                            if (col == curWindowEntry[0]) {
+                                column.forEach(function(row) {
+                                    if (row is FlxSpriteGroup) {
+                                        if (rw == curWindowEntry[1]) {
+                                            row.forEach(function(grp) {
+                                                if (curWindow[col][rw].available) {
+                                                    grp.members[0].animation.play("hover");
+                                                    grp.members[1].color = curWindow[col][rw].colorHover;
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            row.forEach(function(grp) {
+                                                if (curWindow[col][rw].available) {
+                                                    grp.members[0].animation.play("idle");
+                                                    grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                }
+                                            });
+                                        }
+                                        rw++;
+                                    }
+                                });
+                            }
+                            else {
+                                column.forEach(function(row) {
+                                    if (row is FlxSpriteGroup) {
+                                        row.forEach(function(grp) {
+                                            if (curWindow[col][rw].available) {
+                                                grp.members[0].animation.play("idle");
+                                                grp.members[1].color = curWindow[col][rw].colorIdle;
+                                            }
+                                        });
+                                        rw++;
+                                    }
+                                });
+                            }
+                            col++;
+                        }
+                    });
+                    return;
+                }
+                if (isMobile) {
+                    isTouchingButton = false;
+
+                    if (allowTouch) {
+                        for (touch in FlxG.touches.list) {
+                            var col:Int = 0;
+                            windowGroup.forEach(function(column) {
+                                if (column is FlxSpriteGroup) {
+                                    var rw:Int = 0;
+                                    column.forEach(function(row) {
+                                        if (row is FlxSpriteGroup) {
+                                            row.forEach(function(grp) {
+                                                if (grp is FlxSpriteGroup) {
+                                                    if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
+                                                        if (curWindow[col][rw].available) {
+                                                            grp.members[0].animation.play("hover");
+                                                            grp.members[1].color = curWindow[col][rw].colorHover;
+
+                                                            isTouchingButton = true;
+                                                            curWindowEntry[0] = col;
+                                                            curWindowEntry[1] = rw;
+                                                            playSoundWindow();
+                                                        }
+                                                    }
+                                                    else {
+                                                        if (curWindow[col][rw].available) {
+                                                            grp.members[0].animation.play("idle");
+                                                            grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                            rw++;
+                                        }
+                                    });
+                                    col++;
+                                }
+                            });
+                        }
+                    }
+                }
+                else {
+                    mouseIsOverABtn = false;
+
+                    if (allowMouse) {
+                        var col:Int = 0;
+                        windowGroup.forEach(function(column) {
+                            if (column is FlxSpriteGroup) {
+                                var rw:Int = 0;
+                                column.forEach(function(row) {
+                                    if (row is FlxSpriteGroup) {
+                                        row.forEach(function(grp) {
+                                            if (grp is FlxSpriteGroup) {
+                                                if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
+                                                    if (curWindow[col][rw].available) {
+                                                        grp.members[0].animation.play("hover");
+                                                        grp.members[1].color = curWindow[col][rw].colorHover;
+
+                                                        mouseIsOverABtn = true;
+                                                        curWindowEntry[0] = col;
+                                                        curWindowEntry[1] = rw;
+                                                        playSoundWindow();
+                                                    }
+                                                }
+                                                else {
+                                                    if (curWindow[col][rw].available) {
+                                                        grp.members[0].animation.play("idle");
+                                                        grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                    }
+                                                }
+                                            }
+                                        });
+                                        rw++;
+                                    }
+                                });
+                                col++;
+                            }
+                        });
+                    }
+                }
             }, function() {
-                
+                playMenuSound("confirm");
+
+                var col:Int = 0;
+                windowGroup.forEach(function(column) {
+                    if (column is FlxSpriteGroup) {
+                        var rw:Int = 0;
+                        if (col != curWindowEntry[0]) {
+                            col++;
+                            return;
+                        }
+                        else {
+                            column.forEach(function(row) {
+                                if (row is FlxSpriteGroup) {
+                                    if (rw != curWindowEntry[1]) {
+                                        rw++;
+                                        return;
+                                    }
+                                    else {
+                                        row.forEach(function(grp) {
+                                            FlxFlicker.flicker(grp.members[0], 1, 0.05, true, true);
+                                            FlxFlicker.flicker(grp.members[1], 1, 0.05, true, true);
+                                        });
+                                        rw++;
+                                    }
+                                }
+                            });
+                            col++;
+                        }
+                    }
+                });
+
+                switch(curWindowEntry[0]) {
+                    case 0: switch(curWindowEntry[1]) {
+                        case 0:
+                            new FlxTimer().start(0.5, _ -> {
+                                FlxG.switchState(new ModState("impostorCreditsState"));
+                            });
+                        case 1:
+                            new FlxTimer().start(1, _ -> {
+                                FlxG.switchState(new ModState("movieTheaterState"));
+                            });
+                    }
+                }
+                new FlxTimer().start(1, _ -> {
+                    switch(curWindowEntry[0]) {
+                        case 0: switch(curWindowEntry[1]) {
+                            case 0: FlxG.switchState(new ModState("impostorCreditsState"));
+                        }
+                    }
+                });
             });
         case 5:
             modsArray = [];
@@ -1314,6 +1624,9 @@ function checkSelectedMainEntry() {
 
                 setTransition("slowFade");
                 ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
+
+                if (FlxG.sound.music != null)
+                    FlxG.sound.music.fadeOut();
             });
     }
 }

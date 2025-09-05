@@ -249,6 +249,16 @@ public static function dispatchSignal(signal:FlxBaseSignal, ?parameter1:Dynamic,
     }
 }
 
+public static function shuffleTable(table:Array<Dynamic>) {
+    var maxValidIndex = table.length - 1;
+    for (i in 0...maxValidIndex) {
+        var j = FlxG.random.int(i, maxValidIndex);
+        var tmp = table[i];
+        table[i] = table[j];
+        table[j] = tmp;
+    }
+}
+
 public static function resizeGame(width:Int, height:Int) {
     FlxG.initialWidth = width;
     FlxG.initialHeight = height;

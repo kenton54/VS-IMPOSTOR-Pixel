@@ -31,7 +31,6 @@ public static function getFlags(?useDefault:Bool):Map<String, Dynamic> {
 }
 
 public static function resetFlags() {
-    isDemo = true;
     isSussusMoogusComplete = false;
     weeksCompleted.clear();
     seenCharacters = [];
