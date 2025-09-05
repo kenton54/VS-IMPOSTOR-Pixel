@@ -243,6 +243,16 @@ public static function getLogColor(color:String):Int {
     }
 }
 
+public static function shuffleTable(table:Array<Dynamic>) {
+    var maxValidIndex = table.length - 1;
+    for (i in 0...maxValidIndex) {
+        var j = FlxG.random.int(i, maxValidIndex);
+        var tmp = table[i];
+        table[i] = table[j];
+        table[j] = tmp;
+    }
+}
+
 public static function dispatchSignal(signal:FlxBaseSignal, ?parameter1:Dynamic, ?parameter2:Dynamic, ?parameter3:Dynamic, ?parameter4:Dynamic, ?parameter5:Dynamic, ?parameter6:Dynamic) {
     for (handler in signal.handlers) {
         handler.listener(parameter1, parameter2, parameter3, parameter4, parameter5, parameter6);
