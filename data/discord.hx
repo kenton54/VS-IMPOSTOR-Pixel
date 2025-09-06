@@ -31,7 +31,7 @@ function onPlayStateUpdate() {
 }
 
 function onGameOver() {
-	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]");
+	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "]");
 }
 
 function onEditorTreeLoaded(name:String) {

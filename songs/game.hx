@@ -1,6 +1,7 @@
 import flixel.math.FlxRect;
 import flixel.sound.FlxSound;
 import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 import funkin.backend.chart.EventsData;
 import funkin.backend.scripting.DummyScript;
 import funkin.backend.scripting.Script;
@@ -72,7 +73,7 @@ function create() {
     taskbarBG.scale.set(4, 3.5);
     taskbarBG.updateHitbox();
     taskbarBG.alpha = 0;
-    taskbarBG.y = PlayState.downscroll ? 675 : 4;
+    taskbarBG.y = 4;
     taskbarBG.camera = camHUD;
     taskbarBG.visible = FlxG.save.data.pixelTimeBar;
     add(taskbarBG);
@@ -127,6 +128,17 @@ function onNoteCreation(event) {
 	pixelNote.updateHitbox();
 }
 
+function onPostNoteCreation(event) {
+	event.note.splash = noteStyle;
+
+    if (event.note.isSustainNote)
+        event.note.alpha = 1;
+    else {
+        if (event.note.strumLine != null && !event.note.strumLine.cpu)
+            totalNotes++;
+    }
+}
+
 function onStrumCreation(event) {
 	event.cancel();
 
@@ -139,19 +151,6 @@ function onStrumCreation(event) {
 
 	daStrum.scale.set(noteScale, noteScale);
 	daStrum.updateHitbox();
-
-	daStrum.x -= 32;
-}
-
-function onPostNoteCreation(event) {
-	event.note.splash = noteStyle;
-
-    if (event.note.isSustainNote)
-        event.note.alpha = 1;
-    else {
-        if (event.note.strumLine != null && !event.note.strumLine.cpu)
-            totalNotes++;
-    }
 }
 
 function postCreate() {
@@ -180,7 +179,7 @@ function postCreate() {
     healthBarBG.scale.set(4.68, 4.68);
     healthBarBG.updateHitbox();
     healthBarBG.screenCenter(FlxAxes.X);
-    healthBarBG.y = FlxG.height * 0.9;
+    healthBarBG.y = FlxG.height * 0.88;
 
     var leftColor:FlxColor = (dad != null && dad.iconColor != null && Options.colorHealthBar) ? dad.iconColor : (PlayState.opponentMode ? 0xFF66FF33 : 0xFFFF0000);
     var rightColor:FlxColor = (boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar) ? boyfriend.iconColor : (PlayState.opponentMode ? 0xFFFF0000 : 0xFF66FF33);
@@ -210,8 +209,10 @@ function postCreate() {
     scoreTxt.scale.x = 1.2;
     scoreTxt.updateHitbox();
     scoreTxt.screenCenter(FlxAxes.X);
-    scoreTxt.y = (healthBarBG.y + healthBarBG.height);
-    scoreTxt.y -= scoreTxt.height / 8;
+
+    var healthBarHeightPos:Float = healthBarBG.y + healthBarBG.height;
+    var distanceFromBottom:Float = distanceBetweenFloats(camHUD.height, healthBarHeightPos);
+    scoreTxt.y = healthBarHeightPos + (distanceFromBottom / 2) - (scoreTxt.height / 2);
 
     missesTxt.visible = false;
     accuracyTxt.visible = false;
@@ -227,19 +228,29 @@ function postCreate() {
 
     createCharacters();
 
+    // create extra variables for all strumlines
+    for (i => chartStrumline in PlayState.SONG.strumLines) {
+        var strumline:StrumLine = strumLines.members[i];
+
+        strumline.extra.set("position", (chartStrumline.strumLinePos == null ? (chartStrumline.type == 1 ? 0.75 : 0.25) : chartStrumline.strumLinePos));
+        strumline.extra.set("strumSpacing", (chartStrumline.strumSpacing == null ? 1 : chartStrumline.strumSpacing));
+        strumline.extra.set("keyCount", (chartStrumline.keyCount == null ? 4 : chartStrumline.keyCount));
+    }
+
+    // fix strumlines draw order
     for (strumline in strumLines.members)
         insert(members.length, strumline);
 
     insert(members.length, splashHandler.getSplashGroup(noteStyle));
 
-    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
+    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
 
     // add backgrounds to the strumlines
     if (FlxG.save.data.impPixelStrumBG > 0) {
         for (strumline in strumLines.members) {
             if (!strumline.visible) continue;
 
-            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(strumline.members[0].width * (strumline.members.length - 1) - 8, FlxG.height, FlxColor.BLACK);
+            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Note.swagWidth * strumline.extra.get("keyCount"), FlxG.height, FlxColor.BLACK);
             strumBG.alpha = FlxG.save.data.impPixelStrumBG;
             strumBG.camera = camHUD;
             insert(members.indexOf(strumline), strumBG);
@@ -1130,8 +1141,6 @@ function generateNewSong(?songData:Dynamic) {
     generatedMusic = true;
 }
 
-function onEvent(event) {}
-
 function transition2results() {
     var leftSide:CamPosData = getCharactersCamPos(strumLines.members[0].characters);
     var rightSide:CamPosData = getCharactersCamPos(strumLines.members[1].characters);
@@ -1159,8 +1168,4 @@ function resetTallies() {
     shitHits = 0;
     notesMissed = 0;
     combosBroken = 0;
-}
-
-function clamp(value:Float, min:Float, max:Float):Float {
-    return Math.max(min, Math.min(max, value));
 }

@@ -4,8 +4,9 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
 import openfl.system.Capabilities;
-importScript("data/flags");
-importScript("data/utils");
+importScript("utils/flags");
+importScript("utils/utils");
+importScript("utils/math");
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
@@ -102,14 +103,6 @@ function update(elapsed:Float) {
 }
 
 function postStateSwitch() {
-    if (fakeMobile) {
-        var mobilePreviewTxt:FunkinText = new FunkinText(FlxG.width * 0.02, FlxG.height * 0.98, 0, 'Mobile Preview, menus may look different in the real thing!\nPress F8 to exit the preview', 32, true);
-        mobilePreviewTxt.font = Paths.font("pixeloidsans.ttf");
-        mobilePreviewTxt.borderSize = 3;
-        mobilePreviewTxt.y -= mobilePreviewTxt.height;
-        FlxG.game._state.add(mobilePreviewTxt);
-    }
-
     saveImpostor();
 }
 
