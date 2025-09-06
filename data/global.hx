@@ -2,10 +2,14 @@ import funkin.backend.system.Flags;
 import funkin.backend.system.framerate.Framerate;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
+import funkin.savedata.FunkinSave;
 import lime.graphics.Image;
 import openfl.system.Capabilities;
 importScript("data/flags");
 importScript("data/utils");
+
+public static final PIXEL_SAVE_PATH:String = "kenton";
+public static final PIXEL_SAVE_NAME:String = "impostorPixel";
 
 function new() {
     FlxSprite.defaultAntialiasing = false;
@@ -29,8 +33,6 @@ function new() {
         window.minHeight = 720;
         FlxG.mouse.visible = true;
     }
-
-    //Application.current.window.__attributes.context.vsync = true;
 }
 
 function setWindowParameters() {
@@ -39,6 +41,9 @@ function setWindowParameters() {
 }
 
 function initSaveData() {
+    FlxG.save.bind(PIXEL_SAVE_PATH, null);
+    FunkinSave.save.bind(PIXEL_SAVE_NAME, PIXEL_SAVE_PATH);
+
     // Options
     FlxG.save.data.middlescroll ??= FlxG.onMobile ? true : false;
     FlxG.save.data.impPixelTimeBar ??= true;
@@ -50,12 +55,16 @@ function initSaveData() {
     FlxG.save.data.impPixelBeans ??= 0;
     FlxG.save.data.impPixelStats ??= getStats(true);
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
-    //FlxG.save.data.impPixelPartnersUnlocked ??= ["gf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= getFlags(true);
 
     initVars();
     initFlags(FlxG.save.data.impPixelFlags);
+
+    logTraceColored([
+        {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
+        {text: "Save Data initialized!"}
+    ], "information");
 }
 
 function initVars() {
@@ -107,6 +116,9 @@ function closeGame()
 
 function destroy() {
     Application.current.onExit.remove(closeGame);
+
+    FlxG.save.bind(Flags.SAVE_PATH, null);
+    FunkinSave.save.bind(Flags.SAVE_NAME, Flags.SAVE_PATH);
 
     closeGame();
 
