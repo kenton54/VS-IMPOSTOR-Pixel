@@ -12,6 +12,7 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 
 ## Changes
 - Improved the Impostor Pixel's Flags system.
+- Improved Discord RPC backend.
 - Sounds persist through menus now, so they don't get cut off when a transition starts.
 
 ## Fixes
