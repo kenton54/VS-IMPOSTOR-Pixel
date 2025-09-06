@@ -17,7 +17,7 @@ public static var storyStates:Array<String> = [
 ];
 public static var storySequence:Int = 0;
 
-static var defaultStats:Map<String, Dynamic> = [
+public static final defaultStats:Map<String, Dynamic> = [
     "storyProgress" => "start",
     "totalNotes" => 0,
     "perfectNotes" => 0,
