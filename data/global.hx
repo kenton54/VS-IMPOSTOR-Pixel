@@ -3,7 +3,6 @@ import funkin.backend.system.framerate.Framerate;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
-import lime.graphics.Image;
 import openfl.system.Capabilities;
 importScript("data/flags");
 importScript("data/utils");
@@ -33,11 +32,6 @@ function new() {
         window.minHeight = 720;
         FlxG.mouse.visible = true;
     }
-}
-
-function setWindowParameters() {
-    WindowUtils.winTitle = "VS IMPOSTOR Pixel";
-    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image("app/red64"))));
 }
 
 function initSaveData() {
