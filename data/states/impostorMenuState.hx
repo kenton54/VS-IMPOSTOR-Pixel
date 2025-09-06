@@ -1073,7 +1073,7 @@ function checkSelectedMainEntry() {
                             bfGroup.add(panelBG);
                             bfGroup.add(panel);
 
-                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -4.4 * thisScale);
+                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -3.4 * thisScale);
                             icon.frames = Paths.getFrames(row.image);
                             icon.animation.addByPrefix("idle", "idle", 10, true);
                             icon.animation.addByPrefix("confirm", "confirm", 10, false);
@@ -1108,7 +1108,7 @@ function checkSelectedMainEntry() {
                             picoGroup.add(panelBG);
                             picoGroup.add(panel);
 
-                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -4.4 * thisScale);
+                            var icon:FlxSprite = new FlxSprite(-44.4 * thisScale, -3.4 * thisScale);
                             icon.frames = Paths.getFrames(row.image);
                             icon.animation.addByPrefix("idle", "idle", 10, true);
                             icon.animation.addByPrefix("confirm", "confirm", 10, false);
