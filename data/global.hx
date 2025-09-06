@@ -74,6 +74,13 @@ function initFlags(data:Map<String, Dynamic>) {
     weeksCompleted = data.get("weeksCompleted");
     seenCharacters = data.get("seenCharacters");
     unlockedVideos = data.get("unlockedVideos");
+
+    // do this in case your save data was created in the non-demo version
+    // which doesnt contains these unique flags
+    if (isSussusMoogusComplete == null) {
+        isSussusMoogusComplete = false;
+        FlxG.save.data.impPixelFlags.set("isSussusMoogusComplete", false);
+    }
 }
 
 static function setStats(data:Map<String, Dynamic>) {
