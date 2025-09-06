@@ -8,6 +8,7 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 - A license to the mod (that sounds werid to say somehow??).
 - Blockable Main Menu entries, they can be unlocked if certain condicions are met.
 - Credits Menu.
+- Custom Save Data Directory (so that stuff that gets saved from the mod doesn't override other mods's save data and viceversa).
 
 ## Changes
 - Improved the Impostor Pixel's Flags system.
@@ -15,7 +16,7 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 
 ## Fixes
 - Fixed a hidden feature causing crashes.
-- (TO-DO) Fixed downscroll, specifically strum notes being offset wrong.
+- Fixed downscroll, specifically strum notes being offseted wrong.
 
 # Developer Build 1
 A new version bringing a general overhaul of the entire mod.

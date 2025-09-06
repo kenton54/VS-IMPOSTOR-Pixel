@@ -14,13 +14,13 @@ function onMenuLoaded(name:String) {
 function onPlayStateUpdate() {
 	DiscordUtil.changeSongPresence(
 		PlayState.instance.detailsText,
-		!isPlayingVersus ? "Playing Solo: " + PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]" : "Competing against a Friend: " + PlayState.SONG.meta.displayName,
+		!isPlayingVersus ? "Playing Solo: " + PlayState.SONG.meta.displayName + " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "]" : "Playing Versus: " + PlayState.SONG.meta.displayName,
 		PlayState.instance.inst
 	);
 }
 
 function onGameOver() {
-	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + PlayState.difficulty + "]");
+	DiscordUtil.changePresence('Game Over', PlayState.SONG.meta.displayName + " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "]");
 }
 
 function onEditorTreeLoaded(name:String) {

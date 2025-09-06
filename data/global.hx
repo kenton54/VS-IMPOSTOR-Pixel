@@ -6,6 +6,7 @@ import funkin.savedata.FunkinSave;
 import openfl.system.Capabilities;
 importScript("data/flags");
 importScript("data/utils");
+importScript("data/math");
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";

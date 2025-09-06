@@ -1,6 +1,7 @@
 import flixel.math.FlxRect;
 import flixel.sound.FlxSound;
 import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 import funkin.backend.chart.EventsData;
 import funkin.backend.scripting.DummyScript;
 import funkin.backend.scripting.Script;
@@ -151,21 +152,9 @@ function onStrumCreation(event) {
 
 	daStrum.scale.set(noteScale, noteScale);
 	daStrum.updateHitbox();
-
-	daStrum.x -= 32;
-
-    if (Options.downscroll)
-        daStrum.y -= daStrum.height;
 }
 
-function onPostStrumCreation(event) {
-    if (Options.devMode) {
-        var box:FlxSprite = new FlxSprite(event.strum.x, event.strum.y + 10).makeGraphic(event.strum.width, event.strum.height, FlxColor.BLUE);
-        box.camera = camHUD;
-        box.alpha = 0.25;
-        add(box);
-    }
-}
+function onPostStrumCreation(event) {}
 
 function postCreate() {
     camExtra = new FlxCamera();
@@ -186,9 +175,6 @@ function postCreate() {
         var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
         holdCoverHandlers.push(coverHandler);
     }
-
-    for (strumline in strumLines.members) for (strum in strumline.members)
-        //strum.offset.y += Options.downscroll ? -strumOffset : strumOffset;
 
     healthLerp = health;
 
@@ -223,11 +209,13 @@ function postCreate() {
     scoreTxt.fieldWidth = FlxG.width;
     scoreTxt.alignment = "center";
     scoreTxt.borderSize = 3.5;
-    scoreTxt.scale.x = 1.2;
+    scoreTxt.scale.x = 1.25;
     scoreTxt.updateHitbox();
     scoreTxt.screenCenter(FlxAxes.X);
-    scoreTxt.y = (healthBarBG.y + healthBarBG.height);
-    scoreTxt.y -= scoreTxt.height / 8;
+
+    var healthBarHeightPos:Float = healthBarBG.y + healthBarBG.height;
+    var distanceFromBottom:Float = distanceBetweenFloats(camHUD.height, healthBarHeightPos);
+    scoreTxt.y = healthBarHeightPos + (distanceFromBottom / 2) - (scoreTxt.height / 2);
 
     missesTxt.visible = false;
     accuracyTxt.visible = false;
@@ -243,19 +231,29 @@ function postCreate() {
 
     createCharacters();
 
+    // create extra variables for all strumlines
+    for (i => chartStrumline in PlayState.SONG.strumLines) {
+        var strumline:StrumLine = strumLines.members[i];
+
+        strumline.extra.set("position", (chartStrumline.strumLinePos == null ? (chartStrumline.type == 1 ? 0.75 : 0.25) : chartStrumline.strumLinePos));
+        strumline.extra.set("strumSpacing", (chartStrumline.strumSpacing == null ? 1 : chartStrumline.strumSpacing));
+        strumline.extra.set("keyCount", (chartStrumline.keyCount == null ? 4 : chartStrumline.keyCount));
+    }
+
+    // fix strumlines draw order
     for (strumline in strumLines.members)
         insert(members.length, strumline);
 
     insert(members.length, splashHandler.getSplashGroup(noteStyle));
 
-    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + PlayState.difficulty + "] (SOLO)" : " (VERSUS)");
+    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
 
     // add backgrounds to the strumlines
     if (FlxG.save.data.impPixelStrumBG > 0) {
         for (strumline in strumLines.members) {
             if (!strumline.visible) continue;
 
-            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(strumline.members[0].width * (strumline.members.length - 1) - 8, FlxG.height, FlxColor.BLACK);
+            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Note.swagWidth * strumline.extra.get("keyCount"), FlxG.height, FlxColor.BLACK);
             strumBG.alpha = FlxG.save.data.impPixelStrumBG;
             strumBG.camera = camHUD;
             insert(members.indexOf(strumline), strumBG);

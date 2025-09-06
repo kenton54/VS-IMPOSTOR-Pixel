@@ -87,15 +87,6 @@ public static function changeDiscordEditorStatus(menu:String) {
     DiscordUtil.call("onEditorTreeLoaded", [menu]);
 }
 
-public static function lerp(value1:Float, value2:Float, ratio:Float, ?fpsSensitive:Bool):Float {
-    if (fpsSensitive == null) fpsSensitive = false;
-
-    if (fpsSensitive)
-        return FlxMath.lerp(value1, value2, ratio);
-    else
-        return CoolUtil.fpsLerp(value1, value2, ratio);
-}
-
 public static function getStats(?def:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
 
@@ -240,16 +231,6 @@ public static function getLogColor(color:String):Int {
         case "yellow": return 14;
         case "white": return 15;
         default: return -1;
-    }
-}
-
-public static function shuffleTable(table:Array<Dynamic>) {
-    var maxValidIndex = table.length - 1;
-    for (i in 0...maxValidIndex) {
-        var j = FlxG.random.int(i, maxValidIndex);
-        var tmp = table[i];
-        table[i] = table[j];
-        table[j] = tmp;
     }
 }
 

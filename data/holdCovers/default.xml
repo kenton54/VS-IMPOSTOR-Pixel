@@ -1,18 +1,18 @@
 <holdCovers sprite="game/covers/default" scale="5.55" antialiasing="false">
 	<strum id="0">
-		<anim name="coverLeft1-loop" anim="cover hold purple" fps="24" x="1" y="3" />
-		<anim name="coverLeft1-end" anim="cover splash purple" fps="24" x="1" y="3" />
+		<anim name="coverLeft1-loop" anim="cover hold purple" fps="24" x="1" y="-1.5" />
+		<anim name="coverLeft1-end" anim="cover splash purple" fps="24" x="1" y="-1.5" />
 	</strum>
 	<strum id="1">
-		<anim name="coverDown1-loop" anim="cover hold blue" fps="24" x="1" y="3" />
-		<anim name="coverDown1-end" anim="cover splash blue" fps="24" x="1" y="3" />
+		<anim name="coverDown1-loop" anim="cover hold blue" fps="24" x="1" y="-1.5" />
+		<anim name="coverDown1-end" anim="cover splash blue" fps="24" x="1" y="-1.5" />
 	</strum>
 	<strum id="2">
-		<anim name="coverUp1-loop" anim="cover hold green" fps="24" x="1" y="3" />
-		<anim name="coverUp1-end" anim="cover splash green" fps="24" x="1" y="3" />
+		<anim name="coverUp1-loop" anim="cover hold green" fps="24" x="1" y="-1.5" />
+		<anim name="coverUp1-end" anim="cover splash green" fps="24" x="1" y="-1.5" />
 	</strum>
 	<strum id="3">
-		<anim name="coverRight1-loop" anim="cover hold red" fps="24" x="1" y="3" />
-		<anim name="coverRight1-end" anim="cover splash red" fps="24" x="1" y="3" />
+		<anim name="coverRight1-loop" anim="cover hold red" fps="24" x="1" y="-1.5" />
+		<anim name="coverRight1-end" anim="cover splash red" fps="24" x="1" y="-1.5" />
 	</strum>
 </holdCovers>
