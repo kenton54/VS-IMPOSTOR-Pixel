@@ -25,3 +25,7 @@ public static function shuffleTable(table:Array<Dynamic>) {
         table[j] = tmp;
     }
 }
+
+public static function clamp(value:Float, min:Float, max:Float):Float {
+    return Math.max(min, Math.min(max, value));
+}

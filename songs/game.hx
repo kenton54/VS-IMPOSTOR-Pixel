@@ -139,7 +139,6 @@ function onPostNoteCreation(event) {
     }
 }
 
-var strumOffset:Float = 6 * noteScale;
 function onStrumCreation(event) {
 	event.cancel();
 
@@ -153,8 +152,6 @@ function onStrumCreation(event) {
 	daStrum.scale.set(noteScale, noteScale);
 	daStrum.updateHitbox();
 }
-
-function onPostStrumCreation(event) {}
 
 function postCreate() {
     camExtra = new FlxCamera();
@@ -649,6 +646,7 @@ function onPlayerMiss(event) {
         scor = ghostScore;
     }
 
+    // TODO: rewrite how miss sounds are played
     //playSound(event.missSound, event.missVolume);
 
     vocals.volume = 0;
@@ -1144,8 +1142,6 @@ function generateNewSong(?songData:Dynamic) {
     generatedMusic = true;
 }
 
-function onEvent(event) {}
-
 function transition2results() {
     var leftSide:CamPosData = getCharactersCamPos(strumLines.members[0].characters);
     var rightSide:CamPosData = getCharactersCamPos(strumLines.members[1].characters);
@@ -1173,8 +1169,4 @@ function resetTallies() {
     shitHits = 0;
     notesMissed = 0;
     combosBroken = 0;
-}
-
-function clamp(value:Float, min:Float, max:Float):Float {
-    return Math.max(min, Math.min(max, value));
 }
