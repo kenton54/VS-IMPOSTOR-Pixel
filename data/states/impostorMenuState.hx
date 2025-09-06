@@ -1693,11 +1693,10 @@ function checkSelectedMainEntry() {
             }, function() {
                 playMenuSound("cancel");
 
+                if (FlxG.sound.music != null) FlxG.sound.music.fadeOut();
+
                 setTransition("slowFade");
                 ModsFolder.switchMod(curWindow[curWindowEntry[0]][0]);
-
-                if (FlxG.sound.music != null)
-                    FlxG.sound.music.fadeOut();
             });
     }
 }
