@@ -124,9 +124,7 @@ function create() {
 
     //descriptionGroup.y -= descriptionGroup.height;
 
-    closeButton = new BackButton(phoneSpr.x - 4 * scale, 0, () -> {
-        closeOptions();
-    }, scale, false, "menus/x", true);
+    closeButton = new BackButton(phoneSpr.x - 4 * scale, 0, closeOptions, scale, false, "menus/x", true);
     closeButton.camera = optionsCam;
     theEntireThing.add(closeButton);
 
@@ -155,7 +153,7 @@ function createCategories() {
         categories.push(category);
     }
     categories.remove(categories[categories.indexOf("impostorOptionsSubState")]);
-    if (!Options.devMode) categories.remove(categories[categories.indexOf("Debug")]);
+    if (!Options.devMode || FlxG.onMobile) categories.remove(categories[categories.indexOf("Debug")]);
 }
 
 function rearrangeCategories() {
@@ -202,10 +200,7 @@ function update(elapsed:Float) {
     handleOptions();
 
     handleKeyboard();
-    if (isMobile)
-        handleTouch();
-    else
-        handleMouse();
+    handlePointer();
 }
 
 var usingKeyboard:Bool = globalUsingKeyboard;
@@ -237,8 +232,8 @@ function useKeyboard() {
 }
 
 var hoveringOverCategory:Bool = false;
-function handleMouse() {
-    if (FlxG.mouse.justMoved) {
+function handlePointer() {
+    if (getTouch().justMoved) {
         usingKeyboard = false;
         FlxG.mouse.visible = true;
         if (canInteract) closeButton.visible = true;
@@ -249,9 +244,9 @@ function handleMouse() {
     hoveringOverCategory = false;
 
     for (i => category in categoriesGroup.members) {
-        if (FlxG.mouse.overlaps(category.members[0])) {
+        if (touchOverlaps(category.members[0])) {
             hoveringOverCategory = true;
-            if (FlxG.mouse.justReleased) {
+            if (touchJustReleased()) {
                 curCategoryIndex = i;
                 updateCategory();
             }
@@ -259,36 +254,14 @@ function handleMouse() {
     }
 
     for (i => group in curCategoryGrp.members) {
-        if (FlxG.mouse.overlaps(group.members[0])) {
+        if (touchOverlaps(group.members[0])) {
             curOption = i;
             playSound();
         }
     }
-}
 
-function handleTouch() {
-    if (usingKeyboard) return;
-
-    hoveringOverCategory = false;
-
-    for (touch in FlxG.touches.list) {
-        for (i => category in categoriesGroup.members) {
-            if (touch.overlaps(category.members[0])) {
-                hoveringOverCategory = true;
-                if (touch.justReleased) {
-                    curCategoryIndex = i;
-                    updateCategory();
-                }
-            }
-        }
-
-        for (i => group in curCategoryGrp.members) {
-            if (touch.overlaps(group.members[0])) {
-                curOption = i;
-                playSound();
-            }
-        }
-    }
+    if (FlxG.android.justReleased.BACK)
+        closeOptions();
 }
 
 function changeOptionSelec(change:Int) {
@@ -435,35 +408,17 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
 
     if (hoveringOverCategory) return;
 
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
-                playMenuSound("select");
+    if (touchOverlaps(curCategoryGrp.members[position].members[0]) && touchJustPressed()) {
+        playMenuSound("select");
 
-                var value:Bool;
-                if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
-                if (StringTools.endsWith(checkbox.animation.name, "false")) value = false;
+        var value:Bool;
+        if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
+        if (StringTools.endsWith(checkbox.animation.name, "false")) value = false;
 
-                var newValue:Bool = !value;
-                curCategory.call("onChangeBool", [position, newValue]);
+        var newValue:Bool = !value;
+        curCategory.call("onChangeBool", [position, newValue]);
 
-                checkbox.animation.play("trans " + Std.string(newValue), true);
-            }
-        }
-    }
-    else {
-        if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justPressed) {
-            playMenuSound("select");
-
-            var value:Bool;
-            if (StringTools.endsWith(checkbox.animation.name, "true")) value = true;
-            if (StringTools.endsWith(checkbox.animation.name, "false")) value = false;
-
-            var newValue:Bool = !value;
-            curCategory.call("onChangeBool", [position, newValue]);
-
-            checkbox.animation.play("trans " + Std.string(newValue), true);
-        }
+        checkbox.animation.play("trans " + Std.string(newValue), true);
     }
 }
 
@@ -551,34 +506,12 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
 
         return;
     }
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (touch.overlaps(subtractBtn)) {
-                if (touch.pressed) {
-                    subtractBtn.animation.play("press");
-                    if (optHoldTimer >= optMaxHeldTime) {
-                        if (optFrameDelayer >= optMaxDelay) {
-                            playMenuSound("select");
 
-                            var integer:Int = Std.parseInt(valueTxt.text);
-                            var newValue:Int = integer - curCategoryOptions[position].change;
-                            if (newValue < curCategoryOptions[position].min) newValue = curCategoryOptions[position].min;
-                            valueTxt.text = Std.string(newValue);
-
-                            curCategory.call("onChangeInt", [position, newValue]);
-
-                            optFrameDelayer = 0;
-                        }
-                        else
-                            optFrameDelayer++;
-
-                        if (optHoldTimer >= optMaxFastHeldTime)
-                            optMaxDelay = 0;
-                    }
-                    optHoldTimer += FlxG.elapsed;
-                }
-                else if (touch.justReleased) {
-                    subtractBtn.animation.play("idle");
+    if (touchOverlaps(subtractBtn)) {
+        if (touchIsHolding()) {
+            subtractBtn.animation.play("press");
+            if (optHoldTimer >= optMaxHeldTime) {
+                if (optFrameDelayer >= optMaxDelay) {
                     playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
@@ -587,43 +520,43 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     valueTxt.text = Std.string(newValue);
 
                     curCategory.call("onChangeInt", [position, newValue]);
+
+                    optFrameDelayer = 0;
                 }
-                else {
-                    subtractBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                    optMaxDelay = 5;
-                }
+                else
+                    optFrameDelayer++;
+
+                if (optHoldTimer >= optMaxFastHeldTime)
+                    optMaxDelay = 0;
             }
-            else {
-                subtractBtn.animation.play("idle");
-            }
+            optHoldTimer += FlxG.elapsed;
+        }
+        else if (touchJustReleased()) {
+            subtractBtn.animation.play("idle");
+            playMenuSound("select");
 
-            if (touch.overlaps(addBtn)) {
-                if (touch.pressed) {
-                    addBtn.animation.play("press");
-                    if (optHoldTimer >= optMaxHeldTime) {
-                        if (optFrameDelayer >= optMaxDelay) {
-                            playMenuSound("select");
+            var integer:Int = Std.parseInt(valueTxt.text);
+            var newValue:Int = integer - curCategoryOptions[position].change;
+            if (newValue < curCategoryOptions[position].min) newValue = curCategoryOptions[position].min;
+            valueTxt.text = Std.string(newValue);
 
-                            var integer:Int = Std.parseInt(valueTxt.text);
-                            var newValue:Int = integer + curCategoryOptions[position].change;
-                            if (newValue > curCategoryOptions[position].max) newValue = curCategoryOptions[position].max;
-                            valueTxt.text = Std.string(newValue);
+            curCategory.call("onChangeInt", [position, newValue]);
+        }
+        else {
+            subtractBtn.animation.play("idle");
+            optHoldTimer = 0;
+            optMaxDelay = 5;
+        }
+    }
+    else {
+        subtractBtn.animation.play("idle");
+    }
 
-                            curCategory.call("onChangeInt", [position, newValue]);
-
-                            optFrameDelayer = 0;
-                        }
-                        else
-                            optFrameDelayer++;
-
-                        if (optHoldTimer >= optMaxFastHeldTime)
-                            optMaxDelay = 0;
-                    }
-                    optHoldTimer += FlxG.elapsed;
-                }
-                else if (touch.justReleased) {
-                    addBtn.animation.play("idle");
+    if (touchOverlaps(addBtn)) {
+        if (touchIsHolding()) {
+            addBtn.animation.play("press");
+            if (optHoldTimer >= optMaxHeldTime) {
+                if (optFrameDelayer >= optMaxDelay) {
                     playMenuSound("select");
 
                     var integer:Int = Std.parseInt(valueTxt.text);
@@ -632,108 +565,36 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
                     valueTxt.text = Std.string(newValue);
 
                     curCategory.call("onChangeInt", [position, newValue]);
+
+                    optFrameDelayer = 0;
                 }
-                else {
-                    addBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                    optMaxDelay = 5;
-                }
+                else
+                    optFrameDelayer++;
+
+                if (optHoldTimer >= optMaxFastHeldTime)
+                    optMaxDelay = 0;
             }
-            else {
-                addBtn.animation.play("idle");
-            }
+            optHoldTimer += FlxG.elapsed;
         }
-    }
-    else {
-        if (FlxG.mouse.overlaps(subtractBtn)) {
-            if (FlxG.mouse.pressed) {
-                subtractBtn.animation.play("press");
-                if (optHoldTimer >= optMaxHeldTime) {
-                    if (optFrameDelayer >= optMaxDelay) {
-                        playMenuSound("select");
+        else if (touchJustReleased()) {
+            addBtn.animation.play("idle");
+            playMenuSound("select");
 
-                        var integer:Int = Std.parseInt(valueTxt.text);
-                        var newValue:Int = integer - curCategoryOptions[position].change;
-                        if (newValue < curCategoryOptions[position].min) newValue = curCategoryOptions[position].min;
-                        valueTxt.text = Std.string(newValue);
+            var integer:Int = Std.parseInt(valueTxt.text);
+            var newValue:Int = integer + curCategoryOptions[position].change;
+            if (newValue > curCategoryOptions[position].max) newValue = curCategoryOptions[position].max;
+            valueTxt.text = Std.string(newValue);
 
-                        curCategory.call("onChangeInt", [position, newValue]);
-
-                        optFrameDelayer = 0;
-                    }
-                    else
-                        optFrameDelayer++;
-
-                    if (optHoldTimer >= optMaxFastHeldTime)
-                        optMaxDelay = 0;
-                }
-                optHoldTimer += FlxG.elapsed;
-            }
-            else if (FlxG.mouse.justReleased) {
-                subtractBtn.animation.play("idle");
-                playMenuSound("select");
-
-                var integer:Int = Std.parseInt(valueTxt.text);
-                var newValue:Int = integer - curCategoryOptions[position].change;
-                if (newValue < curCategoryOptions[position].min) newValue = curCategoryOptions[position].min;
-                valueTxt.text = Std.string(newValue);
-
-                curCategory.call("onChangeInt", [position, newValue]);
-            }
-            else {
-                subtractBtn.animation.play("idle");
-                optHoldTimer = 0;
-                optMaxDelay = 5;
-            }
-        }
-        else {
-            subtractBtn.animation.play("idle");
-        }
-
-        if (FlxG.mouse.overlaps(addBtn)) {
-            if (FlxG.mouse.pressed) {
-                addBtn.animation.play("press");
-                if (optHoldTimer >= optMaxHeldTime) {
-                    if (optFrameDelayer >= optMaxDelay) {
-                        playMenuSound("select");
-
-                        var integer:Int = Std.parseInt(valueTxt.text);
-                        var newValue:Int = integer + curCategoryOptions[position].change;
-                        if (newValue > curCategoryOptions[position].max) newValue = curCategoryOptions[position].max;
-                        valueTxt.text = Std.string(newValue);
-
-                        curCategory.call("onChangeInt", [position, newValue]);
-
-                        optFrameDelayer = 0;
-                    }
-                    else
-                        optFrameDelayer++;
-
-                    if (optHoldTimer >= optMaxFastHeldTime)
-                        optMaxDelay = 0;
-                }
-                optHoldTimer += FlxG.elapsed;
-            }
-            else if (FlxG.mouse.justReleased) {
-                addBtn.animation.play("idle");
-                playMenuSound("select");
-
-                var integer:Int = Std.parseInt(valueTxt.text);
-                var newValue:Int = integer + curCategoryOptions[position].change;
-                if (newValue > curCategoryOptions[position].max) newValue = curCategoryOptions[position].max;
-                valueTxt.text = Std.string(newValue);
-
-                curCategory.call("onChangeInt", [position, newValue]);
-            }
-            else {
-                addBtn.animation.play("idle");
-                optHoldTimer = 0;
-                optMaxDelay = 5;
-            }
+            curCategory.call("onChangeInt", [position, newValue]);
         }
         else {
             addBtn.animation.play("idle");
+            optHoldTimer = 0;
+            optMaxDelay = 5;
         }
+    }
+    else {
+        addBtn.animation.play("idle");
     }
 }
 
@@ -805,41 +666,36 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
         return;
     }
 
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {}
+    if (touchJustReleased(theThing) && touchIsHolding()) {
+        if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
+            volumeBeep.play();
+
+            if (StringTools.endsWith(curCategoryOptions[position].name, "Music"))
+                volumeBeep.volume = Options.volumeMusic;
+            else if (StringTools.endsWith(curCategoryOptions[position].name, "SFX"))
+                volumeBeep.volume = Options.volumeSFX;
+            else
+                volumeBeep.volume = FlxG.sound.volume;
+        }
+
+        var min:Float = bar.x - barOffset;
+        var max:Float = bar.x + bar.width - barOffset;
+        theThing.x = FlxMath.bound(FlxG.mouse.x - barOffset, min, max);
+        var posCalc:Float = (theThing.x - min) / bar.width;
+        var newValue:Float = FlxMath.roundDecimal(posCalc, 2);
+
+        volumeBeep.pitch = newValue * 1.5;
+
+        var barPos:Float = bar.frameWidth * newValue;
+        bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
+        percentTxt.text = Std.string(newValue * 100) + "%";
+
+        curCategory.call("onChangeFloat", [position, newValue]);
     }
     else {
-        if (FlxG.mouse.overlaps(theThing) && FlxG.mouse.pressed) {
-            if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
-                volumeBeep.play();
-
-                if (StringTools.endsWith(curCategoryOptions[position].name, "Music"))
-                    volumeBeep.volume = Options.volumeMusic;
-                else if (StringTools.endsWith(curCategoryOptions[position].name, "SFX"))
-                    volumeBeep.volume = Options.volumeSFX;
-                else
-                    volumeBeep.volume = FlxG.sound.volume;
-            }
-
-            var min:Float = bar.x - barOffset;
-            var max:Float = bar.x + bar.width - barOffset;
-            theThing.x = FlxMath.bound(FlxG.mouse.x - barOffset, min, max);
-            var posCalc:Float = (theThing.x - min) / bar.width;
-            var newValue:Float = FlxMath.roundDecimal(posCalc, 2);
-
-            volumeBeep.pitch = newValue * 1.5;
-
-            var barPos:Float = bar.frameWidth * newValue;
-            bar.clipRect = new FlxRect(0, 0, barPos, bar.frameHeight);
-            percentTxt.text = Std.string(newValue * 100) + "%";
-
-            curCategory.call("onChangeFloat", [position, newValue]);
-        }
-        else {
-            if (volumeBeep.playing) {
-                volumeBeep.stop();
-                volumeBeep.pitch = 1;
-            }
+        if (volumeBeep.playing) {
+            volumeBeep.stop();
+            volumeBeep.pitch = 1;
         }
     }
 }
@@ -886,77 +742,6 @@ function handleChoices(position:Int, leftBtn:FlxSprite, rightBtn:FlxSprite, valu
 
         return;
     }
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (touch.overlaps(subtractBtn)) {
-                if (touch.pressed) {
-                    subtractBtn.animation.play("press");
-                }
-                else if (touch.justReleased) {
-                    subtractBtn.animation.play("idle");
-                }
-                else {
-                    subtractBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                }
-            }
-            else {
-                subtractBtn.animation.play("idle");
-            }
-
-            if (touch.overlaps(addBtn)) {
-                if (touch.pressed) {
-                    addBtn.animation.play("press");
-                }
-                else if (touch.justReleased) {
-                    addBtn.animation.play("idle");
-                    playMenuSound("select");
-                }
-                else {
-                    addBtn.animation.play("idle");
-                    optHoldTimer = 0;
-                }
-            }
-            else {
-                addBtn.animation.play("idle");
-            }
-        }
-    }
-    else {
-        if (FlxG.mouse.overlaps(subtractBtn)) {
-            if (FlxG.mouse.pressed) {
-                subtractBtn.animation.play("press");
-            }
-            else if (FlxG.mouse.justReleased) {
-                subtractBtn.animation.play("idle");
-                playMenuSound("select");
-            }
-            else {
-                subtractBtn.animation.play("idle");
-                optHoldTimer = 0;
-            }
-        }
-        else {
-            subtractBtn.animation.play("idle");
-        }
-
-        if (FlxG.mouse.overlaps(addBtn)) {
-            if (FlxG.mouse.pressed) {
-                addBtn.animation.play("press");
-            }
-            else if (FlxG.mouse.justReleased) {
-                addBtn.animation.play("idle");
-                playMenuSound("select");
-            }
-            else {
-                addBtn.animation.play("idle");
-                optHoldTimer = 0;
-            }
-        }
-        else {
-            addBtn.animation.play("idle");
-        }
-    }
 }
 
 function handleFunction(position:Int) {
@@ -964,19 +749,10 @@ function handleFunction(position:Int) {
         playMenuSound("select");
         curCategory.call("onCallFunction", [position]);
     }
-    if (isMobile) {
-        for (touch in FlxG.touches.list) {
-            if (touch.overlaps(curCategoryGrp.members[position].members[0]) && touch.justPressed) {
-                playMenuSound("select");
-                curCategory.call("onCallFunction", [position]);
-            }
-        }
-    }
-    else {
-        if (FlxG.mouse.overlaps(curCategoryGrp.members[position].members[0]) && FlxG.mouse.justReleased) {
-            playMenuSound("select");
-            curCategory.call("onCallFunction", [position]);
-        }
+
+    if (touchOverlaps(curCategoryGrp.members[position].members[0]) && touchJustPressed()) {
+        playMenuSound("select");
+        curCategory.call("onCallFunction", [position]);
     }
 }
 

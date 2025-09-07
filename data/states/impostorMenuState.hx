@@ -609,10 +609,7 @@ function createFinalButtons(x:Float, y:Float) {
 var backButton:BackButton;
 function postCreate() {
     var backBtnScale:Float = isMobile ? 4 : 3;
-    backButton = new BackButton(FlxG.width * 0.975, FlxG.height, () -> {
-        setTransition("bottom2topSmoothSquare");
-        FlxG.switchState(new ModState("impostorTitleState"));
-    }, backBtnScale, false);
+    backButton = new BackButton(FlxG.width * 0.975, FlxG.height, goBack2Title, backBtnScale, false);
     backButton.camera = frontCam;
     backButton.visible = !usingKeyboard;
     backButton.x -= backButton.width;
@@ -636,10 +633,13 @@ function update(elapsed:Float) {
         handleWindow();
 
     handleKeyboard(elapsed);
+
     if (isMobile)
         handleTouch();
     else
         handleMouse();
+
+    handlePointer();
 }
 
 function postUpdate(elapsed:Float) {
@@ -713,10 +713,8 @@ function handleKeyboard(elapsed:Float) {
         if (controls.ACCEPT)
             checkSelectedMainEntry();
 
-        if (controls.BACK) {
-            setTransition("bottom2topSmoothSquare");
-            FlxG.switchState(new ModState("impostorTitleState"));
-        }
+        if (controls.BACK)
+            goBack2Title();
     }
     else if (currentSelectionMode == "window") {
         if (controls.UP_P)
@@ -759,24 +757,10 @@ function handleMouse() {
     if (!FlxG.mouse.visible) return;
     if (usingKeyboard) return;
 
-    if (mouseIsOverABtn) {
+    if (isOverButton) {
         Mouse.cursor = "button";
-
-        if (currentSelectionMode == "main") {
-            if (FlxG.mouse.justReleased) {
-                checkSelectedMainEntry();
-            }
-        }
-        else if (currentSelectionMode == "window") {
-            if (FlxG.mouse.justReleased) {
-                checkSelectedWindowEntry();
-            }
-        }
     }
     else {
-        lastMainEntry = -1;
-        lastWindowEntry[0] = -1;
-        lastWindowEntry[1] = -1;
         Mouse.cursor = "arrow";
     }
 }
@@ -792,9 +776,32 @@ function handleTouch() {
             if (currentSelectionMode == "main") backButton.visible = true;
         }
     }
+
+    if (FlxG.android.justReleased.BACK)
+        goBack2Title();
 }
 
-var mouseIsOverABtn:Bool = false;
+function handlePointer() {
+    if (!allowTouch || !allowMouse) return;
+
+    if (isOverButton) {
+        if (currentSelectionMode == "main") {
+            if (touchJustReleased())
+                checkSelectedMainEntry();
+        }
+        else if (currentSelectionMode == "window") {
+            if (touchJustReleased())
+                checkSelectedWindowEntry();
+        }
+    }
+    else {
+        lastMainEntry = -1;
+        lastWindowEntry[0] = -1;
+        lastWindowEntry[1] = -1;
+    }
+}
+
+var isOverButton:Bool = false;
 function handleMainButtons() {
     if (usingKeyboard) {
         for (i in 0...buttonsTotalLength) {
@@ -815,64 +822,31 @@ function handleMainButtons() {
         return;
     }
 
-    if (isMobile) {
-        isTouchingButton = false;
+    isOverButton = false;
 
-        if (!allowTouch) return;
+    if (!allowMouse || !allowTouch) return;
 
-        for (touch in FlxG.touches.list) {
-            if (currentSelectionMode == "main") {
-                var i:Int = 0;
-                buttonsMainGroup.forEach(function(button) {
-                    if (touch.overlaps(button)) {
-                        if (allButtonsArray[i].available || Options.devMode) {
-                            isTouchingButton = true;
-                            button.animation.play("hover");
-                            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
+    if (currentSelectionMode == "main") {
+        var i:Int = 0;
+        buttonsMainGroup.forEach(function(button) {
+            if (touchOverlaps(button)) {
+                if (allButtonsArray[i].available || Options.devMode) {
+                    isOverButton = true;
+                    button.animation.play("hover");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
 
-                            curMainEntry = i;
-                            playSoundMain();
-                        }
-                    }
-                    else {
-                        if (allButtonsArray[i].available || Options.devMode) {
-                            button.animation.play("idle");
-                            buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
-                        }
-                    }
-                    i++;
-                });
+                    curMainEntry = i;
+                    playSoundMain();
+                }
             }
-        }
-    }
-    else {
-        mouseIsOverABtn = false;
-
-        if (!allowMouse) return;
-        if (!FlxG.mouse.visible) return;
-
-        if (currentSelectionMode == "main") {
-            var i:Int = 0;
-            buttonsMainGroup.forEach(function(button) {
-                if (FlxG.mouse.overlaps(button)) {
-                    if (allButtonsArray[i].available || Options.devMode) {
-                        mouseIsOverABtn = true;
-                        button.animation.play("hover");
-                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorHover;
-
-                        curMainEntry = i;
-                        playSoundMain();
-                    }
+            else {
+                if (allButtonsArray[i].available || Options.devMode) {
+                    button.animation.play("idle");
+                    buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
                 }
-                else {
-                    if (allButtonsArray[i].available || Options.devMode) {
-                        button.animation.play("idle");
-                        buttonsLabelGroup.members[i].color = allButtonsArray[i].colorIdle;
-                    }
-                }
-                i++;
-            });
-        }
+            }
+            i++;
+        });
     }
 }
 
@@ -882,143 +856,123 @@ function handleTopButtons() {
     if (currentSelectionMode != "main") return;
 
     topButtonsGroup.forEach(function(button) {
-        if (isMobile) {
-            for (touch in FlxG.touches.list) {
-                if (touch.overlaps(button)) {
-                    if (touch.pressed) {
-                        button.animation.play("click");
-                    }
-                    else {
-                        button.animation.play("idle");
-                    }
+        if (touchOverlaps(button)) {
+            if (connecting) return;
 
-                    if (touch.justReleased) {
-                        if (button == topButtonsGroup.members[0]) {
-                            statsMenu();
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            if (FlxG.mouse.overlaps(button)) {
-                if (connecting) return;
-
-                if (FlxG.mouse.pressed) {
-                    button.animation.play("click");
-                }
-                else {
-                    button.animation.play("idle");
-                }
-
-                if (FlxG.mouse.justReleased) {
-                    if (button == topButtonsGroup.members[0]) {
-                        statsMenu();
-                    }
-                    if (button == topButtonsGroup.members[2]) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
-                        if (DiscordUtil.ready) {
-                            shutdownDiscordRPC();
-                        }
-                        else {
-                            initDiscordRPC();
-                        }
-                    }
-                    else if (button == topButtonsGroup.members[1]) {
-                        FlxG.sound.play(Paths.sound("menu/select"), 1);
-                        openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
-                            var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
-                            var maxHeight:Float = 106;
-                            for (c => column in debugOptions) {
-                                var columnGroup = new FlxSpriteGroup(posH, posV + c * daHeight);
-                                group.add(columnGroup);
-
-                                for (row in column) {
-                                    var rowGroup = new FlxSpriteGroup();
-                                    columnGroup.add(rowGroup);
-
-                                    var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
-                                    bg.alpha = 0;
-                                    rowGroup.add(bg);
-
-                                    var toolLabel:FunkinText = new FunkinText(32 * baseScale, bg.height / 2, 0, row.name, 32);
-                                    toolLabel.font = Paths.font("pixeloidsans.ttf");
-                                    toolLabel.borderSize = 3;
-                                    toolLabel.y -= toolLabel.height / 2;
-
-                                    var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
-                                    toolIcon.scale.set(baseScale, baseScale);
-                                    toolIcon.updateHitbox();
-                                    toolIcon.x = 15 * baseScale - toolIcon.width / 2;
-
-                                    if (daHeight < maxHeight) {
-                                        toolIcon.scale.y = baseScale * (daHeight / maxHeight);
-                                        toolIcon.updateHitbox();
-                                    }
-
-                                    toolIcon.y -= toolIcon.height / 2;
-
-                                    rowGroup.add(toolIcon);
-                                    rowGroup.add(toolLabel);
-                                }
-                            }
-                        }, function() {
-                            mouseIsOverABtn = false;
-
-                            if (!allowMouse) return;
-
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                if (column is FlxSpriteGroup) {
-                                    var rw:Int = 0;
-                                    column.forEach(function(row) {
-                                        if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                            row.members[0].alpha = 0.25;
-
-                                            mouseIsOverABtn = true;
-                                            curWindowEntry[0] = col;
-                                            curWindowEntry[1] = rw;
-                                            playSoundWindow();
-                                        }
-                                        else {
-                                            row.members[0].alpha = 0;
-                                        }
-                                        rw++;
-                                    });
-                                    col++;
-                                }
-                            });
-                        }, function() {
-                            playMenuSound("confirm");
-
-                            if (curWindowEntry[1] == 0) {
-                                var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.5 : 1;
-                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], duration, 0.05, true, true);
-                                FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], duration, 0.05, true, true);
-
-                                if (FlxG.sound.music != null) FlxG.sound.music.fadeOut();
-
-                                new FlxTimer().start(duration, _ -> {
-                                    switch(curWindowEntry[0]) {
-                                        case 0: FlxG.switchState(new CharterSelection());
-                                        case 1: FlxG.switchState(new CharacterSelection());
-                                        case 2: FlxG.switchState(new StageSelection());
-                                        case 3:
-                                            var state = new EditorTreeMenu();
-                                            state.bgType = "charter";
-                                            state.scriptName = "debug/weekSelector";
-                                            FlxG.switchState(state);
-                                        case 4: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }
+            if (touchIsHolding()) {
+                button.animation.play("click");
             }
             else {
                 button.animation.play("idle");
             }
+
+            if (touchJustReleased()) {
+                if (button == topButtonsGroup.members[0]) {
+                    statsMenu();
+                }
+                if (button == topButtonsGroup.members[2]) {
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    if (DiscordUtil.ready) {
+                        shutdownDiscordRPC();
+                    }
+                    else {
+                        initDiscordRPC();
+                    }
+                }
+                else if (button == topButtonsGroup.members[1]) {
+                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
+                        var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
+                        var maxHeight:Float = 106;
+                        for (c => column in debugOptions) {
+                            var columnGroup = new FlxSpriteGroup(posH, posV + c * daHeight);
+                            group.add(columnGroup);
+
+                            for (row in column) {
+                                var rowGroup = new FlxSpriteGroup();
+                                columnGroup.add(rowGroup);
+
+                                var bg:FlxSprite = new FlxSprite().makeGraphic(spaceCam.width, daHeight, FlxColor.WHITE);
+                                bg.alpha = 0;
+                                rowGroup.add(bg);
+
+                                var toolLabel:FunkinText = new FunkinText(32 * baseScale, bg.height / 2, 0, row.name, 32);
+                                toolLabel.font = Paths.font("pixeloidsans.ttf");
+                                toolLabel.borderSize = 3;
+                                toolLabel.y -= toolLabel.height / 2;
+
+                                var toolIcon:FlxSprite = new FlxSprite(0, toolLabel.y + (toolLabel.height / 2)).loadGraphic(row.image);
+                                toolIcon.scale.set(baseScale, baseScale);
+                                toolIcon.updateHitbox();
+                                toolIcon.x = 15 * baseScale - toolIcon.width / 2;
+
+                                if (daHeight < maxHeight) {
+                                    toolIcon.scale.y = baseScale * (daHeight / maxHeight);
+                                    toolIcon.updateHitbox();
+                                }
+
+                                toolIcon.y -= toolIcon.height / 2;
+
+                                rowGroup.add(toolIcon);
+                                rowGroup.add(toolLabel);
+                            }
+                        }
+                    }, function() {
+                        isOverButton = false;
+
+                        if (!allowMouse || !allowTouch) return;
+
+                        var col:Int = 0;
+                        windowGroup.forEach(function(column) {
+                            if (column is FlxSpriteGroup) {
+                                var rw:Int = 0;
+                                column.forEach(function(row) {
+                                    if (row.members[0].overlapsPoint(getTouch().getWorldPosition(spaceCam), true, spaceCam)) {
+                                        row.members[0].alpha = 0.25;
+
+                                        isOverButton = true;
+                                        curWindowEntry[0] = col;
+                                        curWindowEntry[1] = rw;
+                                        playSoundWindow();
+                                    }
+                                    else {
+                                        row.members[0].alpha = 0;
+                                    }
+                                    rw++;
+                                });
+                                col++;
+                            }
+                        });
+                    }, function() {
+                        playMenuSound("confirm");
+
+                        if (curWindowEntry[1] == 0) {
+                            var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.5 : 1;
+                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[1], duration, 0.05, true, true);
+                            FlxFlicker.flicker(windowGroup.members[1 + curWindowEntry[0]].members[curWindowEntry[1]].members[2], duration, 0.05, true, true);
+
+                            if (FlxG.sound.music != null) FlxG.sound.music.fadeOut();
+
+                            new FlxTimer().start(duration, _ -> {
+                                switch(curWindowEntry[0]) {
+                                    case 0: FlxG.switchState(new CharterSelection());
+                                    case 1: FlxG.switchState(new CharacterSelection());
+                                    case 2: FlxG.switchState(new StageSelection());
+                                    case 3:
+                                        var state = new EditorTreeMenu();
+                                        state.bgType = "charter";
+                                        state.scriptName = "debug/weekSelector";
+                                        FlxG.switchState(state);
+                                    case 4: FlxG.switchState(new ModState("debug/mobileEmuInitializer"));
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+        else {
+            button.animation.play("idle");
         }
     });
 }
@@ -1201,77 +1155,39 @@ function checkSelectedMainEntry() {
                     });
                     return;
                 }
-                if (isMobile) {
-                    isTouchingButton = false;
+                
+                isOverButton = false;
 
-                    if (allowTouch) {
-                        for (touch in FlxG.touches.list) {
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                if (column is FlxSpriteGroup) {
-                                    var rw:Int = 0;
-                                    column.forEach(function(row) {
-                                        if (row is FlxSpriteGroup) {
-                                            row.forEach(function(grp) {
-                                                if (grp is FlxSpriteGroup) {
-                                                    if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                        grp.members[0].animation.play("hover");
-                                                        grp.members[1].color = curWindow[col][rw].colorHover;
+                if (allowMouse || allowTouch) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxSpriteGroup) {
+                            var rw:Int = 0;
+                            column.forEach(function(row) {
+                                if (row is FlxSpriteGroup) {
+                                    row.forEach(function(grp) {
+                                        if (grp is FlxSpriteGroup) {
+                                            if (grp.members[0].overlapsPoint(getTouch().getWorldPosition(spaceCam), true, spaceCam)) {
+                                                grp.members[0].animation.play("hover");
+                                                grp.members[1].color = curWindow[col][rw].colorHover;
 
-                                                        isTouchingButton = true;
-                                                        curWindowEntry[0] = col;
-                                                        curWindowEntry[1] = rw;
-                                                        playSoundWindow();
-                                                    }
-                                                    else {
-                                                        grp.members[0].animation.play("idle");
-                                                        grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                    }
-                                                }
-                                            });
-                                            rw++;
+                                                isOverButton = true;
+                                                curWindowEntry[0] = col;
+                                                curWindowEntry[1] = rw;
+                                                playSoundWindow();
+                                            }
+                                            else {
+                                                grp.members[0].animation.play("idle");
+                                                grp.members[1].color = curWindow[col][rw].colorIdle;
+                                            }
                                         }
                                     });
-                                    col++;
+                                    rw++;
                                 }
                             });
+                            col++;
                         }
-                    }
-                }
-                else {
-                    mouseIsOverABtn = false;
-
-                    if (allowMouse) {
-                        var col:Int = 0;
-                        windowGroup.forEach(function(column) {
-                            if (column is FlxSpriteGroup) {
-                                var rw:Int = 0;
-                                column.forEach(function(row) {
-                                    if (row is FlxSpriteGroup) {
-                                        row.forEach(function(grp) {
-                                            if (grp is FlxSpriteGroup) {
-                                                if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                    grp.members[0].animation.play("hover");
-                                                    grp.members[1].color = curWindow[col][rw].colorHover;
-
-                                                    mouseIsOverABtn = true;
-                                                    curWindowEntry[0] = col;
-                                                    curWindowEntry[1] = rw;
-                                                    playSoundWindow();
-                                                }
-                                                else {
-                                                    grp.members[0].animation.play("idle");
-                                                    grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                }
-                                            }
-                                        });
-                                        rw++;
-                                    }
-                                });
-                                col++;
-                            }
-                        });
-                    }
+                    });
                 }
             }, function() {
                 playMenuSound("confirm");
@@ -1442,85 +1358,43 @@ function checkSelectedMainEntry() {
                     });
                     return;
                 }
-                if (isMobile) {
-                    isTouchingButton = false;
 
-                    if (allowTouch) {
-                        for (touch in FlxG.touches.list) {
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                if (column is FlxSpriteGroup) {
-                                    var rw:Int = 0;
-                                    column.forEach(function(row) {
-                                        if (row is FlxSpriteGroup) {
-                                            row.forEach(function(grp) {
-                                                if (grp is FlxSpriteGroup) {
-                                                    if (grp.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                        if (curWindow[col][rw].available) {
-                                                            grp.members[0].animation.play("hover");
-                                                            grp.members[1].color = curWindow[col][rw].colorHover;
+                isOverButton = false;
 
-                                                            isTouchingButton = true;
-                                                            curWindowEntry[0] = col;
-                                                            curWindowEntry[1] = rw;
-                                                            playSoundWindow();
-                                                        }
-                                                    }
-                                                    else {
-                                                        if (curWindow[col][rw].available) {
-                                                            grp.members[0].animation.play("idle");
-                                                            grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                            rw++;
-                                        }
-                                    });
-                                    col++;
-                                }
-                            });
-                        }
-                    }
-                }
-                else {
-                    mouseIsOverABtn = false;
+                if (allowMouse || allowTouch) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxSpriteGroup) {
+                            var rw:Int = 0;
+                            column.forEach(function(row) {
+                                if (row is FlxSpriteGroup) {
+                                    row.forEach(function(grp) {
+                                        if (grp is FlxSpriteGroup) {
+                                            if (grp.members[0].overlapsPoint(getTouch().getWorldPosition(spaceCam), true, spaceCam)) {
+                                                if (curWindow[col][rw].available) {
+                                                    grp.members[0].animation.play("hover");
+                                                    grp.members[1].color = curWindow[col][rw].colorHover;
 
-                    if (allowMouse) {
-                        var col:Int = 0;
-                        windowGroup.forEach(function(column) {
-                            if (column is FlxSpriteGroup) {
-                                var rw:Int = 0;
-                                column.forEach(function(row) {
-                                    if (row is FlxSpriteGroup) {
-                                        row.forEach(function(grp) {
-                                            if (grp is FlxSpriteGroup) {
-                                                if (grp.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                                    if (curWindow[col][rw].available) {
-                                                        grp.members[0].animation.play("hover");
-                                                        grp.members[1].color = curWindow[col][rw].colorHover;
-
-                                                        mouseIsOverABtn = true;
-                                                        curWindowEntry[0] = col;
-                                                        curWindowEntry[1] = rw;
-                                                        playSoundWindow();
-                                                    }
-                                                }
-                                                else {
-                                                    if (curWindow[col][rw].available) {
-                                                        grp.members[0].animation.play("idle");
-                                                        grp.members[1].color = curWindow[col][rw].colorIdle;
-                                                    }
+                                                    isOverButton = true;
+                                                    curWindowEntry[0] = col;
+                                                    curWindowEntry[1] = rw;
+                                                    playSoundWindow();
                                                 }
                                             }
-                                        });
-                                        rw++;
-                                    }
-                                });
-                                col++;
-                            }
-                        });
-                    }
+                                            else {
+                                                if (curWindow[col][rw].available) {
+                                                    grp.members[0].animation.play("idle");
+                                                    grp.members[1].color = curWindow[col][rw].colorIdle;
+                                                }
+                                            }
+                                        }
+                                    });
+                                    rw++;
+                                }
+                            });
+                            col++;
+                        }
+                    });
                 }
             }, function() {
                 playMenuSound("confirm");
@@ -1634,61 +1508,31 @@ function checkSelectedMainEntry() {
                     });
                     return;
                 }
-                if (isMobile) {
-                    isTouchingButton = false;
 
-                    for (touch in FlxG.touches.list) {
-                        if (allowTouch) {
-                            var col:Int = 0;
-                            windowGroup.forEach(function(column) {
-                                if (column is FlxSpriteGroup) {
-                                    var rw:Int = 0;
-                                    column.forEach(function(row) {
-                                        if (row.members[0].overlapsPoint(touch.getWorldPosition(spaceCam), true, spaceCam)) {
-                                            row.members[0].alpha = 0.25;
+                isOverButton = false;
 
-                                            isTouchingButton = true;
-                                            curWindowEntry[0] = col;
-                                            curWindowEntry[1] = rw;
-                                            playSoundWindow();
-                                        }
-                                        else {
-                                            row.members[0].alpha = 0;
-                                        }
-                                        rw++;
-                                    });
-                                    col++;
+                if (allowMouse || allowTouch) {
+                    var col:Int = 0;
+                    windowGroup.forEach(function(column) {
+                        if (column is FlxSpriteGroup) {
+                            var rw:Int = 0;
+                            column.forEach(function(row) {
+                                if (row.members[0].overlapsPoint(getTouch().getWorldPosition(spaceCam), true, spaceCam)) {
+                                    row.members[0].alpha = 0.25;
+
+                                    isOverButton = true;
+                                    curWindowEntry[0] = col;
+                                    curWindowEntry[1] = rw;
+                                    playSoundWindow();
                                 }
+                                else {
+                                    row.members[0].alpha = 0;
+                                }
+                                rw++;
                             });
+                            col++;
                         }
-                    }
-                }
-                else {
-                    mouseIsOverABtn = false;
-
-                    if (allowMouse) {
-                        var col:Int = 0;
-                        windowGroup.forEach(function(column) {
-                            if (column is FlxSpriteGroup) {
-                                var rw:Int = 0;
-                                column.forEach(function(row) {
-                                    if (row.members[0].overlapsPoint(FlxG.mouse.getWorldPosition(spaceCam), true, spaceCam)) {
-                                        row.members[0].alpha = 0.25;
-
-                                        mouseIsOverABtn = true;
-                                        curWindowEntry[0] = col;
-                                        curWindowEntry[1] = rw;
-                                        playSoundWindow();
-                                    }
-                                    else {
-                                        row.members[0].alpha = 0;
-                                    }
-                                    rw++;
-                                });
-                                col++;
-                            }
-                        });
-                    }
+                    });
                 }
             }, function() {
                 playMenuSound("cancel");
@@ -1857,6 +1701,11 @@ function disableInput() {
     backButton.enabled = false;
     FlxG.mouse.visible = false;
     Mouse.cursor = "arrow";
+}
+
+function goBack2Title() {
+    setTransition("bottom2topSmoothSquare");
+    FlxG.switchState(new ModState("impostorTitleState"));
 }
 
 function destroy() {

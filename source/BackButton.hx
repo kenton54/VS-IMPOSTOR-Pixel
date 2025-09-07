@@ -68,11 +68,11 @@ class BackButton extends FunkinSprite {
                     hoverButton();
                 else {
                     if (_isBeingHeld) {
-                        if (FlxG.mouse.justReleased)
+                        if (touchJustReleased())
                             confirmButton();
                     }
 
-                    if (FlxG.mouse.pressed) {
+                    if (touchIsHolding()) {
                         if (!_isBeingHeld)
                             holdButton();
                     }
@@ -91,7 +91,7 @@ class BackButton extends FunkinSprite {
 
     function checkHover():Bool {
         for (camera in cameras) {
-            final worldPoint:FlxPoint = FlxG.mouse.getWorldPosition(camera);
+            final worldPoint:FlxPoint = getTouch().getWorldPosition(camera);
 
             if (overlapsPoint(worldPoint)) {
                 return true;
@@ -168,6 +168,8 @@ class BackButton extends FunkinSprite {
         playMenuSound("cancel");
 
         dispatchSignal(onConfirm);
+
+        //vibrateDevice(0.1, 0.5);
 
         animation.onFinish.add(function(name:String) {
             if (name != "press") return;

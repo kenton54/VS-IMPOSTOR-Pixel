@@ -5,12 +5,14 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 
 ## Additions
 - DEMO Build.
+- Added Mobile Support.
 - A license to the mod (that sounds werid to say somehow??).
 - Blockable Main Menu entries, they can be unlocked if certain condicions are met.
 - Credits Menu.
 - Custom Save Data Directory (so that stuff that gets saved from the mod doesn't override other mods's save data and viceversa).
 
 ## Changes
+- Organized utilities (making them easier to find and access).
 - Improved the Impostor Pixel's Flags system.
 - Improved Discord RPC backend.
 - Sounds persist through menus now, so they don't get cut off when a transition starts.
