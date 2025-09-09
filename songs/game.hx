@@ -18,6 +18,7 @@ import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
 import Date;
 import HoldCoverHandler;
+import TaskPanel;
 import VSliceCharacter;
 
 public var camExtra:FlxCamera;
@@ -61,6 +62,8 @@ var noteScale:Float = 5.55;
 
 var noteArray:Array<String> = ["left", "down", "up", "right"];
 var noteColor:Array<String> = ["purple", "blue", "green", "red"];
+
+public var taskPanel:TaskPanel;
 
 public var holdCoverHandlers:Array<HoldCoverHandler> = [];
 
@@ -258,6 +261,12 @@ function postCreate() {
         }
     }
 
+    if (!isPlayingVersus) {
+        taskPanel = new TaskPanel(FlxG.height * 0.25, true, PlayState.SONG.meta.displayName, "Song", PlayState.SONG.meta.customValues.artists);
+        taskPanel.group.camera = camExtra;
+        add(taskPanel.group);
+    }
+
     scripts.call("postUIOverhaul");
 }
 
@@ -324,6 +333,17 @@ function postUpdate(elapsed:Float) {
         taskbarTxt.text += " (" + Math.round(songPercent * 100) + "%)";
     }
 
+    if (touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
+        if (touchJustReleased()) {
+            taskPanel.tweenVisibility();
+
+            if (panelTimer != null && panelTimer.active) {
+                panelTimer.cancel();
+                panelTimer.destroy();
+            }
+        }
+    }
+
     if (!inCutscene)
         processNotes(elapsed);
 
@@ -368,10 +388,17 @@ function onCountdown(event) {
     }
 }
 
+var panelTimer:FlxTimer = new FlxTimer();
 function onStartSong() {
     FlxTween.tween(taskbarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbarTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+
+    taskPanel.tweenIn();
+    panelTimer.start((Conductor.stepCrochet / 1000) * 16 * 4, _ -> {
+        taskPanel.tweenOut();
+        panelTimer.destroy();
+    });
 }
 
 var holdScoreBonus:Float = 250;
