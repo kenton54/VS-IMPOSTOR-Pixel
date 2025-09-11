@@ -757,12 +757,10 @@ function handleMouse() {
     if (!FlxG.mouse.visible) return;
     if (usingKeyboard) return;
 
-    if (isOverButton) {
+    if (isOverButton)
         Mouse.cursor = "button";
-    }
-    else {
+    else
         Mouse.cursor = "arrow";
-    }
 }
 
 var isTouchingButton:Bool = false;
@@ -861,28 +859,23 @@ function handleTopButtons() {
         if (touchOverlaps(button)) {
             if (connecting) return;
 
-            if (touchIsHolding()) {
+            if (touchIsHolding())
                 button.animation.play("click");
-            }
-            else {
+            else
                 button.animation.play("idle");
-            }
 
             if (touchJustReleased()) {
-                if (button == topButtonsGroup.members[0]) {
+                if (button == topButtonsGroup.members[0])
                     statsMenu();
-                }
                 if (button == topButtonsGroup.members[2]) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
-                    if (DiscordUtil.ready) {
+                    playSound(Paths.sound("menu/select"), 1);
+                    if (DiscordUtil.ready)
                         shutdownDiscordRPC();
-                    }
-                    else {
+                    else
                         initDiscordRPC();
-                    }
                 }
                 else if (button == topButtonsGroup.members[1]) {
-                    FlxG.sound.play(Paths.sound("menu/select"), 1);
+                    playSound(Paths.sound("menu/select"), 1);
                     openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
                         var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
                         var maxHeight:Float = 106;
@@ -937,9 +930,8 @@ function handleTopButtons() {
                                         curWindowEntry[1] = rw;
                                         playSoundWindow();
                                     }
-                                    else {
+                                    else
                                         row.members[0].alpha = 0;
-                                    }
                                     rw++;
                                 });
                                 col++;
@@ -973,14 +965,13 @@ function handleTopButtons() {
                 }
             }
         }
-        else {
+        else
             button.animation.play("idle");
-        }
     });
 }
 
 function statsMenu() {
-    FlxG.sound.play(Paths.sound("menu/select"), 1);
+    playSound(Paths.sound("menu/select"), 1);
     openSubState(new ModSubState("statsMenuSubState"));
     persistentUpdate = persistentDraw = true;
 }
@@ -1527,9 +1518,8 @@ function checkSelectedMainEntry() {
                                     curWindowEntry[1] = rw;
                                     playSoundWindow();
                                 }
-                                else {
+                                else
                                     row.members[0].alpha = 0;
-                                }
                                 rw++;
                             });
                             col++;
