@@ -182,19 +182,19 @@ function create() {
 function onNoteCreation(event) {
 	event.cancel();
 
-	var pixelNote = event.note;
+	var note = event.note;
 
-	if (pixelNote.isSustainNote) {
-		pixelNote.frames = Paths.getFrames("game/notes/" + noteStyle + "/sustains");
-		pixelNote.animation.addByPrefix("hold", "sustain hold " + noteColor[event.strumID]);
-		pixelNote.animation.addByPrefix("holdend", "sustain end " + noteColor[event.strumID]);
+	if (note.isSustainNote) {
+		note.frames = Paths.getFrames("game/notes/" + noteStyle + "/sustains");
+		note.animation.addByPrefix("hold", "sustain hold " + noteColor[event.strumID]);
+		note.animation.addByPrefix("holdend", "sustain end " + noteColor[event.strumID]);
 	}
 	else {
-		pixelNote.frames = Paths.getFrames("game/notes/" + noteStyle + "/notes");
-		pixelNote.animation.addByPrefix("scroll", "note " + noteArray[event.strumID]);
+		note.frames = Paths.getFrames("game/notes/" + noteStyle + "/notes");
+		note.animation.addByPrefix("scroll", "note " + noteArray[event.strumID]);
 	}
-	pixelNote.scale.set(noteScale, noteScale);
-	pixelNote.updateHitbox();
+	note.scale.set(noteScale, noteScale);
+	note.updateHitbox();
 }
 
 function onPostNoteCreation(event) {
@@ -211,15 +211,15 @@ function onPostNoteCreation(event) {
 function onStrumCreation(event) {
 	event.cancel();
 
-	var daStrum = event.strum;
+	var strum = event.strum;
 
-	daStrum.frames = Paths.getFrames("game/notes/" + noteStyle + "/strums");
-	daStrum.animation.addByPrefix("static", "strum idle " + noteArray[event.strumID], 24, false);
-	daStrum.animation.addByPrefix("pressed", "strum press " + noteArray[event.strumID], 12, false);
-	daStrum.animation.addByPrefix("confirm", "strum hit " + noteArray[event.strumID], 24, false);
+	strum.frames = Paths.getFrames("game/notes/" + noteStyle + "/strums");
+	strum.animation.addByPrefix("static", "strum idle " + noteArray[event.strumID], 24, false);
+	strum.animation.addByPrefix("pressed", "strum press " + noteArray[event.strumID], 12, false);
+	strum.animation.addByPrefix("confirm", "strum hit " + noteArray[event.strumID], 24, false);
 
-	daStrum.scale.set(noteScale, noteScale);
-	daStrum.updateHitbox();
+	strum.scale.set(noteScale, noteScale);
+	strum.updateHitbox();
 }
 
 function postCreate() {
@@ -288,11 +288,11 @@ function postCreate() {
     missesTxt.visible = false;
     accuracyTxt.visible = false;
 
-    ratingHitTxt = new FunkinText(0, healthBar.y, FlxG.width, '\n', 40, true);
+    ratingHitTxt = new FunkinText(0, healthBar.y, FlxG.width, "", 40, true);
     ratingHitTxt.font = Paths.font("pixeloidsans.ttf");
     ratingHitTxt.alignment = "center";
     ratingHitTxt.borderSize = 5;
-    ratingHitTxt.y += PlayState.downscroll ? 0 : -110;
+    ratingHitTxt.y -= 110;
     ratingHitTxt.camera = camHUD;
     ratingHitTxt.alpha = 0;
     add(ratingHitTxt);
@@ -300,17 +300,51 @@ function postCreate() {
     createCharacters();
 
     // create extra variables for all strumlines
+    var m:Int = 0;
+    var strumPosCenter:Array<Float> = [0.175, 0.825];
     for (i => chartStrumline in PlayState.SONG.strumLines) {
         var strumline:StrumLine = strumLines.members[i];
 
-        strumline.extra.set("position", (chartStrumline.strumLinePos == null ? (chartStrumline.type == 1 ? 0.75 : 0.25) : chartStrumline.strumLinePos));
-        strumline.extra.set("strumSpacing", (chartStrumline.strumSpacing == null ? 1 : chartStrumline.strumSpacing));
-        strumline.extra.set("keyCount", (chartStrumline.keyCount == null ? 4 : chartStrumline.keyCount));
+        if (FlxG.save.data.middlescroll) {
+            if (strumline.data.type == 1) {
+                var strumXPos:Float = StrumLine.calculateStartingXPos(0.5, strumline.data.strumScale, (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1), strumline.data.keyCount);
+                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
+                strumline.startingPos = strumPos;
+                for (s => strum in strumline.members)
+                    strum.x = strumline.startingPos.x + (Note.swagWidth * strumline.data.strumScale * (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1) * s);
+            }
+            else {
+                var strumXPos:Float = StrumLine.calculateStartingXPos((m % 2 == 0) ? strumPosCenter[0] : strumPosCenter[1], strumline.data.strumScale / 1.5, (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1), strumline.data.keyCount);
+                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
+                strumline.startingPos = strumPos;
+                for (s => strum in strumline.members) {
+                    strum.scale.x /= 1.5;
+                    strum.scale.y /= 1.5;
+                    strum.updateHitbox();
+                    strum.x = strumline.startingPos.x + ((strum.width + 4) * strumline.data.strumScale * (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1) * s);
+                }
+                for (note in strumline.notes.members) {
+                    note.scale.x /= 1.5;
+                    note.scale.y /= 1.5;
+                    note.updateHitbox();
+                    note.visible = false;
+                }
+                if (holdCoverHandlers[i] != null)
+                    holdCoverHandlers[i]._scale /= 1.5;
+                m++;
+            }
+        }
     }
 
     // fix strumlines draw order
-    for (strumline in strumLines.members)
-        insert(members.length, strumline);
+    for (strumline in strumLines.members) {
+        if (FlxG.save.data.middlescroll) {
+            if (strumline.data.type == 1)
+                insert(members.length, strumline);
+        }
+        else
+            insert(members.length, strumline);
+    }
 
     insert(members.length, splashHandler.getSplashGroup(noteStyle));
 
@@ -320,8 +354,9 @@ function postCreate() {
     if (FlxG.save.data.impPixelStrumBG > 0) {
         for (strumline in strumLines.members) {
             if (!strumline.visible) continue;
+            if (FlxG.save.data.middlescroll && strumline.data.type != 1) continue;
 
-            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Note.swagWidth * strumline.extra.get("keyCount"), FlxG.height, FlxColor.BLACK);
+            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Note.swagWidth * strumline.data.keyCount, FlxG.height, FlxColor.BLACK);
             strumBG.alpha = FlxG.save.data.impPixelStrumBG;
             strumBG.camera = camHUD;
             insert(members.indexOf(strumline), strumBG);
@@ -799,9 +834,12 @@ function displayRating(rating:String, score:Int) {
     FlxTween.tween(ratingHitTxt, {"scale.x": 1, "scale.y": 1}, 0.25, {ease: FlxEase.sineOut});
 
     var comboTxt:String = (rating == "miss") ? "" : " x" + Std.string(combo);
-    var combTxtShow:String = (combo >= 10) ? comboTxt : "";
+    var combTxtShow:String = (combo >= minDigitDisplay) ? comboTxt : "";
     var plus:String = (score >= 0) ? "+" : "";
-    ratingHitTxt.text = getRatingDisplay(rating) + combTxtShow + '\n' + plus + Std.string(score);
+    ratingHitTxt.text = createMultiLineText([
+        getRatingDisplay(rating) + combTxtShow,
+        plus + Std.string(score)
+    ]);
     ratingHitTxt.color = getRatingColor(rating);
 
     ratingTimer.cancel();
