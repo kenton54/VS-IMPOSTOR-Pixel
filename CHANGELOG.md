@@ -25,7 +25,7 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 - Fixed a hidden feature causing crashes.
 - Fixed downscroll, specifically strum notes being offseted wrong.
 - Fixed splashes behind so offsetted vertically.
-- Fixed a softlock.
+- Fixed 3 softlocks.
 
 # Developer Build 1
 A new version bringing a general overhaul of the entire mod.
