@@ -1240,7 +1240,7 @@ function transition2results() {
 
     FlxTween.tween(camHUD, {alpha: 0}, 1);
     camGame.fade(FlxColor.BLACK, 1, false);
-    new FlxTimer().start(1, _ -> FlxG.switchState(new ModState("resultsScreen")));
+    new FlxTimer().start(1, _ -> FlxG.switchState(new ModState("impostorMenuState")));
 }
 
 function resetTallies() {
