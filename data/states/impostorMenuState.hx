@@ -789,12 +789,11 @@ function handleMainButtons() {
     isOverButton = false;
 
     if (!allowMouse || !allowTouch) return;
-    if (!FlxG.mouse.visible) return;
 
     if (currentSelectionMode == "main") {
         var i:Int = 0;
         buttonsMainGroup.forEach(function(button) {
-            if (FlxG.mouse.overlaps(button)) {
+            if (touchOverlaps(button)) {
                 if (allButtonsArray[i].available) {
                     isOverButton = true;
                     button.animation.play("hover");
