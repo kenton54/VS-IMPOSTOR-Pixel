@@ -299,7 +299,7 @@ function postCreate() {
 
     createCharacters();
 
-    // create extra variables for all strumlines
+    // middlescroll stuff
     var m:Int = 0;
     var strumPosCenter:Array<Float> = [0.175, 0.825];
     for (i => chartStrumline in PlayState.SONG.strumLines) {
