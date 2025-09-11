@@ -777,8 +777,10 @@ function handleTouch() {
         }
     }
 
-    if (FlxG.android.justReleased.BACK)
-        goBack2Title();
+    if (FlxG.onMobile) {
+        if (FlxG.android.justReleased.BACK)
+            goBack2Title();
+    }
 }
 
 function handlePointer() {

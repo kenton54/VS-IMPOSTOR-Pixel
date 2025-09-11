@@ -80,7 +80,7 @@ public static function getSwipeAny():Bool
     return getSwipeLeft() || getSwipeRight() || getSwipeUp() || getSwipeDown();
 
 public static function getTouch():FlxPointer {
-    if (isMobile) {
+    if (FlxG.onMobile) {
         for (touch in FlxG.touches.list) {
             if (touch != null) return touch;
         }

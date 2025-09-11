@@ -2,8 +2,6 @@
  * or deactivates it, depends what the value of "isMobile" is at
 **/
 
-importScript("data/utils");
-
 function create() {
     if (isMobile) {
         resizeGame(1280, 720);
