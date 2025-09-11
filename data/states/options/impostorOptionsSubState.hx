@@ -234,7 +234,7 @@ function useKeyboard() {
 
 var hoveringOverCategory:Bool = false;
 function handlePointer() {
-    if (getTouch().justMoved) {
+    if (touchJustMoved()) {
         usingKeyboard = false;
         FlxG.mouse.visible = true;
         if (canInteract) closeButton.visible = true;
@@ -551,9 +551,8 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             optMaxDelay = 5;
         }
     }
-    else {
+    else
         subtractBtn.animation.play("idle");
-    }
 
     if (touchOverlaps(addBtn)) {
         if (touchIsHolding()) {
@@ -596,9 +595,8 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             optMaxDelay = 5;
         }
     }
-    else {
+    else
         addBtn.animation.play("idle");
-    }
 }
 
 var barOffset:Float = 0;
