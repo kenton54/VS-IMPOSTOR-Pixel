@@ -4,12 +4,20 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
 import openfl.system.Capabilities;
-importScript("utils/flags");
+
+// extra variables and function that can be accessed from anywhere
+// ordered by importance
 importScript("utils/utils");
+importScript("utils/logs");
 importScript("utils/math");
+importScript("utils/mobile");
+importScript("utils/stats");
+importScript("utils/flags");
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
+
+var mobileUtilsInitiated:Bool = false;
 
 function new() {
     FlxSprite.defaultAntialiasing = false;
@@ -26,7 +34,8 @@ function new() {
     if (FlxG.onMobile) {
         //var screenWidth:Float = Capabilities.screenResolutionX;
         //var screenHeight:Float = Capabilities.screenResolutionY;
-        resizeGame(1600, 720);
+        //initMobileUtils();
+        resizeGame(1560, 720);
     }
     else {
         window.minWidth = 1280;
@@ -44,6 +53,7 @@ function initSaveData() {
     FlxG.save.data.impPixelTimeBar ??= true;
     FlxG.save.data.impPixelStrumBG ??= 0;
     FlxG.save.data.impPixelFastMenus ??= false;
+    FlxG.save.data.hapticsIntensity ??= 0.5;
 
     // Mod Source
     FlxG.save.data.impPixelStorySequence ??= 0;
@@ -90,6 +100,32 @@ static function setStats(data:Map<String, Dynamic>) {
     }
 }
 
+// currently crashes the game on mobile upon execute
+function initMobileUtils() {
+    if (FlxG.onMobile) {
+        #if android
+        final initializeHapticsJNI:Null<Dynamic> = createJNIStaticMethod(null, 'initialize', '()V');
+        if (initializeHapticsJNI != null) initializeHapticsJNI();
+        #end
+
+        mobileUtilsInitiated = true;
+    }
+    else
+        throw "You can only initialize Mobile exclusive utilities on Mobile targets!";
+}
+
+// currently crashes the game on mobile upon execute
+function destroyMobileUtils() {
+    if (FlxG.onMobile) {
+        if (!mobileUtilsInitiated) throw "You need to initialize Mobile exclusive utilities first in order to destroy them!";
+
+        #if android
+        final disposeHapticsJNI:Null<Dynamic> = createJNIStaticMethod(null, 'dispose', '()V');
+        if (disposeHapticsJNI != null) disposeHapticsJNI();
+        #end
+    }
+}
+
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY) globalUsingKeyboard = true;
     if (FlxG.mouse.justMoved) globalUsingKeyboard = false;
@@ -127,6 +163,8 @@ function destroy() {
 
     isMobile = FlxG.onMobile;
     setMobile(false);
+
+    //destroyMobileUtils();
 
     FlxSprite.defaultAntialiasing = true;
 }

@@ -4,7 +4,12 @@
 			"easy": 2,
 			"normal": 3,
 			"hard": 4
-		}
+		},
+		"artists": [
+			{"artist": "Silte", "job": "Remix Composer"},
+			{"artist": "EthanTheDoodler", "job": "OG Composer"},
+			{"artist": "kenton", "job": "Charter"}
+		]
 	},
 	"color": "#000000",
 	"opponentModeAllowed": true,

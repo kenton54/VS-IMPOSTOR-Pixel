@@ -102,7 +102,7 @@ function create() {
 }
 
 var usingKeyboard:Bool = true;
-var mouseIsHoveringSmth:Bool = false;
+var isHoveringSmth:Bool = false;
 var allowSelection:Bool = false;
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY) {
@@ -131,28 +131,25 @@ function update(elapsed:Float) {
     else {
         if (!allowSelection) return;
 
-        if (isMobile) {}
-        else {
-            mouseIsHoveringSmth = false;
+        isHoveringSmth = false;
 
-            if (FlxG.mouse.overlaps(no) && isSelectingYes) {
-                if (!mouseIsHoveringSmth) {
-                    mouseIsHoveringSmth = true;
-                    isSelectingYes = false;
-                    updateSelection();
-                }
+        if (touchOverlaps(no) && isSelectingYes) {
+            if (!isHoveringSmth) {
+                isHoveringSmth = true;
+                isSelectingYes = false;
+                updateSelection();
             }
-            if (FlxG.mouse.overlaps(yes) && !isSelectingYes) {
-                if (!mouseIsHoveringSmth) {
-                    mouseIsHoveringSmth = true;
-                    isSelectingYes = true;
-                    updateSelection();
-                }
-            }
-
-            if (FlxG.mouse.justReleased)
-                checkSelection();
         }
+        if (touchOverlaps(yes) && !isSelectingYes) {
+            if (!isHoveringSmth) {
+                isHoveringSmth = true;
+                isSelectingYes = true;
+                updateSelection();
+            }
+        }
+
+        if (touchJustReleased())
+            checkSelection();
     }
 }
 

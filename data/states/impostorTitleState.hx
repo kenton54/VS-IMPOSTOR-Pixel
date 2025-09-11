@@ -83,7 +83,7 @@ var pressedWithKeyboard:Bool = false;
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.F11) FlxG.fullscreen = !FlxG.fullscreen;
 
-    if (FlxG.mouse.justPressed || FlxG.touches.getFirst() != null && FlxG.touches.getFirst().justPressed) {
+    if (touchJustReleased()) {
         pressedWithKeyboard = false;
 
         if (transitionTimer.active && !transitioning) {
