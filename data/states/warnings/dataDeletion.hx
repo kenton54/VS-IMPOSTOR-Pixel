@@ -102,7 +102,7 @@ function create() {
 }
 
 var usingKeyboard:Bool = true;
-var mouseIsHoveringSmth:Bool = false;
+var isHoveringSmth:Bool = false;
 var allowSelection:Bool = false;
 function update(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY) {
