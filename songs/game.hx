@@ -26,16 +26,38 @@ public var camExtra:FlxCamera;
 public var taskbarBG:FlxSprite;
 public var taskbar:FlxSprite;
 public var taskbarTxt:FunkinText;
-public var overrideTaskbarTxt:Bool = false;
+
+/**
+ * Whether the task bar text should update.
+ */
+public var updateTaskbarTxt:Bool = true;
 
 public var ratingHitTxt:FunkinText;
 
-public var camMovementSpeed:Float = 1;
+/**
+ * Wheter the song percent variable should update or not.
+ */
+public var updateSongPercent:Bool = true;
 
+/**
+ * The percentage of the song from completion.
+ */
 public var songPercent:Float = 0;
 
+/**
+ * Normally it's set as the song's end time (or the song length) (in milliseconds), but you can put whatever float you want.
+ * 
+ * The value gets set before the `postUIOverhaul` function gets called.
+ */
+public var percentDeadline:Float = 0;
+
+/**
+ * An array (or table) holding the black bg of each visible strumline.
+ */
 var strumlineBackgrounds:Array<FlxSprite> = [];
 
+// these keep track of every single note hit of yours in a song, including the type of note hit.
+// used for the results screen
 var totalNotes:Int = 0;
 var notesHit:Int = 0;
 var perfectHits:Int = 0;
@@ -46,6 +68,8 @@ var shitHits:Int = 0;
 var notesMissed:Int = 0;
 var combosBroken:Int = 0;
 
+// these keep track of every single note hit of yours in a week, including the type of note hit.
+// used for the results screen
 static var campaignPerfectHits:Int = 0;
 static var campaignSickHits:Int = 0;
 static var campaignGoodHits:Int = 0;
@@ -53,7 +77,16 @@ static var campaignBadHits:Int = 0;
 static var campaignShitHits:Int = 0;
 static var campaignCombosBroken:Int = 0;
 
+/**
+ * This variable is the one in charge of smoothing out the health bar and icons's movement.
+ */
 var healthLerp:Float = 0;
+
+/**
+ * The max health value of the player's health.
+ * 
+ * Can be modified BEFORE `postCreate` gets called.
+ */
 public var maxHealth:Float = 2;
 
 var fixScore:Bool = false;
@@ -63,10 +96,46 @@ var noteScale:Float = 5.55;
 var noteArray:Array<String> = ["left", "down", "up", "right"];
 var noteColor:Array<String> = ["purple", "blue", "green", "red"];
 
+/**
+ * The task panel handler holds information about who made the current-playing-song possible to exist.
+ * 
+ * These are the specific values it gets from the song's metadata file to show information:
+ * ```json
+ * {
+ *     "displayName": "your readable song name",
+ *     "customValues": {
+ *         "artists": [
+ *             {
+ *                 "artist": "the artist name",
+ *                 "job": "whatever they did for the song"
+ *             }
+ *         ]
+ *     }
+ * }
+ * ```
+ * In PlayState, the interactable tab is hardcored to spell "SONG", so you can't really modify it to say whatever you'd like.
+ */
 public var taskPanel:TaskPanel;
 
+/**
+ * An array (or table) holding hold cover handlers for each visible strumline.
+ */
 public var holdCoverHandlers:Array<HoldCoverHandler> = [];
 
+/**
+ * The note style the HUD will be using during the song. changing this value mid-song wouldn't do anything.
+ * 
+ * The value is set by reading whatever value you put in your song's metadata file, and it's done before `postCreate` is called.
+ * 
+ * What variable am I talking about? this one:
+ * ```json
+ * {
+ *     "customValues": {
+ *         "noteStyle": "your note style"
+ *     }
+ * }
+ * ```
+ */
 public var noteStyle:String;
 
 function create() {
@@ -78,32 +147,29 @@ function create() {
     taskbarBG.alpha = 0;
     taskbarBG.y = 4;
     taskbarBG.camera = camHUD;
-    taskbarBG.visible = FlxG.save.data.pixelTimeBar;
+    taskbarBG.visible = FlxG.save.data.impPixelTimeBar;
     add(taskbarBG);
 
-    taskbar = new FlxSprite(taskbarBG.x + 16, taskbarBG.y + 14).loadGraphic(Paths.image("game/taskBar-progress"));
-    taskbar.scale.set(4, 3.5);
-    taskbar.updateHitbox();
+    taskbar = new FlxSprite(taskbarBG.x + 16, taskbarBG.y + 14).makeGraphic(544, 14, 0xFFFFFFFF); // you can customize the color
     taskbar.color = 0xFF43D844;
     taskbar.alpha = 0;
     taskbar.camera = camHUD;
-    taskbar.visible = FlxG.save.data.pixelTimeBar;
+    taskbar.visible = FlxG.save.data.impPixelTimeBar;
     add(taskbar);
 
     taskbarTxt = new FunkinText(taskbarBG.x + 24, taskbarBG.y + 10, 0, PlayState.SONG.meta.displayName, 20);
     taskbarTxt.borderSize = 2;
     taskbarTxt.alpha = 0;
     taskbarTxt.camera = camHUD;
-    taskbarTxt.visible = FlxG.save.data.pixelTimeBar;
+    taskbarTxt.visible = FlxG.save.data.impPixelTimeBar;
     add(taskbarTxt);
 
     camZooming = true;
     validScore = true;
     curCameraTarget = -1;
 
-    if (Reflect.hasField(PlayState.SONG.meta.customValues, "noteStyle")) {
+    if (Reflect.hasField(PlayState.SONG.meta.customValues, "noteStyle"))
         noteStyle = PlayState.SONG.meta.customValues.noteStyle;
-    }
     else {
         noteStyle = "default";
         logTraceColored([
@@ -195,6 +261,8 @@ function postCreate() {
     healthBar.setRange(0, maxHealth);
     healthBar.updateBar();
 
+    updateNoteHitCalculations();
+
     iconP1.y = (healthBarBG.y + healthBarBG.height / 2) - iconP1.height / 2;
     iconP2.y = (healthBarBG.y + healthBarBG.height / 2) - iconP2.height / 2;
 
@@ -267,6 +335,8 @@ function postCreate() {
         add(taskPanel.group);
     }
 
+    percentDeadline = inst.length;
+
     scripts.call("postUIOverhaul");
 }
 
@@ -303,10 +373,10 @@ function createCharacters() {
 }
 
 function update(elapsed:Float) {
-    if (generatedMusic)
-        songPercent = (Conductor.songPosition / inst.length);
+    if (generatedMusic && updateSongPercent)
+        songPercent = (Conductor.songPosition / percentDeadline);
 
-    taskbar.scale.x = songPercent * 4;
+    taskbar.scale.x = songPercent;
     taskbar.updateHitbox();
 
     updateHealthBar();
@@ -328,20 +398,18 @@ function updateHealthBar() {
 }
 
 function postUpdate(elapsed:Float) {
-    if (!overrideTaskbarTxt) {
+    if (updateTaskbarTxt) {
         taskbarTxt.text = PlayState.SONG.meta.displayName;
         taskbarTxt.text += " (" + Math.round(songPercent * 100) + "%)";
     }
 
-    if (taskPanel != null) {
-        if (touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
-            if (touchJustReleased()) {
-                taskPanel.tweenVisibility();
+    if (taskPanel != null && touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
+        if (touchJustReleased()) {
+            taskPanel.tweenVisibility();
 
-                if (panelTimer != null && panelTimer.active) {
-                    panelTimer.cancel();
-                    panelTimer.destroy();
-                }
+            if (panelTimer != null && panelTimer.active) {
+                panelTimer.cancel();
+                panelTimer.destroy();
             }
         }
     }
@@ -460,6 +528,24 @@ public var missHealth:Float = -4 / 100 * maxHealth;         // 4% loss
 public var holdHealthDrop:Float = 0.5 / 100 * maxHealth;    // 0.5% gain per sustain length remaining
 public var holdHealthDropMax:Float = 0 / 100 * maxHealth;
 public var holdDropThreshold:Float = 210;
+
+/**
+ * this is called just so changes to the `maxHealth` variable get properly applied.
+ * 
+ * If you want to put completely custom note hit health calculations, you can do so in the `postUIOverhaul` function
+ */
+function updateNoteHitCalculations() {
+    perfectHealth = 2 / 100 * maxHealth;
+    sickHealth = 1.5 / 100 * maxHealth;
+    goodHealth = 0.75 / 100 * maxHealth;
+    badHealth = 0 / 100 * maxHealth;
+    shitHealth = -1 / 100 * maxHealth;
+    holdHealthBonus = 4 / 100 * maxHealth;
+    ghostHealth = -2 / 100 * maxHealth;
+    missHealth = -4 / 100 * maxHealth;
+    holdHealthDrop = 0.5 / 100 * maxHealth;
+    holdHealthDropMax = 0 / 100 * maxHealth;
+}
 
 function onPlayerHit(event) {
     event.cancel();

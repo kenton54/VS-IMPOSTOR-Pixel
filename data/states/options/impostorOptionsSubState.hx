@@ -172,6 +172,7 @@ function rearrangeCategories() {
         var title:FunkinText = new FunkinText(0, bg.height / 2, bg.width, catTrans, 33, false);
         title.font = Paths.font("pixeloidsans.ttf");
         title.color = FlxColor.BLACK;
+        title.textField.__textFormat.leading = -5;
         title.alignment = "center";
         title.y -= title.height / 2;
         categoryGrp.add(title);
@@ -260,8 +261,10 @@ function handlePointer() {
         }
     }
 
-    if (FlxG.android.justReleased.BACK)
-        closeOptions();
+    if (FlxG.onMobile) {
+        if (FlxG.android.justReleased.BACK)
+            closeOptions();
+    }
 }
 
 function changeOptionSelec(change:Int) {
@@ -666,7 +669,7 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
         return;
     }
 
-    if (touchJustReleased(theThing) && touchIsHolding()) {
+    if (touchOverlaps(theThing) && touchIsHolding()) {
         if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
             volumeBeep.play();
 
