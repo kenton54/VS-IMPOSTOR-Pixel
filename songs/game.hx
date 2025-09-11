@@ -333,13 +333,15 @@ function postUpdate(elapsed:Float) {
         taskbarTxt.text += " (" + Math.round(songPercent * 100) + "%)";
     }
 
-    if (touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
-        if (touchJustReleased()) {
-            taskPanel.tweenVisibility();
+    if (taskPanel != null) {
+        if (touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
+            if (touchJustReleased()) {
+                taskPanel.tweenVisibility();
 
-            if (panelTimer != null && panelTimer.active) {
-                panelTimer.cancel();
-                panelTimer.destroy();
+                if (panelTimer != null && panelTimer.active) {
+                    panelTimer.cancel();
+                    panelTimer.destroy();
+                }
             }
         }
     }
@@ -394,11 +396,13 @@ function onStartSong() {
     FlxTween.tween(taskbar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
     FlxTween.tween(taskbarTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
-    taskPanel.tweenIn();
-    panelTimer.start((Conductor.stepCrochet / 1000) * 16 * 4, _ -> {
-        taskPanel.tweenOut();
-        panelTimer.destroy();
-    });
+    if (taskPanel != null) {
+        taskPanel.tweenIn();
+        panelTimer.start((Conductor.stepCrochet / 1000) * 16 * 4, _ -> {
+            taskPanel.tweenOut();
+            panelTimer.destroy();
+        });
+    }
 }
 
 var holdScoreBonus:Float = 250;
