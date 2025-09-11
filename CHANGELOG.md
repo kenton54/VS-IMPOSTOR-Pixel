@@ -9,17 +9,23 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 - A license to the mod (that sounds werid to say somehow??).
 - Blockable Main Menu entries, they can be unlocked if certain condicions are met.
 - Credits Menu.
+- Added a Task Panel on songs that show the people behind its creation (???).
 - Custom Save Data Directory (so that stuff that gets saved from the mod doesn't override other mods's save data and viceversa).
+- Added a couple more of null safety measures.
+- Added a lot of comments in the PlayState extension script `game.hx`, so people understand what does what.
 
 ## Changes
 - Organized utilities (making them easier to find and access).
 - Improved the Impostor Pixel's Flags system.
 - Improved Discord RPC backend.
 - Sounds persist through menus now, so they don't get cut off when a transition starts.
+- Updated the length of all splashes animations (cuz they end way too fast).
 
 ## Fixes
 - Fixed a hidden feature causing crashes.
 - Fixed downscroll, specifically strum notes being offseted wrong.
+- Fixed splashes behind so offsetted vertically.
+- Fixed a softlock.
 
 # Developer Build 1
 A new version bringing a general overhaul of the entire mod.
