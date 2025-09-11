@@ -833,14 +833,14 @@ function handleTopButtons() {
                 if (button == topButtonsGroup.members[0])
                     statsMenu();
                 if (button == topButtonsGroup.members[2]) {
-                    playSound(Paths.sound("menu/select"), 1);
+                    playMenuSound("select", 1);
                     if (DiscordUtil.ready)
                         shutdownDiscordRPC();
                     else
                         initDiscordRPC();
                 }
                 else if (button == topButtonsGroup.members[1]) {
-                    playSound(Paths.sound("menu/select"), 1);
+                    playMenuSound("select", 1);
                     openWindowSection('Developer Tools', debugOptions, function(posH, posV, group) {
                         var daHeight:Float = (spaceCam.height - posV - 4 * baseScale) / debugOptions.length;
                         var maxHeight:Float = 106;
@@ -930,7 +930,7 @@ function handleTopButtons() {
 }
 
 function statsMenu() {
-    playSound(Paths.sound("menu/select"), 1);
+    playMenuSound("select", 1);
     openSubState(new ModSubState("statsMenuSubState"));
     persistentUpdate = persistentDraw = true;
 }
