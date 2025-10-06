@@ -1,17 +1,6 @@
 {
-	"customValues": {
-		"ratingsChart": {
-			"easy": 2,
-			"normal": 3,
-			"hard": 4
-		},
-		"artists": [
-			{"artist": "Silte", "job": "Remix Composer"},
-			{"artist": "EthanTheDoodler", "job": "OG Composer"},
-			{"artist": "kenton", "job": "Charter"}
-		]
-	},
-	"color": "#000000",
+	"customValues": {},
+	"color": "#AF2121",
 	"opponentModeAllowed": true,
 	"difficulties": [
 		"easy",
@@ -22,7 +11,7 @@
 	"coopAllowed": true,
 	"stepsPerBeat": 4,
 	"displayName": "Sussus Moogus",
-	"needsVoices": false,
+	"needsVoices": true,
 	"beatsPerMeasure": 4,
-	"bpm": 155
+	"bpm": 150
 }

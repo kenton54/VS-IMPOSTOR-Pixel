@@ -1,25 +1,17 @@
 {
-	"beatsPerMeasure": 4,
+	"customValues": {},
+	"color": "#AF2121",
 	"opponentModeAllowed": true,
-	"coopAllowed": true,
-	"stepsPerBeat": 4,
-	"bpm": 155,
 	"difficulties": [
 		"easy",
 		"normal",
 		"hard"
 	],
-	"needsVoices": true,
-	"parsedColor": -5299935,
-	"displayName": "Sabotage",
 	"icon": "red-impostor",
-	"name": "sabotage",
-	"color": "#AF2121",
-	"customValues": {
-		"ratingsChart": {
-			"easy": 4,
-			"normal": 5,
-			"hard": 6
-		}
-	}
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"displayName": "Sabotage",
+	"needsVoices": true,
+	"beatsPerMeasure": 4,
+	"bpm": 155
 }

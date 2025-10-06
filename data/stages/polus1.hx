@@ -38,17 +38,17 @@ function create() {
     add(snowParticles);
 }
 
-function postCharacterSetup() {
+function onCharacterSetup(character:VSliceCharacter) {
     var polusShader = new CustomShader("adjustColor");
     polusShader.brightness = -12.0;
     polusShader.hue = -18.0;
     polusShader.contrast = -30.0;
     polusShader.saturation = -6.0;
 
-    boyfriend.shader = polusShader;
-    dad.shader = polusShader;
-    gf.shader = polusShader;
+    character.shader = polusShader;
+}
 
+function postCharacterSetup() {
     if (songUsesLightsSabotage) {
         darkDadChar = new VSliceCharacter(dad.x, dad.y, dad.curCharacter + "-lightsOut", false);
         darkDadChar.visible = false;

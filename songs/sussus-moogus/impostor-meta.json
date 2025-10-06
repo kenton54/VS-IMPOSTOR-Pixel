@@ -1,0 +1,8 @@
+{
+    "ratingsChart": {"easy": 2, "normal": 3, "hard": 4},
+    "artists": [
+        {"job": "Remix Composer", "inCharge": "Silte"},
+        {"job": "OG Composer", "inCharge": "EthanTheDoodler"},
+        {"job": "Charter", "inCharge": "kenton"}
+    ]
+}

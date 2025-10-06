@@ -8,7 +8,7 @@ public static function lerp(value1:Float, value2:Float, ratio:Float, ?fpsSensiti
 }
 
 public static function distanceBetweenFloats(floatA:Float, floatB:Float):Float
-    return floatA - floatB;
+    return floatB - floatA;
 
 public static function distanceBetweenPoints(pointA:FlxPoint, pointB:FlxPoint):Float {
     var dx:Float = pointA.x - pointB.x;

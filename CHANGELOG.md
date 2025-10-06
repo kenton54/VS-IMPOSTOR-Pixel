@@ -5,17 +5,21 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 
 ## Additions
 - DEMO Build.
-- Added Mobile Support.
-- A license to the mod (that sounds werid to say somehow??).
-- Blockable Main Menu entries, they can be unlocked if certain condicions are met.
+- Added Mobile Support (again).
+- A license to the mod (that sounds weird to say somehow??).
+- New Sussus Moogus remix (made by Silte).
+- Blockable Main Menu entries, they can be unlocked if certain conditions are met.
 - Credits Menu.
-- Added a Task Panel on songs that show the people behind its creation (???).
-- Custom Save Data Directory (so that stuff that gets saved from the mod doesn't override other mods's save data and viceversa).
+- Added Middlescroll.
+- Added a Task Panel on songs that show the people behind its creation.
+- Added a custom save data directory (so the save data from VS IMPOSTOR Pixel doesn't override other mods's save data and viceversa).
 - Added a couple more of null safety measures.
-- Added a lot of comments in the PlayState extension script `game.hx`, so people understand what does what.
+- Added a lot of comments in the PlayState extension scripts so other developers understand what does what (or to show funny quirks with the code lol).
 
 ## Changes
 - Organized utilities (making them easier to find and access).
+- Improved the PlayState extension script, and divided it into multiple scripts.
+- Improved how custom values from songs' metadata get loaded.
 - Improved the Impostor Pixel's Flags system.
 - Improved Discord RPC backend.
 - Sounds persist through menus now, so they don't get cut off when a transition starts.
@@ -24,8 +28,11 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 ## Fixes
 - Fixed a hidden feature causing crashes.
 - Fixed downscroll, specifically strum notes being offseted wrong.
-- Fixed splashes behind so offsetted vertically.
+- Fixed splashes being so offsetted vertically.
 - Fixed 3 softlocks.
+
+## Removals
+- Removed HAL from the credits, the team and all his work (due to controversy? (ivy knows)) (actually he removed himself outta nowhere, I'm not even sure when this happened???).
 
 # Developer Build 1
 A new version bringing a general overhaul of the entire mod.
@@ -69,13 +76,11 @@ A new version bringing a general overhaul of the entire mod.
 - Old Playable Characters are now skins (they were always skins), in favor of new revamped Playable Characters and Character Mixes.
 
 ## Removals
-- Everything, since it was reworked and remade from scratch.
+- Everything, since it has been reworked and remade from scratch.
 - Scrapped Song skins per Playable Character idea.
 - Removed other 2 note skins.
 - Removed old 15 Playable Characters.
-- Removed Defeat Song (Alkal1n3's remix).
-- Removed Finale Song (Alkal1n3's remix).
-- Removed Alkal1n3 from the credits.
+- Removed Alkal1n3 from the credits, the team and all his work (due to controversy).
 
 # Unreleased Beta 3
 A version that was never properly released, and it's very very VERY incomplete.

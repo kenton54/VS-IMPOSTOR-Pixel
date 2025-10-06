@@ -1,4 +1,3 @@
-import flixel.math.FlxRect;
 import flixel.sound.FlxSound;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
@@ -18,14 +17,31 @@ import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
 import Date;
 import HoldCoverHandler;
-import TaskPanel;
 import VSliceCharacter;
 
+/**
+ * A camera that can hold extra information that wouldn't fit in the HUD camera (mostly because of the zoom events).
+ * 
+ * For example the task panel, the achievements popus, you name it.
+ */
 public var camExtra:FlxCamera;
 
-public var taskbarBG:FlxSprite;
-public var taskbar:FlxSprite;
-public var taskbarTxt:FunkinText;
+/**
+ * An array that holds some extra metadata stuff of the loaded song.
+ * 
+ * You may be wondering... why not use the base metadata's `customValues` variable?
+ * 
+ * Because it saves whatever value you put in there as a string, for example:
+ * if you have an array with stuff in it inside the `customValues` variable (which is the way most of the custom values of VS IMPOSTOR Pixel's songs are formatted),
+ * the Chart Editor will replace that array with a string (exactly as Haxe stringifies it for `trace`-ing) when you save the chart, and no one's going to do:
+ * ```haxe
+ * var array = Json.parse(PlayState.SONG.meta.customValues.your_custom_variable);
+ * ```
+ * each time they want to access those values.
+ * 
+ * This doesn't really matter if what you store in `customValues` is a string, a number or a boolean.
+ */
+public var songExtraMetadata:Array<Dynamic> = [];
 
 /**
  * Whether the task bar text should update.
@@ -45,16 +61,11 @@ public var updateSongPercent:Bool = true;
 public var songPercent:Float = 0;
 
 /**
- * Normally it's set as the song's end time (or the song length) (in milliseconds), but you can put whatever float you want.
+ * Normally it's set as the song's end time (or the song's length) (in milliseconds), but you can put whatever float you want.
  * 
- * The value gets set before the `postUIOverhaul` function gets called.
+ * The value gets set before the `preUIOverhaul` method call.
  */
 public var percentDeadline:Float = 0;
-
-/**
- * An array (or table) holding the black bg of each visible strumline.
- */
-var strumlineBackgrounds:Array<FlxSprite> = [];
 
 // these keep track of every single note hit of yours in a song, including the type of note hit.
 // used for the results screen
@@ -91,36 +102,15 @@ public var maxHealth:Float = 2;
 
 var fixScore:Bool = false;
 
-var noteScale:Float = 5.55;
-
-var noteArray:Array<String> = ["left", "down", "up", "right"];
-var noteColor:Array<String> = ["purple", "blue", "green", "red"];
-
 /**
- * The task panel handler holds information about who made the current-playing-song possible to exist.
- * 
- * These are the specific values it gets from the song's metadata file to show information:
- * ```json
- * {
- *     "displayName": "your readable song name",
- *     "customValues": {
- *         "artists": [
- *             {
- *                 "artist": "the artist name",
- *                 "job": "whatever they did for the song"
- *             }
- *         ]
- *     }
- * }
- * ```
- * In PlayState, the interactable tab is hardcored to spell "SONG", so you can't really modify it to say whatever you'd like.
- */
-public var taskPanel:TaskPanel;
-
-/**
- * An array (or table) holding hold cover handlers for each visible strumline.
+ * An array holding hold cover handlers for each visible strumline.
  */
 public var holdCoverHandlers:Array<HoldCoverHandler> = [];
+
+/**
+ * An array holding the black background of each visible strumline.
+ */
+public var strumlineBackgrounds:Array<FlxSprite> = [];
 
 /**
  * The note style the HUD will be using during the song. changing this value mid-song wouldn't do anything.
@@ -138,38 +128,24 @@ public var holdCoverHandlers:Array<HoldCoverHandler> = [];
  */
 public var noteStyle:String;
 
+var noteScale:Float = 5.55;
+
+var noteArray:Array<String> = ["left", "down", "up", "right"];
+var noteColor:Array<String> = ["purple", "blue", "green", "red"];
+
 function create() {
     MusicBeatState.skipTransIn = false;
 
-    taskbarBG = new FlxSprite(45).loadGraphic(Paths.image("game/taskBar"));
-    taskbarBG.scale.set(4, 3.5);
-    taskbarBG.updateHitbox();
-    taskbarBG.alpha = 0;
-    taskbarBG.y = 4;
-    taskbarBG.camera = camHUD;
-    taskbarBG.visible = FlxG.save.data.impPixelTimeBar;
-    add(taskbarBG);
-
-    taskbar = new FlxSprite(taskbarBG.x + 16, taskbarBG.y + 14).makeGraphic(544, 14, 0xFFFFFFFF); // you can customize the color
-    taskbar.color = 0xFF43D844;
-    taskbar.alpha = 0;
-    taskbar.camera = camHUD;
-    taskbar.visible = FlxG.save.data.impPixelTimeBar;
-    add(taskbar);
-
-    taskbarTxt = new FunkinText(taskbarBG.x + 24, taskbarBG.y + 10, 0, PlayState.SONG.meta.displayName, 20);
-    taskbarTxt.borderSize = 2;
-    taskbarTxt.alpha = 0;
-    taskbarTxt.camera = camHUD;
-    taskbarTxt.visible = FlxG.save.data.impPixelTimeBar;
-    add(taskbarTxt);
+    var songPath:String = Paths.getPath("songs/" + PlayState.SONG.meta.name);
+    if (Assets.exists(songPath + "/impostor-meta.json"))
+        songExtraMetadata = Json.parse(Assets.getText(songPath + "/impostor-meta.json"));
 
     camZooming = true;
     validScore = true;
     curCameraTarget = -1;
 
-    if (Reflect.hasField(PlayState.SONG.meta.customValues, "noteStyle"))
-        noteStyle = PlayState.SONG.meta.customValues.noteStyle;
+    if (Reflect.hasField(songExtraMetadata, "noteStyle"))
+        noteStyle = songExtraMetadata.noteStyle;
     else {
         noteStyle = "default";
         logTraceColored([
@@ -236,14 +212,22 @@ function postCreate() {
 
     canDie = !isPlayingVersus;
 
-    for (strumline in strumLines.members) {
-        if (!strumline.visible) continue;
-        var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
-        holdCoverHandlers.push(coverHandler);
-    }
-
     healthLerp = health;
 
+    percentDeadline = inst.length;
+
+    scripts.call("preUIOverhaul");
+
+    improveHUD();
+    improveCharacters();
+    improveStrums();
+
+    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
+
+    scripts.call("postUIOverhaul");
+}
+
+function improveHUD() {
     healthBarBG.loadGraphic(Paths.image("game/healthBar"));
     healthBarBG.scale.set(4.68, 4.68);
     healthBarBG.updateHitbox();
@@ -282,7 +266,7 @@ function postCreate() {
     scoreTxt.screenCenter(FlxAxes.X);
 
     var healthBarHeightPos:Float = healthBarBG.y + healthBarBG.height;
-    var distanceFromBottom:Float = distanceBetweenFloats(camHUD.height, healthBarHeightPos);
+    var distanceFromBottom:Float = distanceBetweenFloats(healthBarHeightPos, camHUD.height);
     scoreTxt.y = healthBarHeightPos + (distanceFromBottom / 2) - (scoreTxt.height / 2);
 
     missesTxt.visible = false;
@@ -296,86 +280,11 @@ function postCreate() {
     ratingHitTxt.camera = camHUD;
     ratingHitTxt.alpha = 0;
     add(ratingHitTxt);
-
-    createCharacters();
-
-    // middlescroll stuff
-    var m:Int = 0;
-    var strumPosCenter:Array<Float> = [0.175, 0.825];
-    for (i => chartStrumline in PlayState.SONG.strumLines) {
-        var strumline:StrumLine = strumLines.members[i];
-
-        if (FlxG.save.data.middlescroll) {
-            if (strumline.data.type == 1) {
-                var strumXPos:Float = StrumLine.calculateStartingXPos(0.5, strumline.data.strumScale, (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1), strumline.data.keyCount);
-                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
-                strumline.startingPos = strumPos;
-                for (s => strum in strumline.members)
-                    strum.x = strumline.startingPos.x + (Note.swagWidth * strumline.data.strumScale * (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1) * s);
-            }
-            else {
-                var strumXPos:Float = StrumLine.calculateStartingXPos((m % 2 == 0) ? strumPosCenter[0] : strumPosCenter[1], strumline.data.strumScale / 1.5, (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1), strumline.data.keyCount);
-                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
-                strumline.startingPos = strumPos;
-                for (s => strum in strumline.members) {
-                    strum.scale.x /= 1.5;
-                    strum.scale.y /= 1.5;
-                    strum.updateHitbox();
-                    strum.x = strumline.startingPos.x + ((strum.width + 4) * strumline.data.strumScale * (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1) * s);
-                }
-                for (note in strumline.notes.members) {
-                    note.scale.x /= 1.5;
-                    note.scale.y /= 1.5;
-                    note.updateHitbox();
-                    note.visible = false;
-                }
-                if (holdCoverHandlers[i] != null)
-                    holdCoverHandlers[i]._scale /= 1.5;
-                m++;
-            }
-        }
-    }
-
-    // fix strumlines draw order
-    for (strumline in strumLines.members) {
-        if (FlxG.save.data.middlescroll) {
-            if (strumline.data.type == 1)
-                insert(members.length, strumline);
-        }
-        else
-            insert(members.length, strumline);
-    }
-
-    insert(members.length, splashHandler.getSplashGroup(noteStyle));
-
-    WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
-
-    // add backgrounds to the strumlines
-    if (FlxG.save.data.impPixelStrumBG > 0) {
-        for (strumline in strumLines.members) {
-            if (!strumline.visible) continue;
-            if (FlxG.save.data.middlescroll && strumline.data.type != 1) continue;
-
-            var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Note.swagWidth * strumline.data.keyCount, FlxG.height, FlxColor.BLACK);
-            strumBG.alpha = FlxG.save.data.impPixelStrumBG;
-            strumBG.camera = camHUD;
-            insert(members.indexOf(strumline), strumBG);
-            strumlineBackgrounds.push(strumBG);
-        }
-    }
-
-    if (!isPlayingVersus) {
-        taskPanel = new TaskPanel(FlxG.height * 0.25, true, PlayState.SONG.meta.displayName, "Song", PlayState.SONG.meta.customValues.artists);
-        taskPanel.group.camera = camExtra;
-        add(taskPanel.group);
-    }
-
-    percentDeadline = inst.length;
-
-    scripts.call("postUIOverhaul");
 }
 
-function createCharacters() {
+function improveCharacters() {
+    scripts.call("preCharacterSetup");
+
     // old chars get removed
     for (i => strumline in strumLines.members) {
         for (char in strumline.characters)
@@ -398,6 +307,8 @@ function createCharacters() {
                 var character:VSliceCharacter = new VSliceCharacter(0, 0, char, stage.isCharFlipped(stage.characterPoses[char] != null ? char : charPos, strL.type == 1));
                 stage.applyCharStuff(character, charPos, c);
                 chars.push(character);
+
+                scripts.call("onCharacterSetup", [character]);
             }
         }
 
@@ -407,14 +318,102 @@ function createCharacters() {
     scripts.call("postCharacterSetup");
 }
 
+function improveStrums() {
+    // middlescroll stuff
+    var modulo:Int = 0;
+    var strumPosScreenSides:Array<Float> = [0.175, 0.825];
+    for (i => strumline in strumLines.members) {
+        var chartStrumline:Array<Dynamic> = strumline.data;
+        strumline.extra.set("separate", 8);
+
+        if (strumline.visible) {
+            var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
+            holdCoverHandlers.push(coverHandler);
+        }
+
+        if (FlxG.save.data.middlescroll) {
+            if (strumline.data.type == 1) {
+                strumline.extra.set("separate", 20);
+                var middleScale:Float = chartStrumline.strumScale * 1.1;
+                var strumSpacing:Float = (chartStrumline.strumSpacing != null ? chartStrumline.strumSpacing : 1);
+                var strumXPos:Float = StrumLine.calculateStartingXPos(0.5, middleScale, strumSpacing, chartStrumline.keyCount);
+                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
+                strumline.startingPos = strumPos;
+                for (s => strum in strumline.members) {
+                    strum.scale.x *= 1.1;
+                    strum.scale.y *= 1.1;
+                    strum.updateHitbox();
+                    strum.x = strumline.startingPos.x + ((strum.width + strumline.extra.get("separate")) * chartStrumline.strumScale * strumSpacing * s);
+                }
+                for (note in strumline.notes.members) {
+                    note.scale.x *= 1.1;
+                    note.scale.y *= 1.1;
+                    note.updateHitbox();
+                }
+                if (holdCoverHandlers[i] != null)
+                    holdCoverHandlers[i]._scale *= 1.1;
+            }
+            else {
+                var strumXPos:Float = StrumLine.calculateStartingXPos((modulo % 2 == 0) ? strumPosScreenSides[0] : strumPosScreenSides[1], chartStrumline.strumScale / 1.5, (chartStrumline.strumSpacing != null ? chartStrumline.strumSpacing : 1), chartStrumline.keyCount);
+                var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
+                strumline.startingPos = strumPos;
+                for (s => strum in strumline.members) {
+                    strum.scale.x /= 1.5;
+                    strum.scale.y /= 1.5;
+                    strum.updateHitbox();
+                    strum.x = strumline.startingPos.x + ((strum.width + strumline.extra.get("separate")) * chartStrumline.strumScale * (chartStrumline.strumSpacing != null ? chartStrumline.strumSpacing : 1) * s);
+                }
+                for (note in strumline.notes.members) {
+                    note.scale.x /= 1.5;
+                    note.scale.y /= 1.5;
+                    note.updateHitbox();
+                    note.visible = false;
+                }
+                if (holdCoverHandlers[i] != null)
+                    holdCoverHandlers[i]._scale /= 1.5;
+                modulo++;
+            }
+        }
+    }
+
+    // fix strumlines draw order
+    for (strumline in strumLines.members) {
+        insert(members.length, strumline);
+    }
+
+    // draw splashes on top
+    for (group in splashHandler.grpMap.keyValueIterator()) {
+        insert(members.length, group.value);
+    }
+
+    // add backgrounds to the strumlines
+    if (FlxG.save.data.impPixelStrumBG > 0) {
+        for (strumline in strumLines.members) {
+            if (strumline.visible) {
+                if (FlxG.save.data.middlescroll && strumline.data.type != 1) return;
+
+                var strumSpacing:Float = (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1);
+                var bgWidth:Float = (strumline.members[0].width + strumline.extra.get("separate")) * strumline.data.keyCount * strumSpacing;
+                var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Std.int(bgWidth), FlxG.height, FlxColor.BLACK);
+                strumBG.alpha = FlxG.save.data.impPixelStrumBG;
+                strumBG.camera = camHUD;
+
+                var fullWidth:Float = distanceBetweenFloats(strumline.members[0].x, strumline.members[strumline.members.length - 1].x + strumline.members[strumline.members.length - 1].width);
+                strumBG.x += (fullWidth / 2) - (strumBG.width / 2);
+
+                insert(members.indexOf(strumline), strumBG);
+                strumlineBackgrounds.push(strumBG);
+            }
+        }
+    }
+}
+
 function update(elapsed:Float) {
     if (generatedMusic && updateSongPercent)
         songPercent = (Conductor.songPosition / percentDeadline);
 
-    taskbar.scale.x = songPercent;
-    taskbar.updateHitbox();
-
-    updateHealthBar();
+    healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
+    healthBar.value = healthLerp;
 
     // why do i have to do this like this
     if (fixScore) {
@@ -427,28 +426,7 @@ function update(elapsed:Float) {
     }
 }
 
-function updateHealthBar() {
-    healthLerp = FlxMath.lerp(healthLerp, health, 0.15);
-    healthBar.value = healthLerp;
-}
-
 function postUpdate(elapsed:Float) {
-    if (updateTaskbarTxt) {
-        taskbarTxt.text = PlayState.SONG.meta.displayName;
-        taskbarTxt.text += " (" + Math.round(songPercent * 100) + "%)";
-    }
-
-    if (taskPanel != null && touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
-        if (touchJustReleased()) {
-            taskPanel.tweenVisibility();
-
-            if (panelTimer != null && panelTimer.active) {
-                panelTimer.cancel();
-                panelTimer.destroy();
-            }
-        }
-    }
-
     if (!inCutscene)
         processNotes(elapsed);
 
@@ -490,21 +468,6 @@ function onCountdown(event) {
             gf.playAnim("countdownGo");
         else if (gf.hasAnim("cheer"))
             gf.playAnim("cheer");
-    }
-}
-
-var panelTimer:FlxTimer = new FlxTimer();
-function onStartSong() {
-    FlxTween.tween(taskbarBG, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-    FlxTween.tween(taskbar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-    FlxTween.tween(taskbarTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-
-    if (taskPanel != null) {
-        taskPanel.tweenIn();
-        panelTimer.start((Conductor.stepCrochet / 1000) * 16 * 4, _ -> {
-            taskPanel.tweenOut();
-            panelTimer.destroy();
-        });
     }
 }
 
@@ -982,10 +945,9 @@ function grantNoteStat(rating:String) {
 }
 
 function onNewNoteHit(event) {
-    var noteStrumLine:StrumLine = event.note.strumLine;
-    var noteStrum:Strum = event.note.__strum;
-    var noteID:Int = event.note.noteData;
     var note:Note = event.note;
+    var noteStrumLine:StrumLine = note.strumLine;
+    var noteStrum:Strum = note.__strum;
 
     if (!note.isSustainNote) {
         if (note.nextNote != null && note.nextNote.isSustainNote) {
@@ -1000,9 +962,8 @@ function onNewNoteHit(event) {
         }
     }
     else {
-        if (noteStrum != null) noteStrum.lastHit = Conductor.songPosition + 30;
-
-        for (i in 0...event.characters.length) event.characters[i].lastHit = Conductor.songPosition + 30;
+        if (noteStrum != null) noteStrum.lastHit = Conductor.songPosition + (Conductor.stepCrochet / 1000);
+        for (i in 0...event.characters.length) event.characters[i].lastHit = Conductor.songPosition + (Conductor.stepCrochet / 1000);
     }
 }
 

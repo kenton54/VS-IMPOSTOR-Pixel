@@ -36,10 +36,10 @@ class TaskPanel {
         var finalLength:Float = boxPos + boxLabelTxt.height;
         if (this.tasks.length > 0) {
             for (artist in this.tasks) {
-                var artistAndJob:String = artist.job + ": " + artist.artist;
+                var artistAndJob:String = artist.job + ": " + artist.inCharge;
                 var artistTxt:FunkinText = new FunkinText(boxPos, finalLength, 0, artistAndJob, 24);
                 artistTxt.font = Paths.font("pixeloidsans.ttf");
-                artistTxt.borderSize = 2.2;
+                artistTxt.borderSize = 2;
                 group.add(artistTxt);
 
                 if ((artistTxt.width + boxPos * 2) > boxLength)
@@ -107,7 +107,7 @@ class TaskPanel {
 
 /*
 typedef Artist = {
-    var artist:String;
+    var inCharge:String;
     var job:String;
 }
 */

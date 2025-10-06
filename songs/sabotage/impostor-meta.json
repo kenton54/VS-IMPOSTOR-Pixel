@@ -1,0 +1,8 @@
+{
+    "ratingsChart": {"easy": 4, "normal": 5, "hard": 6},
+    "artists": [
+        {"job": "Remix Composer", "inCharge": "Soba Noodles"},
+        {"job": "OG Composer", "inCharge": "EthanTheDoodler"},
+        {"job": "Charter", "inCharge": "kenton"}
+    ]
+}
