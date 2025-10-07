@@ -229,7 +229,7 @@ function postCreate() {
 
 function improveHUD() {
     healthBarBG.loadGraphic(Paths.image("game/healthBar"));
-    healthBarBG.scale.set(4.68, 4.68);
+    healthBarBG.scale.set(5, 5);
     healthBarBG.updateHitbox();
     healthBarBG.screenCenter(FlxAxes.X);
     healthBarBG.y = FlxG.height * 0.88;
@@ -237,10 +237,10 @@ function improveHUD() {
     var leftColor:FlxColor = (dad != null && dad.iconColor != null && Options.colorHealthBar) ? dad.iconColor : (PlayState.opponentMode ? 0xFF66FF33 : 0xFFFF0000);
     var rightColor:FlxColor = (boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar) ? boyfriend.iconColor : (PlayState.opponentMode ? 0xFFFF0000 : 0xFF66FF33);
 
-    healthBar.barWidth = 732;
-    healthBar.barHeight = 21;
+    healthBar.barWidth = healthBarBG.width - (2 * healthBarBG.scale.x) + 1;
+    healthBar.barHeight = healthBarBG.height - (2 * healthBarBG.scale.y) + 1;
     healthBar.createFilledBar(leftColor, rightColor);
-    healthBar.setPosition(healthBarBG.x + 8, healthBarBG.y + 8);
+    healthBar.setPosition(healthBarBG.x + healthBarBG.scale.x, healthBarBG.y + healthBarBG.scale.y);
     healthBar.setParent();
     healthBar.setRange(0, maxHealth);
     healthBar.updateBar();
@@ -393,7 +393,7 @@ function improveStrums() {
                 if (FlxG.save.data.middlescroll && strumline.data.type != 1) return;
 
                 var strumSpacing:Float = (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1);
-                var bgWidth:Float = (strumline.members[0].width + strumline.extra.get("separate")) * strumline.data.keyCount * strumSpacing;
+                var bgWidth:Float = (strumline.members[0].width + strumline.extra.get("separate")) * strumline.data.keyCount * strumSpacing + 30;
                 var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Std.int(bgWidth), FlxG.height, FlxColor.BLACK);
                 strumBG.alpha = FlxG.save.data.impPixelStrumBG;
                 strumBG.camera = camHUD;
