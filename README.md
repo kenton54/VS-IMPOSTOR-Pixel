@@ -1,5 +1,3 @@
-![License][license-shield] ![Release][release-shield] ![Repo Size][repoSize-shield] ![Stars][stars-shield]
-
 <div align="center">
     <a href="https://github.com/kenton54/VS-IMPOSTOR-Pixel">
         <img src="images/github/logo-hd.png" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 80%;">
@@ -109,10 +107,3 @@ If you want to make fanmade extensions or continuations of the mod, you're allow
         <th>Vietnamese</th>
     </tr>
 </table>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[repoSize-shield]: https://img.shields.io/github/repo-size/kenton54/VS-IMPOSTOR-Pixel?style=for-the-badge
-[stars-shield]: https://img.shields.io/github/stars/kenton54/VS-IMPOSTOR-Pixel?style=for-the-badge
-[license-shield]: https://img.shields.io/github/license/kenton54/VS-IMPOSTOR-Pixel?style=for-the-badge
-[release-shield]: https://img.shields.io/github/v/release/kenton54/VS-IMPOSTOR-Pixel?display_name=release&style=for-the-badge
