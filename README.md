@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <th><a href="">Silte</th>
-        <th>0</th>
+        <th>1</th>
     </tr>
 </table>
 
