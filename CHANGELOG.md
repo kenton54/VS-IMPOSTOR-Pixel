@@ -97,7 +97,7 @@ A new version bringing a general overhaul of the entire mod.
 - Scrapped Song skins per Playable Character idea.
 - Removed other 2 note skins.
 - Removed old 15 Playable Characters.
-- Removed Alkal1n3 from the credits, the team and all his work (due to controversy).
+- Removed [Alkal1n3](https://x.com/alkal1n3real) (currently known as VoltR) from the credits, the team and all his work (due to controversy).
 
 # Unreleased Beta 3
 A version that was never properly released, and it's very very VERY incomplete.
@@ -191,7 +191,7 @@ Mod's first ever release.
 - Added Sussus Toogus Song (charted by femboy_rain).
 - Added Ominous Song.
 - added the most boring-looking black impostor's sprites in existance LOL (for ominous).
-- Added [Alkal1n3](https://x.com/alkal1n3real) to the credits, made Defeat's remix.
+- Added [Alkal1n3](https://x.com/alkal1n3real) (currently known as VoltR) to the credits, made Defeat's remix.
 
 ## Changes
 - Black's sprites were tweaked and better drawn.
@@ -202,3 +202,12 @@ The first ever appearance of the mod (believe it or not, this version has some d
 
 ## Aditions
 - literally what the version title says lol
+
+# Prototype / Alpha
+The very first version (and the oldest) of this mod, 2 years old specifically, made 4 months after VS IMPOSTOR V4 released.
+
+It's lost media so don't bother looking for it (I don't even have the files anymore).
+
+## Stuff made in this version
+- Ported Double Kill...... but made it pixelated ofc :v
+- Added Mini Green Impostor as a playable.
