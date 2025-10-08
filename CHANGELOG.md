@@ -1,5 +1,23 @@
 This changelog keeps track of everything that has been added, changed, fixed or deleted in every VS IMPOSTOR Pixel version.
 
+# Cancelled Build
+The cancelled build of the mod...... before it was uncancelled lol.
+
+## Additions
+- New Sussus Moogus remix made by Silte (incomplete addition).
+- New icons (again) (incomplete addition).
+
+## Changes
+- Separated Impostor Pixel's custom song metadata from the main song metadata file.
+- Divided the main PlayState script extension into more scripts, for easier management.
+
+## Fixes
+- Fixed a math calculation, being wrongly formulated.
+- Fixed a bunch of typos in this file, yes the changelog LMFAO.
+
+## Removals
+- Removed the DEMO Build.
+
 # Developer Build 2
 Second dev version for playtesting, plus preparations for the DEMO release.
 
@@ -18,7 +36,6 @@ Second dev version for playtesting, plus preparations for the DEMO release.
 
 ## Changes
 - Organized utilities (making them easier to find and access).
-- Improved the PlayState extension script, and divided it into multiple scripts.
 - Improved how custom values from songs' metadata get loaded.
 - Improved the Impostor Pixel's Flags system.
 - Improved Discord RPC backend.
