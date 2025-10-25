@@ -40,7 +40,8 @@ public static function setTransition(transitionID:String) {
         MusicBeatTransition.script = "data/transitions/" + transitionID;
 }
 
-public static function translate(id:String, ?customValues:Array<Dynamic> = []):String {
+public static function translate(id:String, ?customValues:Array<Dynamic>):String {
+    customValues ??= [];
     return TranslationUtil.translate(id, customValues);
 }
 
@@ -52,7 +53,7 @@ public static function changeDiscordEditorStatus(menu:String) {
     DiscordUtil.call("onEditorTreeLoaded", [menu]);
 }
 
-public static function setBlendMode(blend:String):BlendMode {
+public static function getBlendMode(blend:String):BlendMode {
     switch(blend) {
         case "add": return BlendMode.ADD;
         case "alpha": return BlendMode.ALPHA;
@@ -83,33 +84,45 @@ public static function playSound(sound:String, ?volume:Float) {
  * 
  * If you don't understand, the sound won't stop playing when switching states.
  * 
- * @param sound The sound file inside the "sounds/menu" folder.
+ * @param sound The sound ID, it's actually just the file inside the "sounds/menu" folder.
  * @param volume The volume the sound should play at.
  */
 public static function playMenuSound(sound:String, ?volume:Float) {
-    volume = (volume == null) ? 1 : volume;
+    volume ??= 1;
 
-    var soundPath:String = Paths.sound("menu/" + sound);
-    var menuSound:FlxSound = new FlxSound().loadEmbedded(soundPath, false, true);
+    if (cachedMenuSounds.get(sound) == null) {
+        logTraceColored([
+            {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
+            {text: 'The sound "' + sound + '" is not valid!', color: getLogColor("red")}
+        ], "error");
+        return;
+    }
+
+    var menuSound:FlxSound = new FlxSound().loadEmbedded(cachedMenuSounds.get(sound), false, true);
     menuSound.volume = volume * Options.volumeSFX;
     menuSound.persist = true;
     menuSound.play();
+    menuSound.onComplete = function() {
+        menuSound.destroy();
+    };
 }
 
-public static function createMultiLineText(texts:Array<String>):String {
+public static function createMultiLineText(textLines:Array<String>):String {
     var wholeText:String = "";
-    var max:Int = texts.length - 1;
-    for (i => text in texts) {
+    var lastLineIndex:Int = textLines.length - 1;
+
+    for (line => text in textLines) {
         wholeText += text;
-        if (!(i >= max)) wholeText += '\n';
+        if (!(line >= lastLineIndex)) wholeText += '\n';
     }
 
     return wholeText;
 }
 
-public static function dispatchSignal(signal:FlxBaseSignal, ?parameter1:Dynamic, ?parameter2:Dynamic, ?parameter3:Dynamic, ?parameter4:Dynamic, ?parameter5:Dynamic, ?parameter6:Dynamic) {
+// TODO: figure out a cleaner way to execute this.
+public static function dispatchSignal(signal:FlxBaseSignal, ?argument1:Dynamic, ?argument2:Dynamic, ?argument3:Dynamic, ?argument4:Dynamic, ?argument5:Dynamic, ?argument6:Dynamic) {
     for (handler in signal.handlers) {
-        handler.listener(parameter1, parameter2, parameter3, parameter4, parameter5, parameter6);
+        handler.listener(argument1, argument2, argument3, argument4, argument5, argument6);
     }
 }
 
@@ -139,9 +152,9 @@ public static function getTarget():String {
     #elseif html5
     return "html5";
     #elseif flash
-    return "flash"; // there's 0% chance youll get this returned
+    return "flash"; // there's no chance you'll get this returned
     #elseif switch
-    return "switch";
+    return "switch"; // very unlike you'll get this returned
     #else
     return "unknown";
     #end
@@ -162,6 +175,8 @@ public static function resizeGame(width:Int, height:Int) {
     FlxG.initialHeight = height;
     FlxG.width = width;
     FlxG.height = height;
+
+    resizeWindow(width, height);
 }
 
 public static function resizeWindow(width:Int, height:Int) {

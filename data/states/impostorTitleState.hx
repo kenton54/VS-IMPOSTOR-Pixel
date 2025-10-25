@@ -54,7 +54,7 @@ function create() {
     titleColor.centerOffsets();
     titleColor.screenCenter(FlxAxes.X);
     titleColor.y = FlxG.height * 0.2;
-    titleColor.color = 0xFFE31629;
+    //titleColor.color = 0xFFE31629;
     title.add(titleColor);
 
     var titleMain:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/title/main"));
@@ -140,8 +140,8 @@ function tweenPressStart() {
         pressStart.text += " " + playSuffix;
     }
 
-    tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.sineOut, onComplete: _ -> {
-        tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.sineIn, onComplete: _ -> {
+    tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.quadOut, onComplete: _ -> {
+        tweenOut = FlxTween.tween(pressStart, {alpha: 0}, tweenDur, {ease: FlxEase.quadIn, onComplete: _ -> {
             tweenPressStart();
         }});
     }});

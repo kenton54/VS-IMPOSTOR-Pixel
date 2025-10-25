@@ -4,6 +4,7 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
 import openfl.system.Capabilities;
+importScript("data/cache");
 
 // extra variables and function that can be accessed from anywhere
 // ordered by importance
@@ -31,17 +32,22 @@ function new() {
     Options.streamedVocals = false;
     Options.save();
 
+    startCache();
+
+    if (getPlatform() == "mobile")
+        initMobile();
+    else
+        initWindow();
+
+    /*
     if (FlxG.onMobile) {
         //var screenWidth:Float = Capabilities.screenResolutionX;
         //var screenHeight:Float = Capabilities.screenResolutionY;
         //initMobileUtils();
         resizeGame(1560, 720);
     }
-    else {
-        window.minWidth = 1280;
-        window.minHeight = 720;
-        FlxG.mouse.visible = true;
-    }
+    else {}
+    */
 }
 
 function initSaveData() {
@@ -86,7 +92,7 @@ function initFlags(data:Map<String, Dynamic>) {
     unlockedVideos = data.get("unlockedVideos");
 }
 
-static function setStats(data:Map<String, Dynamic>) {
+function setStats(data:Map<String, Dynamic>) {
     for (stat in data.keyValueIterator()) {
         impostorStats.set(stat.key, stat.value);
     }
@@ -115,7 +121,24 @@ function destroyMobileUtils() {
         final disposeHapticsJNI:Null<Dynamic> = createJNIStaticMethod(null, 'dispose', '()V');
         if (disposeHapticsJNI != null) disposeHapticsJNI();
         #end
+
+        mobileUtilsInitiated = false;
     }
+}
+
+function initWindow() {
+    window.resizable = false;
+    window.minWidth = 1280;
+    window.minHeight = 720;
+
+    FlxG.mouse.visible = true;
+
+    resizeGame(1280, 720);
+    resizeWindow(1280, 720);
+}
+
+function initMobile() {
+    // TODO: configure mobile
 }
 
 function update(elapsed:Float) {
@@ -138,14 +161,14 @@ function postStateSwitch() {
         mobilePreviewTxt.y -= mobilePreviewTxt.height;
         FlxG.game._state.add(mobilePreviewTxt);
     }
-
-    saveImpostor();
 }
 
 function closeGame()
     saveImpostor();
 
 function destroy() {
+    clearCache();
+
     Application.current.onExit.remove(closeGame);
 
     FlxG.save.bind(Flags.SAVE_PATH, null);

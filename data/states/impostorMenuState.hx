@@ -750,6 +750,7 @@ function handleMouse() {
 
     if (FlxG.mouse.justMoved) {
         usingKeyboard = false;
+        holdTimer = 0;
         FlxG.mouse.visible = true;
         if (currentSelectionMode == "main") backButton.visible = true;
     }
