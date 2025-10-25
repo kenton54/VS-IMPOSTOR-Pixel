@@ -5,11 +5,14 @@ import flixel.FlxObject;
 import funkin.backend.MusicBeatState;
 import funkin.options.Options;
 import PixelStars;
+import RGBPalette;
 
 var stars:PixelStars;
 
 var camFollow:FlxObject;
 
+var titleColors:Array<Array<FlxColor>> = [[0xFFE31629, 0xFF90003A], [0xFF00791C, 0xFF004329]];
+var titleColor:FlxSprite;
 var title:FlxSpriteGroup;
 var baseScale:Float = 4;
 
@@ -48,13 +51,14 @@ function create() {
     title = new FlxSpriteGroup();
     add(title);
 
-    var titleColor:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/title/color"));
+    var rgb:RGBPalette = new RGBPalette(0xFFE31629, 0xFF90003A);
+    titleColor = new FlxSprite().loadGraphic(Paths.image("menus/title/color"));
     titleColor.scale.set(baseScale, baseScale);
     titleColor.updateHitbox();
     titleColor.centerOffsets();
     titleColor.screenCenter(FlxAxes.X);
     titleColor.y = FlxG.height * 0.2;
-    //titleColor.color = 0xFFE31629;
+    titleColor.shader = rgb.shader;
     title.add(titleColor);
 
     var titleMain:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menus/title/main"));
@@ -163,10 +167,10 @@ function bopTitle() {
         FlxTween.cancelTweensOf(spr, ["scale.x", "scale.y"]);
 
         var daScale:Float = (baseScale * 1.075);
-        var duration:Float = 60 / Conductor.bpm;
+        var duration:Float = (Conductor.stepCrochet / 1000) * 4;
 
         spr.scale.set(daScale, daScale);
-        FlxTween.tween(spr, {"scale.x": baseScale, "scale.y": baseScale}, duration, {ease: FlxEase.backInOut});
+        FlxTween.tween(spr, {"scale.x": baseScale, "scale.y": baseScale}, duration, {ease: FlxEase.quintOut});
     });
 }
 
@@ -208,6 +212,17 @@ function accept() {
             FlxG.switchState(new ModState("impostorMenuState"));
         });
     });
+}
+
+function measureHit(curMeasure:Int) {
+    if (FlxG.sound.music == null) return;
+
+    if (curMeasure % 2 == 0) {
+        var selectedColors:Array<FlxColor> = titleColors[FlxG.random.int(0, titleColors.length - 1)];
+        titleColor.shader.r = RGBPalette.convertColorToFloatArray(selectedColors[0]);
+        titleColor.shader.g = RGBPalette.convertColorToFloatArray(selectedColors[1]);
+        titleColor.shader.b = RGBPalette.convertColorToFloatArray(selectedColors[2]);
+    }
 }
 
 function destroy() {

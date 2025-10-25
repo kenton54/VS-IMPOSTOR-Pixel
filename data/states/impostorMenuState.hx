@@ -973,7 +973,7 @@ function handleTopButtons() {
 
 function statsMenu() {
     playMenuSound("select", 1);
-    openSubState(new ModSubState("statsMenuSubState"));
+    openSubState(new ModSubState("impostorStatsMenuSubState"));
     persistentUpdate = persistentDraw = true;
 }
 
@@ -1218,7 +1218,7 @@ function checkSelectedMainEntry() {
                 new FlxTimer().start(1, _ -> {
                     switch(curWindowEntry[0]) {
                         case 0: switch(curWindowEntry[1]) {
-                            case 0: FlxG.switchState(new ModState("worldmapState", ["lobby"]));
+                            case 0: FlxG.switchState(new ModState("impostorWorldmapState", ["lobby"]));
                             case 1: FlxG.switchState(new ModState("impostorFreeplayState"));
                         }
                         case 1: FlxG.switchState(new ModState("game/tutorialPlayState"));
