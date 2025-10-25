@@ -4,7 +4,6 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
 import openfl.system.Capabilities;
-importScript("data/cache");
 
 // extra variables and function that can be accessed from anywhere
 // ordered by importance
@@ -31,8 +30,6 @@ function new() {
     Options.streamedMusic = false;
     Options.streamedVocals = false;
     Options.save();
-
-    startCache();
 
     if (getPlatform() == "mobile")
         initMobile();
@@ -165,6 +162,10 @@ function postStateSwitch() {
 
 function closeGame()
     saveImpostor();
+
+function clearCache() {
+    // TODO: properly clear cached assets
+}
 
 function destroy() {
     clearCache();

@@ -90,15 +90,8 @@ public static function playSound(sound:String, ?volume:Float) {
 public static function playMenuSound(sound:String, ?volume:Float) {
     volume ??= 1;
 
-    if (cachedMenuSounds.get(sound) == null) {
-        logTraceColored([
-            {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
-            {text: 'The sound "' + sound + '" is not valid!', color: getLogColor("red")}
-        ], "error");
-        return;
-    }
-
-    var menuSound:FlxSound = new FlxSound().loadEmbedded(cachedMenuSounds.get(sound), false, true);
+    var soundPath:String = Paths.sound("menu/" + sound);
+    var menuSound:FlxSound = new FlxSound().loadEmbedded(soundPath, false, true);
     menuSound.volume = volume * Options.volumeSFX;
     menuSound.persist = true;
     menuSound.play();
