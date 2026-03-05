@@ -34,39 +34,39 @@ jobs:
           name: VS IMPOSTOR Pixel (Windows)
           path: export/release/windows/bin/
 
-  # build_linux:
-  #   name: Linux
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v6
-  #     - name: Install Haxe
-  #       uses: krdlab/setup-haxe@v2
-  #       with:
-  #         haxe-version: 4.3.7
-  #     - name: Restore Cache
-  #       uses: actions/cache@v5
-  #       with:
-  #         key: cache_linux
-  #         restore-keys: cache_linux
-  #         path: |
-  #           .haxelib/
-  #           export/release/linux/haxe/
-  #           export/release/linux/obj/
-  #     - name: Install LibVLC
-  #       run: |
-  #         sudo apt-get install libvlc-dev libvlccore-dev
-  #     - name: Install / Update Libraries
-  #       run: |
-  #         haxe -cp setup -D analyzer-optimize --run Setup -quiet
-  #     - name: Build Game
-  #       run: |
-  #         haxelib run lime build linux -release
-  #     - name: Upload Artifact
-  #       uses: actions/upload-artifact@v6
-  #       with:
-  #         name: VS IMPOSTOR Pixel (Linux)
-  #         path: export/release/linux/bin/
+  build_linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+      - name: Install Haxe
+        uses: krdlab/setup-haxe@v2
+        with:
+          haxe-version: 4.3.7
+      - name: Restore Cache
+        uses: actions/cache@v5
+        with:
+          key: cache_linux
+          restore-keys: cache_linux
+          path: |
+            .haxelib/
+            export/release/linux/haxe/
+            export/release/linux/obj/
+      - name: Install LibVLC
+        run: |
+          sudo apt-get install libvlc-dev libvlccore-dev
+      - name: Install / Update Libraries
+        run: |
+          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+      - name: Build Game
+        run: |
+          haxelib run lime build linux -release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: VS IMPOSTOR Pixel (Linux)
+          path: export/release/linux/bin/
 
   build_mac:
     name: macOS

@@ -7,6 +7,7 @@ import flixel.util.FlxGradient;
 import funkin.graphics.shaders.RGBPalette;
 import funkin.graphics.text.GameboyText;
 import funkin.menus.mainmenu.MainMenuState;
+import funkin.ui.MusicBeatState;
 import funkin.ui.StarsBackdrop;
 #if android
 import funkin.utils.native.Android;
