@@ -8,6 +8,7 @@ package funkin.utils.native;
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <fstream>
 ')
 class Linux
 {
@@ -15,14 +16,20 @@ class Linux
 	 * @return The total amount of RAM the system has installed.
 	 */
 	@:functionCode('
-		std::string token:
-		std::ifstream file("/proc/meminfo"):
+		std::string token;
+		std::ifstream file("/proc/meminfo");
+		unsigned long memTotal = 0;
+
 		while (file >> token) {
-				unsigned long mem;
-				if (file >> mem)
-						return mem;
+			if (token == "MemTotal:") {
+				if (file >> memTotal) {
+					return static_cast<Float>(memTotal);
+				}
+			}
+
+			file.ignore(std::numeric_limits<std::streamsize>::max(), \'\\n\');
 		}
-		return 0;
+		return 0.0;
 	')
 	public static function getTotalSystemMemory():Float
 	{
@@ -30,10 +37,14 @@ class Linux
 	}
 
 	/**
-	 * @return The system's current language in the Language Code format (i.e. `en-US`).
+	 * @return The system\'s current language in the Language Code format (i.e. `en-US`).
 	 */
 	@:functionCode('
-		return std::getenv("LANG").c_str();
+		const char* lang = std::getenv("LANG");
+		if (lang != nullptr) {
+			return String(lang);
+		}
+		return String("en-US");
 	')
 	public static function getSystemLanguage():String
 	{
