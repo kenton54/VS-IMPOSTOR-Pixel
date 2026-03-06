@@ -1,6 +1,7 @@
 package funkin.system;
 
 import funkin.graphics.FunkinBitmapText;
+import funkin.ui.MusicBeatState;
 
 import haxe.Json;
 

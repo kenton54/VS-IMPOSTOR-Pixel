@@ -6,8 +6,6 @@ import flixel.math.FlxRect;
 
 import funkin.menus.debug.DebugState;
 import funkin.menus.mainmenu.MainMenuButton;
-import funkin.ui.FunkinButton;
-import funkin.ui.StarsBackdrop;
 
 import openfl.ui.Mouse;
 import openfl.ui.MouseCursor;
@@ -16,7 +14,7 @@ class MainMenuState extends MusicBeatState
 {
 	public static var BASE_SCALE:Float = 5;
 
-	public var curSelectionMode:SelectionMode = MAIN;
+	public var curSelectionMode:SelectionMode = Main;
 
 	public var backgroundGroup:FlxTypedGroup<FunkinSprite>;
 	public var topBarGroup:FlxTypedGroup<FunkinSprite>;
@@ -411,9 +409,9 @@ class MainMenuState extends MusicBeatState
 		{
 			switch (curSelectionMode)
 			{
-				case MAIN:
+				case Main:
 					handleMainInput(elapsed);
-				case WINDOW:
+				case Window:
 					handleWindowInput(elapsed);
 			}
 		}
@@ -647,14 +645,14 @@ class MainMenuState extends MusicBeatState
 
 	function openWindowSubMenu(windowSubMenu:WindowSubMenu)
 	{
-		curSelectionMode = WINDOW;
+		curSelectionMode = Window;
 		backButton.visible = false;
 		windowMenu.open(windowSubMenu);
 	}
 
 	function closeWindowSubMenu()
 	{
-		curSelectionMode = MAIN;
+		curSelectionMode = Main;
 		backButton.visible = true;
 		windowMenu.close();
 	}
@@ -680,6 +678,13 @@ class MainMenuState extends MusicBeatState
 
 enum SelectionMode
 {
-	MAIN;
-	WINDOW;
+	/**
+	 * The player is selecting the main buttons.
+	 */
+	Main;
+
+	/**
+	 * The player is currently on a window submenu.
+	 */
+	Window;
 }

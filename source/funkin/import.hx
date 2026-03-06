@@ -23,7 +23,6 @@ import funkin.sound.FunkinSound;
 import funkin.system.Achievements;
 import funkin.system.Conductor;
 import funkin.system.Translations;
-import funkin.ui.MusicBeatState;
 import funkin.utils.Assets;
 import funkin.utils.MathUtil;
 

@@ -4,8 +4,6 @@ import flixel.FlxBasic;
 import flixel.math.FlxRect;
 import flixel.util.FlxSignal;
 
-import funkin.ui.FunkinButton;
-
 class WindowSubMenuHandler extends FlxBasic
 {
 	/**
@@ -49,8 +47,7 @@ class WindowSubMenuHandler extends FlxBasic
 		closeButton.scaleSprite(MainMenuState.BASE_SCALE);
 		closeButton.camera = this.camera;
 
-		line = cast new FunkinSprite(0,
-			closeButton.y + closeButton.height + MainMenuState.BASE_SCALE).makeGraphic(Std.int(background.width), Std.int(scale), 0xFFFFFFFF);
+		line = cast new FunkinSprite(0, closeButton.y + closeButton.height + MainMenuState.BASE_SCALE).makeGraphic(Std.int(background.width), Std.int(scale), 0xFFFFFFFF);
 		line.scrollFactor.set();
 		line.camera = this.camera;
 
@@ -170,11 +167,18 @@ class WindowSubMenuHandler extends FlxBasic
 		curSubMenu?.draw();
 	}
 
+	/**
+	 * Gets called whenever the system's language changes.
+	 * @param language The new language.
+	 */
 	public function onLanguageUpdate(language:String)
 	{
 		titleObject.text = '';
 
-		curSubMenu?.forEach((spr) -> spr.label.text = '');
+		curSubMenu?.forEach((spr) ->
+		{
+			spr.label.text = '';
+		});
 	}
 
 	override public function revive()

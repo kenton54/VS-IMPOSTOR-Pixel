@@ -7,8 +7,6 @@ import flixel.util.FlxGradient;
 import funkin.graphics.shaders.RGBPalette;
 import funkin.graphics.text.GameboyText;
 import funkin.menus.mainmenu.MainMenuState;
-import funkin.ui.MusicBeatState;
-import funkin.ui.StarsBackdrop;
 #if android
 import funkin.utils.native.Android;
 #end
@@ -19,7 +17,7 @@ class TitleState extends MusicBeatState
 	static var CAMERA_DEFAULT_ZOOM:Float = 1;
 	static var CAMERA_BEAT_BOP_STRENGTH:Float = 0.01;
 
-	var curState:TitleStateMode = IDLE;
+	var curState:TitleStateMode = Idle;
 
 	var stars:StarsBackdrop;
 
@@ -103,7 +101,7 @@ class TitleState extends MusicBeatState
 		add(transitionSprite);
 
 		tweenPressStart();
-		curState = IDLE;
+		curState = Idle;
 	}
 
 	var allowInput:Bool = true;
@@ -122,9 +120,9 @@ class TitleState extends MusicBeatState
 		{
 			switch (curState)
 			{
-				case INTRO:
+				case Intro:
 					if (pressedEnter) {}
-				case IDLE:
+				case Idle:
 					if (pressedEnter)
 					{
 						if (canSkipTransition && transitionTimer.active)
@@ -136,10 +134,24 @@ class TitleState extends MusicBeatState
 							accept(FlxG.keys.justPressed.ENTER);
 						}
 					}
-				case DEMO:
+				case Demo:
 					if (pressedEnter && playingDemo) {}
 			}
 		}
+	}
+
+	function pointerPressed():Bool
+	{
+		if (FlxG.onMobile)
+		{
+			return false;
+		}
+		else
+		{
+			return FlxG.mouse.justReleased && !FlxG.mouse.flickManager.flickDown;
+		}
+
+		return false;
 	}
 
 	override public function beatHit(beat:Int)
@@ -245,7 +257,9 @@ class TitleState extends MusicBeatState
 			return;
 		}
 
-		if (altPSText = !altPSText #if android && Android.isKeyboardConnected() #end)
+		altPSText = !altPSText;
+
+		if (!altPSText #if android && Android.isKeyboardConnected() #end)
 		{
 			pressStartText.translationData = psKeyboardTransData;
 		}
@@ -306,7 +320,18 @@ class TitleState extends MusicBeatState
 
 private enum TitleStateMode
 {
-	INTRO;
-	IDLE;
-	DEMO;
+	/**
+	 * The player is currently watching the intro.
+	 */
+	Intro;
+
+	/**
+	 * The player is idling.
+	 */
+	Idle;
+
+	/**
+	 * The player is watching a cutscene or a gameplay demo.
+	 */
+	Demo;
 }

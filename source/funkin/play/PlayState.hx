@@ -1,5 +1,7 @@
 package funkin.play;
 
+import funkin.ui.MusicBeatState;
+
 class PlayState extends MusicBeatState
 {
 	override public function create()
