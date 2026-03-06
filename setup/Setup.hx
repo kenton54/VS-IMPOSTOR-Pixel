@@ -29,7 +29,7 @@ class Setup
 
 		for (library in libraries)
 		{
-			var mainArg:String = '--always --skip-dependencies';
+			var mainArg:String = '--never --skip-dependencies';
 			var quietArg:String = silentInstall ? '--quiet' : '';
 			var globalArg:String = globalInstall ? '--global' : '';
 			var allArguments:String = [mainArg, quietArg, globalArg].join(' ');
@@ -165,7 +165,7 @@ typedef Library =
 	var name:String;
 
 	/**
-	 * The way the library will install, through `haxelib`, `git` (or `mercurial`) or through a custom library (set as `dev`).
+	 * The way the library will install, through `haxelib`, `git`, `mercurial` or through a custom library (set as `dev`).
 	 */
 	var type:LibraryType;
 

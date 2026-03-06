@@ -10,7 +10,12 @@ import haxe.io.Path;
 
 import lime.system.System;
 
+import openfl.Lib;
 import openfl.display.Sprite;
+
+#if linux
+import hxgamemode.GamemodeClient;
+#end
 
 #if android
 import extension.androidtools.content.Context;
@@ -32,17 +37,27 @@ class Main extends Sprite
 	 */
 	public static var debugOverlay:DebugOverlay;
 
-	public function new()
+	public static function main()
 	{
-		super();
-
 		#if android
 		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
 		#elseif ios
 		Sys.setCwd(Path.addTrailingSlash(System.documentsDirectory));
 		#end
 
+		#if linux
+		GamemodeClient.request_start();
+		#end
+
 		CrashHandler.init();
+
+		Lib.current.addChild(new Main());
+	}
+
+	public function new()
+	{
+		super();
+
 		#if hxvlc
 		Handle.init();
 		#end
