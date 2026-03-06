@@ -290,10 +290,6 @@ jobs:
         with:
           ndk-version: r29
 
-      - name: Install Gradle
-        id: gradle-install
-        uses: gradle/actions/setup-gradle@v5
-
       - name: Install Haxe
         id: haxe-install
         uses: krdlab/setup-haxe@v2
@@ -320,7 +316,7 @@ jobs:
         id: setup-android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
-          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.ndk-install.outputs.ndk-path }}
           haxelib run lime config JAVA_HOME ${{ env.JAVA_HOME }}
           haxelib run lime config ANDROID_SETUP true
 
