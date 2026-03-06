@@ -328,8 +328,8 @@ jobs:
       - name: Build APK
         id: game-compile-gradle
         run: |
-          chmod +x ./export/release/android/bin/gradlew
-          ./export/release/android/bin/gradlew assemble
+          chmod +x export/release/android/bin/gradlew
+          export/release/android/bin/gradlew build
 
       - name: Upload Artifact
         id: artifact-upload
