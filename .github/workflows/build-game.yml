@@ -263,3 +263,103 @@ jobs:
             .haxelib/
             export/release/html5/haxe/
             export/release/html5/obj/
+
+  build_android:
+    name: Android
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout Repository
+        id: repo-check
+        uses: actions/checkout@v6
+
+      - name: Install Java JDK
+        id: jdk-install
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: gradle
+
+      - name: Install Android SDK
+        id: sdk-install
+        uses: android-actions/setup-android@v3.2.2
+
+      - name: Install Android NDK
+        id: ndk-install
+        uses: nttld/setup-ndk@v1.6.0
+        with:
+          ndk-version: r29
+
+      - name: Install Gradle
+        id: gradle-install
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Install Haxe
+        id: haxe-install
+        uses: krdlab/setup-haxe@v2
+        with:
+          haxe-version: 4.3.7
+
+      - name: Restore Cache
+        id: cache-restore
+        uses: actions/cache/restore@v5
+        with:
+          key: cache_android
+          restore-keys: cache_android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+
+      - name: Install / Update Libraries
+        id: lib-install
+        run: |
+          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+
+      - name: Setup Android
+        id: setup-android
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_SDK_ROOT
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME ${{ env.JAVA_HOME }}
+          haxelib run lime config ANDROID_SETUP true
+
+      - name: Build Game (Lime)
+        id: game-compile-lime
+        run: |
+          haxelib run lime build android -release
+
+      - name: Build Game (Gradle)
+        id: game-compile-gradle
+        run: |
+          chmod +x gradlew
+          export/release/android/bin/gradlew assemble
+
+      - name: Upload Artifact
+        id: artifact-upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: VS IMPOSTOR Pixel (Android)
+          path: export/release/android/bin/app/build/outputs/apk/release/
+
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_android"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          key: cache_android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
