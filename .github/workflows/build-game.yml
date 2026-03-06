@@ -332,7 +332,7 @@ jobs:
 
           cd export/release/android/bin/
           ./gradlew clean
-          ./gradlew assemble
+          ./gradlew assembleDebug
           cd ../../../../
 
       - name: Upload Artifact
