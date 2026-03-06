@@ -279,7 +279,6 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-          cache: gradle
 
       - name: Install Android SDK
         id: sdk-install
@@ -325,12 +324,12 @@ jobs:
           haxelib run lime config JAVA_HOME ${{ env.JAVA_HOME }}
           haxelib run lime config ANDROID_SETUP true
 
-      - name: Build Game (Lime)
+      - name: Build Game
         id: game-compile-lime
         run: |
           haxelib run lime build android -release
 
-      - name: Build Game (Gradle)
+      - name: Build APK
         id: game-compile-gradle
         run: |
           chmod +x gradlew
