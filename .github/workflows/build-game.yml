@@ -6,15 +6,21 @@ jobs:
   build_windows:
     name: Windows
     runs-on: windows-latest
+    permissions: write-all
     steps:
       - name: Checkout Repository
+        id: repo-check
         uses: actions/checkout@v6
+
       - name: Install Haxe
+        id: haxe-install
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
+
       - name: Restore Cache
-        uses: actions/cache@v5
+        id: cache-restore
+        uses: actions/cache/restore@v5
         with:
           key: cache_windows
           restore-keys: cache_windows
@@ -22,30 +28,63 @@ jobs:
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
+
       - name: Install / Update Libraries
+        id: lib-install
         run: |
           haxe -cp setup -D analyzer-optimize --run Setup --no-vscheck -quiet
+
       - name: Build Game
+        id: game-compile
         run: |
           haxelib run lime build windows -release
+
       - name: Upload Artifact
+        id: artifact-upload
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (Windows)
           path: export/release/windows/bin/
 
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_windows"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          key: cache_windows
+          path: |
+            .haxelib/
+            export/release/windows/haxe/
+            export/release/windows/obj/
+
   build_linux:
     name: Linux
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Checkout Repository
+        id: repo-check
         uses: actions/checkout@v6
+
       - name: Install Haxe
+        id: haxe-install
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
+
       - name: Restore Cache
-        uses: actions/cache@v5
+        id: cache-restore
+        uses: actions/cache/restore@v5
         with:
           key: cache_linux
           restore-keys: cache_linux
@@ -53,33 +92,68 @@ jobs:
             .haxelib/
             export/release/linux/haxe/
             export/release/linux/obj/
+
       - name: Install LibVLC
+        id: libvlc-install
         run: |
           sudo apt-get install libvlc-dev libvlccore-dev
+
       - name: Install / Update Libraries
+        id: lib-install
         run: |
           haxe -cp setup -D analyzer-optimize --run Setup -quiet
+
       - name: Build Game
+        id: game-compile
         run: |
           haxelib run lime build linux -release
+
       - name: Upload Artifact
+        id: artifact-upload
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (Linux)
           path: export/release/linux/bin/
 
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_linux"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          key: cache_linux
+          path: |
+            .haxelib/
+            export/release/linux/haxe/
+            export/release/linux/obj/
+
   build_mac:
     name: macOS
     runs-on: macos-latest
+    permissions: write-all
     steps:
       - name: Checkout Repository
+        id: repo-check
         uses: actions/checkout@v6
+
       - name: Install Haxe
+        id: haxe-install
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
+
       - name: Restore Cache
-        uses: actions/cache@v5
+        id: cache-restore
+        uses: actions/cache/restore@v5
         with:
           key: cache_mac
           restore-keys: cache_mac
@@ -87,30 +161,63 @@ jobs:
             .haxelib/
             export/release/macos/haxe/
             export/release/macos/obj/
+
       - name: Install / Update Libraries
+        id: lib-install
         run: |
           haxe -cp setup -D analyzer-optimize --run Setup -quiet
+
       - name: Build Game
+        id: game-compile
         run: |
           arch -x86_64 haxelib run lime build mac -release
+
       - name: Upload Artifact
+        id: artifact-upload
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (macOS)
           path: export/release/macos/bin/
 
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_mac"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          key: cache_mac
+          path: |
+            .haxelib/
+            export/release/macos/haxe/
+            export/release/macos/obj/
+
   build_html5:
     name: HTML5 (Web)
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Checkout Repository
+        id: repo-check
         uses: actions/checkout@v6
+
       - name: Install Haxe
+        id: haxe-install
         uses: krdlab/setup-haxe@v2
         with:
           haxe-version: 4.3.7
+
       - name: Restore Cache
-        uses: actions/cache@v5
+        id: cache-restore
+        uses: actions/cache/restore@v5
         with:
           key: cache_html5
           restore-keys: cache_html5
@@ -118,49 +225,41 @@ jobs:
             .haxelib/
             export/release/html5/haxe/
             export/release/html5/obj/
+
       - name: Install / Update Libraries
+        id: lib-install
         run: |
           haxe -cp setup -D analyzer-optimize --run Setup -quiet
+
       - name: Build Game
+        id: game-compile
         run: |
           haxelib run lime build html5 -release
+
       - name: Upload Artifact
+        id: artifact-upload
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (HTML5)
           path: export/release/html5/bin/
 
-  build_hl:
-    name: HashLink
-    runs-on: windows-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-      - name: Install Haxe
-        uses: krdlab/setup-haxe@v2
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
         with:
-          haxe-version: 4.3.7
-      - name: Restore Cache
-        uses: actions/cache@v5
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_html5"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
         with:
-          key: cache_hl
-          restore-keys: cache_hl
+          key: cache_html5
           path: |
             .haxelib/
-            export/release/hl/haxe/
-            export/release/hl/obj/
-      - name: Install / Update Libraries
-        run: |
-          haxe -cp setup -D analyzer-optimize --run Setup -quiet
-      - name: Install HashLink
-        run: |
-          haxelib git hashlink https://github.com/HaxeFoundation/hashlink master
-          haxelib run lime setup hashlink
-      - name: Build Game
-        run: |
-          haxelib run lime build hl -clean -release
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: VS IMPOSTOR Pixel (HashLink)
-          path: export/release/hl/bin/
+            export/release/html5/haxe/
+            export/release/html5/obj/
