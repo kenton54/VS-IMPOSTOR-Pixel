@@ -339,7 +339,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (Android)
-          path: export/release/android/bin/app/build/outputs/apk/release/
+          path: export/release/android/bin/app/build/outputs/apk/debug/
 
       - name: Clear old Cache
         id: cache-clear
