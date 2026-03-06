@@ -48,21 +48,14 @@ jobs:
       - name: Clear old Cache
         id: cache-clear
         uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = await github.rest.actions.getActionsCacheList({
+            const caches = github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              key: "cache_windows"
             });
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache_windows") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
 
       - name: Save new Cache
         id: cache-save
@@ -124,21 +117,14 @@ jobs:
       - name: Clear old Cache
         id: cache-clear
         uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = await github.rest.actions.getActionsCacheList({
+            const caches = github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              key: "cache_linux"
             });
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache_linux") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
 
       - name: Save new Cache
         id: cache-save
@@ -195,21 +181,14 @@ jobs:
       - name: Clear old Cache
         id: cache-clear
         uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = await github.rest.actions.getActionsCacheList({
+            const caches = github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              key: "cache_mac"
             });
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache_mac") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
 
       - name: Save new Cache
         id: cache-save
@@ -266,21 +245,14 @@ jobs:
       - name: Clear old Cache
         id: cache-clear
         uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = await github.rest.actions.getActionsCacheList({
+            const caches = github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              key: "cache_html5"
             });
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache_html5") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
 
       - name: Save new Cache
         id: cache-save
@@ -372,21 +344,14 @@ jobs:
       - name: Clear old Cache
         id: cache-clear
         uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = await github.rest.actions.getActionsCacheList({
+            const caches = github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
-              repo: context.repo.repo
+              repo: context.repo.repo,
+              key: "cache_android"
             });
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache_android") {
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-              }
-            }
 
       - name: Save new Cache
         id: cache-save
