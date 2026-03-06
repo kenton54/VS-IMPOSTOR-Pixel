@@ -50,13 +50,13 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const caches = github.rest.actions.getActionsCacheList({
+            const caches = await github.rest.actions.getActionsCacheList({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
             for (const cache for caches.data.actions_cache) {
               if (cache.key == "cache_windows") {
-                github.rest.actions.deleteActionsCacheById({
+                await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
@@ -126,13 +126,13 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const caches = github.rest.actions.getActionsCacheList({
+            const caches = await github.rest.actions.getActionsCacheList({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
             for (const cache for caches.data.actions_cache) {
               if (cache.key == "cache_linux") {
-                github.rest.actions.deleteActionsCacheById({
+                await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
@@ -197,13 +197,13 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const caches = github.rest.actions.getActionsCacheList({
+            const caches = await github.rest.actions.getActionsCacheList({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
             for (const cache for caches.data.actions_cache) {
               if (cache.key == "cache_mac") {
-                github.rest.actions.deleteActionsCacheById({
+                await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
@@ -268,13 +268,13 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const caches = github.rest.actions.getActionsCacheList({
+            const caches = await github.rest.actions.getActionsCacheList({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
             for (const cache for caches.data.actions_cache) {
               if (cache.key == "cache_html5") {
-                github.rest.actions.deleteActionsCacheById({
+                await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
@@ -374,13 +374,13 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const caches = github.rest.actions.getActionsCacheList({
+            const caches = await github.rest.actions.getActionsCacheList({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
             for (const cache for caches.data.actions_cache) {
               if (cache.key == "cache_android") {
-                github.rest.actions.deleteActionsCacheById({
+                await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   cache_id: cache.id,
