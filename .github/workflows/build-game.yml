@@ -331,7 +331,7 @@ jobs:
           chmod +x export/release/android/bin/gradlew
 
           cd export/release/android/bin/
-          ./gradlew build
+          ./gradlew assemble
           cd ../../../../
 
       - name: Upload Artifact
