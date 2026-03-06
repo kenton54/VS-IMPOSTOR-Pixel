@@ -54,7 +54,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            for (const cache of caches.data.actions_cache) {
+            for (const cache of caches.data.actions_caches) {
               if (cache.key == "cache_windows") {
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -130,7 +130,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            for (const cache of caches.data.actions_cache) {
+            for (const cache of caches.data.actions_caches) {
               if (cache.key == "cache_linux") {
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -201,7 +201,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            for (const cache of caches.data.actions_cache) {
+            for (const cache of caches.data.actions_caches) {
               if (cache.key == "cache_mac") {
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -272,7 +272,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            for (const cache of caches.data.actions_cache) {
+            for (const cache of caches.data.actions_caches) {
               if (cache.key == "cache_html5") {
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
@@ -378,7 +378,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            for (const cache of caches.data.actions_cache) {
+            for (const cache of caches.data.actions_caches) {
               if (cache.key == "cache_android") {
                 await github.rest.actions.deleteActionsCacheById({
                   owner: context.repo.owner,
