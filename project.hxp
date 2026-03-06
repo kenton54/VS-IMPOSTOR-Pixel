@@ -1,7 +1,9 @@
 import hxp.*;
 import lime.tools.*;
+import haxe.ds.Map;
 import haxe.io.Bytes;
 import haxe.io.Path;
+import sys.io.File;
 import sys.io.Process;
 import sys.FileSystem;
 
@@ -61,6 +63,11 @@ class Project extends HXProject
     static final MAIN_CLASS_PATH:String = "Main";
 
     /**
+     * The contents of the user's enviroment variables.
+     */
+    static var enviromentVariables:Null<Map<String, Dynamic>> = null;
+
+    /**
      * The minimum Android SDK version this application can launch on.
      *
      * SDK 28 is Android 9.0, codenamed "Pie".
@@ -79,6 +86,8 @@ class Project extends HXProject
     public function new()
     {
         super();
+
+        enviromentVariables = parseEnviromentFile(".env");
 
         displayTarget();
 
@@ -131,7 +140,7 @@ class Project extends HXProject
             case Platform.MAC: targetStr = "macOS";
             case Platform.ANDROID: targetStr = "Android";
             case Platform.IOS: targetStr = "iOS";
-            case Platform.HTML5: targetStr = "HTML5";
+            case Platform.HTML5: targetStr = "Browser";
             case Platform.WIIU: targetStr = "Wii U";
             case Platform.PS3: targetStr = "PlayStation 3";
             case Platform.PS4: targetStr = "PlayStation 4";
@@ -140,7 +149,7 @@ class Project extends HXProject
             default: targetStr = "Unknown";
         }
 
-        consoleTrace('Building for $platformStr, targetting Operating System "$targetStr".');
+        info('Building for $platformStr, targetting "$targetStr".');
     }
 
     function setupApplication()
@@ -346,6 +355,16 @@ class Project extends HXProject
     {
         if (isRelease())
         {
+            /*
+            if (enviromentVariables != null)
+            {
+                final path:String = enviromentVariables.get("KEYSTORE_PATH");
+                final alias:String = enviromentVariables.get("KEYSTORE_ALIAS");
+                final password:String = enviromentVariables.get("KEYSTORE_PASSWORD");
+                keystore = new Keystore(path, password, alias);
+            }
+            */
+
             if (isBundle())
             {
                 config.set("android.gradle-project-directory", "bin-bundle");
@@ -371,7 +390,7 @@ class Project extends HXProject
 
         if (path.toLowerCase().startsWith("error") || !FileSystem.exists(path))
         {
-            throwError('Couldn\'t find the library "hxcpp" while targetting C++! Is it installed?');
+            error('Couldn\'t find the library "hxcpp" while targetting C++! Is it installed?');
         }
 
         var hxcppN:String = Path.join([path, "hxcpp.n"]);
@@ -390,7 +409,7 @@ class Project extends HXProject
 
         if (process.exitCode() != 0)
         {
-            consoleTrace("Couldn't compile HXCPP Tools. Is HXCPP installed properly?");
+            info("Couldn't compile HXCPP Tools. Is HXCPP installed properly?");
         }
 
         process.close();
@@ -440,11 +459,11 @@ class Project extends HXProject
 
         if (!FileSystem.exists(path))
         {
-            throwError('Asset path "$path" doesn\'t exists!');
+            error('Asset path "$path" doesn\'t exists!');
         }
         else if (!FileSystem.isDirectory(path))
         {
-            throwError('Asset path "$path" is not a directory!');
+            error('Asset path "$path" is not a directory!');
         }
 
         for (file in FileSystem.readDirectory(path))
@@ -630,15 +649,76 @@ class Project extends HXProject
         return process.stdout.readLine();
     }
 
-    public function consoleTrace(message:String)
+    public function parseEnviromentFile(file:String):Null<Map<String, Dynamic>>
+    {
+        if (!FileSystem.exists(file))
+        {
+            warn("Enviroment file doesn't exists!");
+            return null;
+        }
+
+        var envFile:String = File.getContent(file);
+
+        if (envFile == null)
+        {
+            warn("Failed to read enviroment file!");
+            return null;
+        }
+
+        if (envFile.length < 1)
+        {
+            warn("Enviroment file is empty!");
+            return null;
+        }
+
+        var envData:Map<String, Dynamic> = new Map<String, Dynamic>();
+
+        for (line in envFile.split('\n'))
+        {
+            line = line.trim();
+
+            if (line.length < 1 || line.startsWith("#"))
+            {
+                continue;
+            }
+
+            final index:Int = line.indexOf("=");
+
+            if (index == -1)
+            {
+                continue;
+            }
+
+            final value:String = line.substr(index + 1);
+
+            if (value.length < 1)
+            {
+                continue;
+            }
+
+            envData.set(line.substr(0, index), value);
+        }
+
+        return envData;
+    }
+
+    public function info(message:String)
     {
         if (!(isDisplay() || isClean()))
         {
-            Sys.stdout().write(Bytes.ofString('[INFO]: $message\n'));
+            Sys.println('[INFO]: $message');
         }
     }
 
-    public function throwError(message:String)
+    public function warn(message:String)
+    {
+        if (!(isDisplay() || isClean()))
+        {
+            Sys.println('[WARNING]: $message');
+        }
+    }
+
+    public function error(message:String)
     {
         Sys.stderr().write(Bytes.ofString('[ERROR] $message\n'));
         Sys.exit(1);

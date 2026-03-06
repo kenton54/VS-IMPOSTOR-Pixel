@@ -1,6 +1,10 @@
+.DS_Store
+
 .idea/
 .haxelib/
 dump/
 export/
+
 RECOVER.*.fla
-.DS_Store
+
+.env

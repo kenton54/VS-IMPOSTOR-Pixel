@@ -331,6 +331,7 @@ jobs:
           chmod +x export/release/android/bin/gradlew
 
           cd export/release/android/bin/
+          ./gradlew clean
           ./gradlew assemble
           cd ../../../../
 
