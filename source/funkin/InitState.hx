@@ -29,6 +29,10 @@ class InitState extends FlxState
 		FlxG.mouse.useSystemCursor = true;
 		#end
 
+		#if android
+		FlxG.android.preventDefaultKeys = [flixel.input.android.FlxAndroidKey.BACK];
+		#end
+
 		FlxG.stage.window.minWidth = 1280;
 		FlxG.stage.window.minHeight = 720;
 

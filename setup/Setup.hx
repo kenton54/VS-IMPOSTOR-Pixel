@@ -175,7 +175,7 @@ typedef Library =
 	var ?version:String;
 
 	/**
-	 * tbh i have no idea what this one is used for, just leave it as `null` lol, `git` or `mercurial`.
+	 * The directory name where the source of the library resides in, can be left as `null`, used in `git` or `mercurial`.
 	 */
 	var ?dir:String;
 

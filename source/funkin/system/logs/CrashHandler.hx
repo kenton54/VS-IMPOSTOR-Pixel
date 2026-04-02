@@ -95,10 +95,10 @@ final class CrashHandler
 			switch (stackItem)
 			{
 				case CFunction:
-					errorMsg += '[Function]';
+					errorMsg += 'C Function';
 
 				case Module(module):
-					errorMsg += 'Module ($module)';
+					errorMsg += 'Module $module';
 
 				case FilePos(stackItem, file, line, column):
 					errorMsg += 'File: $file (Line #$line)';
@@ -112,7 +112,7 @@ final class CrashHandler
 					errorMsg += '$classname.$method';
 
 				case LocalFunction(value):
-					errorMsg += 'Local Function ($value)';
+					errorMsg += 'Local Function $value';
 			}
 
 			errorMsg += '\n';

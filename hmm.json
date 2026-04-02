@@ -4,8 +4,8 @@
       "name": "hxcpp",
       "type": "git",
       "dir": null,
-      "ref": "master",
-      "url": "https://github.com/HaxeFoundation/hxcpp"
+      "ref": "funkin",
+      "url": "https://github.com/FunkinCrew/hxcpp"
     },
     {
       "name": "hxcpp-debug-server",
@@ -34,13 +34,17 @@
     },
     {
       "name": "openfl",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/FunkinCrew/openfl"
     },
     {
       "name": "flixel",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/FunkinCrew/flixel"
     },
     {
       "name": "flixel-addons",
@@ -51,6 +55,20 @@
       "name": "hxvlc",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "funkin.vis",
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/FunkinCrew/funkVis"
+    },
+    {
+      "name": "grig.audio",
+      "type": "git",
+      "dir": null,
+      "ref": "funkin",
+      "url": "https://github.com/FunkinCrew/grig.audio"
     },
     {
       "name": "hxp",
@@ -66,6 +84,13 @@
       "name": "hxgamemode",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "astc-compressor",
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/KarimAkra/astc-compressor"
     }
   ]
 }
