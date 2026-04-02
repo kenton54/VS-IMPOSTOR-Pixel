@@ -6,19 +6,11 @@ import funkin.InitState;
 import funkin.system.logs.CrashHandler;
 import funkin.ui.debug.DebugOverlay;
 
-import haxe.io.Path;
-
-import lime.system.System;
-
 import openfl.Lib;
 import openfl.display.Sprite;
 
 #if linux
 import hxgamemode.GamemodeClient;
-#end
-
-#if android
-import extension.androidtools.content.Context;
 #end
 
 #if hxvlc
@@ -40,9 +32,9 @@ class Main extends Sprite
 	public static function main()
 	{
 		#if android
-		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
+		Sys.setCwd(haxe.io.Path.addTrailingSlash(extension.androidtools.content.Context.getExternalFilesDir()));
 		#elseif ios
-		Sys.setCwd(Path.addTrailingSlash(System.documentsDirectory));
+		Sys.setCwd(haxe.io.Path.addTrailingSlash(lime.system.System.documentsDirectory));
 		#end
 
 		#if linux

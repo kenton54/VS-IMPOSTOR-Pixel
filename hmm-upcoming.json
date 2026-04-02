@@ -13,6 +13,13 @@
       "dir": null,
       "ref": "master",
       "url": "https://github.com/FunkinCrew/openfl"
+    },
+    {
+      "name": "flixel",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/FunkinCrew/flixel"
     }
   ]
 }
