@@ -6,6 +6,13 @@
       "dir": null,
       "ref": "master",
       "url": "https://github.com/FunkinCrew/lime"
+    },
+    {
+      "name": "openfl",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/FunkinCrew/openfl"
     }
   ]
 }
