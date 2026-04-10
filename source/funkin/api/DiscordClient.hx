@@ -1,6 +1,6 @@
 package funkin.api;
 
-#if DISCORD_API
+#if FEATURE_DISCORD_API
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
 
@@ -112,7 +112,7 @@ typedef DiscordRPCParams =
 
 	/**
 	 * Details about the state.
-	 * 
+	 *
 	 * TODO?: maybe put a better description to this.
 	 */
 	var details:String;
@@ -124,14 +124,14 @@ typedef DiscordRPCParams =
 
 	/**
 	 * The image to display in the Discord RPC.
-	 * 
+	 *
 	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RPC ASSETS!!!
 	 */
 	var ?largeImageKey:String;
 
 	/**
 	 * The image to display in the small icon at the bottom right of the large image.
-	 * 
+	 *
 	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RPC ASSETS!!!
 	 */
 	var ?smallImageKey:String;

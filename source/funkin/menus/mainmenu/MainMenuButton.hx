@@ -5,6 +5,11 @@ import flixel.FlxSprite;
 class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 {
 	/**
+	 * The index position of the button inside the menu.
+	 */
+	public var index(default, null):Int;
+
+	/**
 	 * The main button.
 	 */
 	public var button(default, null):FunkinSprite;
@@ -34,8 +39,6 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 	 */
 	public var hovered(default, null):Bool = false;
 
-	@:allow(funkin.menus.mainmenu.MainMenuState)
-	var _position:Int = 0;
 	var _idleColor:FlxColor;
 	var _hoverColor:FlxColor;
 
@@ -43,7 +46,7 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 	{
 		super(x, y, 3);
 
-		_position = index;
+		this.index = index;
 
 		type = data.type;
 
@@ -89,35 +92,8 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 		available = data.available;
 	}
 
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-	}
-
 	/**
-	 * Checks if the specified position matches with the button's.
-	 *
-	 * If it matches, the button plays the hover animation, otherwise it goes back to idle.
-	 *
-	 * @param position The position to use for checking.
-	 */
-	public function checkPosition(position:Int)
-	{
-		if (available)
-		{
-			if (position == _position)
-			{
-				hover();
-			}
-			else
-			{
-				idle();
-			}
-		}
-	}
-
-	/**
-	 * Makes the button go idle.
+	 * Stops the button from being highlighted.
 	 */
 	public function idle()
 	{
@@ -128,7 +104,7 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 	}
 
 	/**
-	 * Makes the button get hovered.
+	 * Highlights the button.
 	 */
 	public function hover()
 	{

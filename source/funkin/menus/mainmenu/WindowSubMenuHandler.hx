@@ -52,7 +52,8 @@ class WindowSubMenuHandler extends FlxBasic
 		line.camera = this.camera;
 
 		var titlePos:Float = 2 * scale;
-		titleObject = new FunkinText(titlePos, closeButton.y, background.width - titlePos * 2, '', 56);
+		titleObject = new FunkinText(titlePos, closeButton.y + closeButton.height / 2, background.width - titlePos * 2, '', 56);
+		titleObject.y -= titleObject.height / 2;
 		titleObject.scrollFactor.set();
 		titleObject.alignment = RIGHT;
 		titleObject.camera = this.camera;

@@ -1,5 +1,6 @@
 package funkin.menus.debug.character;
 
+#if FEATURE_DEBUG_CONTENT
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.animation.FlxAnimation;
@@ -386,3 +387,4 @@ class CharacterEditorState extends MusicBeatState
 		 */
 	}
 }
+#end

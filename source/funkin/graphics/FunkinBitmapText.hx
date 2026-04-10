@@ -12,7 +12,7 @@ class FunkinBitmapText extends FlxBitmapText
 
 	/**
 	 * The translation ID this text object follows, so whenever you change the language the text can update accordingly.
-	 * 
+	 *
 	 * If `null` (which is the default value), the text won't follow any translation ID, so you can put whatever text you want.
 	 */
 	public var translationData(default, set):Null<TranslationData>;
@@ -24,7 +24,7 @@ class FunkinBitmapText extends FlxBitmapText
 
 	/**
 	 * Constructs a new text field component.
-	 * 
+	 *
 	 * @param x     The horizontal position of the text object.
 	 * @param y     The vertical position of the text object.
 	 * @param text  The text to display.
@@ -75,6 +75,7 @@ class FunkinBitmapText extends FlxBitmapText
 	function set_translationData(data:Null<TranslationData>):Null<TranslationData>
 	{
 		translationData = data;
+
 		if (translationData != null)
 		{
 			set_text('');

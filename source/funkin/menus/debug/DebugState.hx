@@ -1,7 +1,6 @@
 package funkin.menus.debug;
 
-import funkin.menus.debug.character.CharacterEditorState;
-
+#if FEATURE_DEBUG_CONTENT
 class DebugState extends MusicBeatState
 {
 	var editorsArray:Array<String> = ['Chart Editor', 'Character Editor'];
@@ -79,7 +78,8 @@ class DebugState extends MusicBeatState
 		{
 			case 0: // nothing yet
 			case 1:
-				FlxG.switchState(() -> new CharacterEditorState());
+				FlxG.switchState(() -> new funkin.menus.debug.character.CharacterEditorState());
 		}
 	}
 }
+#end

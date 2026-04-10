@@ -1,5 +1,9 @@
 package funkin.menus;
 
+#if android
+import funkin.utils.native.Android;
+#end
+
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.util.FlxGradient;
@@ -7,9 +11,6 @@ import flixel.util.FlxGradient;
 import funkin.graphics.shaders.RGBPalette;
 import funkin.graphics.text.GameboyText;
 import funkin.menus.mainmenu.MainMenuState;
-#if android
-import funkin.utils.native.Android;
-#end
 
 class TitleState extends MusicBeatState
 {
@@ -30,6 +31,7 @@ class TitleState extends MusicBeatState
 
 	var transitionSprite:FlxSprite;
 
+	var titleRGB:RGBPalette;
 	var titleColors:Array<Array<FlxColor>> = [
 		[0xFFE31629, 0xFF90003A],
 		[0xFF3842AE, 0xFF2A1F78],
@@ -60,7 +62,7 @@ class TitleState extends MusicBeatState
 
 		FunkinSound.playMenuMusic();
 
-		#if DISCORD_API
+		#if FEATURE_DISCORD_API
 		DiscordClient.changePresence({
 			state: 'Navigating Menus',
 			details: 'Title Screen'
@@ -74,13 +76,15 @@ class TitleState extends MusicBeatState
 		titleSpriteGroup.y = FlxG.height * 0.2;
 		add(titleSpriteGroup);
 
-		titleRGBSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/color'));
+		titleRGB = new RGBPalette(titleColors[0][0], titleColors[0][1]);
+
+		titleRGBSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/title-color'));
 		titleRGBSprite.scaleSprite(4);
-		titleRGBSprite.shader = new RGBPalette(titleColors[0][0], titleColors[0][1]);
+		titleRGBSprite.shader = titleRGB.shader;
 		titleSpriteGroup.add(titleRGBSprite);
 
 		var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0];
-		titleMainSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/title'), true, 197, 65);
+		titleMainSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/title-main'), true, 197, 65);
 		titleMainSprite.addAnimationByFrameList(null, titleAnimIndices, 24, false);
 		titleMainSprite.scaleSprite(4);
 		titleSpriteGroup.add(titleMainSprite);
@@ -180,7 +184,8 @@ class TitleState extends MusicBeatState
 		}
 
 		var chosenColors:Array<FlxColor> = FlxG.random.getObject(titleColors);
-		titleRGBSprite.shader = new RGBPalette(chosenColors[0], chosenColors[1]);
+		titleRGB.red = chosenColors[0];
+		titleRGB.green = chosenColors[1];
 	}
 
 	var pressed:Bool = false;
@@ -303,7 +308,7 @@ class TitleState extends MusicBeatState
 		FlxTween.cancelTweensOf(titleMainSprite, ['scale.x', 'scale.y']);
 		FlxTween.cancelTweensOf(titleRGBSprite, ['scale.x', 'scale.y']);
 
-		var beatScale:Float = 4 * 1.08;
+		var beatScale:Float = 4 * 1.05;
 		var tweenDuration:Float = (Conductor.stepLengthMs / 1000) * 4;
 
 		titleMainSprite.scale.set(beatScale, beatScale);

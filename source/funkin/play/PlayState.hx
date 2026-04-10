@@ -10,7 +10,7 @@ class PlayState extends MusicBeatState
 
 		FunkinSound.playMusic(Paths.music('mainMenu'), 1, {bpm: 102});
 
-		#if DISCORD_API
+		#if FEATURE_DISCORD_API
 		DiscordClient.changePresence({
 			state: "testing source",
 			details: "Source Port"

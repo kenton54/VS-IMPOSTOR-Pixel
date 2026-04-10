@@ -8,7 +8,7 @@ import funkin.system.ShaderResizeFix;
 
 /**
  * The state the game starts with.
- * 
+ *
  * Used for setting up critical classes.
  */
 class InitState extends FlxState
@@ -20,9 +20,11 @@ class InitState extends FlxState
 		Conductor.init();
 		Translations.init();
 		Achievements.init();
-		#if DISCORD_API
+
+		#if FEATURE_DISCORD_API
 		DiscordClient.init();
 		#end
+
 		ShaderResizeFix.init();
 
 		#if FLX_MOUSE

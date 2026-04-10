@@ -8,23 +8,50 @@ import funkin.menus.debug.DebugState;
 import funkin.menus.mainmenu.MainMenuButton;
 
 import openfl.ui.Mouse;
-import openfl.ui.MouseCursor;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var BASE_SCALE:Float = 5;
+	/**
+	 * The base scale of the menu.
+	 */
+	public static final BASE_SCALE:Float = 5;
 
+	/**
+	 * The types of button the user is currently targeting or selecting.
+	 *
+	 * Mouse and Touch controls can bypass this.
+	 */
 	public var curSelectionMode:SelectionMode = Main;
 
+	/**
+	 * Where all the sprites for the back wall are stored.
+	 */
 	public var backgroundGroup:FlxTypedGroup<FunkinSprite>;
+
+	/**
+	 * Where all the sprites for the top bar are stored.
+	 */
 	public var topBarGroup:FlxTypedGroup<FunkinSprite>;
+
+	/**
+	 * Where all the sprites for the window's borders are stored.
+	 */
 	public var windowBordersGroup:FlxTypedGroup<FunkinSprite>;
+
+	/**
+	 * Where all the menu's main buttons are stored.
+	 */
 	public var mainButtonsGroup:FlxTypedGroup<MainMenuButton>;
+
 	public var floatingCrewGroup:FlxTypedGroup<FunkinSprite>;
 
 	public var backButton:FunkinButton;
 
 	public var windowArea:FlxRect;
+
+	/**
+	 * Handles everything that happens inside a Window Sub-Menu.
+	 */
 	public var windowMenu:WindowSubMenuHandler;
 
 	/**
@@ -151,7 +178,7 @@ class MainMenuState extends MusicBeatState
 	{
 		super.create();
 
-		#if DISCORD_API
+		#if FEATURE_DISCORD_API
 		DiscordClient.changePresence({
 			state: 'Navigating Menus',
 			details: 'Main Menu'
@@ -303,7 +330,9 @@ class MainMenuState extends MusicBeatState
 		windowBordersGroup.camera = mainCamera;
 		add(windowBordersGroup);
 
-		var windowBorderLeft:FunkinSprite = new FunkinSprite(mainButtonsBack.x + mainButtonsBack.width + 2 * BASE_SCALE, topLeft.y + topLeft.height + 3 * BASE_SCALE).loadGraphic(getImage('windowBorder-left'));
+		var windowBorderX:Float = mainButtonsBack.x + mainButtonsBack.width + 2 * BASE_SCALE;
+		var windowBorderY:Float = topLeft.y + topLeft.height + 3 * BASE_SCALE;
+		var windowBorderLeft:FunkinSprite = new FunkinSprite(windowBorderX, windowBorderY).loadGraphic(getImage('windowBorder-left'));
 		windowBorderLeft.scaleSprite(BASE_SCALE);
 
 		var windowBorderDistance:Float = MathUtil.distanceBetweenFloats(windowBorderLeft.x + windowBorderLeft.width, FlxG.width);
@@ -397,69 +426,65 @@ class MainMenuState extends MusicBeatState
 	var allowInput:Bool = true;
 	var usingKeyboard:Bool = true;
 	var curEntry:Int = 0;
-	var curMouseEntry:Int = -1;
-	var curTouchesEntry:Array<Int> = [];
 
-	var lastMouseEntry:Int = -1;
-	var lastTouchesEntry:Array<Int> = [];
+	var curPointerEntry:Int = 0;
+	var lastPointerEntry:Int = -1;
 
 	override public function update(elapsed:Float)
 	{
 		if (allowInput)
 		{
-			switch (curSelectionMode)
+			handleInput();
+
+			if (FlxG.onMobile)
 			{
-				case Main:
-					handleMainInput(elapsed);
-				case Window:
-					handleWindowInput(elapsed);
+				handleTouch();
+			}
+			else
+			{
+				handleMouse();
 			}
 		}
+
 		super.update(elapsed);
 	}
 
-	function handleMainInput(elapsed:Float)
+	function handleInput()
 	{
-		if (FlxG.onMobile)
-		{
-			handleTouch();
-		}
-		else
-		{
-			handleMouse();
-		}
-
 		if (FlxG.keys.justPressed.ANY)
 		{
 			usingKeyboard = true;
 		}
 
-		if (usingKeyboard)
+		if (!usingKeyboard)
 		{
-			if (FlxG.keys.justPressed.BACKSPACE)
-			{
-				FlxG.switchState(() -> new TitleState());
-				return;
-			}
+			return;
+		}
 
-			if (FlxG.keys.justPressed.DOWN)
-			{
-				changeSelection(1);
-			}
-			else if (FlxG.keys.justPressed.UP)
-			{
-				changeSelection(-1);
-			}
+		if (FlxG.keys.justPressed.DOWN)
+		{
+			changeSelection(1);
+		}
+		else if (FlxG.keys.justPressed.UP)
+		{
+			changeSelection(-1);
+		}
 
-			if (FlxG.keys.justPressed.ENTER)
-			{
-				checkSelection(curEntry);
-			}
+		if (FlxG.keys.justPressed.ENTER)
+		{
+			checkSelection(curEntry);
+		}
 
-			if (FlxG.keys.justPressed.SEVEN)
-			{
-				FlxG.switchState(() -> new DebugState());
-			}
+		#if FEATURE_DEBUG_CONTENT
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			FlxG.switchState(() -> new DebugState());
+		}
+		#end
+
+		if (FlxG.keys.justPressed.BACKSPACE)
+		{
+			checkBackAction();
 		}
 	}
 
@@ -482,26 +507,28 @@ class MainMenuState extends MusicBeatState
 			if (FlxG.mouse.overlaps(button, mainCamera) && button.available)
 			{
 				overlaps = true;
-				mouseSelection(button._position);
+				pointerSelection(button.index);
+				button.hover();
 			}
-
-			button.checkPosition(curMouseEntry);
+			else
+			{
+				button.idle();
+			}
 		}
 
 		if (overlaps)
 		{
-			Mouse.cursor = MouseCursor.BUTTON;
+			Mouse.cursor = BUTTON;
 
 			if (FlxG.mouse.justReleased)
 			{
-				checkSelection(curMouseEntry);
+				checkSelection(curPointerEntry);
 			}
 		}
-
-		if (!overlaps)
+		else
 		{
-			Mouse.cursor = MouseCursor.ARROW;
-			mouseSelection(-1);
+			Mouse.cursor = ARROW;
+			pointerSelection(-1);
 		}
 	}
 
@@ -520,18 +547,16 @@ class MainMenuState extends MusicBeatState
 			return;
 		}
 
-		curTouchesEntry.resize(FlxG.touches.list.length);
-		lastTouchesEntry.resize(FlxG.touches.list.length);
 		var overlaps:Bool = false;
 
-		for (i => touch in FlxG.touches.list)
+		for (touch in FlxG.touches.list)
 		{
 			for (button in mainButtonsGroup.members)
 			{
 				if (touch.overlaps(button, mainCamera) && button.available)
 				{
 					overlaps = true;
-					touchSelection(i, button._position);
+					pointerSelection(button.index);
 					button.hover();
 				}
 				else
@@ -544,16 +569,12 @@ class MainMenuState extends MusicBeatState
 			{
 				if (touch.justReleased)
 				{
-					checkSelection(curTouchesEntry[i]);
+					checkSelection(curPointerEntry);
 				}
 			}
-		}
-
-		if (curTouchesEntry.length < 0)
-		{
-			for (button in mainButtonsGroup.members)
+			else
 			{
-				button.checkPosition(-1);
+				pointerSelection(-1);
 			}
 		}
 	}
@@ -563,29 +584,37 @@ class MainMenuState extends MusicBeatState
 		var oldEntry:Int = curEntry;
 		curEntry = FlxMath.wrap(curEntry + change, 0, mainButtonsGroup.countLiving() - 1);
 
-		for (button in mainButtonsGroup.members)
+		if (!mainButtonsGroup.members[curEntry].available)
 		{
-			button.checkPosition(curEntry);
+			changeSelection(change);
+			return;
+		}
+
+		if (curEntry != oldEntry)
+		{
+			for (button in mainButtonsGroup.members)
+			{
+				if (button.index == curEntry)
+				{
+					button.hover();
+				}
+				else
+				{
+					button.idle();
+				}
+			}
 		}
 	}
 
-	function mouseSelection(position:Int = -1)
+	function pointerSelection(position:Int = -1)
 	{
-		curMouseEntry = position;
+		curPointerEntry = position;
 
-		if (curMouseEntry != lastMouseEntry)
+		if (curPointerEntry != lastPointerEntry)
 		{
-			lastMouseEntry = curMouseEntry;
-		}
-	}
+			lastPointerEntry = curPointerEntry;
 
-	function touchSelection(touchID:Int, position:Int = -1)
-	{
-		curTouchesEntry[touchID] = position;
-
-		if (curTouchesEntry[touchID] != lastTouchesEntry[touchID])
-		{
-			lastTouchesEntry[touchID] = curTouchesEntry[touchID];
+			if (position > 0) {}
 		}
 	}
 
@@ -622,24 +651,30 @@ class MainMenuState extends MusicBeatState
 		}
 	}
 
+	function checkBackAction()
+	{
+		if (curSelectionMode == Window)
+		{
+			closeWindowSubMenu();
+		}
+		else
+		{
+			FlxG.switchState(() -> new TitleState());
+		}
+	}
+
 	function selectButton(buttonData:MainMenuButtonsData)
 	{
 		switch (buttonData.triggerType)
 		{
 			case OPEN_WINDOW:
 				openWindowSubMenu(buttonData.onSelect(this));
+
 			case SWITCH_STATE:
 				new FlxTimer().start(1, _ -> FlxG.switchState(buttonData.onSelect(this)));
+
 			case OPEN_SUBSTATE:
 				openSubState(buttonData.onSelect(this));
-		}
-	}
-
-	function handleWindowInput(elapsed:Float)
-	{
-		if (FlxG.keys.justPressed.BACKSPACE)
-		{
-			closeWindowSubMenu();
 		}
 	}
 

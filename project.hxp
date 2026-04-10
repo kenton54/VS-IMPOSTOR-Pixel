@@ -12,7 +12,7 @@ using StringTools;
 /**
  * God bless `HXProject`, it's so much easier to manage Lime/OpenFL projects like this. :)
  *
- * Also, props to the FunkinCrew, this code is heavily inspired off of their `project.hxp` from Funkin'.
+ * Also huge credits to the FunkinCrew, this code is heavily inspired off of their `project.hxp` from Funkin'.
  */
 class Project extends HXProject
 {
@@ -87,6 +87,32 @@ class Project extends HXProject
      * A list of assets that will be excluded from ASTC compression.
      */
     static var astcExclusions:Array<String> = [];
+
+    // ---------- FEATURE FLAGS ---------- //
+
+    /**
+     * If enabled, debug menus, actions and stuff can be accessed.
+     */
+    static final FEATURE_DEBUG_CONTENT:FeatureFlag = "FEATURE_DEBUG_CONTENT";
+
+    /**
+     * If enabled, the mod will use Discord RPC throughout the whole mod, enabling support for Discord Rich Presence.
+     */
+    static final FEATURE_DISCORD_API:FeatureFlag = "FEATURE_DISCORD_API";
+
+    /**
+     * If enabled, the mod will use haptic feedback on certain actions, for gamepads and mobile devices.
+     */
+    static final FEATURE_HAPTICS:FeatureFlag = "FEATURE_HAPTICS";
+
+    /**
+     * EXPERIMENTAL (due to the mod being mostly pixel-art)
+     *
+     * If enabled, when compiling, the mod will compress every single image asset inside the mod's assets folder using the ASTC texture compression algorithm.
+     *
+     * Exceptions for the compression can be set inside the `astc-compress-data.json` file.
+     */
+    static final FEATURE_COMPRESSED_TEXTURES:FeatureFlag = "FEATURE_COMPRESSED_TEXTURES";
 
     public function new()
     {
@@ -235,20 +261,16 @@ class Project extends HXProject
         setHaxeDefine("HXCPP_STACK_LINE");
         setHaxeDefine("HXCPP_STACK_TRACE");
 
+        FEATURE_DEBUG_CONTENT.apply(this, isDebug());
+        FEATURE_DISCORD_API.apply(this, (isDesktop() || isMobile()) && isDesktop() && isCPP());
+        FEATURE_HAPTICS.apply(this, true);
+        FEATURE_COMPRESSED_TEXTURES.apply(this, isMobile() && isRelease());
+
         if (isDesktop() || isMobile())
         {
-            if (isDesktop() && isCPP())
-            {
-                setHaxeDefine("DISCORD_API");
-            }
             if (isMobile())
             {
                 setHaxeDefine("FLX_NO_SOUND_TRAY");
-            }
-
-            if (isCPP())
-            {
-                setHaxeDefine("VIDEOS_BACKEND");
             }
         }
 
@@ -268,7 +290,7 @@ class Project extends HXProject
         addHaxelib("flixel");
         addHaxelib("flixel-addons");
 
-        if (hasHaxeDefine("DISCORD_API"))
+        if (FEATURE_DISCORD_API.isEnabled(this))
         {
             addHaxelib("hxdiscord_rpc");
         }
@@ -277,7 +299,7 @@ class Project extends HXProject
         //addHaxelib("tink_url");
         //addHaxelib("tink_await");
 
-        if (hasHaxeDefine("VIDEOS_BACKEND"))
+        if ((isDesktop() || isMobile()) && isCPP())
         {
             addHaxelib("hxvlc");
         }
@@ -292,7 +314,7 @@ class Project extends HXProject
             addHaxelib("extension-haptics");
         }
 
-        if (isDebug())
+        if (isDebug() && isCPP())
         {
             addHaxelib("hxcpp-debug-server");
         }
@@ -333,11 +355,8 @@ class Project extends HXProject
 
         addAssetPath("assets/embed", "impostor", "default", ["*"], [], true, "assets");
 
-        if (hasHaxeDefine("VIDEOS_BACKEND"))
-        {
-            //addAssetLibrary("videos", false, preloadAssets);
-            //addAssetPath("assets/videos", "assets/videos", "videos", ["*"], [], embedAssets, "assets");
-        }
+        //addAssetLibrary("videos", false, preloadAssets);
+        //addAssetPath("assets/videos", "assets/videos", "videos", ["*"], [], embedAssets, "assets");
 
         addAssetLibrary("art", false, false);
         addAsset("LICENSE", "LICENSE", "art", false);
@@ -435,9 +454,8 @@ class Project extends HXProject
         addHaxeFlag('--macro $value');
     }
 
-    public function setHaxeDefine(name:String, ?value:String):Void
+    public function setHaxeDefine(name:String, value:String = ""):Void
     {
-        if (value == null) value = "";
         haxedefs.set(name, value);
     }
 
@@ -495,7 +513,7 @@ class Project extends HXProject
 
     public function addAsset(path:String, ?rename:String, ?library:String, embed:Bool = false, ?padName:String):Void
     {
-        if (Path.extension(path) == "png")
+        if (Path.extension(path) == "png" && FEATURE_COMPRESSED_TEXTURES.isEnabled(this))
         {
             final astcPath:String = 'astc-textures/${path.substr(0, path.length - 4)}.astc';
             if (FileSystem.exists(astcPath))
@@ -503,7 +521,9 @@ class Project extends HXProject
                 path = astcPath;
 
                 if (rename != null)
+                {
                     rename = rename.substr(0, rename.length - 4) + ".astc";
+                }
             }
         }
 
@@ -749,5 +769,66 @@ class Project extends HXProject
     {
         Sys.stderr().write(Bytes.ofString('[ERROR] $message\n'));
         Sys.exit(1);
+    }
+}
+
+/**
+ * An object representing a feature flag, which can be enabled or disabled.
+ *
+ * More info about features flags in here: https://haxe.org/manual/lf-condition-compilation.html
+ */
+abstract FeatureFlag(String) from String to String
+{
+    public function new(input:String)
+    {
+        this = input;
+    }
+
+    /**
+     * Applies this feature flag to the specified project.
+     *
+     * @param project       The lime project.
+     * @param mustEnable    A set of conditions to meet. Defaults to `false`.
+     */
+    public function apply(project:Project, mustEnable:Bool = false)
+    {
+        if (!isEnabled(project))
+        {
+            if (mustEnable)
+            {
+                enable(project);
+            }
+            else
+            {
+                disable(project);
+            }
+        }
+    }
+
+    /**
+     * Enables this feature flag to the project.
+     * @param project The lime project.
+     */
+    public function enable(project:Project)
+    {
+        project.setHaxeDefine(this);
+    }
+
+    /**
+     * Disables this feature flag from the project.
+     * @param project The lime project.
+     */
+    public function disable(project:Project)
+    {
+        project.removeHaxeDefine(this);
+    }
+
+    /**
+     * Checks whether this feature flag is enabled in the project
+     * @param project The lime project.
+     */
+    public function isEnabled(project:Project):Bool
+    {
+        return project.hasHaxeDefine(this) || project.defines.exists(this);
     }
 }

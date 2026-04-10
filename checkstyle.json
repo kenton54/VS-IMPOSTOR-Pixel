@@ -329,7 +329,8 @@
       "type": "MemberName",
       "props": {
         "format": "^[_a-z][a-zA-Z0-9]*$",
-        "tokens": []
+        "tokens": [],
+        "severity": "IGNORE"
       }
     },
     {

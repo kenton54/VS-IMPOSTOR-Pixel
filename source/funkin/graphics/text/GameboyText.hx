@@ -8,7 +8,10 @@ import flixel.math.FlxPoint;
  */
 class GameboyText extends FunkinBitmapText
 {
-	var glyphs:String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,?!><ÁÀÉÈÍÌÓÒÚÙ ';
+	/**
+	 * All the glyphs this font uses.
+	 */
+	static final glyphs:String = ' !"#%&\'()*+.-,/0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`{|}~¡¨¯´¸¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝŸ';
 
 	public function new(x:Float = 0, y:Float = 0, text:String = '', size:Int = 12)
 	{

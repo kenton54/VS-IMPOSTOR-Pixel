@@ -1,7 +1,7 @@
 package funkin;
 
 #if !macro
-#if DISCORD_API
+#if FEATURE_DISCORD_API
 import funkin.api.DiscordClient;
 #end
 
