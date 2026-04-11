@@ -48,13 +48,7 @@ bool Windows_IsSystemDarkMode()
 
 char Windows_GetUserLanguage()
 {
-  /*
-  wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
-  if (GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH))
-  {
-    return char(wcslen(localeName) + 1);
-  }
-  */
-
-  return char((wcslen(L"en-US") + 1) * 2);
+  WCHAR lang_name[LOCALE_NAME_MAX_LENGTH];
+  GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SNAME, lang_name, LOCALE_NAME_MAX_LENGTH);
+  return lang_name;
 }

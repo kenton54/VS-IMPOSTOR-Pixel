@@ -1,16 +1,9 @@
 #include <iostream>
-#include <cstdlib>
 #include <string>
-#include <fstream>
+#include <locale>
 
 std::string Linux_GetUserLanguage()
 {
-  const char *lang = std::getenv("LANG");
-
-  if (lang != nullptr)
-  {
-    return lang;
-  }
-
-  return "en-US";
+  std::locale loc("");
+  return loc.name();
 }

@@ -1,3 +1,5 @@
 #pragma once
 
-char Linux_GetUserLanguage();
+#include <string>
+
+std::string Linux_GetUserLanguage();
