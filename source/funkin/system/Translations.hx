@@ -6,13 +6,13 @@ import funkin.ui.MusicBeatState;
 import haxe.Json;
 
 #if windows
-import funkin.utils.native.Windows;
+import funkin.external.windows.Windows;
 #elseif linux
-import funkin.utils.native.Linux;
+import funkin.external.linux.Linux;
 #elseif (macos || ios)
-import funkin.utils.native.Apple;
+import funkin.external.apple.Apple;
 #elseif android
-import funkin.utils.native.Android;
+import funkin.external.android.Android;
 #elseif web
 import js.Browser;
 #end
@@ -130,16 +130,16 @@ class Translations
 	/**
 	 * @return The system's current language in the Language Code format (i.e. `en-US`).
 	 */
-	public static function getSystemLanguage():String
+	public static function getUserLanguage():String
 	{
 		#if (windows && cpp)
-		return Windows.getSystemLanguage();
+		return Windows.getUserLanguage();
 		#elseif linux
-		return Linux.getSystemLanguage();
+		return Linux.getUserLanguage();
 		#elseif (macos || ios)
-		return Apple.getSystemLanguage();
+		return Apple.getUserLanguage();
 		#elseif android
-		return Android.getSystemLanguage();
+		return Android.getUserLanguage();
 		#elseif web
 		return Browser.navigator.language;
 		#else
@@ -204,10 +204,10 @@ class Translations
 
 	static function checkSystemLanguage()
 	{
-		var systemLanguage:String = Translations.getLanguageShort(Translations.getSystemLanguage());
-		if (systemLanguage != Translations.curLanguageID)
+		var userLanguage:String = Translations.getLanguageShort(Translations.getUserLanguage());
+		if (userLanguage != Translations.curLanguageID)
 		{
-			curLanguageID = systemLanguage;
+			curLanguageID = userLanguage;
 		}
 	}
 

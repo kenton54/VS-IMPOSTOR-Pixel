@@ -113,7 +113,7 @@ class SystemStats extends DebugCategory
 
 		systemStuff.push('Renderer: ${rendererShit.join(" ")}');
 
-		systemStuff.push('Language: ${Translations.getSystemLanguage()}');
+		systemStuff.push('Language: ${Translations.getUserLanguage()}');
 
 		systemInfo.text = systemStuff.join('\n');
 	}

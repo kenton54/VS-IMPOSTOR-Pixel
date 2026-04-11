@@ -44,9 +44,12 @@
     "functionTypeHaxe4Policy": "around"
   },
   "wrapping": {
+    "arrayWrap": {
+      "defaultWrap": "keep"
+    },
     "methodChain": {
       "defaultWrap": "keep"
     },
-    "maxLineLength": 1000
+    "maxLineLength": 2000
   }
 }

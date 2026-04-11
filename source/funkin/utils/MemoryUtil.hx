@@ -1,26 +1,11 @@
 package funkin.utils;
 
-import EReg;
-
 import openfl.display3D.Context3D;
-import openfl.system.System;
-
-#if (windows && cpp)
-import funkin.utils.native.Windows;
-#elseif linux
-import funkin.utils.native.Linux;
-#elseif (macos || ios)
-import funkin.utils.native.Apple;
-#end
 
 #if cpp
 import cpp.vm.Gc;
 #elseif hl
 import hl.Gc;
-#elseif java
-import java.vm.Gc;
-#elseif neko
-import neko.vm.Gc;
 #end
 
 /**
@@ -33,15 +18,7 @@ class MemoryUtil
 	 */
 	public static function getSystemMemory():Float
 	{
-		#if (windows && cpp)
-		return Windows.getTotalSystemMemory();
-		#elseif linux
-		return Linux.getTotalSystemMemory();
-		#elseif (macos || ios)
-		return Apple.getTotalSystemMemory();
-		#else
 		return 0;
-		#end
 	}
 
 	/**
@@ -49,44 +26,6 @@ class MemoryUtil
 	 */
 	public static function getTaskMemory():Float
 	{
-		#if (windows && cpp)
-		return Windows.getTaskProcessMemory();
-		#elseif ((macos || ios) && cpp)
-		return Apple.getTaskProcessMemory();
-		#elseif (linux || android)
-		try
-		{
-			#if cpp
-			final input:sys.io.FileInput = sys.io.File.read('/proc/${cpp.NativeSys.sys_get_pid()}/status', false);
-			#else
-			final input:sys.io.FileInput = sys.io.File.read('/proc/self/status', false);
-			#end
-
-			final regex:EReg = ~/^VmRSS:\s+(\d+)\s+kB/m;
-			var line:String;
-
-			do
-			{
-				if (input.eof())
-				{
-					input.close();
-					return 0;
-				}
-				line = input.readLine();
-			}
-			while (!regex.match(line));
-
-			input.close();
-
-			final kb:Float = Std.parseFloat(regex.matched(1));
-			if (kb != Math.NaN)
-			{
-				return kb * 1024;
-			}
-		}
-		catch (e:Dynamic) {}
-		#end
-
 		return 0;
 	}
 
@@ -103,16 +42,39 @@ class MemoryUtil
 	 */
 	public static function getGCMemory():Float
 	{
+		return openfl.system.System.totalMemoryNumber;
+	}
+
+	/**
+	 * Enables garbage collection.
+	 */
+	public static function enableGC()
+	{
+		#if (cpp || hl)
+		Gc.enable(true);
+		#end
+	}
+
+	/**
+	 * Disables garbage collection.
+	 */
+	public static function disableGC()
+	{
+		#if (cpp || hl)
+		Gc.enable(false);
+		#end
+	}
+
+	/**
+	 * Manually performs garbage collection.
+	 * @param major If `true`, will perform a major cleanup.
+	 */
+	public static function cleanGC(major:Bool = true)
+	{
 		#if cpp
-		return Gc.memInfo64(Gc.MEM_INFO_USAGE);
+		Gc.run(major);
 		#elseif hl
-		return Gc.stats().currentMemory;
-		#elseif (java || neko)
-		return Gc.stats().heap;
-		#elseif sys
-		return System.totalMemoryNumber;
-		#else
-		return 0;
+		Gc.major();
 		#end
 	}
 

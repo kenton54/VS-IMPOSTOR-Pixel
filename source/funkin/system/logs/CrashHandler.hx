@@ -1,7 +1,5 @@
 package funkin.system.logs;
 
-import funkin.utils.native.Windows;
-
 import lime.app.Application;
 
 import openfl.Lib;
@@ -23,6 +21,8 @@ final class CrashHandler
 
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalError);
+		#elseif hl
+		hl.Api.setErrorHandler(onCriticalError);
 		#end
 	}
 
@@ -65,11 +65,7 @@ final class CrashHandler
 
 	static function showErrorPopUp(error:String)
 	{
-		#if (windows && cpp)
-		Windows.showMessageBoxPopUp(error, CRASH_WINDOW_TITLE, OK, ERROR);
-		#else
 		Application.current.window.alert(error, CRASH_WINDOW_TITLE);
-		#end
 	}
 
 	static function generateErrorMessage(error:UncaughtErrorEvent):String

@@ -14,6 +14,9 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.utils.Future;
 
+/**
+ * The crewmate bitmap.
+ */
 @:bitmap('assets/embed/images/loading-mini-crewmate.png')
 private class MiniCrewmateSprite extends BitmapData {}
 
@@ -34,7 +37,7 @@ class FunkinPreloader extends FlxBasePreloader
 
 	/**
 	 * Whether the mini crewmate can play its animation.
-	 * 
+	 *
 	 * This check is added due to HTML5 targets loading images asyncronously.
 	 * So to prevent errors, we only update the Bitmap once its ready.
 	 */
@@ -177,6 +180,7 @@ class FunkinPreloader extends FlxBasePreloader
 			case NotStarted:
 				curState = DownloadingAssets;
 				return percent;
+
 			case DownloadingAssets:
 				loadingText.text = 'Downloading Assets';
 				completedStates = 0;
@@ -187,6 +191,7 @@ class FunkinPreloader extends FlxBasePreloader
 				}
 
 				return percent;
+
 			case PreloadingAssets:
 				loadingText.text = 'Preloading Assets';
 				completedStates = 1;
@@ -216,6 +221,7 @@ class FunkinPreloader extends FlxBasePreloader
 				}
 
 				return precacheImagesPercent;
+
 			case CachingAssets:
 				loadingText.text = 'Caching Assets';
 				completedStates = 2;
@@ -228,6 +234,7 @@ class FunkinPreloader extends FlxBasePreloader
 
 				loadGame();
 				return 1;
+
 			default:
 				// do nothing
 		}

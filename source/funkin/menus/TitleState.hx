@@ -1,7 +1,7 @@
 package funkin.menus;
 
 #if android
-import funkin.utils.native.Android;
+import funkin.external.android.Android;
 #end
 
 import flixel.FlxSprite;
@@ -83,7 +83,7 @@ class TitleState extends MusicBeatState
 		titleRGBSprite.shader = titleRGB.shader;
 		titleSpriteGroup.add(titleRGBSprite);
 
-		var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0];
+		var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0];
 		titleMainSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/title-main'), true, 197, 65);
 		titleMainSprite.addAnimationByFrameList(null, titleAnimIndices, 24, false);
 		titleMainSprite.scaleSprite(4);

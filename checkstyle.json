@@ -299,7 +299,7 @@
     {
       "type": "LineLength",
       "props": {
-        "max": 200,
+        "max": 400,
         "ignorePattern": "^$"
       }
     },

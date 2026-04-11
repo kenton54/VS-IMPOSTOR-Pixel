@@ -55,7 +55,10 @@ class Main extends Sprite
 		#end
 
 		#if (windows && cpp)
-		funkin.utils.native.Windows.setWindowDarkMode(true);
+		if (funkin.external.windows.Windows.isSystemDarkMode())
+		{
+			funkin.external.windows.Windows.setWindowDarkMode(true);
+		}
 		#end
 
 		var game:FlxGame = new FlxGame(0, 0, InitState, 60, 60, true);
