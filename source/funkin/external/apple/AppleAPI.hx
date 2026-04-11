@@ -62,7 +62,7 @@ class AppleAPI
 	 * @return Whether a keyboard is connected or not. macOS will always return `true`.
 	 */
 	@:functionCode('
-		return [GCKeyboard coalesced] != nil;
+		return false;
 	')
 	public static function isKeyboardConnected():Bool
 	{
