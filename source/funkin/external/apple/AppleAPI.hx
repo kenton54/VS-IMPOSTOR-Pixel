@@ -7,6 +7,8 @@ package funkin.external.apple;
 @:cppFileCode('
 #include <CoreFoundation/CoreFoundation.h>
 #include <GameController/GameController.h>
+#include <mach/mach.h>
+#include <sys/types.h>
 #include <string>
 #include <iostream>
 ')
