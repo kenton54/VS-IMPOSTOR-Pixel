@@ -5,8 +5,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 import haxe.io.Path;
 
-import lime.system.System;
-
 #if sys
 import sys.FileSystem;
 #end
@@ -20,7 +18,7 @@ class Paths
 
 	public inline static function file(path:String, ?library:String):String
 	{
-		return getPath('$path', library);
+		return getPath(path, library);
 	}
 
 	public inline static function json(path:String, ?library:String):String
@@ -54,26 +52,19 @@ class Paths
 		return getPath('music/$path.ogg', library);
 	}
 
-	public inline static function font(path:String, ?library:String):String
+	public inline static function font(path:String):String
 	{
-		return getPath('fonts/$path', library);
+		return getPath('fonts/$path');
 	}
 
-	public static function getFolderContents(path:String, ?library:String, extension:Bool = true):Array<String>
+	/**
+	 * @param path The directory where the folder is located.
+	 * @return The files found inside the specified directory.
+	 */
+	public static function readDirectory(path:String):Array<String>
 	{
-		if (!path.endsWith("/"))
-			path += "/";
-
-		var contents:Array<String> = _getFiles(path, library);
-		for (i => file in contents)
-		{
-			if (!extension)
-			{
-				file = Path.withoutExtension(file);
-			}
-			contents[i] = file;
-		}
-		return contents;
+		var files:Array<String> = Assets.list().filter(file -> file.startsWith(path));
+		return files.map(file -> file.replace(path, '').replace('/', ''));
 	}
 
 	public inline static function getSparrowFrames(path:String, ?library:String):FlxAtlasFrames
@@ -119,22 +110,5 @@ class Paths
 		}
 
 		return mainAtlas;
-	}
-
-	static function _getFiles(path:String, ?library:String):Array<String>
-	{
-		var fullPath:String = file(path, library);
-
-		var result:Array<String> = [];
-		#if sys
-		for (file in FileSystem.readDirectory(fullPath))
-		{
-			if (!FileSystem.isDirectory('$fullPath$file'))
-			{
-				result.push(file);
-			}
-		}
-		#end
-		return result;
 	}
 }

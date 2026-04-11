@@ -264,7 +264,7 @@ class Project extends HXProject
         FEATURE_DEBUG_CONTENT.apply(this, isDebug());
         FEATURE_DISCORD_API.apply(this, (isDesktop() || isMobile()) && isDesktop() && isCPP());
         FEATURE_HAPTICS.apply(this, true);
-        FEATURE_COMPRESSED_TEXTURES.apply(this, isMobile() && isRelease());
+        FEATURE_COMPRESSED_TEXTURES.apply(this, /*isMobile() && isRelease()*/false);
 
         if (isDesktop() || isMobile())
         {
@@ -327,19 +327,24 @@ class Project extends HXProject
 
     function setupASTCTextures()
     {
-        if (!(isDisplay() || isClean()) && isMobile() && isRelease())
+        if (!(isDisplay() || isClean()))
         {
-            info('Compressing ASTC Textures...');
-
             astcExclusions = haxe.Json.parse(File.getContent("astc-compress-data.json")).exclude;
 
             for (i in 0...astcExclusions.length)
+            {
                 astcExclusions[i] = astcExclusions[i].trim();
+            }
 
-            var args:Array<String> = ['run', 'astc-compressor', 'compress-from-json', '-json', './astc-compress-data.json'];
-            Sys.command('haxelib', args);
+            if (FEATURE_COMPRESSED_TEXTURES.isEnabled(this))
+            {
+                info('Compressing ASTC Textures...');
 
-            info('Done compressing ASTC Textures!');
+                var args:Array<String> = ['run', 'astc-compressor', 'compress-from-json', '-json', './astc-compress-data.json'];
+                //Sys.command('haxelib', args);
+
+                info('Done compressing ASTC Textures!');
+            }
         }
     }
 

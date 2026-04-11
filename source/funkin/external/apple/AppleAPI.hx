@@ -7,9 +7,6 @@ package funkin.external.apple;
 @:cppFileCode('
 #include <CoreFoundation/CoreFoundation.h>
 #include <GameController/GameController.h>
-#include <mach/mach.h>
-#include <sys/types.h>
-#include <sys/sysctl.h>
 #include <iostream>
 #include <string>
 ')
@@ -21,36 +18,18 @@ class AppleAPI
 	@:functionCode('
 		std::string language_code;
 
-		CFLocaleRef cur_locale = CFLocaleCopyCurrent();
-		CFStringRef lang_code_ref = (CFStringRef)CFLocaleGetValue(cur_locale, kCFLocaleLanguageCode);
+		CFArrayRef languages = CFLocaleCopyPreferredLanguages();
 
-		if (lang_code_ref)
+    CFStringRef langCode = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+
+    char buffer[128];
+    if (CFStringGetCString(langCode, buffer, sizeof(buffer), kCFStringEncodingUTF8))
 		{
-			const char* cStringPtr = CFStringGetCStringPtr(lang_code_ref, kCFStringEncodingUTF8);
-			if (cStringPtr)
-			{
-				language_code = cStringPtr;
-			}
-			else
-			{
-				CFIndex length = CFStringGetLength(lang_code_ref);
-				CFIndex max_size = CFStringGetMaximumSizeForEncoding(length, kCFStringEncodingUTF8);
+			CFRelease(languages);
+			language_code = std::string(buffer);
+    }
 
-				char* buffer = (char*)malloc(max_size);
-				if (buffer && CFStringGetCString(lang_code_ref, buffer, max_size, kCFStringEncodingUTF8))
-				{
-					language_code = buffer;
-				}
-
-				free(buffer);
-			}
-		}
-
-		if (cur_locale)
-		{
-			CFRelease(cur_locale);
-		}
-
+    CFRelease(languages);
 		return language_code.c_str();
 	')
 	public static function getUserLanguage():String
@@ -62,7 +41,7 @@ class AppleAPI
 	 * @return Whether a keyboard is connected or not. macOS will always return `true`.
 	 */
 	@:functionCode('
-		return false;
+		return [GCKeyboard coalesced] != nil;
 	')
 	public static function isKeyboardConnected():Bool
 	{
