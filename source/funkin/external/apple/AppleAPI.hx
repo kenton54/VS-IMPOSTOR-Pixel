@@ -4,20 +4,33 @@ package funkin.external.apple;
 /**
  * Functions that run exclusively on Apple devices.
  */
-@:build(funkin.utils.macro.IncludeMacro.xml('project/Build.xml'))
-@:include('AppleApi.hpp')
-extern class AppleAPI
+@:cppFileCode('
+#include <CoreFoundation/CoreFoundation.h>
+#include <GameController/GameController.h>
+')
+class AppleAPI
 {
 	/**
 	 * @return The user's current language in the Language Code format (i.e. `en-US`).
 	 */
-	@:native('Apple_GetUserLanguage')
-	static function getUserLanguage():String;
+	@:functionCode('
+		NSString *language = [[NSLocale currentLocale] localeIdentifier];
+    return language;
+	')
+	public static function getUserLanguage():String
+	{
+		return 'en-US';
+	}
 
 	/**
-	 * @return Whether a keyboard is connected or not.
+	 * @return Whether a keyboard is connected or not. macOS will always return `true`.
 	 */
-	@:native('Apple_isKeyboardConnected')
-	static function isKeyboardConnected():Bool;
+	@:functionCode('
+		return [GCKeyboard coalesced] != nil;
+	')
+	public static function isKeyboardConnected():Bool
+	{
+		return #if desktop true #else false #end;
+	}
 }
 #end
