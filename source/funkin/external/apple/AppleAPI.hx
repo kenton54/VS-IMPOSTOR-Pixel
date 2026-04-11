@@ -16,19 +16,39 @@ class AppleAPI
 	 * @return The user's current language in the Language Code format (i.e. `en-US`).
 	 */
 	@:functionCode('
-		CFLocaleRef cflocale = CFLocaleCopyCurrent();
+		std::string language_code;
 
-		CFStringRef value = (CFStringRef)CFLocaleGetValue(cflocale, kCFLocaleLanguageCode);
+		CFLocaleRef cur_locale = CFLocaleCopyCurrent();
+		CFStringRef lang_code_ref = (CFStringRef)CFLocaleGetValue(cur_locale, kCFLocaleLanguageCode);
 
-		char buffer[128];
-    if (CFStringGetCString(value, buffer, sizeof(buffer), kCFStringEncodingUTF8))
+		if (lang_code_ref)
 		{
-			CFRelease(cflocale);
-			return std::string(buffer);
-    }
+			const char* cStringPtr = CFStringGetCStringPtr(lang_code_ref, kCFStringEncodingUTF8);
+			if (cStringPtr)
+			{
+				language_code = cStringPtr;
+			}
+			else
+			{
+				CFIndex length = CFStringGetLength(lang_code_ref);
+				CFIndex max_size = CFStringGetMaximumSizeForEncoding(length, kCFStringEncodingUTF8);
 
-    CFRelease(cflocale);
-    return "en-US";
+				char* buffer = (char*)malloc(max_size);
+				if (buffer && CFStringGetCString(lang_code_ref, buffer, max_size, kCFStringEncodingUTF8))
+				{
+					language_code = buffer;
+				}
+
+				free(buffer);
+			}
+		}
+
+		if (cur_locale)
+		{
+			CFRelease(cur_locale);
+		}
+
+		return language_code.c_str();
 	')
 	public static function getUserLanguage():String
 	{
