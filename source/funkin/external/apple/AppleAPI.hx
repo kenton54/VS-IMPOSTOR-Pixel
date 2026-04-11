@@ -9,8 +9,9 @@ package funkin.external.apple;
 #include <GameController/GameController.h>
 #include <mach/mach.h>
 #include <sys/types.h>
-#include <string>
+#include <sys/sysctl.h>
 #include <iostream>
+#include <string>
 ')
 class AppleAPI
 {
