@@ -353,7 +353,7 @@ class Project extends HXProject
 
         addAssetPath("assets/fonts", null, "default", ["*"], [], true, "assets");
 
-        addAssetPath("assets/embed", "impostor", "default", ["*"], [], true, "assets");
+        addAssetPath("assets/embed", "assets/impostor", "impostor", ["*"], [], true, "assets");
 
         //addAssetLibrary("videos", false, preloadAssets);
         //addAssetPath("assets/videos", "assets/videos", "videos", ["*"], [], embedAssets, "assets");
@@ -375,6 +375,8 @@ class Project extends HXProject
 
     function setupAndroid()
     {
+        javaPaths.push("source/funkin/external/android/java");
+
         if (isRelease())
         {
             /*

@@ -55,9 +55,9 @@ class Main extends Sprite
 		#end
 
 		#if (windows && cpp)
-		if (funkin.external.windows.Windows.isSystemDarkMode())
+		if (funkin.external.windows.WindowsAPI.isSystemDarkMode())
 		{
-			funkin.external.windows.Windows.setWindowDarkMode(true);
+			funkin.external.windows.WindowsAPI.setWindowDarkMode(true);
 		}
 		#end
 

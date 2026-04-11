@@ -1,0 +1,62 @@
+{
+  "name": "Español",
+  "data": {
+    "common": {
+      "version": "Versión {0}",
+      "no": "No",
+      "yes": "Sí"
+    },
+    "time": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    },
+    "generic": {
+      "play": "Jugar",
+      "start": "Comenzar",
+      "freeplay": "Juego Libre",
+      "achievements": "Logros",
+      "shop": "Tienda",
+      "extras": "Extras",
+      "credits": "Creditos",
+      "options": "Opciones",
+      "exit": "Salir"
+    },
+    "languages": {
+      "en": "Inglés",
+      "es": "Español",
+      "fr": "Francés",
+      "pt": "Portugués",
+      "ru": "Ruso",
+      "vi": "Vietnamita"
+    },
+    "titleScreen": {
+      "pressStart": {
+        "press": "Presiona {0} para Jugar",
+        "mouse": "Has Click al Ratón para Jugar",
+        "touch": "Toca la Pantalla para Jugar"
+      },
+      "pressStartShort": {
+        "press": "Presiona {0}",
+        "mouse": "Has Click al Ratón",
+        "touch": "Toca la Pantalla"
+      }
+    },
+    "mainMenu": {
+      "worldMap": "Mapa Mundi",
+      "tutorial": "Cómo Jugar",
+      "bios": "Biografías",
+      "musicPlayer": "Reproductor de Música",
+      "movieTheater": "Cine Teatral"
+    }
+  }
+}

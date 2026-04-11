@@ -5,18 +5,6 @@ import funkin.ui.MusicBeatState;
 
 import haxe.Json;
 
-#if windows
-import funkin.external.windows.Windows;
-#elseif linux
-import funkin.external.linux.Linux;
-#elseif (macos || ios)
-import funkin.external.apple.Apple;
-#elseif android
-import funkin.external.android.Android;
-#elseif web
-import js.Browser;
-#end
-
 /**
  * The backend for translation to multiple languages.
  */
@@ -58,9 +46,9 @@ class Translations
 
 		for (language in Defaults.LANGUAGES)
 		{
-			if (Assets.exists(Paths.json('languages/$language')))
+			if (Assets.exists(Paths.json('languages/$language', 'impostor')))
 			{
-				var langData:Language = Json.parse(Assets.getText(Paths.json('languages/$language')));
+				var langData:Language = Json.parse(Assets.getText(Paths.json('languages/$language', 'impostor')));
 				languages.set(language, langData);
 			}
 		}
@@ -133,17 +121,17 @@ class Translations
 	public static function getUserLanguage():String
 	{
 		#if (windows && cpp)
-		return Windows.getUserLanguage();
+		return funkin.external.windows.WindowsAPI.getUserLanguage();
 		#elseif linux
-		return Linux.getUserLanguage();
+		return funkin.external.linux.LinuxAPI.getUserLanguage();
 		#elseif (macos || ios)
-		return Apple.getUserLanguage();
+		return funkin.external.apple.AppleAPI.getUserLanguage();
 		#elseif android
-		return Android.getUserLanguage();
+		return funkin.external.android.AndroidAPI.getUserLanguage();
 		#elseif web
-		return Browser.navigator.language;
+		return js.Browser.navigator.language;
 		#else
-		return 'unknown';
+		return 'en-US';
 		#end
 	}
 
@@ -289,8 +277,16 @@ class Translations
 
 typedef TranslationData =
 {
+	/**
+	 * The ID of the translation inside the language data file.
+	 */
 	var id:String;
 
+	/**
+	 * An optional list of parameters that will be concantinated in the string result.
+	 *
+	 * Replaces the `{x}` inside the ID value with each parameter.
+	 */
 	var ?parameters:Array<Dynamic>;
 }
 

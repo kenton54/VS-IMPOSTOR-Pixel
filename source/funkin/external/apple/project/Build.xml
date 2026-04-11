@@ -12,7 +12,7 @@
 
   <files id="external-apple">
     <compilerflag value="-I${this_dir}/include" />
-    <file name="${this_dir}/src/Apple.mm" />
+    <file name="${this_dir}/src/AppleApi.mm" />
   </files>
 
   <target id="haxe">

@@ -10,7 +10,7 @@ import openfl.geom.Rectangle;
 /**
  * Functions that run exclusively on Android devices.
  */
-class Android
+class AndroidAPI
 {
 	/**
 	 * @return The user's current language in the Language Code format (i.e. `en-US`).

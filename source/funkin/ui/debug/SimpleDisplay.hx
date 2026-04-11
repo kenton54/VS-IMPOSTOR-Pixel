@@ -30,18 +30,18 @@ class SimpleDisplay extends Sprite
 		super();
 
 		fpsText = new TextField();
-		fpsText.x = 10;
+		fpsText.x = 8;
 		fpsText.y = 3;
 		fpsText.width = 300;
 		fpsText.height = 40;
 		fpsText.selectable = false;
 		fpsText.mouseEnabled = false;
-		fpsText.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 30, 0xFFFFFF);
+		fpsText.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 26, 0xFFFFFF);
 		addChild(fpsText);
 
 		memoryText = new TextField();
-		memoryText.x = 10;
-		memoryText.y = 38;
+		memoryText.x = 8;
+		memoryText.y = 36;
 		memoryText.width = 400;
 		memoryText.height = 20;
 		memoryText.selectable = false;

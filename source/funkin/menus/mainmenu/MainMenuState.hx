@@ -279,7 +279,7 @@ class MainMenuState extends MusicBeatState
 		var lightBulbOverlay:FunkinSprite = new FunkinSprite(lightBulb.x, lightBulb.y).loadGraphic(getImage('lightBulbOverlay'));
 		lightBulbOverlay.scaleSprite(BASE_SCALE);
 		lightBulbOverlay.camera = mainCamera;
-		lightBulbOverlay.blend = ADD;
+		lightBulbOverlay.blend = MULTIPLY;
 		topBarGroup.add(lightBulbOverlay);
 
 		var miniTitle:FunkinSprite = new FunkinSprite(3 * BASE_SCALE, topShadowLeft.y + topShadowLeft.height + 2 * BASE_SCALE).loadGraphic(getImage('title'));

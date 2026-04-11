@@ -7,23 +7,16 @@ import openfl.display.Sprite;
 
 class DebugOverlay extends Sprite
 {
-	public static var UPDATE_FREQUENCY:Float = 0.5;
+	/**
+	 * How frequently the overlay updates, in seconds.
+	 */
+	public static final UPDATE_FREQUENCY:Float = 0.5;
 
 	public var displayMode(default, null):DebugDisplayMode = NONE;
 
 	var displayModeInt:Int = DebugDisplayMode.NONE;
 
 	public var simple(default, null):SimpleDisplay;
-
-	public var framerate(default, null):Framerate;
-
-	public var memory(default, null):Memory;
-
-	public var conductor(default, null):ConductorDebug;
-
-	public var system(default, null):SystemStats;
-
-	public var engine(default, null):GameEngine;
 
 	var project:ProjectDebug;
 
@@ -35,35 +28,6 @@ class DebugOverlay extends Sprite
 
 		simple = new SimpleDisplay();
 		addChild(simple);
-
-		framerate = new Framerate(backgroundColor);
-		addChild(framerate);
-
-		conductor = new ConductorDebug(backgroundColor);
-		conductor.verticalOffset = framerate.overlayHeight + 5;
-		addChild(conductor);
-
-		engine = new GameEngine(backgroundColor);
-		engine.verticalOffset = conductor.verticalOffset + conductor.overlayHeight + 5;
-		addChild(engine);
-
-		project = new ProjectDebug(backgroundColor);
-		addChild(project);
-
-		system = new SystemStats(backgroundColor);
-		system.verticalOffset = project.overlayHeight + 5;
-		addChild(system);
-
-		memory = new Memory(backgroundColor);
-		memory.verticalOffset = system.verticalOffset + system.overlayHeight + 5;
-		addChild(memory);
-
-		simple.update(0);
-		framerate.update(0);
-		conductor.update(0);
-		engine.update(0);
-		system.update(0);
-		memory.update(0);
 
 		updateDisplayMode();
 	}
@@ -80,7 +44,7 @@ class DebugOverlay extends Sprite
 			displayModeInt = DebugDisplayMode.NONE;
 		}
 
-		displayMode = displayMode.fromInt(displayModeInt);
+		displayMode = DebugDisplayMode.fromInt(displayModeInt);
 
 		updateDisplayMode();
 	}
@@ -92,12 +56,6 @@ class DebugOverlay extends Sprite
 	{
 		visible = displayMode != NONE;
 		simple.visible = displayMode == SIMPLE;
-		framerate.visible = displayMode == ADVANCED;
-		conductor.visible = displayMode == ADVANCED;
-		memory.visible = displayMode == ADVANCED;
-		system.visible = displayMode == ADVANCED;
-		engine.visible = displayMode == ADVANCED;
-		project.visible = displayMode == ADVANCED;
 	}
 
 	override function __enterFrame(deltaTime:Int)
@@ -150,7 +108,7 @@ class DebugOverlay extends Sprite
 enum abstract DebugDisplayMode(Int) from Int to Int
 {
 	/**
-	 * The overlay will show nothing.
+	 * The overlay will be hidden.
 	 */
 	var NONE:Int = 0;
 
@@ -164,7 +122,7 @@ enum abstract DebugDisplayMode(Int) from Int to Int
 	 */
 	var ADVANCED:Int = 2;
 
-	public function fromInt(int:Int):DebugDisplayMode
+	public static function fromInt(int:Int):DebugDisplayMode
 	{
 		return switch (int)
 		{
