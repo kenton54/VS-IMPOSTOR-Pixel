@@ -3,7 +3,7 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <GameController/GameController.h>
 
-NSString Apple_GetUserLanguage()
+String Apple_GetUserLanguage()
 {
     NSString *language = [[NSLocale currentLocale] localeIdentifier];
     return language;
