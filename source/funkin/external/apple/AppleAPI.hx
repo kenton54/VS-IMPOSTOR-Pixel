@@ -7,6 +7,8 @@ package funkin.external.apple;
 @:cppFileCode('
 #include <CoreFoundation/CoreFoundation.h>
 #include <GameController/GameController.h>
+#include <string>
+#include <iostream>
 ')
 class AppleAPI
 {
@@ -14,8 +16,19 @@ class AppleAPI
 	 * @return The user's current language in the Language Code format (i.e. `en-US`).
 	 */
 	@:functionCode('
-		NSString *language = [[NSLocale currentLocale] localeIdentifier];
-    return language;
+		CFLocaleRef cflocale = CFLocaleCopyCurrent();
+
+		CFStringRef value = (CFStringRef)CFLocaleGetValue(cflocale, kCFLocaleLanguageCode);
+
+		char buffer[128];
+    if (CFStringGetCString(value, buffer, sizeof(buffer), kCFStringEncodingUTF8))
+		{
+			CFRelease(cflocale);
+			return std::string(buffer);
+    }
+
+    CFRelease(cflocale);
+    return "en-US";
 	')
 	public static function getUserLanguage():String
 	{
