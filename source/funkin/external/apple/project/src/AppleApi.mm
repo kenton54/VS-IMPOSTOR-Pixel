@@ -2,18 +2,11 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <GameController/GameController.h>
-#import <iostream>
-#import <string>
 
-std::string Apple_GetUserLanguage()
+NSString Apple_GetUserLanguage()
 {
-    NSArray *languages = [NSLocale preferredLanguages];
-
-    if ([languages count] > 0)
-    {
-        NSString *primaryLanguage = [languages firstObject];
-        return std::string([primaryLanguage UTF8String]);
-    }
+    NSString *language = [[NSLocale currentLocale] localeIdentifier];
+    return language;
 }
 
 bool Apple_isKeyboardConnected()

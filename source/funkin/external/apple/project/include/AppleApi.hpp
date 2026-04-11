@@ -1,5 +1,5 @@
 #pragma once
 
-char Apple_GetUserLanguage();
+NSString Apple_GetUserLanguage();
 
 bool Apple_isKeyboardConnected();
