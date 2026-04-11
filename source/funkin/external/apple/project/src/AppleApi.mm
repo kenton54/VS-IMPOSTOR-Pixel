@@ -2,41 +2,18 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <GameController/GameController.h>
+#import <iostream>
+#import <string>
 
-char Apple_GetUserLanguage()
+std::string Apple_GetUserLanguage()
 {
-    std::string language_code;
+    NSArray *languages = [NSLocale preferredLanguages];
 
-    CFLocaleRef currentLocale = CFLocaleCopyCurrent();
-    CFStringRef languageCodeRef = (CFStringRef)CFLocaleGetValue(currentLocale, kCFLocaleLanguageCode);
-
-    if (languageCodeRef)
+    if ([languages count] > 0)
     {
-        const char* cStringPtr = CFStringGetCStringPtr(languageCodeRef, kCFStringEncodingUTF8);
-        if (cStringPtr)
-        {
-            language_code = cStringPtr;
-        }
-        else
-        {
-            CFIndex length = CFStringGetLength(languageCodeRef);
-            CFIndex maxSize = CFStringGetMaximumSizeForEncoding(length, kCFStringEncodingUTF8);
-            char* buffer = (char*)malloc(maxSize);
-            if (buffer && CFStringGetCString(languageCodeRef, buffer, maxSize, kCFStringEncodingUTF8))
-            {
-                language_code = buffer;
-            }
-
-            free(buffer);
-        }
+        NSString *primaryLanguage = [languages firstObject];
+        return std::string([primaryLanguage UTF8String]);
     }
-
-    if (currentLocale)
-    {
-        CFRelease(currentLocale);
-    }
-
-    return language_code.c_str();
 }
 
 bool Apple_isKeyboardConnected()

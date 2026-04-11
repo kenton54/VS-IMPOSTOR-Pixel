@@ -13,5 +13,11 @@ extern class AppleAPI
 	 */
 	@:native('Apple_GetUserLanguage')
 	static function getUserLanguage():String;
+
+	/**
+	 * @return Whether a keyboard is connected or not.
+	 */
+	@:native('Apple_isKeyboardConnected')
+	static function isKeyboardConnected():Bool;
 }
 #end
