@@ -15,7 +15,7 @@ class XButton extends funkin.input.FunkinButton
 		#if android
 		if (FlxG.android.justReleased.BACK)
 		{
-			onConfirmEnd.dispatch();
+			onPress.dispatch();
 		}
 		#end
 
