@@ -1,7 +1,5 @@
 package funkin.utils;
 
-import openfl.geom.Point;
-
 /**
  * Helper math functions.
  */
@@ -9,7 +7,7 @@ class MathUtil
 {
 	/**
 	 * Gets the distance between 2 integer values.
-	 * 
+	 *
 	 * @param intA The main integer value.
 	 * @param intB The other integer value.
 	 * @return The distance between the 2 values.
@@ -21,7 +19,7 @@ class MathUtil
 
 	/**
 	 * Gets the distance between 2 float values.
-	 * 
+	 *
 	 * @param floatA The main float value.
 	 * @param floatB The other float value.
 	 * @return The distance between the 2 values.
@@ -32,13 +30,13 @@ class MathUtil
 	}
 
 	/**
-	 * Gets the distance between 2 `openfl.geom.Point`s.
-	 * 
+	 * Gets the distance between 2 `Point` objects.
+	 *
 	 * @param pointA The main point.
 	 * @param pointB The other point.
 	 * @return The distance between the 2 points.
 	 */
-	public static function distanceBetweenPoints(pointA:Point, pointB:Point):Float
+	public static function distanceBetweenPoints(pointA:openfl.geom.Point, pointB:openfl.geom.Point):Float
 	{
 		var dx:Float = pointB.x - pointA.x;
 		var dy:Float = pointB.y - pointA.y;
@@ -47,7 +45,7 @@ class MathUtil
 
 	/**
 	 * Bounds a value.
-	 * 
+	 *
 	 * @param value The value to bound.
 	 * @param min 	The minimum allowed value.
 	 * @param max 	The maximum allowed value.

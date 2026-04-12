@@ -1,41 +1,76 @@
-package funkin.ui;
+package funkin.input;
 
 import flixel.FlxObject;
 import flixel.input.FlxInput;
 import flixel.input.IFlxInput;
+import flixel.input.touch.FlxTouch;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 
 class FunkinButton extends FunkinSprite implements IFlxInput
 {
+	/**
+	 * Dispatches when the button is pressed.
+	 */
 	public var onPress:FlxSignal = new FlxSignal();
 
+	/**
+	 * Dispatches when the button has stopped being pressed.
+	 */
 	public var onRelease:FlxSignal = new FlxSignal();
 
-	public var onHover:FlxSignal = new FlxSignal();
-
+	/**
+	 * Dispatches when the button stops being hovered while pressed.
+	 */
 	public var onUnhover:FlxSignal = new FlxSignal();
 
+	/**
+	 * Whether the button was pressed.
+	 */
 	public var justPressed(get, never):Bool;
 
+	/**
+	 * Whether the button is being held.
+	 */
 	public var pressed(get, never):Bool;
 
+	/**
+	 * Whether the button stopped being pressed.
+	 */
 	public var justReleased(get, never):Bool;
 
+	/**
+	 * Whether the button is not being held.
+	 */
 	public var released(get, never):Bool;
 
+	/**
+	 * Whether the button's interaction logic can occur.
+	 */
 	public var enabled:Bool = true;
 
+	/**
+	 * Whether the button can be released when the pointer stops hovering over the button but it's still being pressed.
+	 */
+	public var allowSwipingAway:Bool = true;
+
+	/**
+	 * An array of deadzones to stop the button from being interacted with if a pointer happens to overlap any of them.
+	 */
 	public var deadzones:Array<FlxObject> = [];
 
+	/**
+	 * A radius for circular buttons.
+	 *
+	 * If the radius is bigger than `0` then the overlap functions will check if any pointer is within the radius.
+	 */
 	public var radius:Float = 0;
 
-	public var fade:Bool;
-
-	public var instant:Bool;
-
-	var restOpacity:Float = 0.3;
+	/**
+	 * The `FlxTouch` that's currently pressing the button.
+	 */
+	public var currentTouch(get, never):Null<FlxTouch>;
 
 	var input:FlxInput<Int>;
 
@@ -43,17 +78,13 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 
 	var _isPressed:Bool = false;
 
-	public function new(x:Float = 0, y:Float = 0, fade:Bool = false, instant:Bool = false)
+	public function new(x:Float = 0, y:Float = 0)
 	{
 		super(x, y);
-		loadGraphic(Paths.image('ui/x'));
 
 		solid = false;
 		immovable = true;
 		scrollFactor.set();
-
-		this.fade = fade;
-		this.instant = instant;
 
 		input = new FlxInput(0);
 	}
@@ -64,6 +95,10 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 
 		deadzones = FlxDestroyUtil.destroyArray(deadzones);
 		input = null;
+
+		FlxDestroyUtil.destroy(onPress);
+		FlxDestroyUtil.destroy(onRelease);
+		FlxDestroyUtil.destroy(onUnhover);
 	}
 
 	override function update(elapsed:Float)
@@ -73,44 +108,16 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 		if (visible && enabled)
 		{
 			final overlapping:Bool = FlxG.onMobile ? checkTouchOverlap() : checkMouseOverlap();
+			final pointerReleased:Bool = (currentTouch != null && currentTouch.justReleased) || FlxG.mouse.justReleased;
 
-			function getPressed():Bool
+			if ((pointerReleased || (!allowSwipingAway && pointerReleased)) && overlapping)
 			{
-				if (FlxG.onMobile)
-				{
-					if (touchID >= 0)
-					{
-						return FlxG.touches.list[touchID].pressed;
-					}
-				}
-				else
-				{
-					return FlxG.mouse.pressed;
-				}
-
-				return false;
+				releaseHandler();
 			}
 
-			if (overlapping)
+			if (pointerReleased || !overlapping)
 			{
-				if (getPressed())
-				{
-					if (!_isPressed)
-					{
-						pressHandler();
-					}
-				}
-				else
-				{
-					if (_isPressed)
-					{
-						releaseHandler();
-					}
-				}
-			}
-			else
-			{
-				if (_isPressed)
+				if (allowSwipingAway || (!allowSwipingAway && pointerReleased))
 				{
 					unhoverHandler();
 				}
@@ -138,7 +145,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 			{
 				if (circleOverlapsPoint(worldPoint, camera))
 				{
-					updateStatus(FlxG.mouse);
+					updateMouseStatus(FlxG.mouse);
 					return true;
 				}
 			}
@@ -146,7 +153,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 			{
 				if (overlapsPoint(worldPoint, true, camera))
 				{
-					updateStatus(FlxG.mouse);
+					updateMouseStatus(FlxG.mouse);
 					return true;
 				}
 			}
@@ -174,7 +181,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 				function updateTouch()
 				{
 					touchID = FlxG.touches.list.indexOf(touch);
-					updateStatus(touch);
+					updateInputStatus(touch);
 				}
 
 				if (radius > 0)
@@ -218,7 +225,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 		return distance <= radius;
 	}
 
-	function updateStatus(inpt:Dynamic)
+	function updateInputStatus(inpt:IFlxInput)
 	{
 		if (inpt.justPressed)
 		{
@@ -227,6 +234,26 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 		else if (!_isPressed)
 		{
 			if (inpt.pressed)
+			{
+				pressHandler();
+			}
+		}
+	}
+
+	/**
+	 * The exact same as `updateInputStatus`, but for `FlxMouse`.
+	 *
+	 * Thank you HaxeFlixel :sob:.
+	 */
+	function updateMouseStatus(mouse:flixel.input.mouse.FlxMouse)
+	{
+		if (mouse.justPressed)
+		{
+			pressHandler();
+		}
+		else if (!_isPressed)
+		{
+			if (mouse.pressed)
 			{
 				pressHandler();
 			}
@@ -280,5 +307,10 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 	function get_released():Bool
 	{
 		return input.released;
+	}
+
+	function get_currentTouch():Null<FlxTouch>
+	{
+		return FlxG.touches.getByID(touchID);
 	}
 }

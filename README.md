@@ -1,12 +1,16 @@
 <div align="center">
     <a href="https://github.com/kenton54/VS-IMPOSTOR-Pixel">
-        <img src=".artwork/github/logo-big.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 90%;">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset=".artwork/github/logo-dark-scaledx10.gif">
+            <source media="(prefers-color-scheme: light)" srcset=".artwork/github/logo-light-scaledx10.gif">
+            <img src=".artwork/github/logo-light-scaledx10.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 90%;">
+        </picture>
     </a>
     <h1>VS IMPOSTOR Pixel</h1> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
     <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
     <br/>
     <p align="center">
-        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> Modification based on the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
+        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> Modification based on the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team MotorFrog, which itself is based of the very popular game and cultural meme <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
     </p>
     <br/>
     <p align="center">
@@ -29,16 +33,15 @@
 </div>
 
 <h1 align="center">THE STORY</h1>
-After beating Black (in the song Finale of VS IMPOSTOR v4), he doesn't want to admit defeat, so he pulls up one last trick and reset the timeline, erasing all memories and pixelating everything in the process, now Boyfriend, back where his journey in the Among Us universe started, has to reencounter all the impostors and crewmates once again, plus some new faces that won't make his time around much easier!
+After Boyfriend finished his adventure across the VS IMPOSTOR universe, it is time for him to face off against Black Impostor in one epic final song!!11!1!
 
-<h1 align="center">TERMS OF USAGE</h1>
-You're allowed to use all assets <b>THAT ARE MADE BY ME</b>, more specificly; art, animations and the code, just make sure to credit me. However with the music, you'll have to reach out to the original authors and ask them for permission (don't ask me to do that for you). If you fail to follow these simple steps then prepare to meet me and my lawyers in the courtroom :)
+But things don't turn out so well for Boyfriend because Black Impostor doesn't want to admit defeat! In one desperate attempt, he tries to kill Boyfriend, but he's too elusive for him! Boyfriend manages to dodge every single one of Black Impostor's attacks and escapes! However he doesn't get too far before meeting a dead end, Black Impostor now has him cornered! there's no way that kid could escape.
 
-###### I'm just kidding, I'm not Nintendo LOL. But please make sure to credit the original authors, they put a lot of work in what they do.
+Reality itself around them started breaking. Boyfriend, with no other option, jumps into the crumbling void behind him, in an attempt to escape from Black.
 
-<!-- I feel like the nintendo ninjas will come right at me at any moment...... COME FIGHT MEE IM NOT SCARED >:)))))))) *gets annihilated by a fine of 100000000000000000 dollars* -->
+Black, seeing how his prey managed to find a way to escape from him AGAIN, decides to restart the entire timeline to have a better chance of capturing him and surely make him pay for all the mockery he made of Black, which resets all of Boyfriend's progress in the process. But something didn't go according to Black's plan... everything is now pixelated!
 
-This doesn't apply if you just want to showcase the mod, just stuff (that isn't in the mod) that uses the mod's assets.
+Now Boyfriend has to go through every single one of the past lobbies he ventured already, meeting the same crew and impostors he once fought against valiantly, but now with new faces thrown into the equation and more dangerous foes to battle against, in a different view style! Will Boyfriend succeed once again? or will Black end his odyssey and succeed in his mission...?
 
 <h1 align="center">THE TEAM BEHIND THE MOD</h1>
 
@@ -108,3 +111,10 @@ This doesn't apply if you just want to showcase the mod, just stuff (that isn't 
         <th>Vietnamese</th>
     </tr>
 </table>
+
+<!-- i need to write this message better (maybe?), but it will be properly added in the future
+<h1 align="center">COPYRIGHT</h1>
+THIS IS AN UNOFFICIAL FAN-MADE MODIFICATION OF <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> AND WE'RE NOT AFFILIATED WITH OR ENDORSED BY <a href="https://funkin.me/">The Funkin' Crew Inc.</a> OR <a href="https://www.innersloth.com">Innersloth</a>.
+
+All rights belong to their respective owners.
+-->

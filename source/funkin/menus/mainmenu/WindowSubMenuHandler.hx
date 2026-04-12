@@ -13,7 +13,10 @@ class WindowSubMenuHandler extends FlxBasic
 
 	public var titleObject(default, null):FunkinText;
 
-	public var closeButton(default, null):FunkinButton;
+	/**
+	 * The button that closes any open sub-menu.
+	 */
+	public var closeButton(default, null):XButton;
 
 	public var curSubMenu(default, null):WindowSubMenu;
 
@@ -38,16 +41,16 @@ class WindowSubMenuHandler extends FlxBasic
 
 		this.camera = camera;
 
-		background = cast new FunkinSprite().makeGraphic(this.camera.width, this.camera.height, 0xFF505050);
+		background = new FunkinSprite().makeGraphic(this.camera.width, this.camera.height, 0xFF505050);
 		background.scrollFactor.set();
 		background.alpha = 0.7;
 		background.camera = this.camera;
 
-		closeButton = new FunkinButton(MainMenuState.BASE_SCALE, MainMenuState.BASE_SCALE);
-		closeButton.scaleSprite(MainMenuState.BASE_SCALE);
+		closeButton = new XButton(scale, scale, close.bind(true));
+		closeButton.scaleSprite(scale);
 		closeButton.camera = this.camera;
 
-		line = cast new FunkinSprite(0, closeButton.y + closeButton.height + MainMenuState.BASE_SCALE).makeGraphic(Std.int(background.width), Std.int(scale), 0xFFFFFFFF);
+		line = new FunkinSprite(0, closeButton.y + closeButton.height + scale).makeGraphic(Std.int(background.width), Std.int(scale), 0xFFFFFFFF);
 		line.scrollFactor.set();
 		line.camera = this.camera;
 
@@ -144,11 +147,6 @@ class WindowSubMenuHandler extends FlxBasic
 		closeButton.update(elapsed);
 
 		curSubMenu?.update(elapsed);
-
-		if (closeButton.justReleased)
-		{
-			close(true);
-		}
 	}
 
 	override function draw()

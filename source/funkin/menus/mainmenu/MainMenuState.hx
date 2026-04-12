@@ -45,7 +45,7 @@ class MainMenuState extends MusicBeatState
 
 	public var floatingCrewGroup:FlxTypedGroup<FunkinSprite>;
 
-	public var backButton:FunkinButton;
+	public var backButton:BackButton;
 
 	public var windowArea:FlxRect;
 
@@ -380,22 +380,16 @@ class MainMenuState extends MusicBeatState
 		windowBordersGroup.add(windowBorderLeft);
 		windowBordersGroup.add(windowBorderMiddle);
 
-		var buttonScale:Float = FlxG.onMobile ? 4 : 3;
-		backButton = new FunkinButton(FlxG.width * 0.96, FlxG.height);
-		backButton.frames = Paths.getFrames('ui/backButton');
-		backButton.addAnimationByPrefix('idle', 'idle', 24, false);
-		backButton.addAnimationByPrefix('hold', 'hold', 24, false);
-		backButton.addAnimationByPrefix('press', 'press', 24, false);
-		backButton.playAnimation('idle');
+		final buttonScale:Float = FlxG.onMobile ? 5 : 3;
+		backButton = new BackButton(FlxG.width * 0.95, FlxG.height, FlxColor.WHITE, 1);
 		backButton.scaleSprite(buttonScale);
 		backButton.x -= backButton.width;
-		backButton.y -= backButton.height * 1.1;
+		backButton.y -= backButton.height;
 		backButton.camera = mainCamera;
 		add(backButton);
 
-		backButton.onPress.add(buttonOnPress);
-		backButton.onRelease.add(buttonOnConfirm);
-		backButton.onUnhover.add(buttonOnLeave);
+		backButton.onConfirmStart.add(disableInput);
+		backButton.onConfirmEnd.add(() -> FlxG.switchState(() -> new TitleState()));
 
 		changeSelection();
 	}
@@ -616,29 +610,6 @@ class MainMenuState extends MusicBeatState
 
 			if (position > 0) {}
 		}
-	}
-
-	function buttonOnPress()
-	{
-		if (allowInput)
-		{
-			backButton.playAnimation('hold');
-		}
-	}
-
-	function buttonOnConfirm()
-	{
-		if (allowInput)
-		{
-			disableInput();
-			backButton.playAnimation('press');
-			backButton.onFinishAnimation.add(_ -> FlxG.switchState(() -> new TitleState()));
-		}
-	}
-
-	function buttonOnLeave()
-	{
-		backButton.playAnimation('idle');
 	}
 
 	function checkSelection(entry:Int)
