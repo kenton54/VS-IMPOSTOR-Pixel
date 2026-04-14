@@ -31,10 +31,10 @@ class Paths
 		var path:String = getPath('images/$path.png', library);
 		var pathNoExt:String = Path.withoutExtension(path);
 		var extension:String = Path.extension(path);
-		// trace('$pathNoExt-${Translations.curLanguageID}.$extension');
-		if (Assets.exists('$pathNoExt-${Translations.curLanguageID}'))
+
+		if (Assets.exists('$pathNoExt-${funkin.system.Translations.curLanguageID}'))
 		{
-			return '$pathNoExt-${Translations.curLanguageID}.$extension';
+			return '$pathNoExt-${funkin.system.Translations.curLanguageID}.$extension';
 		}
 		else
 		{
@@ -55,16 +55,6 @@ class Paths
 	public inline static function font(path:String):String
 	{
 		return getPath('fonts/$path');
-	}
-
-	/**
-	 * @param path The directory where the folder is located.
-	 * @return The files found inside the specified directory.
-	 */
-	public static function readDirectory(path:String):Array<String>
-	{
-		var files:Array<String> = Assets.list().filter(file -> file.startsWith(path));
-		return files.map(file -> file.replace(path, '').replace('/', ''));
 	}
 
 	public inline static function getSparrowFrames(path:String, ?library:String):FlxAtlasFrames

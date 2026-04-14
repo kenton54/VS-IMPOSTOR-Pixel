@@ -85,14 +85,8 @@ class Assets
 	 */
 	public static function readDirectory(path:String):Array<String>
 	{
-		var directory:Array<String> = list().filter(function(file:String)
-		{
-			return file.contains(path);
-		});
-		return directory.map(function(file:String)
-		{
-			return file.replace(path, '').replace('/', '');
-		});
+		var directory:Array<String> = list().filter(file -> file.startsWith(path));
+		return directory.map(file -> file.replace(path, '').replace('/', ''));
 	}
 
 	@:inheritDoc(openfl.utils.Assets.loadBitmapData)

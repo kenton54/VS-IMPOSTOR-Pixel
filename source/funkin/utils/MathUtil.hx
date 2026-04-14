@@ -42,17 +42,4 @@ class MathUtil
 		var dy:Float = pointB.y - pointA.y;
 		return FlxMath.vectorLength(dx, dy);
 	}
-
-	/**
-	 * Bounds a value.
-	 *
-	 * @param value The value to bound.
-	 * @param min 	The minimum allowed value.
-	 * @param max 	The maximum allowed value.
-	 * @return The bounded value.
-	 */
-	public static function clamp(value:Float, min:Float, max:Float):Float
-	{
-		return Math.max(min, Math.min(max, value));
-	}
 }

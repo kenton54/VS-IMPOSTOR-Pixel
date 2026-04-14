@@ -60,6 +60,7 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 		button.addAnimationByFrameList('hover', [1], 0);
 		button.addAnimationByFrameList('locked', [2], 0);
 		button.scaleSprite(scale);
+		button.cursorMode = Hover;
 		add(button);
 
 		var labelPosition:Float = 4 * scale;

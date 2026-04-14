@@ -1,0 +1,102 @@
+{
+  "assets": ["characters/boyfriend"],
+  "scale": 10,
+  "offsets": [0, 0],
+  "flipX": false,
+  "flipY": false,
+  "cameraOffsets": [0, 0],
+  "singDuration": 8,
+  "antialiasing": false,
+  "bioID": "boyfriend",
+  "healthIcon": {
+    "icon": "bf",
+    "scale": 1,
+    "offsets": [0, 0],
+    "flipX": false,
+    "flipY": false,
+    "antialiasing": false
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "idle",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "sing left",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "sing down",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "sing up",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "sing right",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singLEFTmiss",
+      "prefix": "miss left",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singDOWNmiss",
+      "prefix": "miss down",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singUPmiss",
+      "prefix": "miss up",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    },
+    {
+      "name": "singRIGHTmiss",
+      "prefix": "miss right",
+      "frameRate": 24,
+      "offsets": [0, 0],
+      "looped": false,
+      "flipX": false,
+      "flipY": false
+    }
+  ]
+}

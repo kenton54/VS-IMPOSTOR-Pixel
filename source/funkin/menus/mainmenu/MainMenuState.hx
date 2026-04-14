@@ -7,8 +7,6 @@ import flixel.math.FlxRect;
 import funkin.menus.debug.DebugState;
 import funkin.menus.mainmenu.MainMenuButton;
 
-import openfl.ui.Mouse;
-
 class MainMenuState extends MusicBeatState
 {
 	/**
@@ -391,6 +389,8 @@ class MainMenuState extends MusicBeatState
 		backButton.onConfirmStart.add(disableInput);
 		backButton.onConfirmEnd.add(() -> FlxG.switchState(() -> new TitleState()));
 
+		Pointer.show();
+
 		changeSelection();
 	}
 
@@ -455,16 +455,16 @@ class MainMenuState extends MusicBeatState
 			return;
 		}
 
-		if (FlxG.keys.justPressed.DOWN)
+		if (controls.UI_DOWN)
 		{
 			changeSelection(1);
 		}
-		else if (FlxG.keys.justPressed.UP)
+		else if (controls.UI_UP)
 		{
 			changeSelection(-1);
 		}
 
-		if (FlxG.keys.justPressed.ENTER)
+		if (controls.ACCEPT)
 		{
 			checkSelection(curEntry);
 		}
@@ -476,7 +476,7 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
-		if (FlxG.keys.justPressed.BACKSPACE)
+		if (controls.BACK)
 		{
 			checkBackAction();
 		}
@@ -484,7 +484,7 @@ class MainMenuState extends MusicBeatState
 
 	function handleMouse()
 	{
-		if (FlxG.mouse.justMoved)
+		if (Pointer.justMoved)
 		{
 			usingKeyboard = false;
 		}
@@ -498,7 +498,7 @@ class MainMenuState extends MusicBeatState
 
 		for (button in mainButtonsGroup.members)
 		{
-			if (FlxG.mouse.overlaps(button, mainCamera) && button.available)
+			if (Pointer.overlaps(button, mainCamera, true) && button.available)
 			{
 				overlaps = true;
 				pointerSelection(button.index);
@@ -510,30 +510,21 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (overlaps)
+		if (overlaps && Pointer.justReleased)
 		{
-			Mouse.cursor = BUTTON;
-
-			if (FlxG.mouse.justReleased)
-			{
-				checkSelection(curPointerEntry);
-			}
+			checkSelection(curPointerEntry);
 		}
 		else
 		{
-			Mouse.cursor = ARROW;
 			pointerSelection(-1);
 		}
 	}
 
 	function handleTouch()
 	{
-		for (touch in FlxG.touches.list)
+		if (Pointer.justMoved)
 		{
-			if (touch.justMoved)
-			{
-				usingKeyboard = false;
-			}
+			usingKeyboard = false;
 		}
 
 		if (usingKeyboard)
@@ -558,18 +549,15 @@ class MainMenuState extends MusicBeatState
 					button.idle();
 				}
 			}
+		}
 
-			if (overlaps)
-			{
-				if (touch.justReleased)
-				{
-					checkSelection(curPointerEntry);
-				}
-			}
-			else
-			{
-				pointerSelection(-1);
-			}
+		if (overlaps && Pointer.justReleased)
+		{
+			checkSelection(curPointerEntry);
+		}
+		else
+		{
+			pointerSelection(-1);
 		}
 	}
 

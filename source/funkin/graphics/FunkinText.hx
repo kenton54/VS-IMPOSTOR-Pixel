@@ -6,7 +6,7 @@ class FunkinText extends FlxText
 {
 	/**
 	 * Creates a `FlxTextFormat`.
-	 * 
+	 *
 	 * @param parameters The parameters you want the format to modify a `FlxText` or `FunkinText`.
 	 * @return The `FlxTextFormat`.
 	 */
@@ -26,10 +26,10 @@ class FunkinText extends FlxText
 
 	/**
 	 * The translation ID this text object follows, so whenever you change the language the text can update accordingly.
-	 * 
+	 *
 	 * If `null` (which is the default value), the text won't follow any translation ID, so you can put whatever text you want.
 	 */
-	public var translationData(default, set):Null<TranslationData>;
+	public var translationData(default, set):Null<funkin.system.Translations.TranslationData>;
 
 	/**
 	 * Whether to use striked-through text or not (`false` by default).
@@ -43,7 +43,7 @@ class FunkinText extends FlxText
 
 	/**
 	 * Creates a new `FunkinText`.
-	 * 
+	 *
 	 * @param x             The horizontal position of the text.
 	 * @param y             The vertical position of the text.
 	 * @param fieldWidth    The width of the text. Enables `autoSize` if `0` or below.
@@ -85,7 +85,7 @@ class FunkinText extends FlxText
 		return text;
 	}
 
-	function set_translationData(data:Null<TranslationData>):Null<TranslationData>
+	function set_translationData(data:Null<funkin.system.Translations.TranslationData>):Null<funkin.system.Translations.TranslationData>
 	{
 		translationData = data;
 		if (translationData != null)
@@ -100,7 +100,7 @@ class FunkinText extends FlxText
 	{
 		if (translationData != null)
 		{
-			text = Translations.translate(translationData.id, translationData.parameters);
+			text = funkin.system.Translations.translate(translationData.id, translationData.parameters);
 			if (textField != null)
 			{
 				var oldText:String = textField.text;

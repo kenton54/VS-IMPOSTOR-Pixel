@@ -7,15 +7,15 @@ class XButton extends funkin.input.FunkinButton
 		super(x, y);
 		loadGraphic(Paths.image('ui/x'));
 
-		onPress.add(trigger);
+		onRelease.add(trigger);
 	}
 
 	override function update(elapsed:Float)
 	{
 		#if android
-		if (FlxG.android.justReleased.BACK)
+		if (FlxG.android.justReleased.BACK && enabled)
 		{
-			onPress.dispatch();
+			onRelease.dispatch();
 		}
 		#end
 

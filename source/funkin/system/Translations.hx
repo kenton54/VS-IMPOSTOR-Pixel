@@ -6,7 +6,7 @@ import funkin.ui.MusicBeatState;
 import haxe.Json;
 
 /**
- * The backend for translation to multiple languages.
+ * This class helps translate the mod to multiple languages.
  */
 class Translations
 {
@@ -192,6 +192,11 @@ class Translations
 
 	static function checkSystemLanguage()
 	{
+		if (!funkin.data.ClientPreferences.syncSystemLanguage)
+		{
+			return;
+		}
+
 		var userLanguage:String = Translations.getLanguageShort(Translations.getUserLanguage());
 		if (userLanguage != Translations.curLanguageID)
 		{

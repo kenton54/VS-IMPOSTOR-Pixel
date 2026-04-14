@@ -1,0 +1,460 @@
+package funkin.input;
+
+import flixel.input.mouse.FlxMouse;
+import flixel.input.touch.FlxTouch;
+import flixel.math.FlxPoint;
+
+import funkin.system.FunkinMemory;
+
+import openfl.display.BitmapData;
+
+class Pointer
+{
+	/**
+	 * Whether the pointer can recieve input from the mouse or any active touch.
+	 */
+	public static var enabled(default, set):Bool = true;
+
+	/**
+	 * The scale of the cursor.
+	 */
+	public static var cursorScale(default, set):Int = 2;
+
+	/**
+	 * The current cursor mode.
+	 *
+	 * Only applicable for mouse cursors.
+	 */
+	public static var cursorMode(default, set):Null<CursorMode> = null;
+
+	/**
+	 * Checks if the mouse or the screen just got pressed.
+	 */
+	public static var justPressed(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or the screen is being pressed.
+	 */
+	public static var pressed(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or the screen has stopped being pressed.
+	 */
+	public static var justReleased(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or the screen is not being pressed.
+	 */
+	public static var released(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or a touch moved to any direction.
+	 */
+	public static var justMoved(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or a touch moved leftwards.
+	 */
+	public static var justMovedLeft(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or a touch moved downwards.
+	 */
+	public static var justMovedDown(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or a touch moved rightwards.
+	 */
+	public static var justMovedUp(get, never):Bool;
+
+	/**
+	 * Checks if the mouse or a touch moved upwards.
+	 */
+	public static var justMovedRight(get, never):Bool;
+
+	/**
+	 * The current active pointer.
+	 *
+	 * On desktop, it returns `FlxMouse`.
+	 *
+	 * On mobile, it returns the most recent `FlxTouch`. If none found, returns `null`.
+	 */
+	public static var pointer(get, never):#if mobile FlxTouch #else FlxMouse #end;
+
+	/**
+	 * Shows the pointer's cursor.
+	 */
+	public static function show()
+	{
+		FlxG.mouse.visible = true;
+		cursorMode = Normal;
+	}
+
+	/**
+	 * Hides the pointer's cursor.
+	 */
+	public static function hide()
+	{
+		FlxG.mouse.visible = false;
+		cursorMode = null;
+	}
+
+	/**
+	 * Checks if the pointer is overlapping a `FlxObject` or `FlxGroup`.
+	 *
+	 * @param object        The object or group to check for overlap.
+	 * @param camera        Helps determine the world position. If none is set, `FlxG.camera` will be used instead.
+	 * @param updateCursor  Whether to update `cursorMode` or not.
+	 * @return Whether the pointer overlaps or not.
+	 */
+	public static function overlaps(object:flixel.FlxBasic, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
+	{
+		if (pointer == null || object == null)
+		{
+			return false;
+		}
+
+		var result:Bool = pointer.overlaps(object, camera);
+
+		if (updateCursor && Std.isOfType(object, FunkinSprite) && result)
+		{
+			var sprite:FunkinSprite = cast object;
+			if (sprite.cursorMode != null)
+			{
+				Pointer.cursorMode = sprite.cursorMode;
+			}
+			else
+			{
+				Pointer.cursorMode = Normal;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Checks if the pointer is overlapping a `FlxObject`.
+	 *
+	 * Uses a more accurate approach than the `overlaps` function.
+	 *
+	 * @param object        The object to check for overlap.
+	 * @param camera        Helps determine the world position. If none is set, `FlxG.camera` will be used instead.
+	 * @param updateCursor  Whether to update `cursorMode` or not.
+	 * @return Whether the pointer overlaps or not.
+	 */
+	public static function overlapsComplex(object:flixel.FlxObject, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
+	{
+		if (pointer == null || object == null)
+		{
+			return false;
+		}
+
+		if (camera == null)
+		{
+			camera = object.camera;
+		}
+
+		var result:Bool = object.overlapsPoint(pointer.getWorldPosition(camera), true, camera);
+
+		if (updateCursor && (Std.isOfType(object, FunkinSprite)) && result)
+		{
+			var sprite:FunkinSprite = cast object;
+			if (sprite.cursorMode != null)
+			{
+				Pointer.cursorMode = sprite.cursorMode;
+			}
+			else
+			{
+				Pointer.cursorMode = Normal;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Fetches the pointer's position relative to any given camera.
+	 *
+	 * @param camera  The camera to calculate the pointer's position.
+	 *                If none is set, `FlxG.camera` will be used instead.
+	 * @param point   An existing point to store the results, if unspecified, one is created.
+	 * @return The pointer's position relative to the camera.
+	 */
+	public static function getWorldPosition(?camera:FlxCamera, ?point:FlxPoint):FlxPoint
+	{
+		if (pointer == null)
+		{
+			return null;
+		}
+
+		return pointer.getWorldPosition(camera, point);
+	}
+
+	/**
+	 * The position relative to the game's position in the window, where `(0, 0)` is the
+	 * top-left edge of the game and `(FlxG.width, FlxG.height)` is the bottom-right.
+	 *
+	 * @param point An existing point to store the results, if unspecified, one is created.
+	 * @return The pointer's position relative to the game's position in the stage.
+	 */
+	public static function getGamePosition(?point:FlxPoint):FlxPoint
+	{
+		if (pointer == null)
+		{
+			return null;
+		}
+
+		return pointer.getGamePosition(point);
+	}
+
+	/**
+	 * Fetches the world position relative to the main camera's `scroll` position, where
+	 * `(cam.viewMarginLeft, cam.viewMarginTop)` is the top-left of the camera and
+	 * `(cam.viewMarginRight, cam.viewMarginBottom)` is the bottom right.
+	 *
+	 * @param camera  The camera to calculate the pointer's position.
+	 *                If none is set, `FlxG.camera` will be used instead.
+	 * @param point   An existing point to store the results, if unspecified, one is created.
+	 * @return The pointer's position relative to the camera.
+	 */
+	public static function getViewPosition(?camera:FlxCamera, ?point:FlxPoint):FlxPoint
+	{
+		if (pointer == null)
+		{
+			return null;
+		}
+
+		return pointer.getViewPosition(camera, point);
+	}
+
+	/**
+	 * @param point An existing point to store the results, if unspecified, one is created.
+	 * @return The pointer's position.
+	 */
+	public static function getPosition(?point:FlxPoint):FlxPoint
+	{
+		if (pointer == null)
+		{
+			return null;
+		}
+
+		return pointer.getPosition(point);
+	}
+
+	static final cursor_default:CursorGraphic = {
+		graphic: 'cursor/normal',
+		offsetX: 0,
+		offsetY: 0
+	};
+
+	static final cursor_hover:CursorGraphic = {
+		graphic: 'cursor/hover',
+		offsetX: -4,
+		offsetY: 0
+	};
+
+	static final cursor_text:CursorGraphic = {
+		graphic: 'cursor/text',
+		offsetX: -3,
+		offsetY: -7
+	};
+
+	static final cursor_crosshair:CursorGraphic = {
+		graphic: 'cursor/crosshair',
+		offsetX: -7,
+		offsetY: -7
+	};
+
+	static final cursor_grab:CursorGraphic = {
+		graphic: 'cursor/grab',
+		offsetX: -7,
+		offsetY: -7
+	};
+
+	static final cursor_hold:CursorGraphic = {
+		graphic: 'cursor/hold',
+		offsetX: -6,
+		offsetY: -3
+	};
+
+	static final cursor_resize_horizontal:CursorGraphic = {
+		graphic: 'cursor/resizeH',
+		offsetX: -3,
+		offsetY: -9
+	};
+
+	static final cursor_resize_vertical:CursorGraphic = {
+		graphic: 'cursor/resizeV',
+		offsetX: -9,
+		offsetY: -3
+	};
+
+	static function setCursorGraphic(?mode:CursorMode)
+	{
+		if (mode == null)
+		{
+			FlxG.mouse.unload();
+			return;
+		}
+
+		switch (mode)
+		{
+			case Normal:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_default.graphic, 'impostor')).bitmap, cursor_default.offsetX, cursor_default.offsetY);
+
+			case Hover:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_hover.graphic, 'impostor')).bitmap, cursor_hover.offsetX, cursor_hover.offsetY);
+
+			case Text:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_text.graphic, 'impostor')).bitmap, cursor_text.offsetX, cursor_text.offsetY);
+
+			case Crosshair:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_crosshair.graphic, 'impostor')).bitmap, cursor_crosshair.offsetX, cursor_crosshair.offsetY);
+
+			case Grab:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_grab.graphic, 'impostor')).bitmap, cursor_grab.offsetX, cursor_grab.offsetY);
+
+			case Hold:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_hold.graphic, 'impostor')).bitmap, cursor_hold.offsetX, cursor_hold.offsetY);
+
+			case ResizeHorizontal:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_resize_horizontal.graphic, 'impostor')).bitmap, cursor_resize_horizontal.offsetX, cursor_resize_horizontal.offsetY);
+
+			case ResizeVertical:
+				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_resize_vertical.graphic, 'impostor')).bitmap, cursor_resize_vertical.offsetX, cursor_resize_vertical.offsetY);
+
+			default:
+				setCursorGraphic();
+		}
+	}
+
+	static function applyCursor(graphic:BitmapData, offsetX:Int, offsetY:Int)
+	{
+		FlxG.mouse.load(graphic, cursorScale, offsetX * cursorScale, offsetY * cursorScale);
+	}
+
+	static function set_cursorMode(value:CursorMode):CursorMode
+	{
+		if (value != null && value != cursorMode)
+		{
+			cursorMode = value;
+			setCursorGraphic(cursorMode);
+		}
+
+		return cursorMode;
+	}
+
+	static function set_cursorScale(value:Int):Int
+	{
+		cursorScale = value.clamp(1, 10);
+
+		if (FlxG.mouse.cursor != null)
+		{
+			FlxG.mouse.cursor.scaleX = FlxG.mouse.cursor.scaleY = cursorScale;
+		}
+
+		return cursorScale;
+	}
+
+	static function set_enabled(value:Bool):Bool
+	{
+		enabled = value;
+		hide();
+		return value;
+	}
+
+	#if mobile
+	static function get_pointer():FlxTouch
+	{
+		for (touch in FlxG.touches.list)
+		{
+			if (touch != null)
+			{
+				return touch;
+			}
+		}
+
+		return FlxG.touches.getFirst();
+	}
+	#else
+	static function get_pointer():FlxMouse
+	{
+		return FlxG.mouse;
+	}
+	#end
+
+	static function get_justPressed():Bool
+	{
+		return pointer != null && pointer.justPressed;
+	}
+
+	static function get_pressed():Bool
+	{
+		return pointer != null && pointer.pressed;
+	}
+
+	static function get_justReleased():Bool
+	{
+		return pointer != null && pointer.justReleased;
+	}
+
+	static function get_released():Bool
+	{
+		return pointer != null && pointer.released;
+	}
+
+	static function get_justMoved():Bool
+	{
+		return pointer != null && pointer.justMoved;
+	}
+
+	static function get_justMovedLeft():Bool
+	{
+		return pointer != null && pointer.justMovedLeft;
+	}
+
+	static function get_justMovedDown():Bool
+	{
+		return pointer != null && pointer.justMovedDown;
+	}
+
+	static function get_justMovedUp():Bool
+	{
+		return pointer != null && pointer.justMovedUp;
+	}
+
+	static function get_justMovedRight():Bool
+	{
+		return pointer != null && pointer.justMovedRight;
+	}
+}
+
+enum CursorMode
+{
+	Normal;
+	Hover;
+	Text;
+	Crosshair;
+	Grab;
+	Hold;
+	ResizeHorizontal;
+	ResizeVertical;
+}
+
+typedef CursorGraphic =
+{
+	/**
+	 * The graphic to load onto the cursor.
+	 */
+	var graphic:String;
+
+	/**
+	 * Horizontal offset.
+	 */
+	var offsetX:Int;
+
+	/**
+	 * Vertical offset.
+	 */
+	var offsetY:Int;
+}

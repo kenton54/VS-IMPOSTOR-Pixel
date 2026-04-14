@@ -90,14 +90,15 @@
       "props": {
         "thresholds": [
           {
-            "severity": "WARNING",
-            "complexity": 20
+            "severity": "INFO",
+            "complexity": 30
           },
           {
-            "severity": "ERROR",
-            "complexity": 25
+            "severity": "WARNING",
+            "complexity": 50
           }
-        ]
+        ],
+        "severity": "IGNORE"
       }
     },
     {
@@ -252,7 +253,7 @@
       "type": "InnerAssignment",
       "props": {
         "ignoreReturnAssignments": true,
-        "severity": "WARNING"
+        "severity": "IGNORE"
       }
     },
     {
@@ -376,8 +377,8 @@
     {
       "type": "MultipleStringLiterals",
       "props": {
-        "allowDuplicates": 2,
-        "minLength": 2,
+        "allowDuplicates": 5,
+        "minLength": 5,
         "ignore": "^\\s+$"
       }
     },

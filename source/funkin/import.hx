@@ -19,12 +19,16 @@ import funkin.Defaults;
 import funkin.Paths;
 import funkin.graphics.FunkinSprite;
 import funkin.graphics.FunkinText;
+import funkin.input.Pointer;
+import funkin.input.Swipe;
 import funkin.sound.FunkinSound;
-import funkin.system.Achievements;
 import funkin.system.Conductor;
-import funkin.system.Translations;
-import funkin.utils.Assets;
 import funkin.utils.MathUtil;
 
+import openfl.utils.Assets;
+
 using StringTools;
+
+using funkin.utils.tools.FloatTools;
+using funkin.utils.tools.IntTools;
 #end

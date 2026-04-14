@@ -26,9 +26,14 @@ final class Defaults
 	public static final DEBUG_BUILD:Bool = #if debug true #else false #end;
 
 	/**
-	 * The languages the mod supports.
+	 * The path to the location of the save data.
 	 */
-	public static final LANGUAGES:Array<String> = ["en", "es", "fr", "pt", "ru", "vi"];
+	public static final SAVE_PATH:String = 'kenton54';
+
+	/**
+	 * The languages the mod supports.''
+	 */
+	public static final LANGUAGES:Array<String> = ['en', 'es', 'fr', 'pt', 'ru', 'vi'];
 
 	/**
 	 * The default font `FunkinText` renders with.
@@ -57,26 +62,26 @@ final class Defaults
 
 	/**
 	 * The default shooting star minimum launch angle.
-	 * 
+	 *
 	 * Right    = 0 Degrees.
-	 * 
+	 *
 	 * Down     = 90 Degrees.
-	 * 
+	 *
 	 * Left     = 180 Degrees.
-	 * 
+	 *
 	 * Up       = 270 Degrees.
 	 */
 	public static final DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MIN:Float = 10;
 
 	/**
 	 * The default shooting star maximum launch angle.
-	 * 
+	 *
 	 * Right    = 0 Degrees.
-	 * 
+	 *
 	 * Down     = 90 Degrees.
-	 * 
+	 *
 	 * Left     = 180 Degrees.
-	 * 
+	 *
 	 * Up       = 270 Degrees.
 	 */
 	public static final DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MAX:Float = 45;

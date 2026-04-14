@@ -108,7 +108,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 		if (visible && enabled)
 		{
 			final overlapping:Bool = FlxG.onMobile ? checkTouchOverlap() : checkMouseOverlap();
-			final pointerReleased:Bool = (currentTouch != null && currentTouch.justReleased) || FlxG.mouse.justReleased;
+			final pointerReleased:Bool = (currentTouch != null && currentTouch.justReleased) || Pointer.justReleased;
 
 			if ((pointerReleased || (!allowSwipingAway && pointerReleased)) && overlapping)
 			{
@@ -131,7 +131,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 	{
 		for (camera in cameras)
 		{
-			final worldPoint:FlxPoint = FlxG.mouse.getWorldPosition(camera, _point);
+			final worldPoint:FlxPoint = Pointer.getWorldPosition(camera, _point);
 
 			for (deadzone in deadzones)
 			{
@@ -145,7 +145,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 			{
 				if (circleOverlapsPoint(worldPoint, camera))
 				{
-					updateMouseStatus(FlxG.mouse);
+					updateMouseStatus();
 					return true;
 				}
 			}
@@ -153,7 +153,7 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 			{
 				if (overlapsPoint(worldPoint, true, camera))
 				{
-					updateMouseStatus(FlxG.mouse);
+					updateMouseStatus();
 					return true;
 				}
 			}
@@ -241,19 +241,19 @@ class FunkinButton extends FunkinSprite implements IFlxInput
 	}
 
 	/**
-	 * The exact same as `updateInputStatus`, but for `FlxMouse`.
+	 * The exact same as `updateInputStatus`, but for the mouse.
 	 *
 	 * Thank you HaxeFlixel :sob:.
 	 */
-	function updateMouseStatus(mouse:flixel.input.mouse.FlxMouse)
+	function updateMouseStatus()
 	{
-		if (mouse.justPressed)
+		if (Pointer.justPressed)
 		{
 			pressHandler();
 		}
 		else if (!_isPressed)
 		{
-			if (mouse.pressed)
+			if (Pointer.pressed)
 			{
 				pressHandler();
 			}

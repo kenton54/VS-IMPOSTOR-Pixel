@@ -198,7 +198,7 @@ class FunkinPreloader extends FlxBasePreloader
 
 				if (precacheImagesFuture == null)
 				{
-					precacheImagesFuture = Assets.loadLibrary('default');
+					precacheImagesFuture = funkin.utils.Assets.loadLibrary('default');
 					precacheImagesFuture.onProgress(function(bytes:Int, total:Int)
 					{
 						trace('$bytes / $total');

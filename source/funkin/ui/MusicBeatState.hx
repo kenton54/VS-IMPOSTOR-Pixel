@@ -3,6 +3,8 @@ package funkin.ui;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 
+import funkin.input.Controls;
+
 class MusicBeatState extends FlxTransitionableState
 {
 	public static var skipTransIn(get, set):Bool;
@@ -29,6 +31,11 @@ class MusicBeatState extends FlxTransitionableState
 		return FlxTransitionableState.skipNextTransOut;
 	}
 
+	/**
+	 * Player 1's controls.
+	 */
+	public var controls(get, never):Controls;
+
 	public var curMeasure(get, never):Int;
 
 	public var curBeat(get, never):Int;
@@ -37,8 +44,8 @@ class MusicBeatState extends FlxTransitionableState
 
 	/**
 	 * Creates a new state with the ability to do transitions and do stuff on beats.
-	 * 
-	 * @param transInData 	Plays when the state beings.
+	 *
+	 * @param transInData 	Plays when the state begins.
 	 * @param transOutData 	Plays when the state ends.
 	 */
 	public function new(?transInData:TransitionData, ?transOutData:TransitionData)
@@ -60,28 +67,33 @@ class MusicBeatState extends FlxTransitionableState
 	}
 
 	/**
-	 * Gets triggered when the Conductor reaches a new measure.
+	 * Gets called by the Conductor when it reaches a new measure.
 	 * @param measure The reached measure.
 	 */
 	public function measureHit(measure:Int) {}
 
 	/**
-	 * Gets triggered when the Conductor reaches a new beat.
+	 * Gets called by the Conductor when it reaches a new beat.
 	 * @param beat The reached beat.
 	 */
 	public function beatHit(beat:Int) {}
 
 	/**
-	 * Gets triggered when the Conductor reaches a new step.
+	 * Gets called by the Conductor when it reaches a new step.
 	 * @param step The reached step.
 	 */
 	public function stepHit(step:Int) {}
 
 	/**
-	 * This function is called whenever the game's language gets updated.
+	 * Gets called whenever the game's language gets updated.
 	 * @param language The new language.
 	 */
 	public function onLanguageUpdate(language:String) {}
+
+	function get_controls():Controls
+	{
+		return funkin.input.InputManager.controlsP1;
+	}
 
 	function get_curMeasure():Int
 	{

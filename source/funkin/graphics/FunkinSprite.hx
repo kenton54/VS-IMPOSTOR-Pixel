@@ -8,13 +8,20 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
+import funkin.system.FunkinMemory;
+
 import openfl.display.BitmapData;
 
 class FunkinSprite extends FlxSprite
 {
 	/**
+	 * The `CursorMode` to set to the pointer cursor when this sprite is hovered by it.
+	 */
+	public var cursorMode:Null<CursorMode> = null;
+
+	/**
 	 * Dispatches each time an animation finishes playing.
-	 * 
+	 *
 	 * @param name The name of the animation.
 	 */
 	public var onFinishAnimation:FlxTypedSignal<(name:String) -> Void> = new FlxTypedSignal<(name:String) -> Void>();
@@ -44,7 +51,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Rescales the sprite and updates it's hitbox automatically.
-	 * 
+	 *
 	 * @param x How much to scale it horizontally.
 	 * @param y How much to scale it vertically. If not set, it will use the same value as `x`.
 	 */
@@ -62,7 +69,7 @@ class FunkinSprite extends FlxSprite
 	/**
 	 * Loads an image to this `FunkinSprite` from an external or embedded graphic file and loads its frames
 	 * if a valid file is found along side it at the same file directory path.
-	 * 
+	 *
 	 * @param graphic   The graphic to want to load and parse the frames from. Must be a file path (a `String`) in order to load the frames.
 	 * @return This `FunkinSprite` instance, for chaining.
 	 */
@@ -70,9 +77,9 @@ class FunkinSprite extends FlxSprite
 	{
 		if (Std.isOfType(graphic, BitmapData) || Std.isOfType(graphic, FlxGraphic))
 		{
-			super.loadGraphic(graphic);
+			loadGraphic(graphic);
 		}
-		else if (Std.isOfType(graphic, String))
+		else
 		{
 			frames = Paths.getFrames(graphic);
 		}
@@ -80,6 +87,10 @@ class FunkinSprite extends FlxSprite
 		return this;
 	}
 
+	/**
+	 * Alternative to using `loadGraphicFromSprite` and inserting the same instance.
+	 * @return A new instance of a copy of this `FunkinSprite` instance.
+	 */
 	override public function clone():FunkinSprite
 	{
 		return cast new FunkinSprite().loadGraphicFromSprite(this);
@@ -87,7 +98,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Loads an image to this sprite from an external or embedded graphic file.
-	 * 
+	 *
 	 * @param graphic       The graphic you want to load.
 	 * @param animated      Whether the graphic is animated, if it is then `frameWidth` and `frameHeight` must be set.
 	 * @param frameWidth    The width of the graphic, if not set then it just uses the width of the graphic.
@@ -98,18 +109,53 @@ class FunkinSprite extends FlxSprite
 	 * @param key           Set this to force the cache backend to index it with a unique key.
 	 * @return              This `FunkinSprite` instance, for chaining.
 	 */
-	override public function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false,
-			?key:String):FunkinSprite
+	override public function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FunkinSprite
 	{
-		super.loadGraphic(graphic, animated, frameWidth, frameHeight, unique, key);
+		if ((graphic is String))
+		{
+			var graph:FlxGraphic = FunkinMemory.getGraphic(graphic);
+			super.loadGraphic(graph, animated, frameWidth, frameHeight, unique);
+		}
+		else
+		{
+			super.loadGraphic(graphic, animated, frameWidth, frameHeight, unique, key);
+		}
+
+		return this;
+	}
+
+	/**
+	 * Loads an image to this sprite from an external or embedded graphic file.
+	 *
+	 * @param graphic 			The graphic you want to load.
+	 * @param animated      Whether the graphic is animated, if it is then `frameWidth` and `frameHeight` must be set.
+	 * @param frameWidth    The width of the graphic, if not set then it just uses the width of the graphic.
+	 * @param frameHeight   The height of the graphic, if not set then it just uses the height of the graphic.
+	 * @param unique        Whether the graphic is unique to this sprite.
+	 *                      This means that the graphic is a unique instance in HaxeFlixel's graphics cache, so whenever
+	 *                      you change the `pixels` of this sprite, it wouldn't affect other sprites using the same graphic.
+	 * @param key           Set this to force the cache backend to index it with a unique key.
+	 * @return              This `FunkinSprite` instance, for chaining.
+	 */
+	public function loadGraphicAsync(graphic:String, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FunkinSprite
+	{
+		this.graphic.persist = true;
+		Assets.loadBitmapData(graphic).onComplete(function(bitmap:BitmapData)
+		{
+			loadGraphic(bitmap);
+		}).onError(function(error:Dynamic)
+		{
+				FlxG.log.error('Couldn\'t load graphic asynchronously! (error: $error)');
+		});
+
 		return this;
 	}
 
 	/**
 	 * Creates a rectangle graphic with a single color and loads it into the sprite.
-	 * 
+	 *
 	 * If you're not going to modify the sprite in any way, I recommend you use `makeSolid` instead of this function.
-	 * 
+	 *
 	 * @param width     The width of the rectangle.
 	 * @param height    The height of the rectangle.
 	 * @param color     The color of the rectangle.
@@ -127,9 +173,9 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Creates a rectangle graphic with a single color and loads it into this sprite.
-	 * 
+	 *
 	 * It's much more forgiving in terms of memory usage than `makeGraphic`, but with the cost of not being able to draw on it.
-	 * 
+	 *
 	 * @param width     The width of the rectangle.
 	 * @param height    The height of the rectangle.
 	 * @param color     The color of the rectangle.
@@ -156,7 +202,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Plays an existing animation. Doesn't do anything if an animation with the same name is already playing.
-	 * 
+	 *
 	 * @param animation The name of the animation.
 	 * @param force     Whether to force the animation to restart.
 	 * @param reverse   Whether to play the animation in reverse.
@@ -164,7 +210,7 @@ class FunkinSprite extends FlxSprite
 	 */
 	public function playAnimation(?animation:String, force:Bool = false, reverse:Bool = false, frame:Int = 0)
 	{
-		var validAnimation:String = '';
+		var validAnimation:Null<String> = null;
 
 		if (animation != null && hasAnimation(animation))
 		{
@@ -192,7 +238,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Adds a new animation to the sprite.
-	 * 
+	 *
 	 * @param animation The animation name.
 	 * @param frames    The frame indices of the animation.
 	 * @param framerate The speed the animation should play at, in frames per second.
@@ -200,14 +246,8 @@ class FunkinSprite extends FlxSprite
 	 * @param flipX     Whether the frames of the animation should be flipped horizontally.
 	 * @param flipY     Whether the frames of the animation should be flipped vertically.
 	 */
-	public function addAnimationByFrameList(?animation:String, ?frames:Array<Int>, framerate:Float = 24, looped:Bool = true, flipX:Bool = false,
-			flipY:Bool = false)
+	public function addAnimationByFrameList(animation:String, ?frames:Array<Int>, framerate:Float = 24, looped:Bool = true, flipX:Bool = false, flipY:Bool = false)
 	{
-		if (animation == null)
-		{
-			animation = Defaults.DEFAULT_ANIMATION_NAME;
-		}
-
 		if (frames == null)
 		{
 			frames = [0];
@@ -218,7 +258,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Makes the whole sprite an animation.
-	 * 
+	 *
 	 * @param frames    The amount of frames the animation has.
 	 * @param framerate The speed the animation should play at, in frames per second.
 	 * @param looped    Whether or not the animation should loop indefinitely when it finishes playing.
@@ -240,7 +280,7 @@ class FunkinSprite extends FlxSprite
 
 	/**
 	 * Adds a new animation to the sprite.
-	 * 
+	 *
 	 * @param animation The animation name.
 	 * @param prefix    The name of the animation in the atlas.
 	 * @param framerate The speed the animation should play at, in frames per second.
@@ -248,19 +288,14 @@ class FunkinSprite extends FlxSprite
 	 * @param flipX     Whether the frames of the animation should be flipped horizontally.
 	 * @param flipY     Whether the frames of the animation should be flipped vertically.
 	 */
-	public function addAnimationByPrefix(?animation:String, prefix:String, framerate:Float = 24, looped:Bool = true, flipX:Bool = false, flipY:Bool = false)
+	public function addAnimationByPrefix(animation:String, prefix:String, framerate:Float = 24, looped:Bool = true, flipX:Bool = false, flipY:Bool = false)
 	{
-		if (animation == null)
-		{
-			animation = Defaults.DEFAULT_ANIMATION_NAME;
-		}
-
 		this.animation.addByPrefix(animation, prefix, framerate, looped, flipX, flipY);
 	}
 
 	/**
 	 * Adds offsets to an animation.
-	 * 
+	 *
 	 * @param animation The animation.
 	 * @param x 				Horizontal offset.
 	 * @param y 				Vertical offset.

@@ -100,6 +100,8 @@ class TitleState extends MusicBeatState
 		transitionSprite.visible = false;
 		add(transitionSprite);
 
+		Pointer.show();
+
 		tweenPressStart();
 		curState = Idle;
 	}
@@ -113,8 +115,7 @@ class TitleState extends MusicBeatState
 		super.update(elapsed);
 
 		FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, CAMERA_DEFAULT_ZOOM, 0.05);
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER
-			|| (FlxG.onMobile ? FlxG.touches.getFirst()?.justReleased : FlxG.mouse.justReleased);
+		var pressedEnter:Bool = controls.ACCEPT || (Pointer.justReleased && !Swipe.justSwipedAny);
 
 		if (allowInput)
 		{
@@ -131,27 +132,13 @@ class TitleState extends MusicBeatState
 						}
 						else
 						{
-							accept(FlxG.keys.justPressed.ENTER);
+							startTransitionToMainMenu(controls.ACCEPT);
 						}
 					}
 				case Demo:
 					if (pressedEnter && playingDemo) {}
 			}
 		}
-	}
-
-	function pointerPressed():Bool
-	{
-		if (FlxG.onMobile)
-		{
-			return false;
-		}
-		else
-		{
-			return FlxG.mouse.justReleased && !FlxG.mouse.flickManager.flickDown;
-		}
-
-		return false;
 	}
 
 	override public function beatHit(beat:Int)
@@ -186,11 +173,11 @@ class TitleState extends MusicBeatState
 
 	var pressed:Bool = false;
 	var transitionTimer:FlxTimer = new FlxTimer();
-	var psKeyboardTransData:TranslationData = {id: 'titleScreen.pressStart.press', parameters: ['ENTER']};
-	var psMouseTransData:TranslationData = {id: 'titleScreen.pressStart.mouse'};
-	var psTouchTransData:TranslationData = {id: 'titleScreen.pressStart.touch'};
+	var psKeyboardTransData:funkin.system.Translations.TranslationData = {id: 'titleScreen.pressStart.press', parameters: ['ENTER']};
+	var psMouseTransData:funkin.system.Translations.TranslationData = {id: 'titleScreen.pressStart.mouse'};
+	var psTouchTransData:funkin.system.Translations.TranslationData = {id: 'titleScreen.pressStart.touch'};
 
-	function accept(keyboard:Bool)
+	function startTransitionToMainMenu(keyboard:Bool)
 	{
 		pressed = true;
 

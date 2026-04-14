@@ -50,6 +50,8 @@ class Main extends Sprite
 	{
 		super();
 
+		funkin.system.FunkinSave.load();
+
 		#if hxvlc
 		Handle.init();
 		#end
@@ -65,6 +67,7 @@ class Main extends Sprite
 		addChild(game);
 
 		debugOverlay = new DebugOverlay(0x484848);
+		debugOverlay.visible = funkin.data.ClientPreferences.showFPSCounter;
 		addChild(debugOverlay);
 	}
 }

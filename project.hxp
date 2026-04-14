@@ -354,7 +354,15 @@ class Project extends HXProject
         var embedAssets:Bool = isWeb();
 
         addAssetLibrary("default", embedAssets, preloadAssets);
-        addAssetPath("assets/preload", "assets", "default", ["*"], [], embedAssets, "assets");
+        addAssetPath("assets/main", "assets", "default", ["*"], [], embedAssets, "assets");
+
+        /*
+        addAssetLibrary("overworld", embedAssets, preloadAssets);
+        addAssetPath("assets/overworld", "assets", "overworld", ["*"], [], embedAssets, "assets");
+
+        addAssetLibrary("gameplay", embedAssets, preloadAssets);
+        addAssetPath("assets/gameplay", "assets", "gameplay", ["*"], [], embedAssets, "assets");
+        */
 
         addAssetPath("assets/fonts", null, "default", ["*"], [], true, "assets");
 

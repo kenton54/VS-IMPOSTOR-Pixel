@@ -117,7 +117,7 @@ class BackButton extends funkin.input.FunkinButton
 	override function update(elapsed:Float)
 	{
 		#if android
-		if (FlxG.android.justReleased.BACK)
+		if (FlxG.android.justReleased.BACK && enabled)
 		{
 			onConfirmEnd.dispatch();
 		}
