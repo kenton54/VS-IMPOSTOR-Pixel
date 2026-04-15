@@ -1,67 +1,134 @@
 package funkin.sound;
 
-import flixel.sound.FlxSound;
 import flixel.system.FlxAssets.FlxSoundAsset;
+
+import funkin.system.FunkinMemory;
 
 import openfl.media.Sound;
 
-class FunkinSound extends FlxSound
+class FunkinSound extends flixel.sound.FlxSound
 {
-	public static function playMenuMusic(menuMusic:MenuMusic = MAIN_MENU, fade:Bool = true):FunkinSound
+	static var pool:FlxTypedGroup<FunkinSound> = new FlxTypedGroup<FunkinSound>();
+
+	/**
+	 *
+	 * Creates a `FunkinSound` object.
+	 *
+	 * @param key 				Where the sound file is located inside the assets folder.
+	 * @param volume 			The volume to start playing the sound with.
+	 * @param looped 			Whether the sound loops indefinitely.
+	 * @param autoDestroy Whether the sound gets automatically disposed when it finishes playing.
+	 * @param autoPlay 		Whether the sound should automatically start playblack when it finished loading.
+	 * @param persist			Whether the sound should persist through menu transitions, Otherwise it gets disposed.
+	 * @param onComplete	A function to call when the sound finishes playing.
+	 * @param onLoad			A function to call when the sound finishes loading.
+	 * @return The `FunkinSound` object, or `null` if the sound asset wasn't found.
+	 */
+	public static function load(key:String, volume:Float = 1, looped:Bool = false, autoDestroy:Bool = false, autoPlay:Bool = false, persist:Bool = false, ?onComplete:Void -> Void, ?onLoad:Void -> Void):FunkinSound
 	{
-		if (FlxG.sound.music != null)
+		var sound:FunkinSound = pool.recycle(soundConstruct);
+		sound.loadEmbedded(FunkinMemory.getSound(key), looped, autoDestroy, onComplete);
+
+		sound.volume = volume;
+		sound.persist = persist;
+
+		FlxG.sound.defaultSoundGroup.add(sound);
+		FlxG.sound.list.add(sound);
+
+		if (autoPlay)
 		{
-			if (!FlxG.sound.music.playing)
-			{
-				if (fade)
-				{
-					FlxG.sound.music.fadeIn(4, 0, 0.8);
-				}
-				FlxG.sound.music.resume();
-			}
-
-			return cast FlxG.sound.music;
+			sound.play();
 		}
-		else
+
+		if (onLoad != null && sound._sound != null)
 		{
-			var music:FunkinSound = playMusic(Paths.music(menuMusic), 0.8, {bpm: 102});
-
-			if (fade)
-			{
-				music.fadeIn(4, 0, 0.8);
-			}
-
-			return music;
+			onLoad();
 		}
+
+		return sound;
 	}
 
-	public static function playMusic(musicAsset:FlxSoundAsset, ?volume:Float, ?params:MusicParams):FunkinSound
+	/**
+	 * Loads and plays a sound automatically.
+	 *
+	 * @param key 		Where the sound file is located inside the assets folder.
+	 * @param volume 	The volume to start playing the sound with.
+	 * @return The loaded sound.
+	 */
+	public static function playSound(key:String, volume:Float = 1):FunkinSound
 	{
-		if (musicAsset == null)
-			return null;
+		return load(key, volume, false, true, true, true);
+	}
 
-		var music:FunkinSound = new FunkinSound().loadStreamed(musicAsset, true);
-		music.persist = true;
-		music.volume = volume ?? 1;
-
+	/**
+	 * Creates a `FunkinSound` an loads it into the global music track.
+	 *
+	 * @param key 								Where the sound file is located inside the assets folder.
+	 * @param volume 							The volume it should be played at.
+	 * @param conductorParams 		Extra optional parameters to set to the music.
+	 * @return The `FunkinSound` object, or `null` if the music asset wasn't found.
+	 */
+	public static function playMusic(key:String, volume:Float = 1, ?conductorParams:ConductorParams):FunkinSound
+	{
 		if (FlxG.sound.music != null)
 		{
-			FlxG.sound.music.destroy();
+			FlxG.sound.music.fadeTween?.cancel();
+			FlxG.sound.music.stop();
+			FlxG.sound.music.kill();
 		}
 
-		FlxG.sound.music = music;
-		music.play();
+		var music:FunkinSound = load(key, volume, true, false, true, true);
 
-		if (params != null)
+		if (music != null)
 		{
-			Conductor.start(params.bpm);
+			setMusic(music);
+		}
+
+		if (conductorParams != null)
+		{
+			var beatsPerMeasure:Int = conductorParams.beatsPerMeasure ?? 4;
+			var stepsPerBeat:Int = conductorParams.stepsPerBeat ?? 4;
+			Conductor.start(conductorParams.bpm, false, beatsPerMeasure, stepsPerBeat);
 		}
 
 		return music;
 	}
 
+	static var lastMenuMusic:Null<MenuMusic> = null;
+
 	/**
-	 * Pauses the currently playing background music.
+	 * Plays a menu music.
+	 *
+	 * @param menuMusic 	The menu music to play.
+	 * @param volume 			The volume it should be played at.
+	 * @param fade 				Whether the music should fade in when it starts playing.
+	 * @return The loaded menu music.
+	 */
+	public static function playMenuMusic(menuMusic:MenuMusic = MAIN_MENU, bpm:Float = 102, volume:Float = 1, fade:Bool = true):FunkinSound
+	{
+		if (menuMusic == lastMenuMusic && FlxG.sound.music.playing)
+		{
+			return cast FlxG.sound.music;
+		}
+
+		var music:FunkinSound = playMusic(Paths.music(menuMusic), 0, {bpm: bpm});
+
+		if (music != null && fade)
+		{
+			music.fadeIn(4, 0, volume);
+		}
+		else if (music != null)
+		{
+			music.volume = volume;
+		}
+
+		lastMenuMusic = menuMusic;
+
+		return music;
+	}
+
+	/**
+	 * Pauses the global music track.
 	 */
 	public static function pauseMusic()
 	{
@@ -73,7 +140,7 @@ class FunkinSound extends FlxSound
 	}
 
 	/**
-	 * Resumes the paused background music.
+	 * Resumes the paused global music track.
 	 */
 	public static function resumeMusic()
 	{
@@ -98,53 +165,179 @@ class FunkinSound extends FlxSound
 		}
 	}
 
+	static function soundConstruct():FunkinSound
+	{
+		var sound:FunkinSound = new FunkinSound();
+
+		pool.add(sound);
+		FlxG.sound.list.add(sound);
+
+		return sound;
+	}
+
+	static function setMusic(newMusic:FunkinSound)
+	{
+		FlxG.sound.music = newMusic;
+		FlxG.sound.list.remove(FlxG.sound.music);
+	}
+
 	public function new()
 	{
 		super();
 	}
 
-	/*
-		public function loadSound(soundAsset:FlxSoundAsset, looped:Bool = false, autoDestroy:Bool = true, ?onComplete:Void->Void):FunkinSound
-		{
-			if (soundAsset == null) return this;
-
-			cleanup(true);
-
-			if (Std.isOfType(soundAsset, Sound))
-			{
-				_sound = soundAsset;
-			}
-			else if (Std.isOfType(soundAsset, String))
-			{
-				if (Assets.exists(soundAsset, SOUND))
-				{
-					_sound = Assets.getMusic(soundAsset);
-				}
-			}
-
-			return cast init(looped, autoDestroy, onComplete);
-		}
-	 */
-	public function loadStreamed(musicAsset:FlxSoundAsset, looped:Bool = true, autoDestroy:Bool = false, ?onComplete:Void -> Void):FunkinSound
+	override function destroy()
 	{
-		if (musicAsset == null)
+		super.destroy();
+
+		if (fadeTween != null)
+		{
+			fadeTween.cancel();
+			fadeTween = null;
+		}
+
+		FlxTween.cancelTweensOf(this);
+	}
+
+	/**
+	 * Loads a sound from an embedded sound asset.
+	 *
+	 * Works better for big sound files, like music.
+	 *
+	 * @param embeddedSound 	A class with the loaded sound, or the directory where the file is located inside the assets folder.
+	 * @param looped 					Whether the sound loops indefinitely.
+	 * @param autoDestroy 		Whether the sound gets automatically disposed when it finishes playing.
+	 * @param onComplete 			A function to call when the sound finishes playing.
+	 * @return This `FunkinSound` instance.
+	 */
+	public function loadStreamed(embeddedSound:FlxSoundAsset, looped:Bool = false, autoDestroy:Bool = false, ?onComplete:Void -> Void):FunkinSound
+	{
+		if (embeddedSound == null)
+		{
 			return this;
+		}
 
 		cleanup(true);
 
-		if (Std.isOfType(musicAsset, Sound))
+		if ((embeddedSound is Sound))
 		{
-			_sound = musicAsset;
+			_sound = embeddedSound;
 		}
-		else if (Std.isOfType(musicAsset, String))
+		else if ((embeddedSound is Class))
 		{
-			if (Assets.exists(musicAsset, MUSIC))
+			_sound = Type.createInstance(embeddedSound, []);
+		}
+		else if ((embeddedSound is String))
+		{
+			if (Assets.exists(embeddedSound, SOUND) || Assets.exists(embeddedSound, MUSIC))
 			{
-				_sound = Assets.getMusic(musicAsset);
+				_sound = Assets.getMusic(embeddedSound);
+			}
+			else
+			{
+				FlxG.log.error('Couldn\'t find a sound asset with the ID "$embeddedSound".');
 			}
 		}
 
 		return cast init(looped, autoDestroy, onComplete);
+	}
+
+	override function update(elapsed:Float)
+	{
+		if (!playing)
+		{
+			return;
+		}
+
+		if (_time < 0)
+		{
+			_time += elapsed * 1000;
+			if (_time >= 0)
+			{
+				play();
+			}
+		}
+		else
+		{
+			super.update(elapsed);
+		}
+	}
+
+	override function play(forceRestart:Bool = false, startTime:Float = 0.0, ?endTime:Float):FunkinSound
+	{
+		if (!exists)
+		{
+			return this;
+		}
+
+		if (forceRestart)
+		{
+			cleanup(false, true);
+		}
+		else if (playing)
+		{
+			return this;
+		}
+
+		if (startTime < 0)
+		{
+			this.active = true;
+			this._time = startTime;
+		}
+		else
+		{
+			if (_paused)
+			{
+				resume();
+			}
+			else
+			{
+				startSound(startTime);
+			}
+		}
+
+		this.endTime = endTime;
+		return this;
+	}
+
+	override function pause():FunkinSound
+	{
+		if (!playing)
+		{
+			return this;
+		}
+
+		if (_time < 0)
+		{
+			_paused = true;
+			active = false;
+		}
+		else
+		{
+			super.pause();
+		}
+
+		return this;
+	}
+
+	override function resume():FunkinSound
+	{
+		if (!_paused)
+		{
+			return this;
+		}
+
+		if (_time < 0)
+		{
+			_paused = true;
+			active = false;
+		}
+		else
+		{
+			super.resume();
+		}
+
+		return this;
 	}
 }
 
@@ -155,7 +348,7 @@ enum abstract MenuMusic(String) from String to String
 	var OMINOUS:String = "ominousMenu";
 }
 
-typedef MusicParams =
+typedef ConductorParams =
 {
 	var bpm:Float;
 	var ?stepsPerBeat:Int;

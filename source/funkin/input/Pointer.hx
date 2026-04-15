@@ -1,5 +1,6 @@
 package funkin.input;
 
+import flixel.FlxObject;
 import flixel.input.mouse.FlxMouse;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxPoint;
@@ -79,7 +80,7 @@ class Pointer
 	 *
 	 * On mobile, it returns the most recent `FlxTouch`. If none found, returns `null`.
 	 */
-	public static var pointer(get, never):#if mobile FlxTouch #else FlxMouse #end;
+	public static var pointer(get, never):#if mobile Null<FlxTouch> #else FlxMouse #end;
 
 	/**
 	 * Shows the pointer's cursor.
@@ -116,10 +117,10 @@ class Pointer
 
 		var result:Bool = pointer.overlaps(object, camera);
 
-		if (updateCursor && Std.isOfType(object, FunkinSprite) && result)
+		if (updateCursor && Std.isOfType(object, FlxObject))
 		{
-			var sprite:FunkinSprite = cast object;
-			if (sprite.cursorMode != null)
+			var sprite:FlxObject = cast object;
+			if (sprite.cursorMode != null && result)
 			{
 				Pointer.cursorMode = sprite.cursorMode;
 			}
@@ -142,7 +143,7 @@ class Pointer
 	 * @param updateCursor  Whether to update `cursorMode` or not.
 	 * @return Whether the pointer overlaps or not.
 	 */
-	public static function overlapsComplex(object:flixel.FlxObject, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
+	public static function overlapsComplex(object:FlxObject, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
 	{
 		if (pointer == null || object == null)
 		{
@@ -360,11 +361,14 @@ class Pointer
 	{
 		enabled = value;
 		hide();
+
+		FlxG.mouse.enabled = value;
+
 		return value;
 	}
 
 	#if mobile
-	static function get_pointer():FlxTouch
+	static function get_pointer():Null<FlxTouch>
 	{
 		for (touch in FlxG.touches.list)
 		{

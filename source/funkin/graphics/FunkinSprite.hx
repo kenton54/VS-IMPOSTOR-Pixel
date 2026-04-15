@@ -15,11 +15,6 @@ import openfl.display.BitmapData;
 class FunkinSprite extends FlxSprite
 {
 	/**
-	 * The `CursorMode` to set to the pointer cursor when this sprite is hovered by it.
-	 */
-	public var cursorMode:Null<CursorMode> = null;
-
-	/**
 	 * Dispatches each time an animation finishes playing.
 	 *
 	 * @param name The name of the animation.
@@ -125,7 +120,7 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * Loads an image to this sprite from an external or embedded graphic file.
+	 * Loads an image to this sprite from an external or embedded graphic file asynchronously.
 	 *
 	 * @param graphic 			The graphic you want to load.
 	 * @param animated      Whether the graphic is animated, if it is then `frameWidth` and `frameHeight` must be set.

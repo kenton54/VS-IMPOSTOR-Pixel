@@ -125,6 +125,7 @@ class Project extends HXProject
         setupApplication();
         setupExport();
         setupDefines();
+        setupMacros();
         setupLibraries();
         setupASTCTextures();
         setupAssets();
@@ -283,6 +284,11 @@ class Project extends HXProject
 
         setHaxeDefine("lime_disable_assets_version");
         setHaxeDefine("message.reporting", "pretty");
+    }
+
+    function setupMacros()
+    {
+        addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxObject())', 'flixel.FlxObject')");
     }
 
     function setupLibraries()
