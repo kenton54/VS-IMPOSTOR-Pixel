@@ -21,7 +21,7 @@ class InputManager
 	/**
 	 * Whether the user is navigating through the mod using their mouse or a touch.
 	 */
-	public static var isUsingPointer(default, null):Bool = false;
+	public static var usingControls(default, null):Bool = true;
 
 	/**
 	 * Player 1's controls.
@@ -55,9 +55,10 @@ class InputManager
 		controlsP1 = new Controls('player1', Solo);
 		controlsP2 = new Controls('player2', None);
 
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, (_) -> isUsingPointer = false);
-		FlxG.stage.addEventListener(MouseEvent.MOUSE_DOWN, (_) -> isUsingPointer = true);
-		FlxG.stage.addEventListener(TouchEvent.TOUCH_BEGIN, (_) -> isUsingPointer = true);
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, (_) -> usingControls = true);
+		FlxG.stage.addEventListener(MouseEvent.MOUSE_MOVE, (_) -> usingControls = false);
+		FlxG.stage.addEventListener(MouseEvent.MOUSE_DOWN, (_) -> usingControls = false);
+		FlxG.stage.addEventListener(TouchEvent.TOUCH_BEGIN, (_) -> usingControls = false);
 
 		FlxG.gamepads.deviceConnected.add(onGamepadAdded);
 

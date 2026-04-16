@@ -217,6 +217,18 @@ class FunkinSprite extends FlxSprite
 		}
 
 		this.animation.play(validAnimation, force, reverse, frame);
+
+		var animOffset:FlxPoint = getAnimationOffsets(validAnimation);
+
+		if (animOffset == null)
+		{
+			animOffset = FlxPoint.get();
+		}
+
+		centerOffsets();
+		offset.x -= animOffset.x * (checkFlipX() ? -1 : 1);
+		offset.y -= animOffset.y * (checkFlipY() ? -1 : 1);
+		animOffset.putWeak();
 	}
 
 	/**

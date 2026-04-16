@@ -19,7 +19,7 @@ class Pointer
 	/**
 	 * The scale of the cursor.
 	 */
-	public static var cursorScale(default, set):Int = 2;
+	public static var cursorScale(default, set):Int = 3;
 
 	/**
 	 * The current cursor mode.
@@ -250,7 +250,7 @@ class Pointer
 
 	static final cursor_hover:CursorGraphic = {
 		graphic: 'cursor/hover',
-		offsetX: -4,
+		offsetX: -3,
 		offsetY: 0
 	};
 
@@ -262,32 +262,20 @@ class Pointer
 
 	static final cursor_crosshair:CursorGraphic = {
 		graphic: 'cursor/crosshair',
-		offsetX: -7,
-		offsetY: -7
+		offsetX: -6,
+		offsetY: -6
 	};
 
 	static final cursor_grab:CursorGraphic = {
 		graphic: 'cursor/grab',
-		offsetX: -7,
-		offsetY: -7
+		offsetX: -4,
+		offsetY: 0
 	};
 
 	static final cursor_hold:CursorGraphic = {
 		graphic: 'cursor/hold',
-		offsetX: -6,
-		offsetY: -3
-	};
-
-	static final cursor_resize_horizontal:CursorGraphic = {
-		graphic: 'cursor/resizeH',
 		offsetX: -3,
-		offsetY: -9
-	};
-
-	static final cursor_resize_vertical:CursorGraphic = {
-		graphic: 'cursor/resizeV',
-		offsetX: -9,
-		offsetY: -3
+		offsetY: 2
 	};
 
 	static function setCursorGraphic(?mode:CursorMode)
@@ -317,12 +305,6 @@ class Pointer
 
 			case Hold:
 				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_hold.graphic, 'impostor')).bitmap, cursor_hold.offsetX, cursor_hold.offsetY);
-
-			case ResizeHorizontal:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_resize_horizontal.graphic, 'impostor')).bitmap, cursor_resize_horizontal.offsetX, cursor_resize_horizontal.offsetY);
-
-			case ResizeVertical:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_resize_vertical.graphic, 'impostor')).bitmap, cursor_resize_vertical.offsetX, cursor_resize_vertical.offsetY);
 
 			default:
 				setCursorGraphic();
@@ -441,8 +423,6 @@ enum CursorMode
 	Crosshair;
 	Grab;
 	Hold;
-	ResizeHorizontal;
-	ResizeVertical;
 }
 
 typedef CursorGraphic =

@@ -1,34 +1,55 @@
 package funkin.ui;
 
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
+import flixel.FlxSubState;
 
 import funkin.input.Controls;
+import funkin.ui.transitions.BaseTransition;
 
-class MusicBeatState extends FlxTransitionableState
+@:access(flixel.FlxState)
+@:access(flixel.FlxSubState)
+class MusicBeatState extends flixel.FlxState
 {
-	public static var skipTransIn(get, set):Bool;
+	/**
+	 * Whether to skip the next transition intro.
+	 */
+	public static var skipTransIn:Bool = false;
 
-	public static var skipTransOut(get, set):Bool;
+	/**
+	 * Whether to skip the next transition outro.
+	 */
+	public static var skipTransOut:Bool = false;
 
-	static function set_skipTransIn(value:Bool):Bool
+	/**
+	 * Transition to play after the game has switched to the new state.
+	 */
+	public static var transitionIn:Null<Class<BaseTransition>> = null;
+
+	/**
+	 *  Transition to play before the game switches to a new state.
+	 */
+	public static var transitionOut:Null<Class<BaseTransition>> = null;
+
+	/**
+	 * Helper function to set the intro and outro transitions.
+	 *
+	 * @param transition The transition.
+	 */
+	public static function setTransitions(?transition:Class<BaseTransition>)
 	{
-		return FlxTransitionableState.skipNextTransIn = value;
+		MusicBeatState.transitionIn = transition;
+		MusicBeatState.transitionOut = transition;
 	}
 
-	static function get_skipTransIn():Bool
+	/**
+	 * Resets the intro and outro transitions and their flags.
+	 */
+	public static function resetTransitions()
 	{
-		return FlxTransitionableState.skipNextTransIn;
-	}
+		transitionIn = null;
+		transitionOut = null;
 
-	static function set_skipTransOut(value:Bool):Bool
-	{
-		return FlxTransitionableState.skipNextTransOut = value;
-	}
-
-	static function get_skipTransOut():Bool
-	{
-		return FlxTransitionableState.skipNextTransOut;
+		skipTransIn = false;
+		skipTransOut = false;
 	}
 
 	/**
@@ -36,25 +57,42 @@ class MusicBeatState extends FlxTransitionableState
 	 */
 	public var controls(get, never):Controls;
 
+	/**
+	 * The Conductor's current song measure.
+	 */
 	public var curMeasure(get, never):Int;
 
+	/**
+	 * The Conductor's current song beat.
+	 */
 	public var curBeat(get, never):Int;
 
+	/**
+	 * The Conductor's current song step.
+	 */
 	public var curStep(get, never):Int;
 
 	/**
-	 * Creates a new state with the ability to do transitions and do stuff on beats.
-	 *
-	 * @param transInData 	Plays when the state begins.
-	 * @param transOutData 	Plays when the state ends.
+	 * Current playing transition.
 	 */
-	public function new(?transInData:TransitionData, ?transOutData:TransitionData)
+	public var transState(default, null):BaseTransition;
+
+	var _requestTransition:BaseTransition;
+	var _requestTransitionReset:Bool = false;
+	var _transitionIn:Bool = false;
+
+	/**
+	 * Creates a new state with the ability to do transitions and do stuff on beats.
+	 */
+	public function new()
 	{
-		super(transInData, transOutData);
+		super();
 
 		Conductor.onMeasureHit.add(measureHit);
 		Conductor.onBeatHit.add(beatHit);
 		Conductor.onStepHit.add(stepHit);
+
+		FlxG.signals.postStateSwitch.add(createPost);
 	}
 
 	override public function destroy()
@@ -64,31 +102,191 @@ class MusicBeatState extends FlxTransitionableState
 		Conductor.onMeasureHit.remove(measureHit);
 		Conductor.onBeatHit.remove(beatHit);
 		Conductor.onStepHit.remove(stepHit);
+
+		FlxG.signals.postStateSwitch.remove(createPost);
+
+		if (transState != null)
+		{
+			if (!transState.completed)
+			{
+				transState.complete();
+			}
+
+			transState.destroy();
+			transState = null;
+		}
+	}
+
+	/**
+	 * Gets called after the state has fully switched.
+	 *
+	 * Used to play transitions, but can be used for other niche things.
+	 */
+	public function createPost()
+	{
+		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		{
+			cast(subState, MusicBeatSubState).createPost();
+		}
+
+		startIntro();
 	}
 
 	/**
 	 * Gets called by the Conductor when it reaches a new measure.
 	 * @param measure The reached measure.
 	 */
-	public function measureHit(measure:Int) {}
+	public function measureHit(measure:Int)
+	{
+		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		{
+			cast(subState, MusicBeatSubState).measureHit(measure);
+		}
+	}
 
 	/**
 	 * Gets called by the Conductor when it reaches a new beat.
 	 * @param beat The reached beat.
 	 */
-	public function beatHit(beat:Int) {}
+	public function beatHit(beat:Int)
+	{
+		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		{
+			cast(subState, MusicBeatSubState).beatHit(beat);
+		}
+	}
 
 	/**
 	 * Gets called by the Conductor when it reaches a new step.
 	 * @param step The reached step.
 	 */
-	public function stepHit(step:Int) {}
+	public function stepHit(step:Int)
+	{
+		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		{
+			cast(subState, MusicBeatSubState).stepHit(step);
+		}
+	}
 
 	/**
 	 * Gets called whenever the game's language gets updated.
 	 * @param language The new language.
 	 */
-	public function onLanguageUpdate(language:String) {}
+	public function onLanguageUpdate(language:String)
+	{
+		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		{
+			cast(subState, MusicBeatSubState).onLanguageUpdate(language);
+		}
+	}
+
+	override function draw()
+	{
+		super.draw();
+
+		if (transState != null)
+		{
+			transState.draw();
+		}
+	}
+
+	function resetTransition()
+	{
+		if (transState != null)
+		{
+			if (!transState.completed)
+			{
+				transState.complete();
+			}
+
+			if (transState.closeCallback != null)
+			{
+				transState.closeCallback();
+			}
+
+			transState.destroy();
+		}
+
+		transState = _requestTransition;
+		_requestTransition = null;
+
+		if (transState != null)
+		{
+			transState._parentState = this;
+
+			if (!transState._created)
+			{
+				transState._created = true;
+				transState.create();
+			}
+
+			if (transState.openCallback != null)
+			{
+				transState.openCallback();
+			}
+
+			if (_transitionIn)
+			{
+				transState.transitionIn();
+			}
+			else
+			{
+				transState.transitionOut();
+			}
+		}
+	}
+
+	override function tryUpdate(elapsed:Float)
+	{
+		super.tryUpdate(elapsed);
+
+		if (_requestTransitionReset)
+		{
+			_requestTransitionReset = false;
+			resetTransition();
+		}
+
+		if (transState != null)
+		{
+			transState.tryUpdate(elapsed);
+
+			if (transState.completed)
+			{
+				_requestTransitionReset = true;
+			}
+		}
+	}
+
+	/**
+	 * Called after the state has been created.
+	 */
+	public function startIntro()
+	{
+		if (!skipTransIn && transitionIn != null)
+		{
+			_requestTransition = Type.createInstance(transitionIn, []);
+			_transitionIn = true;
+
+			_requestTransitionReset = true;
+		}
+
+		resetTransitions();
+	}
+
+	override function startOutro(onOutroComplete:Void -> Void)
+	{
+		if (!skipTransOut && transitionOut != null)
+		{
+			_requestTransition = Type.createInstance(transitionOut, [onOutroComplete]);
+			_transitionIn = false;
+
+			_requestTransitionReset = true;
+		}
+		else
+		{
+			super.startOutro(onOutroComplete);
+		}
+	}
 
 	function get_controls():Controls
 	{

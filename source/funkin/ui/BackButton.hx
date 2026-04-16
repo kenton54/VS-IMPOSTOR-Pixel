@@ -33,6 +33,8 @@ class BackButton extends funkin.input.FunkinButton
 		addAnimationByPrefix('idle', 'idle', 24, false);
 		addAnimationByPrefix('press', 'press', 24, false);
 		addAnimationByPrefix('confirm', 'confirm', 24, false);
+		addAnimationOffsets('press', -1, -1);
+		addAnimationOffsets('confirm', -7, -7);
 		playAnimation('idle');
 
 		this.color = color;

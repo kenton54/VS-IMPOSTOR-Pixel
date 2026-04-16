@@ -6,13 +6,14 @@ import flixel.util.FlxGradient;
 
 import funkin.graphics.shaders.RGBPalette;
 import funkin.graphics.text.GameboyText;
-import funkin.menus.mainmenu.MainMenuState;
 
 class TitleState extends MusicBeatState
 {
-	static var PRESS_START_TWEEN_DURATION:Float = 1.5;
-	static var CAMERA_DEFAULT_ZOOM:Float = 1;
-	static var CAMERA_BEAT_BOP_STRENGTH:Float = 0.01;
+	static final PRESS_START_TWEEN_DURATION:Float = 1.5;
+	static final CAMERA_DEFAULT_ZOOM:Float = 1;
+	static final CAMERA_BEAT_BOP_STRENGTH:Float = 0.01;
+
+	static var playedIntro:Bool = false;
 
 	var curState:TitleStateMode = Idle;
 
@@ -49,8 +50,18 @@ class TitleState extends MusicBeatState
 	];
 
 	var doCameraBop:Bool = true;
+	var canChangeColor:Bool = true;
 
-	override public function create()
+	var comingFromMainMenu:Bool = false;
+	var playingIntro:Bool = false;
+
+	public function new(?fromMainMenu:Bool = false)
+	{
+		super();
+		comingFromMainMenu = fromMainMenu;
+	}
+
+	override function create()
 	{
 		MusicBeatState.skipTransOut = true;
 
@@ -81,7 +92,7 @@ class TitleState extends MusicBeatState
 
 		var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0];
 		titleMainSprite = new FunkinSprite().loadGraphic(Paths.image('menus/title/title-main'), true, 197, 65);
-		titleMainSprite.addAnimationByFrameList(null, titleAnimIndices, 24, false);
+		titleMainSprite.addAnimationByFrameList('idle', titleAnimIndices, 24, false);
 		titleMainSprite.scaleSprite(4);
 		titleSpriteGroup.add(titleMainSprite);
 
@@ -96,25 +107,96 @@ class TitleState extends MusicBeatState
 		pressStartText.alpha = 1;
 		add(pressStartText);
 
+		introGroup = new FlxGroup();
+		add(introGroup);
+
+		var introBG:FunkinSprite = new FunkinSprite().makeSolid(FlxG.width, FlxG.height, FlxColor.BLACK);
+		introBG.scrollFactor.set();
+		introGroup.add(introBG);
+
+		introText = new FunkinText(0, 0, FlxG.width, '', 44, false);
+		introText.scrollFactor.set();
+		introText.alignment = CENTER;
+		introText.screenCenter();
+		introGroup.add(introText);
+
 		transitionSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height * 2, [0x00000000, 0xFF000000, 0xFF000000]);
 		transitionSprite.visible = false;
 		add(transitionSprite);
 
 		Pointer.show();
 
+		if (!playedIntro)
+		{
+			playIntro();
+		}
+		else
+		{
+			skipIntro(comingFromMainMenu);
+
+			if (comingFromMainMenu)
+			{
+				allowInput = false;
+				FlxG.camera.scroll.y = FlxG.height / 2;
+				FlxTween.tween(FlxG.camera.scroll, {y: 0}, 1, {ease: FlxEase.quintOut, onComplete: (_) -> allowInput = true});
+			}
+		}
+	}
+
+	function playIntro()
+	{
+		doCameraBop = false;
+		canChangeColor = false;
+
+		introGroup.revive();
+
+		playingIntro = true;
+		curState = Intro;
+	}
+
+	function endIntro(flash:Bool = true)
+	{
+		doCameraBop = true;
+		canChangeColor = true;
+
+		introGroup.kill();
+
+		showTitle(flash);
 		tweenPressStart();
+
+		playingIntro = false;
+		playedIntro = true;
 		curState = Idle;
+	}
+
+	function skipIntro(ignoreChanges:Bool = false)
+	{
+		if (FlxG.sound.music != null && !ignoreChanges)
+		{
+			FlxG.sound.music.time = 9412;
+		}
+
+		endIntro(!ignoreChanges);
+	}
+
+	function showTitle(flash:Bool = true)
+	{
+		if (flash)
+		{
+			FlxG.camera.flash(FlxColor.WHITE, 3);
+		}
 	}
 
 	var allowInput:Bool = true;
 	var canSkipTransition:Bool = false;
 	var playingDemo:Bool = false;
 
-	override public function update(elapsed:Float)
+	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, CAMERA_DEFAULT_ZOOM, 0.05);
+
 		var pressedEnter:Bool = controls.ACCEPT || (Pointer.justReleased && !Swipe.justSwipedAny);
 
 		if (allowInput)
@@ -122,7 +204,11 @@ class TitleState extends MusicBeatState
 			switch (curState)
 			{
 				case Intro:
-					if (pressedEnter) {}
+					if (pressedEnter)
+					{
+						skipIntro();
+					}
+
 				case Idle:
 					if (pressedEnter)
 					{
@@ -135,13 +221,27 @@ class TitleState extends MusicBeatState
 							startTransitionToMainMenu(controls.ACCEPT);
 						}
 					}
+
 				case Demo:
 					if (pressedEnter && playingDemo) {}
 			}
 		}
 	}
 
-	override public function beatHit(beat:Int)
+	override function stepHit(step:Int)
+	{
+		super.stepHit(step);
+
+		if (playingIntro)
+		{
+			if (step >= 64)
+			{
+				endIntro();
+			}
+		}
+	}
+
+	override function beatHit(beat:Int)
 	{
 		super.beatHit(beat);
 
@@ -157,11 +257,11 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	override public function measureHit(measure:Int)
+	override function measureHit(measure:Int)
 	{
 		super.measureHit(measure);
 
-		if (curMeasure >= 20 || pressed)
+		if (!canChangeColor && (curMeasure >= 20 || pressed))
 		{
 			return;
 		}
@@ -197,6 +297,7 @@ class TitleState extends MusicBeatState
 
 		canSkipTransition = true;
 		doCameraBop = false;
+		canChangeColor = false;
 		canTweenPS = false;
 
 		bopTitle();
@@ -216,7 +317,10 @@ class TitleState extends MusicBeatState
 		if (forced)
 		{
 			transitionTimer.cancel();
-			FlxG.switchState(() -> new MainMenuState());
+
+			VerticalFade.inverse = true;
+			MusicBeatState.setTransitions(VerticalFade);
+			FlxG.switchState(() -> new MainMenuState(true));
 		}
 		else
 		{
@@ -227,8 +331,10 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(1.01, _ ->
 			{
-				MusicBeatState.skipTransIn = true;
-				FlxG.switchState(() -> new MainMenuState());
+				VerticalFade.inverse = true;
+				MusicBeatState.skipTransOut = true;
+				MusicBeatState.setTransitions(VerticalFade);
+				FlxG.switchState(() -> new MainMenuState(true));
 			});
 		}
 	}
@@ -298,11 +404,6 @@ class TitleState extends MusicBeatState
 		titleRGBSprite.scale.set(beatScale, beatScale);
 		FlxTween.tween(titleMainSprite, {'scale.x': 4, 'scale.y': 4}, tweenDuration, {ease: FlxEase.quadOut});
 		FlxTween.tween(titleRGBSprite, {'scale.x': 4, 'scale.y': 4}, tweenDuration, {ease: FlxEase.quadOut});
-	}
-
-	override function onLanguageUpdate(language:String)
-	{
-		super.onLanguageUpdate(language);
 	}
 }
 

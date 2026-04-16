@@ -61,6 +61,18 @@ class FunkinSound extends flixel.sound.FlxSound
 	}
 
 	/**
+	 * Plays a menu sound.
+	 *
+	 * @param sound 	The menu sound to play.
+	 * @param volume 	The volume it should be played at.
+	 * @return The loaded menu sound.
+	 */
+	public static function playMenuSound(sound:MenuSound = SCROLL, volume:Float = 1):FunkinSound
+	{
+		return playSound(Paths.sound('menu/$sound'), volume);
+	}
+
+	/**
 	 * Creates a `FunkinSound` an loads it into the global music track.
 	 *
 	 * @param key 								Where the sound file is located inside the assets folder.
@@ -100,6 +112,7 @@ class FunkinSound extends flixel.sound.FlxSound
 	 * Plays a menu music.
 	 *
 	 * @param menuMusic 	The menu music to play.
+	 * @param bpm					The BPM the conductor should play with.
 	 * @param volume 			The volume it should be played at.
 	 * @param fade 				Whether the music should fade in when it starts playing.
 	 * @return The loaded menu music.
@@ -153,14 +166,29 @@ class FunkinSound extends flixel.sound.FlxSound
 
 	/**
 	 * Stops the currently playing background music.
+	 *
+	 * This doesn't destroy it.
 	 */
 	public static function stopMusic()
 	{
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.stop();
+		}
+	}
+
+	/**
+	 * Stops the currently playing background music and destroys it.
+	 *
+	 * Resets the conductor as well.
+	 */
+	public static function destroyMusic()
+	{
+		if (FlxG.sound.music != null)
+		{
 			FlxG.sound.music.destroy();
 			FlxG.sound.music = null;
+			lastMenuMusic = null;
 			Conductor.reset();
 		}
 	}
@@ -339,6 +367,23 @@ class FunkinSound extends flixel.sound.FlxSound
 
 		return this;
 	}
+}
+
+enum abstract MenuSound(String) from String to String
+{
+	var SCROLL:String = 'scroll';
+
+	var CONFIRM:String = 'confirm';
+
+	var CANCEL:String = 'cancel';
+
+	var SELECT:String = 'select';
+
+	var OK:String = 'ok';
+
+	var LOCK:String = 'lock';
+
+	var HARD_CONFIRM:String = 'hardConfirm';
 }
 
 enum abstract MenuMusic(String) from String to String

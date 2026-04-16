@@ -16,8 +16,11 @@ class WindowSubMenuHandler extends FlxBasic
 	/**
 	 * The button that closes any open sub-menu.
 	 */
-	public var closeButton(default, null):XButton;
+	public var closeButton(default, null):StaticButton;
 
+	/**
+	 * The current active sub-menu.
+	 */
 	public var curSubMenu(default, null):WindowSubMenu;
 
 	public var enabled:Bool = true;
@@ -46,7 +49,7 @@ class WindowSubMenuHandler extends FlxBasic
 		background.alpha = 0.7;
 		background.camera = this.camera;
 
-		closeButton = new XButton(scale, scale, close.bind(true));
+		closeButton = new StaticButton(scale, scale, Paths.image('ui/x'), close.bind(true));
 		closeButton.scaleSprite(scale);
 		closeButton.camera = this.camera;
 
@@ -79,11 +82,6 @@ class WindowSubMenuHandler extends FlxBasic
 	 */
 	public function open(subMenu:WindowSubMenu)
 	{
-		if (subMenu == null || isOpen)
-		{
-			return;
-		}
-
 		curSubMenu?.destroy();
 
 		revive();

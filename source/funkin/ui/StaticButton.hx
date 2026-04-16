@@ -1,11 +1,11 @@
 package funkin.ui;
 
-class XButton extends funkin.input.FunkinButton
+class StaticButton extends funkin.input.FunkinButton
 {
-	public function new(x:Float = 0, y:Float = 0, trigger:Void -> Void)
+	public function new(x:Float = 0, y:Float = 0, image:String, trigger:Void -> Void)
 	{
 		super(x, y);
-		loadGraphic(Paths.image('ui/x'));
+		loadGraphic(image);
 
 		onRelease.add(trigger);
 	}
