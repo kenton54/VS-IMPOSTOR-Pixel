@@ -134,14 +134,15 @@ class FunkinSave
 
 	static function resolveSaveData(input:Dynamic):BaseSaveData
 	{
-		var saveData:BaseSaveData = getDefaultSaveData();
-
-		for (saveField in Reflect.fields(saveData))
+		if (input == null)
 		{
-			Reflect.setField(saveData, saveField, Reflect.field(input, saveField));
+			return getDefaultSaveData();
 		}
-
-		return saveData;
+		else
+		{
+			var saveData:BaseSaveData = cast thx.Objects.deepCombine(getDefaultSaveData(), input);
+			return saveData;
+		}
 	}
 
 	static function getDefaultSaveData():BaseSaveData

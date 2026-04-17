@@ -67,6 +67,11 @@
       "url": "https://github.com/FunkinCrew/grig.audio"
     },
     {
+      "name": "thx.core",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "hxp",
       "type": "haxelib",
       "version": null

@@ -90,16 +90,13 @@ class ColorBlindShader
 	 */
 	public static function updateShader(mode:ColorBlindMode)
 	{
-		if (currentMode != null && mode == currentMode)
+		if (currentMode != null && mode != null && mode == currentMode)
 		{
 			return;
 		}
 
 		var colorMatrix:Array<Float> = switch (mode)
 		{
-			case NONE:
-				noneMatrix;
-
 			case DEUTERANOMALY:
 				deuteranomalyMatrix;
 
@@ -117,6 +114,9 @@ class ColorBlindShader
 
 			case TRITANOMALY:
 				tritanomalyMatrix;
+
+			default:
+				noneMatrix;
 		}
 
 		if (colorBlindShader == null)

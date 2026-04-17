@@ -87,8 +87,12 @@ class Pointer
 	 */
 	public static function show()
 	{
+		#if !mobile
 		FlxG.mouse.visible = true;
 		cursorMode = Normal;
+		#else
+		hide();
+		#end
 	}
 
 	/**
@@ -318,7 +322,7 @@ class Pointer
 
 	static function set_cursorMode(value:CursorMode):CursorMode
 	{
-		if (value != null && value != cursorMode)
+		if (value != cursorMode)
 		{
 			cursorMode = value;
 			setCursorGraphic(cursorMode);

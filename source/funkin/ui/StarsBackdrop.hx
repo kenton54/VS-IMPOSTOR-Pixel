@@ -48,6 +48,7 @@ class StarsBackdrop extends FlxBasic
 		layers = layerAmount;
 		horizontalSpeed = speed;
 		verticalSpeed = 0;
+		scrollFactor = 0.5;
 		this.scale = scale;
 	}
 

@@ -262,6 +262,8 @@ class Project extends HXProject
         setHaxeDefine("HXCPP_STACK_LINE");
         setHaxeDefine("HXCPP_STACK_TRACE");
 
+        setHaxeDefine("safeMode");
+
         FEATURE_DEBUG_CONTENT.apply(this, isDebug());
         FEATURE_DISCORD_API.apply(this, (isDesktop() || isMobile()) && isDesktop() && isCPP());
         FEATURE_HAPTICS.apply(this, true);
@@ -304,6 +306,8 @@ class Project extends HXProject
         //addHaxelib("colyseus-websocket");
         //addHaxelib("tink_url");
         //addHaxelib("tink_await");
+
+        addHaxelib("thx.core");
 
         if ((isDesktop() || isMobile()) && isCPP())
         {
