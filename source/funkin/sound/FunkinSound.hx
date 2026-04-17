@@ -90,7 +90,7 @@ class FunkinSound extends flixel.sound.FlxSound
 		}
 
 		var music:FunkinSound = pool.recycle(soundConstruct);
-		music.loadStreamed(FunkinMemory.getSound(key), true, false);
+		music.loadStreamed(FunkinMemory.getMusic(key), true, false);
 
 		music.volume = volume;
 		music.persist = true;
