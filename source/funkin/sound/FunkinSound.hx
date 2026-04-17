@@ -89,7 +89,15 @@ class FunkinSound extends flixel.sound.FlxSound
 			FlxG.sound.music.kill();
 		}
 
-		var music:FunkinSound = load(key, volume, true, false, true, true);
+		var music:FunkinSound = pool.recycle(soundConstruct);
+		music.loadStreamed(FunkinMemory.getSound(key), true, false);
+
+		music.volume = volume;
+		music.persist = true;
+
+		FlxG.sound.defaultSoundGroup.add(music);
+
+		music.play();
 
 		if (music != null)
 		{
@@ -141,31 +149,33 @@ class FunkinSound extends flixel.sound.FlxSound
 	}
 
 	/**
-	 * Pauses the global music track.
+	 * Pauses the global music track and the conductor.
 	 */
 	public static function pauseMusic()
 	{
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.pause();
-			Conductor.pause();
 		}
+
+		Conductor.pause();
 	}
 
 	/**
-	 * Resumes the paused global music track.
+	 * Resumes the paused global music track and the conductor.
 	 */
 	public static function resumeMusic()
 	{
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.resume();
-			Conductor.resume();
 		}
+
+		Conductor.resume();
 	}
 
 	/**
-	 * Stops the currently playing background music.
+	 * Stops the global music track and the conductor.
 	 *
 	 * This doesn't destroy it.
 	 */
@@ -175,12 +185,14 @@ class FunkinSound extends flixel.sound.FlxSound
 		{
 			FlxG.sound.music.stop();
 		}
+
+		Conductor.pause();
 	}
 
 	/**
-	 * Stops the currently playing background music and destroys it.
+	 * Stops the global music track and destroys it.
 	 *
-	 * Resets the conductor as well.
+	 * This also resets the conductor.
 	 */
 	public static function destroyMusic()
 	{
@@ -188,9 +200,10 @@ class FunkinSound extends flixel.sound.FlxSound
 		{
 			FlxG.sound.music.destroy();
 			FlxG.sound.music = null;
-			lastMenuMusic = null;
-			Conductor.reset();
 		}
+
+		lastMenuMusic = null;
+		Conductor.reset();
 	}
 
 	static function soundConstruct():FunkinSound

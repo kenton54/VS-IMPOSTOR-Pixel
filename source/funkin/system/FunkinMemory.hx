@@ -61,6 +61,30 @@ class FunkinMemory
 	}
 
 	/**
+	 * Caches a music found in the specified directory.
+	 *
+	 * @param key The stored key of the music (99.9% of the time will be the path leading to it).
+	 * @return The `Sound` with the loaded music file, or `null` if it doesn't exist.
+	 */
+	public static function getMusic(key:String):Sound
+	{
+		if (isSoundCached(key))
+		{
+			return cachedSounds.get(key);
+		}
+
+		var newSound:Sound = Assets.getMusic(key);
+		if (newSound == null)
+		{
+			FlxG.log.error('Couldn\'t cache sound with key "$key"!');
+			return null;
+		}
+
+		cachedSounds.set(key, newSound);
+		return newSound;
+	}
+
+	/**
 	 * @param key The key the graphic is stored with.
 	 * @return Whether the graphic is cached or not.
 	 */
@@ -76,6 +100,15 @@ class FunkinMemory
 	public static function isSoundCached(key:String):Bool
 	{
 		return cachedSounds.exists(key);
+	}
+
+	/**
+	 * @param key The key the music is stored with.
+	 * @return Whether the music is cached or not.
+	 */
+	public static function isMusicCached(key:String):Bool
+	{
+		return isSoundCached(key);
 	}
 
 	static function forceGraphicRender(graphic:FlxGraphic)

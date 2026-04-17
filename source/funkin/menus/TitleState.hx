@@ -280,6 +280,7 @@ class TitleState extends MusicBeatState
 	function startTransitionToMainMenu(keyboard:Bool)
 	{
 		pressed = true;
+		FunkinSound.playMenuSound(CONFIRM);
 
 		if (pressStartTweenIn != null)
 		{

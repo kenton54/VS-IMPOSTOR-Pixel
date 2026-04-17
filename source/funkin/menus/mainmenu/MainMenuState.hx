@@ -392,7 +392,7 @@ class MainMenuState extends MusicBeatState
 		windowBordersGroup.add(windowBorderMiddle);
 
 		final buttonScale:Float = FlxG.onMobile ? 5 : 3;
-		backButton = new BackButton(FlxG.width * 0.9, FlxG.height * 0.95, FlxColor.WHITE, 1);
+		backButton = new BackButton(FlxG.width * 0.92, FlxG.height * 0.95, FlxColor.WHITE, 1);
 		backButton.scaleSprite(buttonScale);
 		backButton.x -= backButton.width;
 		backButton.y -= backButton.height;
@@ -402,7 +402,11 @@ class MainMenuState extends MusicBeatState
 
 		FlxTween.tween(backButton, {alpha: 1}, 1, {startDelay: 0.5, ease: FlxEase.quintOut});
 
-		backButton.onConfirmStart.add(disableInput);
+		backButton.onConfirmStart.add(() ->
+		{
+			FunkinSound.playMenuSound(CANCEL);
+			disableInput();
+		});
 		backButton.onConfirmEnd.add(checkBackAction);
 
 		Pointer.show();
@@ -495,6 +499,7 @@ class MainMenuState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FunkinSound.playMenuSound(CANCEL);
 			checkBackAction();
 		}
 	}
@@ -624,7 +629,13 @@ class MainMenuState extends MusicBeatState
 
 		if (buttonData.available)
 		{
+			FunkinSound.playMenuSound(CONFIRM);
 			selectButton(buttonData);
+		}
+		else
+		{
+			// you should be able to hear this normally.
+			FunkinSound.playMenuSound(CANCEL);
 		}
 	}
 

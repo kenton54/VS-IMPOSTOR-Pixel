@@ -21,7 +21,8 @@ class FunkinSprite extends FlxSprite
 	 */
 	public var onFinishAnimation:FlxTypedSignal<(name:String) -> Void> = new FlxTypedSignal<(name:String) -> Void>();
 
-	var animOffsets:Map<String, FlxPoint> = new Map<String, FlxPoint>();
+	var animationOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
+	var animationOffset(default, set):Array<Float> = [0, 0];
 
 	public function new(x:Float = 0, y:Float = 0, ?graphic:FlxGraphicAsset)
 	{
@@ -42,6 +43,9 @@ class FunkinSprite extends FlxSprite
 		super.destroy();
 
 		FlxDestroyUtil.destroy(onFinishAnimation);
+
+		animationOffsets = null;
+		animationOffset = null;
 	}
 
 	/**
@@ -104,7 +108,7 @@ class FunkinSprite extends FlxSprite
 	 * @param key           Set this to force the cache backend to index it with a unique key.
 	 * @return              This `FunkinSprite` instance, for chaining.
 	 */
-	override public function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FunkinSprite
+	override function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FunkinSprite
 	{
 		if ((graphic is String))
 		{
@@ -160,7 +164,7 @@ class FunkinSprite extends FlxSprite
 	 * @param key       Set this to force the cache backend to index it with a unique key.
 	 * @return          This `FunkinSprite` instance, for chaining.
 	 */
-	override public function makeGraphic(width:Int, height:Int, color:FlxColor = FlxColor.WHITE, unique:Bool = false, ?key:String):FunkinSprite
+	override function makeGraphic(width:Int, height:Int, color:FlxColor = FlxColor.WHITE, unique:Bool = false, ?key:String):FunkinSprite
 	{
 		super.makeGraphic(width, height, color, unique, key);
 		return this;
@@ -196,6 +200,23 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
+	 * Returns the screen position of this sprite.
+	 *
+	 * Accounts for animation offsets.
+	 *
+	 * @param result 	Optional argument for the returning point.
+	 * @param camera 	The screen coordinate space. If `null`, fallbacks to `getDefaultCamera`.
+	 * @return The screen position of this object.
+	 */
+	override function getScreenPosition(?result:FlxPoint, ?camera:FlxCamera):FlxPoint
+	{
+		var output:FlxPoint = super.getScreenPosition(result, camera);
+		output.x += animationOffset[0] * scale.x;
+		output.y += animationOffset[1] * scale.y;
+		return output;
+	}
+
+	/**
 	 * Plays an existing animation. Doesn't do anything if an animation with the same name is already playing.
 	 *
 	 * @param animation The name of the animation.
@@ -218,17 +239,14 @@ class FunkinSprite extends FlxSprite
 
 		this.animation.play(validAnimation, force, reverse, frame);
 
-		var animOffset:FlxPoint = getAnimationOffsets(validAnimation);
+		var animOffset:Array<Float> = getAnimationOffsets(validAnimation);
 
 		if (animOffset == null)
 		{
-			animOffset = FlxPoint.get();
+			animOffset = [0, 0];
 		}
 
-		centerOffsets();
-		offset.x -= animOffset.x * (checkFlipX() ? -1 : 1);
-		offset.y -= animOffset.y * (checkFlipY() ? -1 : 1);
-		animOffset.putWeak();
+		animationOffset = animOffset;
 	}
 
 	/**
@@ -314,7 +332,7 @@ class FunkinSprite extends FlxSprite
 			animation = Defaults.DEFAULT_ANIMATION_NAME;
 		}
 
-		animOffsets.set(animation, FlxPoint.get(x, y));
+		animationOffsets.set(animation, [x, y]);
 	}
 
 	/**
@@ -357,9 +375,9 @@ class FunkinSprite extends FlxSprite
 	 * @param animation The animation name.
 	 * @return The animation offsets. If it doesn't exists, returns `null`.
 	 */
-	public function getAnimationOffsets(animation:String):Null<FlxPoint>
+	public function getAnimationOffsets(animation:String):Null<Array<Float>>
 	{
-		return animOffsets.get(animation);
+		return animationOffsets.get(animation);
 	}
 
 	/**
@@ -386,5 +404,20 @@ class FunkinSprite extends FlxSprite
 
 		getAnimation(animation).destroy();
 		@:privateAccess this.animation._animations.remove(animation);
+	}
+
+	function set_animationOffset(value:Array<Float>):Array<Float>
+	{
+		if (value == null)
+		{
+			value = [0, 0];
+		}
+
+		if (value[0] == animationOffset[0] && value[1] == animationOffset[1])
+		{
+			return value;
+		}
+
+		return animationOffset = value;
 	}
 }
