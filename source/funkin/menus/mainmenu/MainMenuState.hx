@@ -1,11 +1,10 @@
 package funkin.menus.mainmenu;
 
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 
 import funkin.menus.debug.DebugState;
 import funkin.menus.mainmenu.MainMenuButton;
+import funkin.menus.mainmenu.submenu.*;
 
 class MainMenuState extends MusicBeatState
 {
@@ -66,45 +65,7 @@ class MainMenuState extends MusicBeatState
 			triggerType: OPEN_WINDOW,
 			onSelect: function(state:MainMenuState)
 			{
-				var window:WindowSubMenu = new WindowSubMenu('generic.play');
-
-				var worldmapButton:WindowButton = new WindowButton(state.windowArea.width / 2, 3 * BASE_SCALE, {
-					position: [0, 0],
-					image: getImage('windowButtons/worldmap'),
-					width: 56,
-					height: 55,
-					idleColor: 0xFF0A3C33,
-					hoverColor: 0xFF10584B
-				});
-				worldmapButton.x -= Math.round(worldmapButton.width + 0.5 * BASE_SCALE);
-				worldmapButton.addLabel('mainMenu.worldMap', FlxPoint.get(0, 44), 30, CENTER);
-				window.add(worldmapButton);
-
-				var freeplayButton:WindowButton = new WindowButton(state.windowArea.width / 2, 3 * BASE_SCALE, {
-					position: [1, 0],
-					image: getImage('windowButtons/freeplay'),
-					width: 56,
-					height: 55,
-					idleColor: 0xFF0A3C33,
-					hoverColor: 0xFF10584B
-				});
-				freeplayButton.x += Math.round(0.5 * BASE_SCALE);
-				freeplayButton.addLabel('generic.freeplay', FlxPoint.get(0, 44), 30, CENTER);
-				window.add(freeplayButton);
-
-				var tutorialButton:WindowButton = new WindowButton(state.windowArea.width / 2, worldmapButton.y + worldmapButton.height + BASE_SCALE, {
-					position: [0, 1],
-					image: getImage('windowButtons/tutorial'),
-					width: 72,
-					height: 12,
-					idleColor: 0xFFAAE2DC,
-					hoverColor: 0xFFFFFFFF
-				});
-				tutorialButton.x -= tutorialButton.width / 2;
-				tutorialButton.addLabel('mainMenu.tutorial', FlxPoint.get(0, 2), 28, CENTER);
-				window.add(tutorialButton);
-
-				return window;
+				return new PlaySubMenu(state);
 			}
 		},
 		{
@@ -150,9 +111,7 @@ class MainMenuState extends MusicBeatState
 			triggerType: OPEN_WINDOW,
 			onSelect: function(state:MainMenuState)
 			{
-				var window:WindowSubMenu = new WindowSubMenu('generic.extras');
-
-				return window;
+				return new ExtrasSubMenu(state);
 			}
 		},
 		{
@@ -476,18 +435,21 @@ class MainMenuState extends MusicBeatState
 			return;
 		}
 
-		if (controls.UI_DOWN)
+		if (curSelectionMode == Main)
 		{
-			changeSelection(1);
-		}
-		else if (controls.UI_UP)
-		{
-			changeSelection(-1);
-		}
+			if (controls.UI_DOWN)
+			{
+				changeSelection(1);
+			}
+			else if (controls.UI_UP)
+			{
+				changeSelection(-1);
+			}
 
-		if (controls.ACCEPT)
-		{
-			checkSelection(curEntry);
+			if (controls.ACCEPT)
+			{
+				checkSelection(curEntry);
+			}
 		}
 
 		#if FEATURE_DEBUG_CONTENT

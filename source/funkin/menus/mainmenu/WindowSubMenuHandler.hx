@@ -11,15 +11,18 @@ class WindowSubMenuHandler extends FlxBasic
 	 */
 	public var isOpen(default, null):Bool;
 
+	/**
+	 * The title of the submenu.
+	 */
 	public var titleObject(default, null):FunkinText;
 
 	/**
-	 * The button that closes any open sub-menu.
+	 * The button that closes any open submenu.
 	 */
 	public var closeButton(default, null):StaticButton;
 
 	/**
-	 * The current active sub-menu.
+	 * The current active submenu.
 	 */
 	public var curSubMenu(default, null):WindowSubMenu;
 
@@ -49,7 +52,11 @@ class WindowSubMenuHandler extends FlxBasic
 		background.alpha = 0.7;
 		background.camera = this.camera;
 
-		closeButton = new StaticButton(scale, scale, Paths.image('ui/x'), close.bind(true));
+		closeButton = new StaticButton(scale, scale, Paths.image('ui/x'), () ->
+		{
+			FunkinSound.playMenuSound(CANCEL);
+			close(true);
+		});
 		closeButton.scaleSprite(scale);
 		closeButton.camera = this.camera;
 
@@ -87,7 +94,10 @@ class WindowSubMenuHandler extends FlxBasic
 		revive();
 
 		curSubMenu = subMenu;
+		curSubMenu.preciseAngle = false;
+		curSubMenu.preciseScale = false;
 		curSubMenu.camera = windowCamera;
+		curSubMenu.create();
 		curSubMenu.init(this);
 		titleObject.translationData = {id: curSubMenu.nameTranslationID};
 
@@ -171,11 +181,7 @@ class WindowSubMenuHandler extends FlxBasic
 	public function onLanguageUpdate(language:String)
 	{
 		titleObject.text = '';
-
-		curSubMenu?.forEach((spr) ->
-		{
-			spr.label.text = '';
-		});
+		curSubMenu?.onLanguageUpdate(language);
 	}
 
 	override public function revive()

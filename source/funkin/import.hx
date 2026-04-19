@@ -17,6 +17,7 @@ import flixel.util.FlxTimer;
 
 import funkin.Defaults;
 import funkin.Paths;
+import funkin.graphics.FunkinGroup;
 import funkin.graphics.FunkinSprite;
 import funkin.graphics.FunkinText;
 import funkin.input.Pointer;
@@ -27,6 +28,7 @@ import funkin.utils.MathUtil;
 
 import openfl.utils.Assets;
 
+using Lambda;
 using StringTools;
 
 using funkin.utils.tools.FloatTools;

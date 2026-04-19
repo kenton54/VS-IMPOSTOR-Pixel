@@ -1,82 +1,140 @@
 package funkin.menus.mainmenu;
 
-import flixel.math.FlxPoint;
-
-class WindowSubMenu extends FlxTypedGroup<WindowButton>
+class WindowSubMenu extends FunkinGroup<WindowButton>
 {
 	public var nameTranslationID(default, null):String;
 
-	public var customUpdate:Float -> Void = null;
+	var controls(get, never):funkin.input.Controls;
 
+	var _menuInstance:MainMenuState;
 	var _parent:WindowSubMenuHandler;
 
-	var _pointerPosition:FlxPoint;
-	var _hovering:Bool = false;
-
-	public function new(translationID:String)
+	public function new(instance:MainMenuState, translationID:String)
 	{
 		super();
 
+		_menuInstance = instance;
 		nameTranslationID = translationID;
-
-		_pointerPosition = FlxPoint.get(-1, -1);
 	}
 
 	override function destroy()
 	{
 		super.destroy();
-		customUpdate = null;
+
+		_menuInstance = null;
+		_parent = null;
 	}
 
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		if (customUpdate != null)
-		{
-			customUpdate(elapsed);
-		}
-
-		var _lastPosition:FlxPoint = _pointerPosition.clone();
-		_hovering = false;
-
-		for (button in members)
-		{
-			/*
-				if (Pointer.overlapsComplex(button, @:privateAccess _parent.windowCamera) && button.available)
-				{
-					_hovering = true;
-					_pointerPosition.copyFrom(button.index);
-					if (_pointerPosition.x != _lastPosition.x || _pointerPosition.y != _lastPosition.y)
-					{
-						button.hover();
-					}
-				}
-				else
-				{
-					button.idle();
-				}
-
-				if (_hovering && Pointer.justReleased)
-				{
-					//button.checkPosition();
-				}
-			 */
-		}
-
-		if (!_hovering)
-		{
-			_pointerPosition.set(-1, -1);
-		}
-	}
+	public function create() {}
 
 	public function init(parent:WindowSubMenuHandler)
 	{
 		_parent = parent;
+	}
 
-		forEach((spr) ->
+	public function onLanguageUpdate(language:String)
+	{
+		for (child in children)
 		{
-			spr.camera = _parent.windowCamera;
-		});
+			child.label.text = '';
+		}
+	}
+
+	function get_controls():funkin.input.Controls
+	{
+		return funkin.input.InputManager.controlsP1;
+	}
+}
+
+class WindowButton extends FunkinSpriteGroup
+{
+	public var available(default, set):Bool = true;
+	public var onSelect:Void -> Void = null;
+
+	public var button:FunkinSprite;
+	public var label:FunkinText;
+
+	public var idleColor(default, set):FlxColor = FlxColor.BLACK;
+	public var hoverColor(default, set):FlxColor = FlxColor.WHITE;
+
+	var hovering(default, set):Bool = false;
+
+	public function new(x:Float = 0, y:Float = 0)
+	{
+		super(x, y);
+
+		button = new FunkinSprite();
+		add(button);
+
+		label = new FunkinText();
+		add(label);
+	}
+
+	function set_available(value:Bool):Bool
+	{
+		available = value;
+
+		if (available)
+		{
+			if (hovering)
+			{
+				button.playAnimation('hover');
+				label.color = hoverColor;
+			}
+			else
+			{
+				button.playAnimation('idle');
+				label.color = idleColor;
+			}
+		}
+		else
+		{
+			button.playAnimation('locked');
+			label.color = FlxColor.BLACK;
+		}
+
+		return available;
+	}
+
+	function set_hovering(value:Bool):Bool
+	{
+		hovering = value && available;
+
+		if (hovering)
+		{
+			button.playAnimation('hover');
+			label.color = hoverColor;
+		}
+		else if (available)
+		{
+			button.playAnimation('idle');
+			label.color = idleColor;
+		}
+
+		return hovering;
+	}
+
+	function set_idleColor(value:FlxColor):FlxColor
+	{
+		idleColor = value;
+
+		if (!hovering && available)
+		{
+			label.color = idleColor;
+		}
+
+		return idleColor;
+	}
+
+	function set_hoverColor(value:FlxColor):FlxColor
+	{
+		hoverColor = value;
+
+		if (hovering && available)
+		{
+			label.color = hoverColor;
+		}
+
+		return hoverColor;
 	}
 }

@@ -291,6 +291,7 @@ class Project extends HXProject
     function setupMacros()
     {
         addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxObject())', 'flixel.FlxObject')");
+        addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')");
     }
 
     function setupLibraries()
@@ -388,12 +389,18 @@ class Project extends HXProject
 
     function setupIcons()
     {
+        if (isAndroid())
+        {
+            recursiveCopyDirectory('.artwork/icons/android/', '${app.path}/android/bin/app/src/main/res/', templateContext);
+        }
+
         addIcon(".artwork/icons/x16.png", 16);
         addIcon(".artwork/icons/x32.png", 32);
         addIcon(".artwork/icons/x64.png", 64);
         addIcon(".artwork/icons/x128.png", 128);
         addIcon(".artwork/icons/x512.png", 512);
         addIcon(".artwork/icons/x1024.png", 1024);
+        addIcon(".artwork/icons/x1024.png");
     }
 
     function setupAndroid()
@@ -417,6 +424,9 @@ class Project extends HXProject
                 config.set("android.gradle-project-directory", "bin-bundle");
             }
         }
+
+        config.set("android.application.android:icon", "@mipmap/ic_launcher");
+        config.set("android.application.android:roundIcon", "@mipmap/ic_launcher_round");
     }
 
     function setupIOS()
@@ -568,6 +578,35 @@ class Project extends HXProject
     public function addIcon(icon:String, ?size:Int):Void
     {
         icons.push(new Icon(icon, size));
+    }
+
+    public function recursiveCopyDirectory(source:String, destination:String, context:String = null, process:Bool = true, warnIfNotFound:Bool = true)
+    {
+        if (!FileSystem.exists(source))
+        {
+            if (warnIfNotFound)
+            {
+                warn('Could not find directory "$source"');
+            }
+
+            return;
+        }
+
+        for (item in FileSystem.readDirectory(source))
+        {
+            var itemSource:String = Path.combine(source, item);
+            var itemDestination:String = Path.combine(destination, item);
+
+            if (FileSystem.isDirectory(itemSource))
+            {
+                recursiveCopyDirectory(itemSource, itemDestination, context, process, warnIfNotFound);
+            }
+            else
+            {
+                FileSystem.createDirectory(Path.directory(itemDestination));
+                System.copyFile(itemSource, itemDestination, context, process);
+            }
+        }
     }
 
     public function isDesktop():Bool

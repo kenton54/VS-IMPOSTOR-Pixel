@@ -1,8 +1,6 @@
 package funkin.menus.mainmenu;
 
-import flixel.FlxSprite;
-
-class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
+class MainMenuButton extends FunkinSpriteGroup
 {
 	/**
 	 * The index position of the button inside the menu.
@@ -71,7 +69,6 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 		add(label);
 
 		icon = new FunkinSprite(8 * scale);
-		add(icon);
 
 		if (data.icon != null)
 		{
@@ -88,6 +85,8 @@ class MainMenuButton extends FlxTypedSpriteGroup<FlxSprite>
 		{
 			icon.visible = false;
 		}
+
+		add(icon);
 
 		cursorMode = Hover;
 

@@ -6,15 +6,31 @@ package funkin.utils.tools;
 class IntTools
 {
 	/**
-	 * Limits the integer to the specified bounds.
+	 * Limits the Integer to the specified bounds.
 	 *
 	 * @param value The Integer to bound.
 	 * @param min 	The minimum allowed value.
 	 * @param max 	The maximum allowed value.
-	 * @return The bounded value.
+	 * @return The bounded Integer.
 	 */
-	public static function clamp(value:Int, min:Int, max:Int):Int
+	public static function clamp(value:Int, ?min:Int, ?max:Int):Int
 	{
-		return value < min ? min : (value > max ? max : value);
+		if (min != null)
+		{
+			if (value < min)
+			{
+				value = min;
+			}
+		}
+
+		if (max != null)
+		{
+			if (value > max)
+			{
+				value = max;
+			}
+		}
+
+		return value;
 	}
 }
