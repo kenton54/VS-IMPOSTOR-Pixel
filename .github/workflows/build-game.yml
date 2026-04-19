@@ -362,3 +362,67 @@ jobs:
             .haxelib/
             export/release/android/haxe/
             export/release/android/obj/
+
+  build_ios:
+    name: iOS
+    runs-on: macos-latest
+    permissions: write-all
+    steps:
+      - name: Checkout Repository
+        id: repo-check
+        uses: actions/checkout@v6
+
+      - name: Install Haxe
+        id: haxe-install
+        uses: krdlab/setup-haxe@v2
+        with:
+          haxe-version: 4.3.7
+
+      - name: Restore Cache
+        id: cache-restore
+        uses: actions/cache/restore@v5
+        with:
+          key: cache_ios
+          path: |
+            .haxelib/
+            export/release/ios/haxe/
+            export/release/ios/obj/
+
+      - name: Install / Update Libraries
+        id: lib-install
+        run: |
+          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+
+      - name: Build Game
+        id: game-compile
+        run: |
+          haxelib run lime build ios -release -nosign
+
+      - name: Upload Artifact
+        id: artifact-upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: VS IMPOSTOR Pixel (iOS XCode Project)
+          path: export/release/ios/bin/
+
+      - name: Clear old Cache
+        id: cache-clear
+        uses: actions/github-script@v8
+        if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+        with:
+          script: |
+            const caches = github.rest.actions.deleteActionsCacheByKey({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              key: "cache_ios"
+            });
+
+      - name: Save new Cache
+        id: cache-save
+        uses: actions/cache/save@v5
+        with:
+          key: cache_ios
+          path: |
+            .haxelib/
+            export/release/ios/haxe/
+            export/release/ios/obj/
