@@ -385,8 +385,8 @@ jobs:
           key: cache_ios
           path: |
             .haxelib/
-            export/release/ios/haxe/
-            export/release/ios/obj/
+            export/release/ios/impostorPixel/haxe/
+            export/release/ios/impostorPixel/obj/
 
       - name: Install / Update Libraries
         id: lib-install
@@ -403,7 +403,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: VS IMPOSTOR Pixel (iOS XCode Project)
-          path: export/release/ios/bin/
+          path: export/release/ios/
 
       - name: Clear old Cache
         id: cache-clear
@@ -424,5 +424,5 @@ jobs:
           key: cache_ios
           path: |
             .haxelib/
-            export/release/ios/haxe/
-            export/release/ios/obj/
+            export/release/ios/impostorPixel/haxe/
+            export/release/ios/impostorPixel/obj/
