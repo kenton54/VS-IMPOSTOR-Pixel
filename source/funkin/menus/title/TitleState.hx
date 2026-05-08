@@ -1,8 +1,10 @@
-package funkin.menus;
+package funkin.menus.title;
 
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
+import flixel.text.FlxInputText;
 import flixel.util.FlxGradient;
+import flixel.util.FlxTimer;
 
 import funkin.graphics.shaders.RGBPalette;
 import funkin.graphics.text.GameboyText;
@@ -49,6 +51,12 @@ class TitleState extends MusicBeatState
 		[0xFFFF7488, 0xFFD94368],
 	];
 
+	var keyboardButton:StaticButton;
+	var secretCodeHint:FunkinText;
+
+	var secretCodeInputTxt:FlxInputText;
+	var inputtingSecretCode:Bool = false;
+
 	var doCameraBop:Bool = true;
 	var canChangeColor:Bool = true;
 
@@ -64,10 +72,8 @@ class TitleState extends MusicBeatState
 	override function create()
 	{
 		MusicBeatState.skipTransOut = true;
-
-		super.create();
-
 		FunkinSound.playMenuMusic();
+		subStateClosed.add(onSubStateClose);
 
 		#if FEATURE_DISCORD_API
 		DiscordClient.changePresence({
@@ -75,6 +81,8 @@ class TitleState extends MusicBeatState
 			details: 'Title Screen'
 		});
 		#end
+
+		super.create();
 
 		stars = new StarsBackdrop(-10, 5);
 		add(stars);
@@ -107,6 +115,25 @@ class TitleState extends MusicBeatState
 		pressStartText.alpha = 1;
 		add(pressStartText);
 
+		secretCodeInputTxt = new FlxInputText(0, 0, FlxG.width, '', 48, FlxColor.WHITE, FlxColor.TRANSPARENT);
+		secretCodeInputTxt.font = Defaults.DEFAULT_FONT;
+		secretCodeInputTxt.caretWidth = 4;
+		secretCodeInputTxt.selectionColor = FlxColor.BLUE;
+		secretCodeInputTxt.filterMode = ALPHANUMERIC;
+		secretCodeInputTxt.forceCase = UPPER_CASE;
+		secretCodeInputTxt.multiline = false;
+		secretCodeInputTxt.selectable = false;
+		secretCodeInputTxt.alignment = CENTER;
+		secretCodeInputTxt.screenCenter(X);
+		secretCodeInputTxt.y = pressStartText.y + (pressStartText.height - secretCodeInputTxt.height) / 2;
+		add(secretCodeInputTxt);
+
+		keyboardButton = new StaticButton(12, 12, Paths.image('menus/title/keyboard'), openKeyboard);
+		keyboardButton.scaleSprite(4);
+		keyboardButton.alpha = 0;
+		keyboardButton.visible = false;
+		add(keyboardButton);
+
 		introGroup = new FlxGroup();
 		add(introGroup);
 
@@ -138,7 +165,14 @@ class TitleState extends MusicBeatState
 			{
 				allowInput = false;
 				FlxG.camera.scroll.y = FlxG.height / 2;
-				FlxTween.tween(FlxG.camera.scroll, {y: 0}, 1, {ease: FlxEase.quintOut, onComplete: (_) -> allowInput = true});
+				FlxTween.tween(FlxG.camera.scroll, {y: 0}, 1, {
+					ease: FlxEase.quintOut,
+					onComplete: (_) ->
+					{
+						allowInput = true;
+						appearKeyboard();
+					}
+				});
 			}
 		}
 	}
@@ -171,9 +205,14 @@ class TitleState extends MusicBeatState
 
 	function skipIntro(ignoreChanges:Bool = false)
 	{
-		if (FlxG.sound.music != null && !ignoreChanges)
+		if (!ignoreChanges)
 		{
-			FlxG.sound.music.time = 9412;
+			appearKeyboard();
+
+			if (FlxG.sound.music != null)
+			{
+				FlxG.sound.music.time = 9412;
+			}
 		}
 
 		endIntro(!ignoreChanges);
@@ -210,15 +249,34 @@ class TitleState extends MusicBeatState
 					}
 
 				case Idle:
-					if (pressedEnter)
+					if (!inputtingSecretCode)
 					{
-						if (canSkipTransition && transitionTimer.active)
+						if (pressedEnter)
 						{
-							transitionToMainMenu(true);
+							if (canSkipTransition && transitionTimer.active)
+							{
+								transitionToMainMenu(true);
+							}
+							else
+							{
+								startTransitionToMainMenu(controls.ACCEPT);
+							}
 						}
-						else
+
+						if (controls.CHAT)
 						{
-							startTransitionToMainMenu(controls.ACCEPT);
+							openKeyboard();
+						}
+					}
+					else
+					{
+						if (FlxG.keys.justPressed.ENTER)
+						{
+							closeKeyboard();
+						}
+						else if (FlxG.keys.justPressed.ESCAPE)
+						{
+							closeKeyboard(false);
 						}
 					}
 
@@ -282,15 +340,7 @@ class TitleState extends MusicBeatState
 		pressed = true;
 		FunkinSound.playMenuSound(CONFIRM);
 
-		if (pressStartTweenIn != null)
-		{
-			pressStartTweenIn.cancel();
-		}
-
-		if (pressStartTweenOut != null)
-		{
-			pressStartTweenOut.cancel();
-		}
+		stopPressStartTween();
 
 		pressStartText.alpha = 1;
 
@@ -306,6 +356,8 @@ class TitleState extends MusicBeatState
 
 		pressStartText.screenCenter(X);
 		FlxFlicker.flicker(pressStartText, 1, 0.05, false);
+
+		dissapearKeyboard();
 
 		transitionTimer.start(1, _ -> transitionToMainMenu());
 	}
@@ -326,6 +378,7 @@ class TitleState extends MusicBeatState
 		else
 		{
 			transitionSprite.visible = true;
+			transitionSprite.flipY = false;
 			transitionSprite.y = FlxG.height;
 			FlxTween.tween(transitionSprite, {y: 0}, 1, {ease: FlxEase.quartIn});
 			FlxTween.tween(FlxG.camera.scroll, {y: FlxG.height}, 1, {ease: FlxEase.quartIn});
@@ -365,15 +418,7 @@ class TitleState extends MusicBeatState
 
 		pressStartText.screenCenter(X);
 
-		if (pressStartTweenIn != null)
-		{
-			pressStartTweenIn.cancel();
-		}
-
-		if (pressStartTweenOut != null)
-		{
-			pressStartTweenOut.cancel();
-		}
+		stopPressStartTween();
 
 		pressStartText.alpha = 0;
 		pressStartTweenIn = FlxTween.tween(pressStartText, {alpha: 1}, PRESS_START_TWEEN_DURATION, {
@@ -393,6 +438,19 @@ class TitleState extends MusicBeatState
 		});
 	}
 
+	function stopPressStartTween()
+	{
+		if (pressStartTweenIn != null)
+		{
+			pressStartTweenIn.cancel();
+		}
+
+		if (pressStartTweenOut != null)
+		{
+			pressStartTweenOut.cancel();
+		}
+	}
+
 	function bopTitle()
 	{
 		FlxTween.cancelTweensOf(titleMainSprite, ['scale.x', 'scale.y']);
@@ -405,6 +463,118 @@ class TitleState extends MusicBeatState
 		titleRGBSprite.scale.set(beatScale, beatScale);
 		FlxTween.tween(titleMainSprite, {'scale.x': 4, 'scale.y': 4}, tweenDuration, {ease: FlxEase.quadOut});
 		FlxTween.tween(titleRGBSprite, {'scale.x': 4, 'scale.y': 4}, tweenDuration, {ease: FlxEase.quadOut});
+	}
+
+	function resumeTitle()
+	{
+		FunkinSound.resumeMusic();
+		FlxG.sound.music?.fadeIn(2, 0, 1);
+
+		doCameraBop = true;
+		tweenPressStart();
+	}
+
+	function appearKeyboard()
+	{
+		keyboardButton.visible = true;
+		keyboardButton.enabled = true;
+		FlxTween.cancelTweensOf(keyboardButton);
+		FlxTween.tween(keyboardButton, {alpha: 1}, 0.25);
+	}
+
+	function dissapearKeyboard()
+	{
+		keyboardButton.enabled = false;
+		FlxTween.cancelTweensOf(keyboardButton);
+		FlxTween.tween(keyboardButton, {alpha: 0}, 0.25, {onComplete: (_) -> keyboardButton.visible = false});
+	}
+
+	function onSubStateClose(subState:flixel.FlxSubState)
+	{
+		if (Std.isOfType(subState, VideoSubState))
+		{
+			#if FEATURE_DISCORD_API
+			DiscordClient.changePresence({
+				state: 'Navigating Menus',
+				details: 'Title Screen'
+			});
+			#end
+
+			resumeTitle();
+
+			transitionSprite.flipY = true;
+			FlxTween.tween(transitionSprite, {y: -FlxG.height - transitionSprite.height}, 2, {ease: FlxEase.quartOut, onComplete: (_) -> transitionSprite.visible = false});
+			FlxTween.tween(FlxG.camera.scroll, {y: 0}, 2, {ease: FlxEase.quartOut});
+
+			appearKeyboard();
+		}
+	}
+
+	function openKeyboard()
+	{
+		doCameraBop = false;
+		stopPressStartTween();
+		pressStartText.alpha = 0;
+
+		secretCodeInputTxt.startFocus();
+		inputtingSecretCode = true;
+
+		dissapearKeyboard();
+	}
+
+	function closeKeyboard(checkInput:Bool = true)
+	{
+		secretCodeInputTxt.endFocus();
+
+		if (checkInput)
+		{
+			if (!checkCodeInput(secretCodeInputTxt.text))
+			{
+				doCameraBop = true;
+				tweenPressStart();
+
+				appearKeyboard();
+			}
+		}
+		else
+		{
+			doCameraBop = true;
+			tweenPressStart();
+			appearKeyboard();
+		}
+
+		secretCodeInputTxt.text = '';
+		inputtingSecretCode = false;
+	}
+
+	final validCodes:Array<String> = ['legacy', 'leroy', '67', 'sneep', 'folly', 'ilovepurple', 'ihategrey'];
+
+	function checkCodeInput(input:String):Bool
+	{
+		if (validCodes.contains(input.toLowerCase()))
+		{
+			FunkinSound.playMenuSound(CONFIRM);
+			FlxG.sound.music?.fadeOut(1, 0, (_) -> FunkinSound.pauseMusic());
+
+			switch (input.toLowerCase())
+			{
+				case 'leroy':
+					transitionUpwards(() -> openSubState(new VideoSubState('leroy')));
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	function transitionUpwards(onComplete:Void -> Void)
+	{
+		transitionSprite.visible = true;
+		transitionSprite.flipY = true;
+		transitionSprite.y = -FlxG.height - transitionSprite.height;
+		FlxTween.tween(transitionSprite, {y: -FlxG.height}, 1, {ease: FlxEase.quartIn});
+		FlxTween.tween(FlxG.camera.scroll, {y: -FlxG.height}, 1, {ease: FlxEase.quartIn, onComplete: (_) -> onComplete()});
 	}
 }
 

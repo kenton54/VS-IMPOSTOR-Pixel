@@ -132,12 +132,21 @@ class Paths
 	}
 
 	/**
-	 * @param path 			Where the font file is located at, must include the extension.
+	 * @param path 	Where the font file is located at. Must include the extension.
 	 * @return The full directory to the file.
 	 */
 	public inline static function font(path:String):String
 	{
 		return getMainPath('fonts/$path');
+	}
+
+	/**
+	 * @param path 	Where the video file is located at.
+	 * @return The full directory to the file.
+	 */
+	public inline static function video(path:String):String
+	{
+		return getLibraryPath('$path.mp4', 'videos');
 	}
 
 	public inline static function getSparrowFrames(path:String, ?library:String):FlxAtlasFrames

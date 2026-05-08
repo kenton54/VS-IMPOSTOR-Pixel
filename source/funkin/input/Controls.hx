@@ -99,6 +99,20 @@ class Controls extends FlxActionSet
 
 	public var FULLSCREEN(get, never):Bool;
 
+	public var INTERACT(get, never):Bool;
+
+	public var INTERACT_P(get, never):Bool;
+
+	public var INTERACT_R(get, never):Bool;
+
+	public var MAP(get, never):Bool;
+
+	public var MAP_P(get, never):Bool;
+
+	public var MAP_R(get, never):Bool;
+
+	public var CHAT(get, never):Bool;
+
 	public var VOLUME_UP(get, never):Bool;
 
 	public var VOLUME_UP_P(get, never):Bool;
@@ -659,6 +673,41 @@ class Controls extends FlxActionSet
 	function get_FULLSCREEN():Bool
 	{
 		return fullscreen.check();
+	}
+
+	function get_INTERACT():Bool
+	{
+		return interact.check();
+	}
+
+	function get_INTERACT_P():Bool
+	{
+		return interact_p.check();
+	}
+
+	function get_INTERACT_R():Bool
+	{
+		return interact_r.check();
+	}
+
+	function get_MAP():Bool
+	{
+		return map.check();
+	}
+
+	function get_MAP_P():Bool
+	{
+		return map_p.check();
+	}
+
+	function get_MAP_R():Bool
+	{
+		return map_r.check();
+	}
+
+	function get_CHAT():Bool
+	{
+		return chat.check();
 	}
 
 	function get_VOLUME_UP():Bool

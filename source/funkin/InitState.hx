@@ -3,7 +3,6 @@ package funkin;
 import flixel.FlxSprite;
 import flixel.FlxState;
 
-import funkin.menus.TitleState;
 import funkin.system.ShaderResizeFix;
 
 /**
@@ -75,6 +74,6 @@ class InitState extends FlxState
 		coreStarted = true;
 
 		funkin.ui.MusicBeatState.skipTransIn = true;
-		FlxG.switchState(() -> new TitleState());
+		FlxG.switchState(() -> new funkin.menus.title.TitleState());
 	}
 }

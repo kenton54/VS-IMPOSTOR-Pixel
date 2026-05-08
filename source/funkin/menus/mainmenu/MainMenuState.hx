@@ -265,8 +265,8 @@ class MainMenuState extends MusicBeatState
 		buttonsBackShadow.scaleSprite(BASE_SCALE);
 		buttonsBackShadow.blend = MULTIPLY;
 		buttonsBackShadow.camera = mainCamera;
-
 		add(buttonsBackShadow);
+
 		add(mainButtonsBack);
 
 		var buttonsDivision:FunkinSprite = new FunkinSprite(mainButtonsBack.x + 4 * BASE_SCALE, mainButtonsBack.y + 46 * BASE_SCALE).makeGraphic(94, 1, 0xFF5A5B61);
@@ -372,12 +372,15 @@ class MainMenuState extends MusicBeatState
 
 		changeSelection();
 
-		disableInput();
+		if (comingFromTitleState)
+		{
+			disableInput();
 
-		FlxG.camera.y = windowArea.y + FlxG.height / 2;
-		mainCamera.scroll.y = -FlxG.height / 2;
-		FlxTween.tween(FlxG.camera, {y: windowArea.y}, 1, {ease: FlxEase.quintOut});
-		FlxTween.tween(mainCamera.scroll, {y: 0}, 1, {ease: FlxEase.quintOut, onComplete: (_) -> enableInput()});
+			FlxG.camera.y = windowArea.y + FlxG.height / 2;
+			mainCamera.scroll.y = -FlxG.height / 2;
+			FlxTween.tween(FlxG.camera, {y: windowArea.y}, 1, {ease: FlxEase.quintOut});
+			FlxTween.tween(mainCamera.scroll, {y: 0}, 1, {ease: FlxEase.quintOut, onComplete: (_) -> enableInput()});
+		}
 	}
 
 	function createMainButtons(x:Float = 0, y:Float = 0)
@@ -611,7 +614,7 @@ class MainMenuState extends MusicBeatState
 		{
 			transitionToTitle();
 			MusicBeatState.setTransitions(VerticalFade);
-			FlxG.switchState(() -> new TitleState(true));
+			FlxG.switchState(() -> new funkin.menus.title.TitleState(true));
 		}
 	}
 
@@ -633,7 +636,7 @@ class MainMenuState extends MusicBeatState
 				openWindowSubMenu(buttonData.onSelect(this));
 
 			case SWITCH_STATE:
-				new FlxTimer().start(1, _ -> FlxG.switchState(buttonData.onSelect(this)));
+				flixel.util.FlxTimer.wait(1, () -> FlxG.switchState(buttonData.onSelect(this)));
 
 			case OPEN_SUBSTATE:
 				openSubState(buttonData.onSelect(this));
@@ -675,7 +678,7 @@ class MainMenuState extends MusicBeatState
 	}
 }
 
-enum SelectionMode
+private enum SelectionMode
 {
 	/**
 	 * The player is selecting the main buttons.

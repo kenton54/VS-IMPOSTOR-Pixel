@@ -9,16 +9,4 @@ class StaticButton extends funkin.input.FunkinButton
 
 		onRelease.add(trigger);
 	}
-
-	override function update(elapsed:Float)
-	{
-		#if android
-		if (FlxG.android.justReleased.BACK && enabled)
-		{
-			onRelease.dispatch();
-		}
-		#end
-
-		super.update(elapsed);
-	}
 }
