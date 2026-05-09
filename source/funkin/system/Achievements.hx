@@ -189,15 +189,30 @@ class Achievements
 	}
 
 	/**
-	 * Checks if any achievement is supposed to be unlocked but hasn't, or .
+	 * Checks if any achievement is supposed to be unlocked but hasn't.
 	 */
 	static function checkAchievements()
 	{
 		for (achievement in achievements)
 		{
-			if (achievement.unlockCriteria != null && achievement.unlockCriteria(achievement))
+			if (isUnlocked(achievement.ID))
 			{
-				grantAchievementForce(achievement);
+				continue;
+			}
+
+			if (achievement.unlockCriteria != null)
+			{
+				if (achievement.unlockCriteria(achievement))
+				{
+					grantAchievementForce(achievement);
+				}
+			}
+			else if (achievement.maxPoints != null)
+			{
+				if (achievement.progress >= achievement.maxPoints)
+				{
+					grantAchievementForce(achievement);
+				}
 			}
 		}
 	}
