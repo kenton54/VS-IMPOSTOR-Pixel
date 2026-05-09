@@ -77,7 +77,7 @@ class MainMenuState extends MusicBeatState
 			triggerType: SWITCH_STATE,
 			onSelect: function(state:MainMenuState)
 			{
-				return null;
+				return new funkin.menus.achievements.AchievementsState();
 			}
 		},
 		{
@@ -121,7 +121,9 @@ class MainMenuState extends MusicBeatState
 			triggerType: OPEN_SUBSTATE,
 			onSelect: function(state:MainMenuState)
 			{
-				return null;
+				var prompt:funkin.menus.mainmenu.ExitPrompt = new funkin.menus.mainmenu.ExitPrompt();
+				prompt.onCancelExit.add(() -> state.enableInputPublic());
+				return prompt;
 			}
 		}
 	];
@@ -429,6 +431,10 @@ class MainMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+
+		// TEMP: press F5 to test achievement popup, delete when done
+		if (FlxG.keys.justPressed.F5)
+			funkin.system.Achievements.grantAchievement('noBeans');
 	}
 
 	function handleInput()
@@ -639,6 +645,7 @@ class MainMenuState extends MusicBeatState
 				flixel.util.FlxTimer.wait(1, () -> FlxG.switchState(buttonData.onSelect(this)));
 
 			case OPEN_SUBSTATE:
+				disableInput();
 				openSubState(buttonData.onSelect(this));
 		}
 	}
@@ -661,6 +668,11 @@ class MainMenuState extends MusicBeatState
 	{
 		super.onLanguageUpdate(language);
 		windowMenu.onLanguageUpdate(language);
+	}
+
+	public function enableInputPublic()
+	{
+		enableInput();
 	}
 
 	function enableInput()

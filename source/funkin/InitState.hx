@@ -44,6 +44,9 @@ class InitState extends FlxState
 		funkin.system.Translations.init();
 		funkin.system.Achievements.init();
 
+		// Drive achievement toast animations every frame.
+		FlxG.signals.postUpdate.add(() -> funkin.system.Achievements.update(FlxG.elapsed));
+
 		Conductor.init();
 
 		#if FEATURE_DISCORD_API
