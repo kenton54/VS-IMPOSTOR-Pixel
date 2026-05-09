@@ -42,9 +42,9 @@ class Translations
 	static function init()
 	{
 		languages = new Map<String, Language>();
-		curLanguageID = Defaults.DEFAULT_LANGUAGE;
+		curLanguageID = Constants.DEFAULT_LANGUAGE;
 
-		for (language in Defaults.LANGUAGES)
+		for (language in Constants.LANGUAGES)
 		{
 			if (Assets.exists(Paths.json('languages/$language', 'impostor')))
 			{
@@ -257,7 +257,7 @@ class Translations
 		}
 		else
 		{
-			curLanguageID = Defaults.DEFAULT_LANGUAGE;
+			curLanguageID = Constants.DEFAULT_LANGUAGE;
 			updateLanguage();
 		}
 
@@ -276,7 +276,7 @@ class Translations
 
 	static function get_defaultLanguage():Language
 	{
-		return languages.get(Defaults.DEFAULT_LANGUAGE) ?? {name: 'Unknown', data: {}};
+		return languages.get(Constants.DEFAULT_LANGUAGE) ?? {name: 'Unknown', data: {}};
 	}
 }
 

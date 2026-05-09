@@ -196,7 +196,7 @@ class Paths
 
 	static function getLanguageSuffix(path:String):String
 	{
-		if (Translations.curLanguageID == Defaults.DEFAULT_LANGUAGE)
+		if (Translations.curLanguageID == Constants.DEFAULT_LANGUAGE)
 		{
 			return path;
 		}

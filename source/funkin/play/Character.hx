@@ -46,7 +46,7 @@ class Character extends FunkinSprite
 		else
 		{
 			FlxG.log.warn('Couldn\'t find character with an ID of "$character"!');
-			rawCharacterData = Json.parse(Assets.getText(Paths.json('characters/${Defaults.DEFAULT_CHARACTER}')));
+			rawCharacterData = Json.parse(Assets.getText(Paths.json('characters/${Constants.DEFAULT_CHARACTER}')));
 		}
 
 		var characterData:CharacterData = {
@@ -84,8 +84,7 @@ class Character extends FunkinSprite
 
 		for (animationData in characterData.animations)
 		{
-			addCharacterAnimation(animationData.name, animationData.prefix, animationData.frameRate, animationData.looped,
-				FlxPoint.get(animationData.offsets[0], animationData.offsets[1]), animationData.flipX, animationData.flipY);
+			addCharacterAnimation(animationData.name, animationData.prefix, animationData.frameRate, animationData.looped, FlxPoint.get(animationData.offsets[0], animationData.offsets[1]), animationData.flipX, animationData.flipY);
 		}
 
 		playAnimation(animation.getNameList()[0]);
@@ -96,8 +95,7 @@ class Character extends FunkinSprite
 		return this;
 	}
 
-	function addCharacterAnimation(animation:String, prefix:String, framerate:Float = 24, looped:Bool = true, ?offsets:FlxPoint, flipX:Bool = false,
-			flipY:Bool = false)
+	function addCharacterAnimation(animation:String, prefix:String, framerate:Float = 24, looped:Bool = true, ?offsets:FlxPoint, flipX:Bool = false, flipY:Bool = false)
 	{
 		if (offsets == null)
 		{

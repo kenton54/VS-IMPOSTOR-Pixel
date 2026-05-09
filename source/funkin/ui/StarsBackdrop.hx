@@ -104,13 +104,13 @@ class StarsBackdrop extends FlxBasic
 		}
 
 		// speed gets randomized
-		var minSpeed:Float = Defaults.DEFAULT_SHOOTING_STAR_SPEED * ssScale;
+		var minSpeed:Float = Constants.DEFAULT_SHOOTING_STAR_SPEED * ssScale;
 		var maxSpeed:Float = minSpeed * 2;
 		var choosenSpeed:Float = FlxG.random.float(minSpeed, maxSpeed);
 
 		// launch angle gets randomized
-		var minAngle:Float = Defaults.DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MIN;
-		var maxAngle:Float = Defaults.DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MAX;
+		var minAngle:Float = Constants.DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MIN;
+		var maxAngle:Float = Constants.DEFAULT_SHOOTING_STAR_LAUNCH_ANGLE_MAX;
 
 		if (launchFromRight)
 		{
@@ -188,7 +188,7 @@ class StarsBackdrop extends FlxBasic
 			}
 		}
 
-		if (FlxG.random.bool(Defaults.SHOOTING_STAR_SPAWN_CHANCE * 100))
+		if (FlxG.random.bool(Constants.SHOOTING_STAR_SPAWN_CHANCE * 100))
 		{
 			spawnShootingStar();
 		}
@@ -232,8 +232,8 @@ class StarsBackdrop extends FlxBasic
 			if (starsArray[i] == null)
 			{
 				var stars:FlxBackdrop = cast new FlxBackdrop().loadGraphic(Paths.image('stars'), true, 400, 200);
-				stars.animation.add(Defaults.DEFAULT_ANIMATION_NAME, [0, 1, 2, 3], 4);
-				stars.animation.play(Defaults.DEFAULT_ANIMATION_NAME);
+				stars.animation.add(Constants.DEFAULT_ANIMATION_NAME, [0, 1, 2, 3], 4);
+				stars.animation.play(Constants.DEFAULT_ANIMATION_NAME);
 				stars.velocity.x = (horizontalSpeed / layers) * FlxMath.remapToRange(i, 0, layers, layers, 0) * 2;
 				stars.velocity.y = (verticalSpeed / layers) * FlxMath.remapToRange(i, 0, layers, layers, 0) * 2;
 				stars.scale.x = stars.scale.y = scale / (i + 1);

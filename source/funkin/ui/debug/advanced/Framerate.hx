@@ -38,7 +38,7 @@ class Framerate extends DebugCategory
 		mainFPSText.height = overlayHeight;
 		mainFPSText.selectable = false;
 		mainFPSText.mouseEnabled = false;
-		mainFPSText.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 28, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
+		mainFPSText.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 28, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
 		addChild(mainFPSText);
 
 		fps = 0;

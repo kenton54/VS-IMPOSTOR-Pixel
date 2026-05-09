@@ -46,7 +46,7 @@ class DebugCategory extends Sprite
 			this.title.height = background.height;
 			this.title.selectable = false;
 			this.title.mouseEnabled = false;
-			this.title.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 12, 0xAAAAAA, null, null, null, null, null, getTextAlignFromCategoryAlignment());
+			this.title.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 12, 0xAAAAAA, null, null, null, null, null, getTextAlignFromCategoryAlignment());
 			addChild(this.title);
 		}
 	}
@@ -64,7 +64,7 @@ class DebugCategory extends Sprite
 		textField.height = overlayHeight;
 		textField.selectable = false;
 		textField.mouseEnabled = false;
-		textField.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 15, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
+		textField.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 15, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
 		return textField;
 	}
 

@@ -289,7 +289,7 @@ class MainMenuState extends MusicBeatState
 		createMainButtons(mainButtonsBack.x + 3 * BASE_SCALE * 2, mainButtonsBack.y + 3 * BASE_SCALE * 2);
 
 		var version:FunkinText = new FunkinText(mainButtonsBack.x, mainButtonsBack.y + mainButtonsBack.height + 2 * BASE_SCALE, mainButtonsBack.width, '', 18, true);
-		version.translationData = {id: 'common.version', parameters: [Defaults.VERSION]};
+		version.translationData = {id: 'common.version', parameters: [Constants.VERSION]};
 		version.alignment = CENTER;
 		version.borderSize = 2;
 		version.color = 0xFFBFBFBF;

@@ -116,7 +116,7 @@ class TitleState extends MusicBeatState
 		add(pressStartText);
 
 		secretCodeInputTxt = new FlxInputText(0, 0, FlxG.width, '', 48, FlxColor.WHITE, FlxColor.TRANSPARENT);
-		secretCodeInputTxt.font = Defaults.DEFAULT_FONT;
+		secretCodeInputTxt.font = Constants.DEFAULT_FONT;
 		secretCodeInputTxt.caretWidth = 4;
 		secretCodeInputTxt.selectionColor = FlxColor.BLUE;
 		secretCodeInputTxt.filterMode = ALPHANUMERIC;

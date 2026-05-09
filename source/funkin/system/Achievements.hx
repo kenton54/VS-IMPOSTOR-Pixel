@@ -1,16 +1,8 @@
 package funkin.system;
 
-import flixel.FlxSprite;
-import flixel.group.FlxSpriteGroup;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-import funkin.Paths;
-import funkin.graphics.FunkinSprite;
-import funkin.graphics.FunkinText;
-import funkin.sound.FunkinSound;
+import funkin.data.AchievementData;
 import funkin.system.FunkinSave;
 import funkin.system.Translations;
 
@@ -20,101 +12,194 @@ import funkin.system.Translations;
  */
 class Achievements
 {
-	// ─── Public state ────────────────────────────────────────────────────────────
+	/**
+	 * An array holding all loaded achievements.
+	 */
+	public static var achievements(default, null):Array<AchievementData> = [];
 
-	public static var achievements:Array<Achievement> = [];
-	public static var achievementsUnlocked:Array<String> = [];
-
-	// ─── Init ─────────────────────────────────────────────────────────────────────
+	/**
+	 * An array holding the IDs of the user's unlocked achievements.
+	 */
+	public static var achievementsUnlocked(default, null):Array<String> = [];
 
 	@:allow(funkin.InitState)
 	static function init()
 	{
-		achievementsUnlocked = FunkinSave.data?.unlockables?.achievements ?? [];
-
+		achievementsUnlocked = FunkinSave.unlockables?.achievements ?? [];
 		registerAll();
-	}
 
-	// ─── Registration ────────────────────────────────────────────────────────────
+		FlxG.signals.postStateSwitch.add(checkAchievements);
+	}
 
 	static function registerAll()
 	{
 		achievements = [
-			create('scammed',                        BRONZE),
+			create('scammed', BRONZE),
 			create('curiosityBenefitedTheInspector', GOLD),
-			create('relivingNostalgia',              SILVER),
-			create('newStoryUnfolds',                SILVER),
-			create('alteredReality',                 SILVER),
-			create('outsmarted',                     SILVER),
-			create('outperformed',                   SILVER),
-			create('onTheRun',                       SILVER),
-			create('noBeans',                        SILVER),
-			create('waiterMoreBeansPlease',          GOLD,   1000000),
-			create('fingerBreaker',                  GOLD,   10000),
-			create('tooHard',                        BRONZE, 200),
-			create('skillIssue',                     BRONZE, 50),
-			create('easyPrey',                       SILVER, 100),
-			create('bruh',                           BRONZE),
-			create('impostorFan',                    BRONZE),
-			create('slothSupporter',                 BRONZE),
-			create('leroy',                          PLATINUM),
+			create('relivingNostalgia', SILVER),
+			create('newStoryUnfolds', SILVER),
+			create('alteredReality', SILVER),
+			create('outsmarted', SILVER),
+			create('outperformed', SILVER),
+			create('onTheRun', SILVER),
+			create('noBeans', SILVER),
+			create('waiterMoreBeansPlease', GOLD, 1000000),
+			create('fingerBreaker', GOLD, 10000),
+			create('tooHard', BRONZE, 200),
+			create('skillIssue', BRONZE, 50),
+			create('easyPrey', SILVER, 100),
+			create('bruh', BRONZE),
+			create('impostorFan', BRONZE),
+			create('slothSupporter', BRONZE),
+			create('leroy', PLATINUM),
 		];
 	}
 
-	static inline function create(id:String, level:AchievementLevel, ?points:Int):Achievement
-		return new Achievement(id, level, points);
+	/**
+	 * Helper function that creates an achievement data.
+	 *
+	 * @param id							The ID of the achievement.
+	 * @param level						The grade level of the achievement.
+	 * @param unlockCriteria	(OPTIONAL) How the achievement gets unlocked.
+	 * @return The created `AchievementData`.
+	 */
+	inline static function create(id:String, level:AchievementLevel, ?points:Int, ?unlockCriteria:AchievementData -> Bool):AchievementData
+	{
+		return new AchievementData(id, level, points, unlockCriteria);
+	}
 
-	// ─── Queries ─────────────────────────────────────────────────────────────────
+	inline static function createPointsBasedUnlockCriteria(points:Int):AchievementData -> Bool
+	{
+		return (achievement:AchievementData) ->
+		{
+			return achievement.progress >= points;
+		};
+	}
 
+	/**
+	 * @param id The ID of the achievement to check.
+	 * @return Whether the achievement exists.
+	 */
 	public static function hasAchievement(id:String):Bool
 	{
-		for (a in achievements) if (a.ID == id) return true;
+		for (a in achievements)
+		{
+			if (a.ID == id)
+			{
+				return true;
+			}
+		}
+
 		return false;
 	}
 
-	public static function getAchievement(id:String):Null<Achievement>
+	/**
+	 * @param id The ID of the achievement to find.
+	 * @return The achievement data with the matching ID, `null` if it didn't find any.
+	 */
+	public static function getAchievement(id:String):Null<AchievementData>
 	{
-		for (a in achievements) if (a.ID == id) return a;
+		for (a in achievements)
+		{
+			if (a.ID == id)
+			{
+				return a;
+			}
+		}
 		return null;
 	}
 
+	/**
+	 * @param id The ID of the achievement to check.
+	 * @return Whether the achievement is unlocked or not.
+	 */
 	public static function isUnlocked(id:String):Bool
+	{
 		return achievementsUnlocked.contains(id);
+	}
 
+	/**
+	 * @param id The ID of the achievement to check.
+	 * @return The progress the achievement towards unlock requirements.
+	 */
 	public static function getProgress(id:String):Int
 	{
-		var a = getAchievement(id);
+		var a:Null<AchievementData> = getAchievement(id);
 		return a != null ? a.progress : 0;
 	}
 
-	// ─── Unlock ──────────────────────────────────────────────────────────────────
-
-	public static function addPoints(id:String, amount:Int = 1):Void
+	/**
+	 * Adds the specified amount of points to the specified achievement.
+	 * @param id			The ID of the achievement.
+	 * @param points	The amount of points to add to the achievement.
+	 */
+	public static function addPoints(id:String, points:Int = 0)
 	{
-		if (!hasAchievement(id) || isUnlocked(id)) return;
-		var a = getAchievement(id);
-		if (a.points == null) return;
-		a.progress += amount;
-		if (a.progress >= a.points) grantAchievement(id);
+		if (!hasAchievement(id) || isUnlocked(id))
+		{
+			return;
+		}
+
+		getAchievement(id)?.addPoints(points);
 	}
 
-	public static function grantAchievement(id:String):Void
+	/**
+	 * Unlocks the specified achievement. regardless if its unlock condition was met or not.
+	 * @param id The ID of the achievement to unlock.
+	 */
+	public static function grantAchievement(id:String)
 	{
-		trace('[Achievements] grantAchievement called: $id');
-		if (!hasAchievement(id)) { trace('[Achievements] SKIPPED - not found'); return; }
-		if (isUnlocked(id))      { trace('[Achievements] SKIPPED - already unlocked'); return; }
-		achievementsUnlocked.push(id);
-		saveAchievements();
+		if (!hasAchievement(id))
+		{
+			trace('[Achievements] Achievement with the ID "$id" not found!');
+			return;
+		}
+
+		if (isUnlocked(id))
+		{
+			trace('[Achievements] Achievement with the ID "$id" is already unlocked');
+			return;
+		}
+
+		grantAchievementForce(getAchievement(id));
+	}
+
+	/**
+	 * Forces the specified achievement to be unlocked.
+	 * @param achievement The achievement to unlock.
+	 */
+	public static function grantAchievementForce(achievement:AchievementData)
+	{
+		if (achievement == null)
+		{
+			return;
+		}
+
 		FunkinSound.playMenuSound(HARD_CONFIRM);
-		trace('[Achievements] Spawning toast for $id');
-		_spawnToast(getAchievement(id));
+		_spawnToast(achievement);
+
+		achievementsUnlocked.push(achievement.ID);
+		saveAchievements();
 	}
 
-	public static function saveAchievements():Void
+	static function saveAchievements()
 	{
-		if (FunkinSave.data?.unlockables == null) return;
-		FunkinSave.data.unlockables.achievements = achievementsUnlocked.copy();
+		FunkinSave.unlockables.achievements = achievementsUnlocked.copy();
 		FunkinSave.flush();
+	}
+
+	/**
+	 * Checks if any achievement is supposed to be unlocked but hasn't, or .
+	 */
+	static function checkAchievements()
+	{
+		for (achievement in achievements)
+		{
+			if (achievement.unlockCriteria != null && achievement.unlockCriteria(achievement))
+			{
+				grantAchievementForce(achievement);
+			}
+		}
 	}
 
 	// ─── Toast ───────────────────────────────────────────────────────────────────
@@ -122,7 +207,7 @@ class Achievements
 	/** How many toasts are currently on screen (for vertical stacking). */
 	static var _toastCount:Int = 0;
 
-	static function _spawnToast(data:Achievement):Void
+	static function _spawnToast(data:AchievementData)
 	{
 		var toast:AchievementToast = new AchievementToast(data, _toastCount);
 		FlxG.state.add(toast);
@@ -132,17 +217,15 @@ class Achievements
 		toast.onDone = () -> _toastCount = Std.int(Math.max(0, _toastCount - 1));
 	}
 
-	// ─── Level helpers ────────────────────────────────────────────────────────────
-
 	public static function getAchievementLevelString(level:AchievementLevel):String
 	{
 		return switch (level)
 		{
-			case BRONZE:   'bronze';
-			case SILVER:   'silver';
-			case GOLD:     'gold';
+			case BRONZE: 'bronze';
+			case SILVER: 'silver';
+			case GOLD: 'gold';
 			case PLATINUM: 'platinum';
-			case LOCKED:   'locked';
+			case LOCKED: 'locked';
 		};
 	}
 
@@ -150,11 +233,11 @@ class Achievements
 	{
 		return switch (level)
 		{
-			case BRONZE:   0xFF7A644F;
-			case SILVER:   0xFF9E9999;
-			case GOLD:     0xFFF8A514;
+			case BRONZE: 0xFF7A644F;
+			case SILVER: 0xFF9E9999;
+			case GOLD: 0xFFF8A514;
 			case PLATINUM: 0xFFB6C5E4;
-			case LOCKED:   0xFF292929;
+			case LOCKED: 0xFF292929;
 		};
 	}
 
@@ -162,41 +245,70 @@ class Achievements
 	{
 		return switch (level)
 		{
-			case BRONZE:   100;
-			case SILVER:   200;
-			case GOLD:     500;
+			case BRONZE: 100;
+			case SILVER: 200;
+			case GOLD: 500;
 			case PLATINUM: 1000;
-			case LOCKED:   0;
+			case LOCKED: 0;
 		};
 	}
 }
-
-// ─── Achievement ─────────────────────────────────────────────────────────────
 
 class Achievement
 {
 	public var ID:String;
 	public var level:AchievementLevel;
-	public var points:Null<Int>;
-	public var progress:Int = 0;
 
+	public var progress(default, null):Int = 0;
+
+	public var maxPoints(default, null):Null<Int> = null;
+
+	var unlockCriteria:Achievement -> Bool;
+
+	/**
+	 * The readable name of the achievement.
+	 */
 	public var name(get, never):String;
-	function get_name():String return Translations.translate('achievements.${ID}.name');
 
-	public var description(get, never):String;
-	function get_description():String return Translations.translate('achievements.${ID}.desc');
-
-	public function new(id:String, level:AchievementLevel, ?points:Int)
+	function get_name():String
 	{
-		this.ID     = id;
-		this.level  = level;
-		this.points = points;
+		return Translations.translate('achievements.$ID.name');
+	}
+
+	/**
+	 * The description that displays in the `AchievementsState` menu.
+	 */
+	public var description(get, never):String;
+
+	function get_description():String
+	{
+		return Translations.translate('achievements.$ID.desc');
+	}
+
+	/**
+	 * Creates new achievement data.
+	 *
+	 * @param id							The ID of the achievement. This is also used to get the readable name of the achievement.
+	 * @param level						The grade level of the achievement.
+	 * @param points					How many points
+	 * @param unlockCriteria	How the achievement should be unlocked. Optional.
+	 */
+	public function new(id:String, level:AchievementLevel, ?points:Int, ?unlockCriteria:Achievement -> Bool)
+	{
+		this.ID = id;
+		this.level = level;
+		this.maxPoints = points;
+		this.unlockCriteria = unlockCriteria;
+	}
+
+	/**
+	 * @param points The amount of points to add to the achievement.
+	 */
+	public function addPoints(points:Int = 0)
+	{
+		progress += points;
 	}
 }
-
-// ─── Achievement Level ────────────────────────────────────────────────────────
-
-enum AchievementLevel { BRONZE; SILVER; GOLD; PLATINUM; LOCKED; }
 
 // ─── Toast Sprite ─────────────────────────────────────────────────────────────
 
@@ -206,22 +318,22 @@ enum AchievementLevel { BRONZE; SILVER; GOLD; PLATINUM; LOCKED; }
  */
 class AchievementToast extends FlxSpriteGroup
 {
-	static final SCALE:Float        = 4.5;
-	static final SLIDE_TIME:Float   = 0.55;
-	static final SHOW_TIME:Float    = 2.5;
-	static final TOTAL_TIME:Float   = 6.0;
-	static final FADE_TIME:Float    = 0.4;
+	static final SCALE:Float = 4.5;
+	static final SLIDE_TIME:Float = 0.55;
+	static final SHOW_TIME:Float = 2.5;
+	static final TOTAL_TIME:Float = 6.0;
+	static final FADE_TIME:Float = 0.4;
 
 	public var onDone:Void -> Void = null;
 
-	var _data:Achievement;
+	var _data:AchievementData;
 	var _label:FunkinText;
 	var _targetX:Float;
-	var _elapsed:Float  = 0;
+	var _elapsed:Float = 0;
 	var _nameSwapped:Bool = false;
-	var _finished:Bool    = false;
+	var _finished:Bool = false;
 
-	public function new(data:Achievement, slot:Int)
+	public function new(data:AchievementData, slot:Int)
 	{
 		super();
 		trace('[AchievementToast] Creating toast for: ${data.ID}, slot: $slot');
@@ -229,11 +341,8 @@ class AchievementToast extends FlxSpriteGroup
 
 		var levelStr:String = Achievements.getAchievementLevelString(data.level);
 
-		// ── Panel background ──────────────────────────────────────────────────────
-
 		var panelPath:String = Paths.image('achievements/levels/${levelStr}Panel');
-		var panel:FlxSprite = new FlxSprite(0, 0);
-		panel.loadGraphic(panelPath);
+		var panel:FunkinSprite = new FunkinSprite(0, 0).loadGraphic(panelPath);
 		panel.setGraphicSize(Std.int(panel.width * SCALE), Std.int(panel.height * SCALE));
 		panel.updateHitbox();
 		panel.antialiasing = false;
@@ -242,22 +351,20 @@ class AchievementToast extends FlxSpriteGroup
 		var panelW:Float = panel.width;
 		var panelH:Float = panel.height;
 
-		// ── Level icon ────────────────────────────────────────────────────────────
-
-		var levelIcon:FlxSprite = new FlxSprite(panelW, 0);
+		var levelIcon:FunkinSprite = new FunkinSprite(panelW, 0);
 		levelIcon.loadGraphic(Paths.image('achievements/levels/$levelStr'));
 		levelIcon.setGraphicSize(Std.int(panelH), Std.int(panelH));
 		levelIcon.updateHitbox();
 		levelIcon.antialiasing = false;
 		add(levelIcon);
 
-		// ── Achievement icon ──────────────────────────────────────────────────────
-
 		var iconPath:String = Paths.image('achievements/${data.ID}');
-		if (!openfl.Assets.exists(iconPath))
+		if (!Assets.exists(iconPath))
+		{
 			iconPath = Paths.image('achievements/test');
+		}
 
-		var icon:FlxSprite = new FlxSprite(panelW, 0);
+		var icon:FunkinSprite = new FunkinSprite(panelW, 0);
 		icon.loadGraphic(iconPath);
 		icon.setGraphicSize(Std.int(panelH), Std.int(panelH));
 		icon.updateHitbox();
@@ -291,26 +398,33 @@ class AchievementToast extends FlxSpriteGroup
 		// Phase 2: swap label to achievement name
 		FlxTimer.wait(SHOW_TIME, () ->
 		{
-			if (_finished) return;
+			if (_finished)
+				return;
 			_nameSwapped = true;
-			FlxTween.tween(_label, {alpha: 0}, 0.2, {onComplete: _ ->
-			{
-				_label.translationData = null;
-				_label.text  = _data.name;
-				FlxTween.tween(_label, {alpha: 1}, 0.3);
-			}});
+			FlxTween.tween(_label, {alpha: 0}, 0.2, {
+				onComplete: _ ->
+				{
+					_label.translationData = null;
+					_label.text = _data.name;
+					FlxTween.tween(_label, {alpha: 1}, 0.3);
+				}
+			});
 		});
 
 		// Phase 3: slide out and remove
 		FlxTimer.wait(TOTAL_TIME, () ->
 		{
-			if (_finished) return;
-			FlxTween.tween(this, {x: FlxG.width + 10, alpha: 0}, FADE_TIME, {onComplete: _ ->
-			{
-				_finished = true;
-				FlxG.state.remove(this, true);
-				if (onDone != null) onDone();
-			}});
+			if (_finished)
+				return;
+			FlxTween.tween(this, {x: FlxG.width + 10, alpha: 0}, FADE_TIME, {
+				onComplete: _ ->
+				{
+					_finished = true;
+					FlxG.state.remove(this, true);
+					if (onDone != null)
+						onDone();
+				}
+			});
 		});
 	}
 
@@ -319,7 +433,7 @@ class AchievementToast extends FlxSpriteGroup
 		return switch (level)
 		{
 			case GOLD, PLATINUM: FlxColor.BLACK;
-			default:             FlxColor.WHITE;
+			default: FlxColor.WHITE;
 		};
 	}
 }

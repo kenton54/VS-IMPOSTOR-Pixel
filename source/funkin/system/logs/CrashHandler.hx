@@ -12,7 +12,7 @@ import openfl.events.UncaughtErrorEvent;
  */
 final class CrashHandler
 {
-	static final CRASH_WINDOW_TITLE:String = '${Defaults.TITLE} - Crash Handler';
+	static final CRASH_WINDOW_TITLE:String = '${Constants.TITLE} - Crash Handler';
 
 	@:allow(Main)
 	static function init()

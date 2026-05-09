@@ -4,7 +4,7 @@ import funkin.data.ClientPreferences;
 
 class FunkinSave
 {
-	static final SAVE_ERROR_WINDOW_TITLE:String = '${Defaults.TITLE} - Save Data Error';
+	static final SAVE_ERROR_WINDOW_TITLE:String = '${Constants.TITLE} - Save Data Error';
 
 	/**
 	 * The user's loaded save data.
@@ -22,11 +22,16 @@ class FunkinSave
 	public static var serverPreferences(get, never):ServerPreferencesSaveData;
 
 	/**
+	 * The user's unlocked unlockables.
+	 */
+	public static var unlockables(get, never):UnlockablesSaveData;
+
+	/**
 	 * Loads the user's saved data.
 	 */
 	public static function load()
 	{
-		FlxG.save.bind(Defaults.SAVE_PATH, 'ImpostorPixel');
+		FlxG.save.bind(Constants.SAVE_PATH, 'ImpostorPixel');
 
 		switch (FlxG.save.status)
 		{
@@ -235,14 +240,19 @@ class FunkinSave
 		};
 	}
 
-	static function get_clientPreferences():ClientPreferencesSaveData
+	inline static function get_clientPreferences():ClientPreferencesSaveData
 	{
 		return data.clientPreferences;
 	}
 
-	static function get_serverPreferences():ServerPreferencesSaveData
+	inline static function get_serverPreferences():ServerPreferencesSaveData
 	{
 		return data.serverPreferences;
+	}
+
+	inline static function get_unlockables():UnlockablesSaveData
+	{
+		return data.unlockables;
 	}
 
 	static function get_data():BaseSaveData

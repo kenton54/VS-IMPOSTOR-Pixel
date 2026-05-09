@@ -115,7 +115,7 @@ class CharacterEditorState extends MusicBeatState
 
 		initUI();
 
-		changeCharacter(Defaults.DEFAULT_CHARACTER);
+		changeCharacter(Constants.DEFAULT_CHARACTER);
 
 		updateSpriteSheetViewer();
 

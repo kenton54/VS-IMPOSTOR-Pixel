@@ -15,7 +15,7 @@ class FunkinText extends FlxText
 		var textFormat:FlxTextFormat = new FlxTextFormat(parameters.color, parameters.bold, parameters.italic, parameters.borderColor, parameters.underline);
 		@:privateAccess {
 			textFormat.format.size = parameters.size;
-			textFormat.format.font = FlxG.assets.getFont(Paths.font(parameters.font))?.fontName ?? Defaults.DEFAULT_FONT;
+			textFormat.format.font = FlxG.assets.getFont(Paths.font(parameters.font))?.fontName ?? Constants.DEFAULT_FONT;
 			textFormat.format.align = FlxTextAlign.toOpenFL(parameters.alignment ?? LEFT);
 			textFormat.format.strikethrough = parameters.strikethrough;
 			textFormat.format.letterSpacing = parameters.letterSpacing;
@@ -55,7 +55,7 @@ class FunkinText extends FlxText
 	{
 		super(x, y, fieldWidth, text);
 
-		setFormat(Defaults.DEFAULT_FONT, size, 0xFFFFFFFF);
+		setFormat(Constants.DEFAULT_FONT, size, 0xFFFFFFFF);
 		translationData = null;
 
 		if (useBorders)

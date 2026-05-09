@@ -36,7 +36,7 @@ class SimpleDisplay extends Sprite
 		fpsText.height = 40;
 		fpsText.selectable = false;
 		fpsText.mouseEnabled = false;
-		fpsText.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 26, 0xFFFFFF);
+		fpsText.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 26, 0xFFFFFF);
 		addChild(fpsText);
 
 		memoryText = new TextField();
@@ -46,7 +46,7 @@ class SimpleDisplay extends Sprite
 		memoryText.height = 20;
 		memoryText.selectable = false;
 		memoryText.mouseEnabled = false;
-		memoryText.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 15, 0xFFFFFF);
+		memoryText.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 15, 0xFFFFFF);
 		addChild(memoryText);
 
 		#if web

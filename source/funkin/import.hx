@@ -14,7 +14,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
-import funkin.Defaults;
+import funkin.Constants;
 import funkin.Paths;
 import funkin.graphics.FunkinGroup;
 import funkin.graphics.FunkinSprite;

@@ -27,8 +27,8 @@ class ProjectDebug extends DebugCategory
 		projectTitle.height = overlayHeight;
 		projectTitle.selectable = false;
 		projectTitle.mouseEnabled = false;
-		projectTitle.defaultTextFormat = new TextFormat(Defaults.DEFAULT_FONT, 28, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
-		projectTitle.text = '${Defaults.TITLE} - ${Defaults.VERSION}';
+		projectTitle.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 28, 0xFFFFFF, null, null, null, null, null, getTextAlignFromCategoryAlignment());
+		projectTitle.text = '${Constants.TITLE} - ${Constants.VERSION}';
 		addChild(projectTitle);
 
 		/*

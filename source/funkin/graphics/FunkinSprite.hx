@@ -232,9 +232,9 @@ class FunkinSprite extends FlxSprite
 		{
 			validAnimation = animation;
 		}
-		else if (hasAnimation(Defaults.DEFAULT_ANIMATION_NAME))
+		else if (hasAnimation(Constants.DEFAULT_ANIMATION_NAME))
 		{
-			validAnimation = Defaults.DEFAULT_ANIMATION_NAME;
+			validAnimation = Constants.DEFAULT_ANIMATION_NAME;
 		}
 
 		this.animation.play(validAnimation, force, reverse, frame);
@@ -292,14 +292,14 @@ class FunkinSprite extends FlxSprite
 	 */
 	public function addAnimationByFrameLength(frames:Int, framerate:Float = 24, looped:Bool = true, flipX:Bool = false, flipY:Bool = false)
 	{
-		if (hasAnimation(Defaults.DEFAULT_ANIMATION_NAME))
+		if (hasAnimation(Constants.DEFAULT_ANIMATION_NAME))
 		{
 			FlxG.log.warn('Sprite already has the default animation set up!');
 			return;
 		}
 
 		var framesLength:Array<Int> = [for (i in 0...frames) i];
-		addAnimationByFrameList(Defaults.DEFAULT_ANIMATION_NAME, framesLength, framerate, looped, flipX, flipY);
+		addAnimationByFrameList(Constants.DEFAULT_ANIMATION_NAME, framesLength, framerate, looped, flipX, flipY);
 		playAnimation();
 	}
 
@@ -329,7 +329,7 @@ class FunkinSprite extends FlxSprite
 	{
 		if (animation == null)
 		{
-			animation = Defaults.DEFAULT_ANIMATION_NAME;
+			animation = Constants.DEFAULT_ANIMATION_NAME;
 		}
 
 		animationOffsets.set(animation, [x, y]);

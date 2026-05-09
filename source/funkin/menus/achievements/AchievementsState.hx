@@ -1,12 +1,11 @@
 package funkin.menus.achievements;
 
 import flixel.addons.display.FlxBackdrop;
-import flixel.math.FlxMath;
 import flixel.util.FlxAxes;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 import funkin.Paths;
+import funkin.data.AchievementData;
 import funkin.graphics.FunkinSprite;
 import funkin.graphics.FunkinText;
 import funkin.menus.mainmenu.MainMenuState;
@@ -14,8 +13,8 @@ import funkin.sound.FunkinSound;
 import funkin.system.Achievements;
 import funkin.system.Translations;
 import funkin.ui.MusicBeatState;
-import funkin.ui.StaticButton;
 import funkin.ui.StarsBackdrop;
+import funkin.ui.StaticButton;
 import funkin.ui.transitions.VerticalFade;
 
 /**
@@ -25,7 +24,6 @@ import funkin.ui.transitions.VerticalFade;
 class AchievementsState extends MusicBeatState
 {
 	// ─── Constants ────────────────────────────────────────────────────────────────
-
 	static final BASE_SCALE:Float = 5;
 
 	/** Height of the topBorder image strip. */
@@ -44,11 +42,10 @@ class AchievementsState extends MusicBeatState
 	static final CARD_MARGIN:Float = 14;
 
 	// ─── Fields ───────────────────────────────────────────────────────────────────
-
 	var _xButton:StaticButton;
 
 	var _cards:Array<AchievementCard> = [];
-	var _allAchievements:Array<Achievement> = [];
+	var _allAchievements:Array<AchievementData> = [];
 	var _scrollOffset:Int = 0;
 
 	var _counterText:FunkinText;
@@ -91,7 +88,7 @@ class AchievementsState extends MusicBeatState
 
 		// ── Scrollbar track ───────────────────────────────────────────────────────
 
-		var trackW:Int  = 6;
+		var trackW:Int = 6;
 		var trackX:Float = FlxG.width - CARD_MARGIN - trackW;
 		_trackY = BORDER_H + 6;
 		_trackH = FlxG.height - _trackY - 6;
@@ -134,7 +131,8 @@ class AchievementsState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (!_allowInput) return;
+		if (!_allowInput)
+			return;
 
 		if (controls.UI_UP)
 			_scroll(-1);
@@ -160,7 +158,8 @@ class AchievementsState extends MusicBeatState
 		{
 			var aU = Achievements.isUnlocked(a.ID);
 			var bU = Achievements.isUnlocked(b.ID);
-			if (aU != bU) return aU ? -1 : 1;
+			if (aU != bU)
+				return aU ? -1 : 1;
 			return a.ID < b.ID ? -1 : 1;
 		});
 	}
@@ -171,11 +170,7 @@ class AchievementsState extends MusicBeatState
 
 		for (i in 0...PAGE_SIZE)
 		{
-			var card:AchievementCard = new AchievementCard(
-				CARD_MARGIN,
-				cardY + i * (CARD_H + CARD_GAP),
-				FlxG.width - CARD_MARGIN * 2
-			);
+			var card:AchievementCard = new AchievementCard(CARD_MARGIN, cardY + i * (CARD_H + CARD_GAP), FlxG.width - CARD_MARGIN * 2);
 			card.scrollFactor.set();
 			_cards.push(card);
 			add(card);
@@ -186,7 +181,8 @@ class AchievementsState extends MusicBeatState
 	{
 		var maxOffset:Int = Std.int(Math.max(0, _allAchievements.length - PAGE_SIZE));
 		var newOffset:Int = Std.int(FlxMath.bound(_scrollOffset + dir, 0, maxOffset));
-		if (newOffset == _scrollOffset) return;
+		if (newOffset == _scrollOffset)
+			return;
 
 		_scrollOffset = newOffset;
 		_populateCards();
@@ -225,23 +221,24 @@ class AchievementsState extends MusicBeatState
 
 		_scrollThumb.visible = true;
 
-		var thumbH:Float  = _scrollThumb.height;
+		var thumbH:Float = _scrollThumb.height;
 		var travelH:Float = _trackH - thumbH;
-		var ratio:Float   = _scrollOffset / maxOffset;
+		var ratio:Float = _scrollOffset / maxOffset;
 
 		_scrollThumb.y = _trackY + ratio * travelH;
 	}
 
 	function _updateCounter()
 	{
-		var total:Int  = _allAchievements.length;
+		var total:Int = _allAchievements.length;
 		var earned:Int = Achievements.achievementsUnlocked.length;
 		_counterText.text = '$earned / $total';
 	}
 
 	function _goBack()
 	{
-		if (!_allowInput) return;
+		if (!_allowInput)
+			return;
 		_allowInput = false;
 		FunkinSound.playMenuSound(CANCEL);
 		MusicBeatState.setTransitions(VerticalFade);
@@ -260,8 +257,8 @@ class AchievementsState extends MusicBeatState
 private class AchievementCard extends FunkinSpriteGroup
 {
 	static final ICON_SZ:Float = 160;
-	static final PAD:Float     = 14;
-	static final CARD_H:Float  = 180;
+	static final PAD:Float = 14;
+	static final CARD_H:Float = 180;
 
 	var _bg:FunkinSprite;
 	var _icon:flixel.FlxSprite;
@@ -319,10 +316,10 @@ private class AchievementCard extends FunkinSpriteGroup
 		// ── Progress bar ─────────────────────────────────────────────────────────
 		// Use makeGraphic(unique:true) so we can resize the fill each frame.
 
-		var barY:Float  = CARD_H - 28;
+		var barY:Float = CARD_H - 28;
 		_barFullW = textW;
 
-		_progressBar  = new FunkinSprite(textX, barY).makeGraphic(Std.int(_barFullW), 8, 0xFF1E1E3A, true);
+		_progressBar = new FunkinSprite(textX, barY).makeGraphic(Std.int(_barFullW), 8, 0xFF1E1E3A, true);
 		_progressFill = new FunkinSprite(textX, barY).makeGraphic(1, 8, 0xFF66CC88, true);
 
 		_progressLabel = new FunkinText(textX, barY - 20, textW, '', 13);
@@ -337,9 +334,9 @@ private class AchievementCard extends FunkinSpriteGroup
 	/**
 	 * Fill this card with data from an achievement.
 	 */
-	public function populate(achievement:Achievement)
+	public function populate(achievement:AchievementData)
 	{
-		var unlocked:Bool   = Achievements.isUnlocked(achievement.ID);
+		var unlocked:Bool = Achievements.isUnlocked(achievement.ID);
 		var accent:FlxColor = Achievements.getAchievementLevelColor(achievement.level);
 		var achLevel:String = Achievements.getAchievementLevelString(achievement.level);
 
@@ -354,13 +351,13 @@ private class AchievementCard extends FunkinSpriteGroup
 		_icon.setGraphicSize(Std.int(ICON_SZ), Std.int(ICON_SZ));
 		_icon.updateHitbox();
 		_icon.antialiasing = false;
-		_icon.x  = PAD;
-		_icon.y  = (CARD_H - ICON_SZ) / 2;
+		_icon.x = PAD;
+		_icon.y = (CARD_H - ICON_SZ) / 2;
 		_icon.alpha = unlocked ? 1.0 : 0.25;
 
 		// ── Level badge ───────────────────────────────────────────────────────────
 
-		var badgeKey:String  = unlocked ? achLevel : 'locked';
+		var badgeKey:String = unlocked ? achLevel : 'locked';
 		var badgePath:String = Paths.image('achievements/levels/$badgeKey');
 		if (openfl.Assets.exists(badgePath))
 		{
@@ -369,30 +366,30 @@ private class AchievementCard extends FunkinSpriteGroup
 			_levelBadge.updateHitbox();
 			_levelBadge.antialiasing = false;
 		}
-		_levelBadge.x    = _cardW - _levelBadge.width - PAD;
-		_levelBadge.y    = (CARD_H - _levelBadge.height) / 2;
+		_levelBadge.x = _cardW - _levelBadge.width - PAD;
+		_levelBadge.y = (CARD_H - _levelBadge.height) / 2;
 		_levelBadge.alpha = unlocked ? 1.0 : 0.35;
 
 		// ── Text ─────────────────────────────────────────────────────────────────
 
-		_nameText.text  = unlocked ? achievement.name : '???';
+		_nameText.text = unlocked ? achievement.name : '???';
 		_nameText.color = unlocked ? 0xFFFFFFFF : 0xFF666677;
 
-		_descText.text  = unlocked ? achievement.description : Translations.translate('achievements.unknown');
+		_descText.text = unlocked ? achievement.description : Translations.translate('achievements.unknown');
 		_descText.color = unlocked ? 0xFF9999AA : 0xFF555566;
 
 		// ── Progress bar ─────────────────────────────────────────────────────────
 
-		var showProgress:Bool  = achievement.points != null && !unlocked;
-		_progressBar.visible   = showProgress;
-		_progressFill.visible  = showProgress;
+		var showProgress:Bool = achievement.maxPoints != null && !unlocked;
+		_progressBar.visible = showProgress;
+		_progressFill.visible = showProgress;
 		_progressLabel.visible = showProgress;
 
 		if (showProgress)
 		{
 			var progress:Int = Achievements.getProgress(achievement.ID);
-			var goal:Int     = achievement.points;
-			var ratio:Float  = Math.min(progress / goal, 1.0);
+			var goal:Int = achievement.maxPoints;
+			var ratio:Float = Math.min(progress / goal, 1.0);
 
 			// Resize the fill graphic directly — no scale tricks needed.
 			var fillW:Int = Std.int(Math.max(2, _barFullW * ratio));

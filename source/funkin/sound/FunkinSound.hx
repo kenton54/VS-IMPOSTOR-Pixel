@@ -11,7 +11,6 @@ class FunkinSound extends flixel.sound.FlxSound
 	static var pool:FlxTypedGroup<FunkinSound> = new FlxTypedGroup<FunkinSound>();
 
 	/**
-	 *
 	 * Creates a `FunkinSound` object.
 	 *
 	 * @param key 				Where the sound file is located inside the assets folder.
@@ -22,7 +21,7 @@ class FunkinSound extends flixel.sound.FlxSound
 	 * @param persist			Whether the sound should persist through menu transitions, Otherwise it gets disposed.
 	 * @param onComplete	A function to call when the sound finishes playing.
 	 * @param onLoad			A function to call when the sound finishes loading.
-	 * @return The `FunkinSound` object, or `null` if the sound asset wasn't found.
+	 * @return The `FunkinSound` object.
 	 */
 	public static function load(key:String, volume:Float = 1, looped:Bool = false, autoDestroy:Bool = false, autoPlay:Bool = false, persist:Bool = false, ?onComplete:Void -> Void, ?onLoad:Void -> Void):FunkinSound
 	{
@@ -67,7 +66,7 @@ class FunkinSound extends flixel.sound.FlxSound
 	 * @param volume 	The volume it should be played at.
 	 * @return The loaded menu sound.
 	 */
-	public static function playMenuSound(sound:MenuSound = SCROLL, volume:Float = 1):FunkinSound
+	public inline static function playMenuSound(sound:MenuSound = SCROLL, volume:Float = 1):FunkinSound
 	{
 		return playSound(Paths.sound('menu/$sound'), volume);
 	}

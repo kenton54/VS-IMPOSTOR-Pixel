@@ -3,7 +3,7 @@ package funkin;
 /**
  * Holds fallback values for some classes.
  */
-final class Defaults
+final class Constants
 {
 	/**
 	 * The mod's title name.
@@ -28,7 +28,7 @@ final class Defaults
 	/**
 	 * The path to the location of the save data.
 	 */
-	public static final SAVE_PATH:String = 'kenton54';
+	public static final SAVE_PATH:String = 'kenton';
 
 	/**
 	 * The languages the mod supports.''
