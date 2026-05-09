@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="circleElastic.png" width="109" height="97">
+  <SubTexture name="circleElastic1.png" x="44" y="43"  width="4" height="4" frameX="-14" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic10.png" x="74" y="72"  width="13" height="14" frameX="-16" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic11.png" x="58" y="53"  width="13" height="17" frameX="-17" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic12.png" x="24" y="71"  width="13" height="25" frameX="-17" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic13.png" x="32" y="16"  width="16" height="27" frameX="-14" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic14.png" x="0" y="44"  width="22" height="27" frameX="-8" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic15.png" x="48" y="27"  width="24" height="26" frameX="-6" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic16.png" x="0" y="0"  width="28" height="16" frameX="-2" frameY="-14" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic17.png" x="72" y="0"  width="24" height="24" frameX="-2" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic18.png" x="0" y="16"  width="16" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic19.png" x="72" y="24"  width="24" height="24" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic2.png" x="87" y="81"  width="5" height="4" frameX="-14" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic20.png" x="28" y="0"  width="28" height="16" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic21.png" x="72" y="48"  width="24" height="24" frameX="-6" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic22.png" x="16" y="16"  width="16" height="28" frameX="-14" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic23.png" x="50" y="72"  width="24" height="24" frameX="-6" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic24.png" x="0" y="0"  width="28" height="16" frameX="-2" frameY="-14" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic25.png" x="0" y="71"  width="24" height="26" frameX="-2" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic26.png" x="22" y="44"  width="22" height="27" frameX="-2" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic27.png" x="56" y="0"  width="16" height="27" frameX="-2" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic28.png" x="37" y="71"  width="13" height="25" frameX="-2" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic29.png" x="44" y="53"  width="14" height="18" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic3.png" x="103" y="69"  width="6" height="4" frameX="-14" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic30.png" x="96" y="0"  width="13" height="14" frameX="-3" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic31.png" x="74" y="86"  width="14" height="11" frameX="-3" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic32.png" x="96" y="14"  width="13" height="9" frameX="-4" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic33.png" x="96" y="43"  width="11" height="7" frameX="-6" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic34.png" x="96" y="57"  width="9" height="6" frameX="-8" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic35.png" x="48" y="16"  width="8" height="5" frameX="-10" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic36.png" x="48" y="21"  width="7" height="4" frameX="-11" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic37.png" x="87" y="77"  width="6" height="4" frameX="-12" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic38.png" x="88" y="85"  width="5" height="4" frameX="-13" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic4.png" x="96" y="69"  width="7" height="4" frameX="-14" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic5.png" x="88" y="72"  width="7" height="5" frameX="-15" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic6.png" x="96" y="63"  width="9" height="6" frameX="-15" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic7.png" x="96" y="50"  width="11" height="7" frameX="-15" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic8.png" x="96" y="23"  width="13" height="9" frameX="-15" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleElastic9.png" x="96" y="32"  width="13" height="11" frameX="-16" frameY="-2" frameWidth="32" frameHeight="32"/>
+</TextureAtlas>

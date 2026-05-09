@@ -13,27 +13,14 @@ import funkin.input.Controls;
 import funkin.input.InputManager;
 import funkin.input.Pointer;
 
-/**
- * The exit-confirmation prompt shown when the player tries to quit the game.
- *
- * Ported from the old repo (`impostor.menus.mainmenu.ExitPrompt`) and
- * adapted to the new codebase's conventions.
- */
 class ExitPrompt extends MusicBeatSubState
 {
-	/**
-	 * Dispatches when the user confirms the exit (Yes).
-	 */
 	public var onConfirmExit:FlxSignal = new FlxSignal();
 
-	/**
-	 * Dispatches when the user cancels the exit (No / Back).
-	 */
 	public var onCancelExit:FlxSignal = new FlxSignal();
 
-	// Layout constants (pixel-art scale matches the main menu's BASE_SCALE = 5)
 	static final BASE_SCALE:Float = 5;
-	static final BOX_W:Float = 128; // in sprite pixels → ×5 on screen
+	static final BOX_W:Float = 128;
 	static final BOX_H:Float = 36;
 
 	var _camera:FlxCamera;
@@ -53,19 +40,16 @@ class ExitPrompt extends MusicBeatSubState
 	{
 		super.create();
 
-		// Dedicated camera so the prompt floats above everything else
 		_camera = new FlxCamera();
 		_camera.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(_camera, false);
 		camera = _camera;
 
-		// Dim overlay
 		_overlay = new FunkinSprite().makeSolid(FlxG.width, FlxG.height, FlxColor.BLACK);
 		_overlay.scrollFactor.set();
 		_overlay.alpha = 0;
 		add(_overlay);
 
-		// Box background
 		var boxW:Float = BOX_W * BASE_SCALE;
 		var boxH:Float = BOX_H * BASE_SCALE;
 
@@ -74,7 +58,6 @@ class ExitPrompt extends MusicBeatSubState
 		_box.alpha = 0;
 		add(_box);
 
-		// Thin top/bottom accent lines on the box
 		var lineTop:FunkinSprite = new FunkinSprite(_box.x, _box.y).makeSolid(Std.int(boxW), Std.int(BASE_SCALE), 0xFF45706D);
 		lineTop.scrollFactor.set();
 		add(lineTop);
@@ -83,7 +66,6 @@ class ExitPrompt extends MusicBeatSubState
 		lineBottom.scrollFactor.set();
 		add(lineBottom);
 
-		// Prompt text
 		var textPad:Float = BASE_SCALE * 4;
 		_promptText = new FunkinText(_box.x + textPad, _box.y + BASE_SCALE * 4, boxW - textPad * 2, '', 24);
 		_promptText.translationData = {id: 'mainMenu.exitPrompt'};
@@ -92,7 +74,6 @@ class ExitPrompt extends MusicBeatSubState
 		_promptText.alpha = 0;
 		add(_promptText);
 
-		// "No" button (left side)
 		_noText = new FunkinText(0, _box.y + boxH * 0.6, boxW * 0.4, '', 30);
 		_noText.translationData = {id: 'no'};
 		_noText.alignment = CENTER;
@@ -101,7 +82,6 @@ class ExitPrompt extends MusicBeatSubState
 		_noText.alpha = 0;
 		add(_noText);
 
-		// "Yes" button (right side)
 		_yesText = new FunkinText(0, _noText.y, boxW * 0.4, '', 30);
 		_yesText.translationData = {id: 'yes'};
 		_yesText.alignment = CENTER;
@@ -110,16 +90,20 @@ class ExitPrompt extends MusicBeatSubState
 		_yesText.alpha = 0;
 		add(_yesText);
 
-		// Default selection: No
 		_curSelection = NO;
 		_updateSelection();
 
-		// Animate in
 		FlxTween.tween(_overlay, {alpha: 0.6}, 0.25, {ease: FlxEase.quadOut});
 		FlxTween.tween(_box, {alpha: 1}, 0.25, {ease: FlxEase.quadOut});
 		FlxTween.tween(_promptText, {alpha: 1}, 0.3, {startDelay: 0.1, ease: FlxEase.quadOut});
-		FlxTween.tween(_noText, {alpha: 0.5}, 0.3, {startDelay: 0.1, ease: FlxEase.quadOut,
-			onComplete: (_) -> { _allowInput = true; }});
+		FlxTween.tween(_noText, {alpha: 0.5}, 0.3, {
+			startDelay: 0.1,
+			ease: FlxEase.quadOut,
+			onComplete: (_) ->
+			{
+				_allowInput = true;
+			}
+		});
 		FlxTween.tween(_yesText, {alpha: 0.5}, 0.3, {startDelay: 0.1, ease: FlxEase.quadOut});
 
 		FunkinSound.playMenuSound(CANCEL);
@@ -139,8 +123,6 @@ class ExitPrompt extends MusicBeatSubState
 		else
 			_handleMouse();
 	}
-
-	// ─── Input handling ───────────────────────────────────────────────────────────
 
 	function _handleInput()
 	{
@@ -219,8 +201,6 @@ class ExitPrompt extends MusicBeatSubState
 		}
 	}
 
-	// ─── Option logic ─────────────────────────────────────────────────────────────
-
 	function _updateSelection()
 	{
 		_noText.alpha = (_curSelection == NO) ? 1.0 : 0.4;
@@ -231,8 +211,10 @@ class ExitPrompt extends MusicBeatSubState
 	{
 		switch (_curSelection)
 		{
-			case YES: _accept();
-			case NO: _decline();
+			case YES:
+				_accept();
+			case NO:
+				_decline();
 			case NONE: // do nothing
 		}
 	}
@@ -260,7 +242,8 @@ class ExitPrompt extends MusicBeatSubState
 		FunkinSound.playMenuSound(CANCEL);
 
 		FlxTween.tween(_overlay, {alpha: 0}, 0.2, {ease: FlxEase.quadOut});
-		FlxTween.tween(_box, {alpha: 0}, 0.2, {ease: FlxEase.quadOut,
+		FlxTween.tween(_box, {alpha: 0}, 0.2, {
+			ease: FlxEase.quadOut,
 			onComplete: (_) ->
 			{
 				onCancelExit.dispatch();

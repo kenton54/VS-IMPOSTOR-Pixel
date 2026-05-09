@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="circleBar.png" width="28" height="672">
+  <SubTexture name="circleRotate1.png" x="0" y="0"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate10.png" x="0" y="28"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate11.png" x="0" y="56"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate12.png" x="0" y="84"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate13.png" x="0" y="112"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate14.png" x="0" y="140"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate15.png" x="0" y="168"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate16.png" x="0" y="196"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate17.png" x="0" y="224"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate18.png" x="0" y="252"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate19.png" x="0" y="280"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate2.png" x="0" y="308"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate20.png" x="0" y="336"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate21.png" x="0" y="364"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate22.png" x="0" y="392"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate23.png" x="0" y="420"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate24.png" x="0" y="448"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate3.png" x="0" y="476"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate4.png" x="0" y="504"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate5.png" x="0" y="532"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate6.png" x="0" y="560"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate7.png" x="0" y="588"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate8.png" x="0" y="616"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleRotate9.png" x="0" y="644"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+</TextureAtlas>

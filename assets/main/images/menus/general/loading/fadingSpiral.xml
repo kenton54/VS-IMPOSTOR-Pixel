@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="spiral.png" width="28" height="208">
+  <SubTexture name="fadingSpiral1.png" x="0" y="0"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral10.png" x="0" y="28"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral11.png" x="0" y="112" width="28" height="24" rotated="true"  frameX="-6" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral12.png" x="0" y="112" width="28" height="24" rotated="true"  frameX="-6" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral13.png" x="0" y="56"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral14.png" x="0" y="56"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral15.png" x="0" y="136"  width="28" height="24" frameX="-2" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral16.png" x="0" y="136"  width="28" height="24" frameX="-2" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral2.png" x="0" y="0"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral3.png" x="0" y="160" width="28" height="24" rotated="true"  frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral4.png" x="0" y="160" width="28" height="24" rotated="true"  frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral5.png" x="0" y="84"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral6.png" x="0" y="84"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral7.png" x="0" y="184"  width="28" height="24" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral8.png" x="0" y="184"  width="28" height="24" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="fadingSpiral9.png" x="0" y="28"  width="28" height="28" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+</TextureAtlas>

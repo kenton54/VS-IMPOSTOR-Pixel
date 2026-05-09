@@ -432,9 +432,15 @@ class MainMenuState extends MusicBeatState
 
 		super.update(elapsed);
 
-		// TEMP: press F5 to test achievement popup, delete when done
-		if (FlxG.keys.justPressed.F5)
-			funkin.system.Achievements.grantAchievement('noBeans');
+		// TEMP: press F8 to test achievement popup, delete when done
+		if (FlxG.keys.justPressed.F8)
+		{
+			var testIds:Array<String> = ['noBeans', 'leroy', 'relivingNostalgia', 'alteredReality'];
+			var testId:String = testIds[Std.int(Math.random() * testIds.length)];
+			// Force-remove from unlocked so it can re-trigger for testing
+			funkin.system.Achievements.achievementsUnlocked.remove(testId);
+			funkin.system.Achievements.grantAchievement(testId);
+		}
 	}
 
 	function handleInput()

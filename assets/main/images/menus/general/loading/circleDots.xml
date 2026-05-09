@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="circleDots.png" width="87" height="43">
+  <SubTexture name="circleDots1.png" x="42" y="0" width="24" height="19" rotated="true"  frameX="-4" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots10.png" x="66" y="0"  width="19" height="24" frameX="-9" frameY="-5" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots11.png" x="0" y="0"  width="21" height="22" frameX="-6" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots12.png" x="0" y="0"  width="21" height="22" frameX="-6" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots13.png" x="44" y="19" width="19" height="24" rotated="true"  frameX="-3" frameY="-9" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots14.png" x="44" y="19" width="19" height="24" rotated="true"  frameX="-3" frameY="-9" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots15.png" x="0" y="22"  width="22" height="21" frameX="-4" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots16.png" x="0" y="22"  width="22" height="21" frameX="-4" frameY="-6" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots2.png" x="42" y="0" width="24" height="19" rotated="true"  frameX="-4" frameY="-3" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots3.png" x="21" y="0"  width="21" height="22" frameX="-5" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots4.png" x="21" y="0"  width="21" height="22" frameX="-5" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots5.png" x="63" y="24"  width="24" height="19" frameX="-5" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots6.png" x="63" y="24"  width="24" height="19" frameX="-5" frameY="-4" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots7.png" x="22" y="22"  width="22" height="21" frameX="-6" frameY="-5" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots8.png" x="22" y="22"  width="22" height="21" frameX="-6" frameY="-5" frameWidth="32" frameHeight="32"/>
+  <SubTexture name="circleDots9.png" x="66" y="0"  width="19" height="24" frameX="-9" frameY="-5" frameWidth="32" frameHeight="32"/>
+</TextureAtlas>
