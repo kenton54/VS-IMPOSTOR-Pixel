@@ -17,31 +17,20 @@ import funkin.ui.StarsBackdrop;
 import funkin.ui.StaticButton;
 import funkin.ui.transitions.VerticalFade;
 
-/**
- * The achievements screen.
- * Matches impostorAchievementsState: starfield, topBorder, X back-button.
- */
 class AchievementsState extends MusicBeatState
 {
-	// ─── Constants ────────────────────────────────────────────────────────────────
 	static final BASE_SCALE:Float = 5;
 
-	/** Height of the topBorder image strip. */
 	static final BORDER_H:Float = 8 * BASE_SCALE;
 
-	/** Cards visible at once. */
 	static final PAGE_SIZE:Int = 3;
 
-	/** Card height in px. */
 	static final CARD_H:Float = 180;
 
-	/** Gap between cards in px. */
 	static final CARD_GAP:Float = 8;
 
-	/** Left/right margin. */
 	static final CARD_MARGIN:Float = 14;
 
-	// ─── Fields ───────────────────────────────────────────────────────────────────
 	var _xButton:StaticButton;
 
 	var _cards:Array<AchievementCard> = [];
@@ -50,17 +39,13 @@ class AchievementsState extends MusicBeatState
 
 	var _counterText:FunkinText;
 
-	/** Y position where the scrollbar track starts. */
 	var _trackY:Float = 0;
 
-	/** Total height of the scrollbar track. */
 	var _trackH:Float = 0;
 
 	var _scrollThumb:FunkinSprite;
 
 	var _allowInput:Bool = false;
-
-	// ─── Create ───────────────────────────────────────────────────────────────────
 
 	override public function create()
 	{
@@ -68,25 +53,17 @@ class AchievementsState extends MusicBeatState
 
 		FlxG.camera.bgColor = FlxColor.fromRGB(14, 14, 22);
 
-		// ── Stars ─────────────────────────────────────────────────────────────────
-
 		var stars:StarsBackdrop = new StarsBackdrop(-20, 4);
 		add(stars);
 
-		// ── Achievement cards ─────────────────────────────────────────────────────
-
 		_buildList();
 		_buildCards();
-
-		// ── Top border (drawn over the cards so it always sits on top) ────────────
 
 		var topBorder:FlxBackdrop = new FlxBackdrop(Paths.image('menus/general/topBorder'), FlxAxes.X);
 		topBorder.scale.set(BASE_SCALE, BASE_SCALE);
 		topBorder.updateHitbox();
 		topBorder.scrollFactor.set(0, 0);
 		add(topBorder);
-
-		// ── Scrollbar track ───────────────────────────────────────────────────────
 
 		var trackW:Int = 6;
 		var trackX:Float = FlxG.width - CARD_MARGIN - trackW;
@@ -102,8 +79,6 @@ class AchievementsState extends MusicBeatState
 		_scrollThumb.scrollFactor.set();
 		add(_scrollThumb);
 
-		// ── Unlock counter ────────────────────────────────────────────────────────
-
 		_counterText = new FunkinText(0, BORDER_H + 6, FlxG.width - CARD_MARGIN * 2 - trackW - 4, '', 20);
 		_counterText.alignment = RIGHT;
 		_counterText.color = 0x88FFFFFF;
@@ -111,21 +86,15 @@ class AchievementsState extends MusicBeatState
 		add(_counterText);
 		_updateCounter();
 
-		// ── X back button (top-left, matching old state style) ────────────────────
-
 		_xButton = new StaticButton(BASE_SCALE, BASE_SCALE, Paths.image('menus/x'), _goBack);
 		_xButton.scaleSprite(BASE_SCALE);
 		_xButton.scrollFactor.set();
 		add(_xButton);
 
-		// ── Populate everything now that all UI objects exist ─────────────────────
-
 		_populateCards();
 
 		FlxTimer.wait(0.2, () -> _allowInput = true);
 	}
-
-	// ─── Update ───────────────────────────────────────────────────────────────────
 
 	override public function update(elapsed:Float)
 	{
@@ -148,8 +117,6 @@ class AchievementsState extends MusicBeatState
 		if (FlxG.mouse.wheel != 0)
 			_scroll(-FlxG.mouse.wheel);
 	}
-
-	// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 	function _buildList()
 	{
@@ -252,8 +219,6 @@ class AchievementsState extends MusicBeatState
 	}
 }
 
-// ─── Achievement Card ──────────────────────────────────────────────────────
-
 private class AchievementCard extends FunkinSpriteGroup
 {
 	static final ICON_SZ:Float = 160;
@@ -269,7 +234,6 @@ private class AchievementCard extends FunkinSpriteGroup
 	var _progressFill:FunkinSprite;
 	var _progressLabel:FunkinText;
 
-	/** Full width of the progress bar in pixels. */
 	var _barFullW:Float;
 
 	var _cardW:Float;
