@@ -13,8 +13,24 @@ class FloatTools
 	 * @param max 	The maximum allowed value.
 	 * @return The bounded Float.
 	 */
-	public inline static function clamp(value:Float, min:Float, max:Float):Float
+	public static function clamp(value:Float, ?min:Float, ?max:Float):Float
 	{
-		return Math.max(min, Math.min(max, value));
+		if (min != null)
+		{
+			if (value < min)
+			{
+				value = min;
+			}
+		}
+
+		if (max != null)
+		{
+			if (value > max)
+			{
+				value = max;
+			}
+		}
+
+		return value;
 	}
 }

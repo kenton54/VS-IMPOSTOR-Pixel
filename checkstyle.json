@@ -406,25 +406,25 @@
     {
       "type": "NestedControlFlow",
       "props": {
-        "max": 5
+        "max": 8
       }
     },
     {
       "type": "NestedForDepth",
       "props": {
-        "max": 5
+        "max": 8
       }
     },
     {
       "type": "NestedIfDepth",
       "props": {
-        "max": 5
+        "max": 8
       }
     },
     {
       "type": "NestedTryDepth",
       "props": {
-        "max": 5
+        "max": 8
       }
     },
     {

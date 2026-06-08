@@ -8,6 +8,14 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "type": "lime",
+      "command": "test",
+      "targetConfiguration": "HTML5",
+      "args": ["-nolaunch"],
+      "problemMatcher": ["$lime-nolaunch"],
+      "label": "lime: test \"project.hxp\" html5 -nolaunch"
     }
   ]
 }

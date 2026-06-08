@@ -1,10 +1,14 @@
 package funkin.menus.mainmenu;
 
+import flixel.FlxSprite;
+import flixel.input.touch.FlxTouch;
 import flixel.math.FlxRect;
+import flixel.util.FlxGradient;
+import flixel.util.FlxSpriteUtil;
 
-import funkin.menus.debug.DebugState;
 import funkin.menus.mainmenu.MainMenuButton;
 import funkin.menus.mainmenu.submenu.*;
+import funkin.system.FullScreenScaleMode;
 
 class MainMenuState extends MusicBeatState
 {
@@ -23,7 +27,7 @@ class MainMenuState extends MusicBeatState
 	/**
 	 * Where all the sprites for the back wall are stored.
 	 */
-	public var backgroundGroup:FlxTypedGroup<FunkinSprite>;
+	public var backgroundGroup:FlxTypedGroup<FlxSprite>;
 
 	/**
 	 * Where all the sprites for the top bar are stored.
@@ -77,7 +81,7 @@ class MainMenuState extends MusicBeatState
 			triggerType: SWITCH_STATE,
 			onSelect: function(state:MainMenuState)
 			{
-				return new funkin.menus.achievements.AchievementsState();
+				return null; // new funkin.menus.achievements.AchievementsState();
 			}
 		},
 		{
@@ -122,7 +126,7 @@ class MainMenuState extends MusicBeatState
 			onSelect: function(state:MainMenuState)
 			{
 				var prompt:funkin.menus.mainmenu.ExitPrompt = new funkin.menus.mainmenu.ExitPrompt();
-				prompt.onCancelExit.add(() -> state.enableInputPublic());
+				prompt.onCancelExit.add(() -> state.enableInput());
 				return prompt;
 			}
 		}
@@ -166,34 +170,74 @@ class MainMenuState extends MusicBeatState
 		starField.camera = FlxG.camera;
 		add(starField);
 
-		var transBG:FunkinSprite = new FunkinSprite().makeSolid(FlxG.width, FlxG.height, 0xFF45706D);
-		transBG.y -= transBG.height;
-		transBG.camera = mainCamera;
-		add(transBG);
-
-		backgroundGroup = new FlxTypedGroup<FunkinSprite>();
+		backgroundGroup = new FlxTypedGroup<FlxSprite>();
 		backgroundGroup.camera = mainCamera;
 		add(backgroundGroup);
 
-		var bgLeft:FunkinSprite = new FunkinSprite().loadGraphic(getImage('bg-left'));
-		bgLeft.scaleSprite(BASE_SCALE);
-		backgroundGroup.add(bgLeft);
+		var bgMain:FlxSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFF45706D, 0xFF25413F]);
+		bgMain.resetFrame();
+		backgroundGroup.add(bgMain);
 
-		var bgRight:FunkinSprite = new FunkinSprite(FlxG.width).loadGraphic(getImage('bg-right'));
-		bgRight.scaleSprite(BASE_SCALE);
-		bgRight.x -= bgRight.width;
-		backgroundGroup.add(bgRight);
+		var lineHeight:Int = Std.int(FlxG.height / BASE_SCALE);
 
-		var bgBordersDistance:Float = MathUtil.distanceBetweenFloats(bgLeft.x + bgLeft.width, bgRight.x);
-		var bgMiddle:FunkinSprite = new FunkinSprite(bgLeft.x + bgLeft.width).loadGraphic(getImage('bg-middle'));
-		bgMiddle.setGraphicSize(bgBordersDistance, bgMiddle.frameHeight * BASE_SCALE);
-		bgMiddle.updateHitbox();
-		backgroundGroup.add(bgMiddle);
+		var bgRightLine:FlxSprite = FlxGradient.createGradientFlxSprite(3, lineHeight, [0xFF345452, 0xFF1C302E]);
+		bgRightLine.resetFrame();
+
+		bgRightLine.pixels.lock();
+
+		for (yPos in 0...lineHeight)
+		{
+			bgRightLine.pixels.setPixel32(1, yPos, FlxColor.TRANSPARENT);
+		}
+
+		bgRightLine.pixels.unlock();
+
+		bgRightLine.scale.set(BASE_SCALE, BASE_SCALE);
+		bgRightLine.updateHitbox();
+		bgRightLine.x = FlxG.width - bgRightLine.width - 54 * BASE_SCALE;
+		backgroundGroup.add(bgRightLine);
+
+		var bgLeftLine:FlxSprite = FlxGradient.createGradientFlxSprite(3, lineHeight, [0xFF345452, 0xFF1C302E]);
+		bgLeftLine.resetFrame();
+
+		bgLeftLine.pixels.lock();
+
+		for (yPos in 0...lineHeight)
+		{
+			bgLeftLine.pixels.setPixel32(1, yPos, FlxColor.TRANSPARENT);
+		}
+
+		bgLeftLine.pixels.unlock();
+
+		bgLeftLine.scale.set(BASE_SCALE, BASE_SCALE);
+		bgLeftLine.updateHitbox();
+		backgroundGroup.add(bgLeftLine);
+
+		var bgMiddleLine:FunkinSprite = new FunkinSprite().makeSolid(Std.int(BASE_SCALE), Std.int(BASE_SCALE), 0xFF253D3B);
+		backgroundGroup.add(bgMiddleLine);
+
+		var bgTop:FunkinSprite = new FunkinSprite().makeSolid(FlxG.width, Std.int(FlxG.height / 2), 0xFF45706D);
+		bgTop.y -= bgTop.height;
+		backgroundGroup.add(bgTop);
+
+		var bgTopLine1:FunkinSprite = new FunkinSprite().makeGraphic(3, 1, 0xFF345452);
+		bgTopLine1.pixels.lock();
+		bgTopLine1.pixels.setPixel32(1, 0, FlxColor.TRANSPARENT);
+		bgTopLine1.pixels.unlock();
+		bgTopLine1.scaleSprite(BASE_SCALE, (lineHeight / 2) * BASE_SCALE);
+		bgTopLine1.y -= bgTopLine1.height;
+		backgroundGroup.add(bgTopLine1);
+
+		var bgTopLine2:FunkinSprite = bgTopLine1.clone();
+		bgTopLine2.scaleSprite(BASE_SCALE, (lineHeight / 2) * BASE_SCALE);
+		bgTopLine2.x = bgRightLine.x;
+		bgTopLine2.y -= bgTopLine2.height;
+		backgroundGroup.add(bgTopLine2);
 
 		topBarGroup = new FlxTypedGroup<FunkinSprite>();
 		topBarGroup.camera = mainCamera;
 
-		var topLeft:FunkinSprite = new FunkinSprite(1 * BASE_SCALE, 2 * BASE_SCALE).loadGraphic(getImage('top-left'));
+		var topLeft:FunkinSprite = new FunkinSprite(FullScreenScaleMode.notchSize.x + 1 * BASE_SCALE, 2 * BASE_SCALE).loadGraphic(getImage('top-left'));
 		topLeft.scaleSprite(BASE_SCALE);
 
 		var topRight:FunkinSprite = new FunkinSprite(FlxG.width - 1 * BASE_SCALE, 2 * BASE_SCALE).loadGraphic(getImage('top-right'));
@@ -203,15 +247,46 @@ class MainMenuState extends MusicBeatState
 		var topBordersDistance:Float = MathUtil.distanceBetweenFloats(topLeft.x + topLeft.width, topRight.x);
 		var topMiddle:FunkinSprite = new FunkinSprite(topLeft.x + topLeft.width, topLeft.y).makeGraphic(1, 18, 0xFF282828);
 
+		topMiddle.pixels.lock();
+
 		for (position in [0, 17])
 		{
 			topMiddle.pixels.setPixel(0, position, 0x111111);
 		}
 
+		topMiddle.pixels.unlock();
+
 		topMiddle.setGraphicSize(topBordersDistance, topMiddle.frameHeight * BASE_SCALE);
 		topMiddle.updateHitbox();
 
-		var topShadowLeft:FunkinSprite = new FunkinSprite(topLeft.x, topLeft.y + topLeft.height - 2 * BASE_SCALE).loadGraphic(getImage('top-shadow'));
+		var topShadowLeft:FunkinSprite = new FunkinSprite(topLeft.x, topLeft.y + topLeft.height - 2 * BASE_SCALE).makeGraphic(3, 4, FlxColor.TRANSPARENT);
+
+		topShadowLeft.pixels.lock();
+
+		for (yPos in 0...4)
+		{
+			for (xPos in 0...3)
+			{
+				switch (yPos)
+				{
+					case 2:
+						if (xPos > 0)
+						{
+							topShadowLeft.pixels.setPixel32(xPos, yPos, 0xFF999999);
+						}
+					case 3:
+						if (xPos > 1)
+						{
+							topShadowLeft.pixels.setPixel32(xPos, yPos, 0xFF999999);
+						}
+					default:
+						topShadowLeft.pixels.setPixel32(xPos, yPos, 0xFF999999);
+				}
+			}
+		}
+
+		topShadowLeft.pixels.unlock();
+
 		topShadowLeft.scaleSprite(BASE_SCALE);
 		topShadowLeft.blend = MULTIPLY;
 		topBarGroup.add(topShadowLeft);
@@ -254,12 +329,12 @@ class MainMenuState extends MusicBeatState
 		lightBulbOverlay.blend = MULTIPLY;
 		topBarGroup.add(lightBulbOverlay);
 
-		var miniTitle:FunkinSprite = new FunkinSprite(3 * BASE_SCALE, topShadowLeft.y + topShadowLeft.height + 2 * BASE_SCALE).loadGraphic(getImage('title'));
+		var miniTitle:FunkinSprite = new FunkinSprite(0, topShadowLeft.y + topShadowLeft.height + 2 * BASE_SCALE).loadGraphic(getImage('title'));
 		miniTitle.scaleSprite(BASE_SCALE);
 		miniTitle.camera = mainCamera;
 		add(miniTitle);
 
-		var mainButtonsBack:FunkinSprite = new FunkinSprite(2 * BASE_SCALE, miniTitle.y + miniTitle.height + 2 * BASE_SCALE).loadGraphic(getImage('buttonsBack'));
+		var mainButtonsBack:FunkinSprite = new FunkinSprite(FullScreenScaleMode.notchSize.x + 2 * BASE_SCALE, miniTitle.y + miniTitle.height + 2 * BASE_SCALE).loadGraphic(getImage('buttonsBack'));
 		mainButtonsBack.scaleSprite(BASE_SCALE);
 		mainButtonsBack.camera = mainCamera;
 
@@ -271,12 +346,21 @@ class MainMenuState extends MusicBeatState
 
 		add(mainButtonsBack);
 
+		bgTopLine1.x = bgLeftLine.x = mainButtonsBack.x + mainButtonsBack.width - bgLeftLine.width - 4 * BASE_SCALE;
+		miniTitle.x = Std.int(mainButtonsBack.x + (mainButtonsBack.width - miniTitle.width) / 2);
+
+		bgMiddleLine.y = mainButtonsBack.y + 28 * BASE_SCALE;
+
 		var buttonsDivision:FunkinSprite = new FunkinSprite(mainButtonsBack.x + 4 * BASE_SCALE, mainButtonsBack.y + 46 * BASE_SCALE).makeGraphic(94, 1, 0xFF5A5B61);
+
+		buttonsDivision.pixels.lock();
 
 		for (position in [0, 1, 92, 93])
 		{
 			buttonsDivision.pixels.setPixel(position, 0, 0x3E4044);
 		}
+
+		buttonsDivision.pixels.unlock();
 
 		buttonsDivision.scaleSprite(BASE_SCALE);
 		buttonsDivision.camera = mainCamera;
@@ -317,10 +401,13 @@ class MainMenuState extends MusicBeatState
 		windowShadowLeft.blend = MULTIPLY;
 
 		var windowShadowDistance:Float = MathUtil.distanceBetweenFloats(windowBorderLeft.x + windowBorderLeft.width, FlxG.width);
-		var windowShadowMiddle:FunkinSprite = new FunkinSprite(windowShadowLeft.x + windowShadowLeft.width, windowShadowLeft.y).loadGraphic(getImage('windowBorder-shadowM'));
-		windowShadowMiddle.setGraphicSize(windowShadowDistance, windowShadowMiddle.frameHeight * BASE_SCALE);
-		windowShadowMiddle.updateHitbox();
+		var windowShadowMiddle:FunkinSprite = new FunkinSprite(windowBorderMiddle.x, windowBorderMiddle.y + windowBorderMiddle.height).makeSolid(Std.int(windowShadowDistance), Std.int(2 * BASE_SCALE), 0xFF999999);
 		windowShadowMiddle.blend = MULTIPLY;
+
+		windowBordersGroup.add(windowShadowLeft);
+		windowBordersGroup.add(windowShadowMiddle);
+		windowBordersGroup.add(windowBorderLeft);
+		windowBordersGroup.add(windowBorderMiddle);
 
 		floatingCrewGroup = new FlxTypedGroup<FunkinSprite>();
 		floatingCrewGroup.camera = FlxG.camera;
@@ -335,6 +422,32 @@ class MainMenuState extends MusicBeatState
 		FlxG.camera.setPosition(windowArea.x, windowArea.y);
 		FlxG.camera.setSize(Std.int(windowArea.width), Std.int(windowArea.height));
 
+		bgMain.pixels.lock();
+
+		for (xPos in Std.int(windowArea.x)...Std.int(windowArea.x + windowArea.width))
+		{
+			for (yPos in Std.int(windowArea.y)...Std.int(windowArea.y + windowArea.height))
+			{
+				bgMain.pixels.setPixel32(xPos, yPos, FlxColor.TRANSPARENT);
+			}
+		}
+
+		bgMain.pixels.unlock();
+
+		bgRightLine.pixels.lock();
+
+		for (yPos in Std.int(windowArea.y / BASE_SCALE)...Std.int((windowArea.y + windowArea.height) / BASE_SCALE))
+		{
+			for (xPos in 0...3)
+			{
+				bgRightLine.pixels.setPixel32(xPos, yPos, FlxColor.TRANSPARENT);
+			}
+		}
+
+		bgRightLine.pixels.unlock();
+
+		bgMiddleLine.scaleSprite(windowAreaX, BASE_SCALE);
+
 		var windowShine:FunkinSprite = new FunkinSprite().loadGraphic(getImage('window-shine'));
 		windowShine.scaleSprite(BASE_SCALE);
 		windowShine.blend = ADD;
@@ -346,11 +459,6 @@ class MainMenuState extends MusicBeatState
 		windowMenu = new WindowSubMenuHandler(FlxG.camera, windowArea, BASE_SCALE);
 		windowMenu.onClose.add(closeWindowSubMenu);
 		add(windowMenu);
-
-		windowBordersGroup.add(windowShadowLeft);
-		windowBordersGroup.add(windowShadowMiddle);
-		windowBordersGroup.add(windowBorderLeft);
-		windowBordersGroup.add(windowBorderMiddle);
 
 		final buttonScale:Float = FlxG.onMobile ? 5 : 3;
 		backButton = new BackButton(FlxG.width * 0.92, FlxG.height * 0.95, FlxColor.WHITE, 1);
@@ -461,16 +569,21 @@ class MainMenuState extends MusicBeatState
 				changeSelection(-1);
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT_P)
+			{
+				curButton?.press();
+			}
+			else if (controls.ACCEPT_R)
 			{
 				checkSelection(curEntry);
+				curButton?.select();
 			}
 		}
 
 		#if FEATURE_DEBUG_CONTENT
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(() -> new DebugState());
+			FlxG.switchState(() -> new funkin.menus.debug.DebugState());
 		}
 		#end
 
@@ -480,6 +593,8 @@ class MainMenuState extends MusicBeatState
 			checkBackAction();
 		}
 	}
+
+	var curButton:Null<MainMenuButton> = null;
 
 	function handleMouse()
 	{
@@ -497,6 +612,8 @@ class MainMenuState extends MusicBeatState
 				overlaps = true;
 				pointerSelection(button.index);
 				button.hover();
+
+				curButton = button;
 			}
 			else
 			{
@@ -504,18 +621,33 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (overlaps)
+		if (overlaps || windowMenu.isOverlappingButton)
 		{
-			if (Pointer.justReleased)
+			Pointer.cursorMode = Hover;
+
+			if (curButton != null)
 			{
-				checkSelection(curPointerEntry);
+				if (Pointer.pressed)
+				{
+					curButton.press();
+				}
+				else if (Pointer.justReleased)
+				{
+					checkSelection(curPointerEntry);
+					curButton.select();
+				}
 			}
 		}
 		else
 		{
-			pointerSelection(-1);
+			Pointer.cursorMode = Normal;
+
+			pointerSelection();
+			curButton = null;
 		}
 	}
+
+	var curTouch:Null<FlxTouch> = null;
 
 	function handleTouch()
 	{
@@ -535,6 +667,9 @@ class MainMenuState extends MusicBeatState
 					overlaps = true;
 					pointerSelection(button.index);
 					button.hover();
+
+					curButton = button;
+					curTouch = touch;
 				}
 				else
 				{
@@ -543,17 +678,38 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (overlaps)
+		if (overlaps && curTouch != null)
 		{
-			if (Pointer.justReleased)
+			if (curTouch.pressed)
+			{
+				curButton?.press();
+			}
+			else if (curTouch.justReleased)
 			{
 				checkSelection(curPointerEntry);
+				curButton?.select();
 			}
 		}
 		else
 		{
-			pointerSelection(-1);
+			pointerSelection();
+
+			curButton = null;
+			curTouch = null;
 		}
+	}
+
+	function getCurrentSelectedButton():Null<MainMenuButton>
+	{
+		for (button in mainButtonsGroup.members)
+		{
+			if (button.selected)
+			{
+				return button;
+			}
+		}
+
+		return null;
 	}
 
 	function changeSelection(change:Int = 0)
@@ -574,6 +730,7 @@ class MainMenuState extends MusicBeatState
 				if (button.index == curEntry)
 				{
 					button.hover();
+					curButton = button;
 				}
 				else
 				{
@@ -602,16 +759,23 @@ class MainMenuState extends MusicBeatState
 
 	function checkSelection(entry:Int)
 	{
+		if (mainButtonsGroup.members[entry] == getCurrentSelectedButton())
+		{
+			return;
+		}
+
 		var buttonData:MainMenuButtonsData = mainMenuButtons[entry];
 
 		if (buttonData.available)
 		{
+			getCurrentSelectedButton()?.unselect();
+
 			FunkinSound.playMenuSound(CONFIRM);
 			selectButton(buttonData);
 		}
 		else
 		{
-			// you should be able to hear this normally.
+			// you should never be able to trigger this part of the condition, but just in case.
 			FunkinSound.playMenuSound(CANCEL);
 		}
 	}
@@ -620,7 +784,7 @@ class MainMenuState extends MusicBeatState
 	{
 		if (curSelectionMode == Window)
 		{
-			closeWindowSubMenu();
+			windowMenu.close();
 		}
 		else
 		{
@@ -642,12 +806,15 @@ class MainMenuState extends MusicBeatState
 
 	function selectButton(buttonData:MainMenuButtonsData)
 	{
+		Pointer.cursorMode = Normal;
+
 		switch (buttonData.triggerType)
 		{
 			case OPEN_WINDOW:
 				openWindowSubMenu(buttonData.onSelect(this));
 
 			case SWITCH_STATE:
+				disableInput();
 				flixel.util.FlxTimer.wait(1, () -> FlxG.switchState(buttonData.onSelect(this)));
 
 			case OPEN_SUBSTATE:
@@ -658,6 +825,11 @@ class MainMenuState extends MusicBeatState
 
 	function openWindowSubMenu(windowSubMenu:WindowSubMenu)
 	{
+		if (windowMenu.hasMenuOpen())
+		{
+			windowMenu.close(false);
+		}
+
 		curSelectionMode = Window;
 		backButton.visible = false;
 		windowMenu.open(windowSubMenu);
@@ -667,7 +839,7 @@ class MainMenuState extends MusicBeatState
 	{
 		curSelectionMode = Main;
 		backButton.visible = true;
-		windowMenu.close();
+		getCurrentSelectedButton()?.unselect();
 	}
 
 	override function onLanguageUpdate(language:String)
@@ -676,19 +848,14 @@ class MainMenuState extends MusicBeatState
 		windowMenu.onLanguageUpdate(language);
 	}
 
-	public function enableInputPublic()
-	{
-		enableInput();
-	}
-
-	function enableInput()
+	public function enableInput()
 	{
 		allowInput = true;
 		backButton.enabled = true;
 		windowMenu.enabled = true;
 	}
 
-	function disableInput()
+	public function disableInput()
 	{
 		allowInput = false;
 		backButton.enabled = false;

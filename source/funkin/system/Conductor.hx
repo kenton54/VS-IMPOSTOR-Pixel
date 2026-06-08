@@ -8,17 +8,17 @@ import flixel.util.FlxSignal.FlxTypedSignal;
 final class Conductor
 {
 	/**
-	 * Gets triggered when a new measure is reached.
+	 * Triggered when a new measure is reached.
 	 */
 	public static var onMeasureHit:FlxTypedSignal<Int -> Void> = new FlxTypedSignal<Int -> Void>();
 
 	/**
-	 * Gets triggered when a new beat is reached.
+	 * Triggered when a new beat is reached.
 	 */
 	public static var onBeatHit:FlxTypedSignal<Int -> Void> = new FlxTypedSignal<Int -> Void>();
 
 	/**
-	 * Gets triggered when a new step is reached.
+	 * Triggered when a new step is reached.
 	 */
 	public static var onStepHit:FlxTypedSignal<Int -> Void> = new FlxTypedSignal<Int -> Void>();
 
@@ -28,55 +28,105 @@ final class Conductor
 	public static var songPosition(default, null):Float = 0;
 
 	/**
-	 * Where the conductor is currently positioned at.
-	 * 
-	 * If the Conductor is in Standalone Mode, it will always return `0`.
+	 * Where the conductor is currently positioned at, as a percentage value (a value between `0` and `1`).
+	 *
+	 * If the Conductor is in Standalone Mode, or there's not BGM playing, it will always return `0`.
 	 */
 	public static var songPercent(get, never):Float;
 
+	/**
+	 * The length of the currently playing BGM.
+	 *
+	 * If the Conductor is in Standalone Mode, or there's not BGM playing, it will always return `0`.
+	 */
+	public static var songLength(get, never):Float;
+
+	/**
+	 * The current Beats per minute.
+	 */
 	public static var curBPM(get, never):Float;
 
+	/**
+	 * How many beats are there in a measure.
+	 */
 	public static var beatsPerMeasure(get, never):Int;
 
-	public static var stepsPerBeat(get, never):Int;
+	/**
+	 * How many steps are there in a beat.
+	 */
+	public static var stepsPerMeasure(get, never):Int;
 
+	/**
+	 * Where the conductor is currently positioned at, in measures.
+	 */
 	public static var curMeasure(default, null):Int = 0;
 
+	/**
+	 * Where the conductor is currently positioned at, in measures and fractions of a measure.
+	 */
 	public static var curMeasureFloat(default, null):Float = 0;
 
+	/**
+	 * Where the conductor is currently positioned at, in beats.
+	 */
 	public static var curBeat(default, null):Int = 0;
 
+	/**
+	 * Where the conductor is currently positioned at, in beats and fractions of a measure.
+	 */
 	public static var curBeatFloat(default, null):Float = 0;
 
+	/**
+	 * Where the conductor is currently positioned at, in steps.
+	 */
 	public static var curStep(default, null):Int = 0;
 
+	/**
+	 * Where the conductor is currently positioned at, in steps and fractions of a measure.
+	 */
 	public static var curStepFloat(default, null):Float = 0;
 
+	/**
+	 * Duration of a measure, in milliseconds.
+	 */
 	public static var measureLengthMs(get, never):Float;
 
+	/**
+	 * Duration of a beat, in milliseconds.
+	 */
 	public static var beatLengthMs(get, never):Float;
 
+	/**
+	 * Duration of a step, in milliseconds.
+	 */
 	public static var stepLengthMs(get, never):Float;
 
+	public static var timeSignatureNum(get, never):Int;
+
+	public static var timeSignatureDen(get, never):Int;
+
+	/**
+	 * How much to offset the conductor.
+	 */
 	public static var offset:Float = 0;
 
 	/**
 	 * Whether the conductor is in Standalone Mode or not.
-	 * 
+	 *
 	 * The Conductor usually follows a song playing in the background, however if this is set to `true` (when initiating the Conductor),
-	 * The Conductor will work on it's own, without the need of a song, great if you want to have events to play on beat without music.
+	 * the Conductor will work on its own, without the need of a song, great if you want to have events play on beat without music.
 	 */
 	public static var standalone(get, never):Bool;
 
 	/**
-	 * The list of BPM Changes the Conductor has configured and ready to execute.
+	 * The list of BPM Changes the Conductor has configured for the song.
 	 */
-	static var bpmChanges(default, null):Array<BPMData> = [];
+	static var bpmChanges(default, null):Array<SongTimeData> = [];
 
 	/**
-	 * The current BPM Change being used.
+	 * The most recent BPM Change according to the song position.
 	 */
-	static var curBPMChange(get, never):Null<BPMData>;
+	public static var curBPMChange(get, never):Null<SongTimeData>;
 
 	/**
 	 * The current BPM Change indexed from `bpmChanges`.
@@ -101,7 +151,7 @@ final class Conductor
 		FlxG.signals.preUpdate.add(update);
 	}
 
-	public static function start(bpm:Float = 100, standalone:Bool = false, beatsPerMeasure:Int = 4, stepsPerBeat:Int = 4)
+	public static function start(bpm:Float = 100, standalone:Bool = false, timeSignatureNum:Int = 4, timeSignatureDen:Int = 4)
 	{
 		conductorElapsed = songPosition = curMeasureFloat = curBeatFloat = curStepFloat = curBPMChangeIndex = 0;
 		curMeasure = curBeat = curStep = -1;
@@ -111,8 +161,8 @@ final class Conductor
 			{
 				time: 0,
 				bpm: bpm,
-				beatsPerMeasure: beatsPerMeasure,
-				stepsPerBeat: stepsPerBeat
+				timeSignatureNum: 4,
+				timeSignatureDen: 4
 			}
 		];
 
@@ -161,7 +211,7 @@ final class Conductor
 
 	/**
 	 * Stops and resets the Conductor.
-	 * 
+	 *
 	 * An alternative to the method `reset`.
 	 */
 	public static function stop()
@@ -194,8 +244,8 @@ final class Conductor
 		}
 
 		curStepFloat = FlxMath.roundDecimal((curSongTime / stepLengthMs), 4);
-		curBeatFloat = curStepFloat / stepsPerBeat;
-		curMeasureFloat = curBeatFloat / beatsPerMeasure;
+		curBeatFloat = curStepFloat / 4;
+		curMeasureFloat = curStepFloat / stepsPerMeasure;
 
 		curStep = Math.floor(curStepFloat);
 		curBeat = Math.floor(curBeatFloat);
@@ -229,9 +279,21 @@ final class Conductor
 
 	static function get_songPercent():Float
 	{
-		if (FlxG.sound.music != null)
+		if (songLength == 0)
 		{
-			return songPosition / FlxG.sound.music.time;
+			return 0;
+		}
+		else
+		{
+			return songPosition / songLength;
+		}
+	}
+
+	static function get_songLength():Float
+	{
+		if (FlxG.sound.music != null && !_standalone)
+		{
+			return FlxG.sound.music.length;
 		}
 		else
 		{
@@ -239,7 +301,7 @@ final class Conductor
 		}
 	}
 
-	static function get_curBPMChange():BPMData
+	static function get_curBPMChange():SongTimeData
 	{
 		return bpmChanges[curBPMChangeIndex];
 	}
@@ -251,27 +313,37 @@ final class Conductor
 
 	static function get_beatsPerMeasure():Int
 	{
-		return curBPMChange?.beatsPerMeasure ?? 0;
+		return timeSignatureNum;
 	}
 
-	static function get_stepsPerBeat():Int
+	static function get_stepsPerMeasure():Int
 	{
-		return curBPMChange?.stepsPerBeat ?? 0;
+		return Std.int(timeSignatureNum * 4);
 	}
 
 	static function get_measureLengthMs():Float
 	{
-		return beatLengthMs * beatsPerMeasure;
+		return beatLengthMs * timeSignatureNum;
 	}
 
 	static function get_beatLengthMs():Float
 	{
-		return (60 / curBPM) * 1000;
+		return (60 / curBPM) * 1000 * (4 / timeSignatureDen);
 	}
 
 	static function get_stepLengthMs():Float
 	{
-		return beatLengthMs / stepsPerBeat;
+		return beatLengthMs / 4;
+	}
+
+	static function get_timeSignatureNum():Int
+	{
+		return curBPMChange?.timeSignatureNum ?? 4;
+	}
+
+	static function get_timeSignatureDen():Int
+	{
+		return curBPMChange?.timeSignatureDen ?? 4;
 	}
 
 	static function get_standalone():Bool
@@ -280,13 +352,13 @@ final class Conductor
 	}
 }
 
-typedef BPMData =
+typedef SongTimeData =
 {
 	var time:Float;
 
 	var bpm:Float;
 
-	var beatsPerMeasure:Int;
+	var timeSignatureNum:Int;
 
-	var stepsPerBeat:Int;
+	var timeSignatureDen:Int;
 }

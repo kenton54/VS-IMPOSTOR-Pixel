@@ -88,6 +88,7 @@ class FunkinText extends FlxText
 	function set_translationData(data:Null<funkin.system.Translations.TranslationData>):Null<funkin.system.Translations.TranslationData>
 	{
 		translationData = data;
+
 		if (translationData != null)
 		{
 			set_text('');
@@ -101,6 +102,7 @@ class FunkinText extends FlxText
 		if (translationData != null)
 		{
 			text = funkin.system.Translations.translate(translationData.id, translationData.parameters);
+
 			if (textField != null)
 			{
 				var oldText:String = textField.text;

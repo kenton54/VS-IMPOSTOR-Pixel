@@ -367,20 +367,11 @@ class Project extends HXProject
         addAssetLibrary("default", embedAssets, preloadAssets);
         addAssetPath("assets/main", "assets", "default", ["*"], [], embedAssets, "assets");
 
-        /*
-        addAssetLibrary("overworld", embedAssets, preloadAssets);
-        addAssetPath("assets/overworld", "assets", "overworld", ["*"], [], embedAssets, "assets");
-
-        addAssetLibrary("gameplay", embedAssets, preloadAssets);
-        addAssetPath("assets/gameplay", "assets", "gameplay", ["*"], [], embedAssets, "assets");
-        */
-
         addAssetPath("assets/fonts", null, "default", ["*"], [], true, "assets");
 
-        addAssetPath("assets/embed", "assets/impostor", "impostor", ["*"], [], true, "assets");
+        addAssetPath("assets/embed", "impostor", null, ["*"], [], true, "assets");
 
-        addAssetLibrary("videos", false, preloadAssets);
-        addAssetPath("assets/videos", "assets/videos", "videos", ["*"], [], false, "assets");
+        addAssetPath("assets/videos", null, null, ["*"], [], false, "assets");
 
         addAssetLibrary("art", false, false);
         addAsset("LICENSE", "LICENSE", "art", false);
@@ -409,16 +400,6 @@ class Project extends HXProject
 
         if (isRelease())
         {
-            /*
-            if (enviromentVariables != null)
-            {
-                final path:String = enviromentVariables.get("KEYSTORE_PATH");
-                final alias:String = enviromentVariables.get("KEYSTORE_ALIAS");
-                final password:String = enviromentVariables.get("KEYSTORE_PASSWORD");
-                keystore = new Keystore(path, password, alias);
-            }
-            */
-
             if (isBundle())
             {
                 config.set("android.gradle-project-directory", "bin-bundle");
@@ -427,6 +408,8 @@ class Project extends HXProject
 
         config.set("android.application.android:icon", "@mipmap/ic_launcher");
         config.set("android.application.android:roundIcon", "@mipmap/ic_launcher_round");
+
+        config.set("android.layoutInDisplayCutoutMode", "shortEdges");
     }
 
     function setupIOS()

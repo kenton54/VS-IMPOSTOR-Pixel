@@ -16,7 +16,7 @@ class MemoryUtil
 	/**
 	 * @return The amount of RAM the system has installed.
 	 */
-	public static function getSystemMemory():Float
+	public static function getRAMTotal():Float
 	{
 		return 0;
 	}
@@ -34,7 +34,7 @@ class MemoryUtil
 	 */
 	public static function getRAMUsage():Float
 	{
-		return getTaskMemory() / getSystemMemory();
+		return getTaskMemory() / getRAMTotal();
 	}
 
 	/**

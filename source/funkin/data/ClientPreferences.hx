@@ -12,6 +12,11 @@ class ClientPreferences
 	public static var frameRate(get, set):Int;
 
 	/**
+	 * Whether the game should update every CPU cycle or by a fixed amount of frames.
+	 */
+	public static var unlockedFrameRate(get, set):Bool;
+
+	/**
 	 * Whether content that may disturb or make people uncomfortable should be shown.
 	 */
 	public static var sentitiveContent(get, set):Bool;
@@ -19,7 +24,7 @@ class ClientPreferences
 	/**
 	 * If enabled, makes light more "flashy", if that makes any sense lol.
 	 */
-	public static var flashingLights(get, set):Bool;
+	public static var photosentivity(get, set):Bool;
 
 	/**
 	 * If enabled, uses shaders that may be too resource-intensive.
@@ -36,7 +41,6 @@ class ClientPreferences
 	/**
 	 * The active colorblind shader.
 	 */
-	// TODO: figure out a better description lmao.
 	public static var colorBlindMode(get, set):ColorBlindMode;
 
 	/**
@@ -147,6 +151,18 @@ class ClientPreferences
 		#end
 	}
 
+	static function get_unlockedFrameRate():Bool
+	{
+		return FunkinSave.clientPreferences?.unlockedFrameRate ?? false;
+	}
+
+	static function set_unlockedFrameRate(value:Bool):Bool
+	{
+		FunkinSave.clientPreferences.unlockedFrameRate = value;
+		FunkinSave.flush();
+		return value;
+	}
+
 	static function get_sentitiveContent():Bool
 	{
 		return FunkinSave.clientPreferences?.sentitiveContent ?? true;
@@ -159,14 +175,14 @@ class ClientPreferences
 		return value;
 	}
 
-	static function get_flashingLights():Bool
+	static function get_photosentivity():Bool
 	{
-		return FunkinSave.clientPreferences?.flashingLights ?? true;
+		return FunkinSave.clientPreferences?.photosentivity ?? false;
 	}
 
-	static function set_flashingLights(value:Bool):Bool
+	static function set_photosentivity(value:Bool):Bool
 	{
-		FunkinSave.clientPreferences.flashingLights = value;
+		FunkinSave.clientPreferences.photosentivity = value;
 		FunkinSave.flush();
 		return value;
 	}
@@ -388,11 +404,11 @@ class ClientPreferences
 
 	static function set_language(value:String):String
 	{
+		FunkinSave.clientPreferences.language = value;
+		FunkinSave.flush();
+
 		if (!syncSystemLanguage)
 		{
-			FunkinSave.clientPreferences.language = value;
-			FunkinSave.flush();
-
 			funkin.system.Translations.curLanguageID = value;
 		}
 

@@ -19,7 +19,7 @@ class MathUtil
 	 *
 	 * Converts `v` to radians automatically.
 	 *
-	 * @param v The angle in degrees.
+	 * @param v The angle, in degrees.
 	 * @return The sine of `v`.
 	 */
 	public static function sin(v:Float):Float
@@ -45,7 +45,7 @@ class MathUtil
 	 *
 	 * Converts `v` to radians automatically.
 	 *
-	 * @param v The angle in degrees.
+	 * @param v The angle, in degrees.
 	 * @return The cosine of `v`.
 	 */
 	public static function cos(v:Float):Float
@@ -116,5 +116,31 @@ class MathUtil
 		var dx:Float = pointB.x - pointA.x;
 		var dy:Float = pointB.y - pointA.y;
 		return FlxMath.vectorLength(dx, dy);
+	}
+
+	/**
+	 * GCD stands for "Great Common Divisor".
+	 *
+	 * @param a Value 1.
+	 * @param b Value 2.
+	 * @return The greatest common divisor between `a` and `b`.
+	 */
+	public static function gcd(a:Int, b:Int):Int
+	{
+		a = Math.floor(Math.abs(a));
+		b = Math.floor(Math.abs(b));
+		var t:Int;
+
+		do
+		{
+			if (b == 0)
+			{
+				return a;
+			}
+			t = a;
+			a = b;
+			b = t % a;
+		}
+		while (true);
 	}
 }

@@ -1,13 +1,16 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxGame;
 
 import funkin.InitState;
+import funkin.data.ClientPreferences;
 import funkin.system.logs.CrashHandler;
 import funkin.ui.debug.DebugOverlay;
 
 import openfl.Lib;
 import openfl.display.Sprite;
+import openfl.events.Event;
 
 #if linux
 import hxgamemode.GamemodeClient;
@@ -37,6 +40,13 @@ class Main extends Sprite
 		Sys.setCwd(haxe.io.Path.addTrailingSlash(lime.system.System.documentsDirectory));
 		#end
 
+		#if (windows && cpp)
+		if (funkin.external.windows.WindowsAPI.isSystemDarkMode())
+		{
+			funkin.external.windows.WindowsAPI.setWindowDarkMode(true);
+		}
+		#end
+
 		#if linux
 		GamemodeClient.request_start();
 		#end
@@ -50,24 +60,66 @@ class Main extends Sprite
 	{
 		super();
 
+		if (stage != null)
+		{
+			init();
+		}
+		else
+		{
+			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+	}
+
+	function init(?event:Event)
+	{
+		if (hasEventListener(Event.ADDED_TO_STAGE))
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+		}
+
+		#if (sys && !mobile)
+		Lib.current.stage.window.onClose.add(function()
+		{
+			#if hxvlc
+			Handle.dispose();
+			#end
+
+			Sys.exit(0);
+		});
+		#end
+
+		startGame();
+	}
+
+	function startGame()
+	{
+		debugOverlay = new DebugOverlay();
+
 		funkin.system.FunkinSave.load();
 
 		#if hxvlc
-		Handle.init();
-		#end
-
-		#if (windows && cpp)
-		if (funkin.external.windows.WindowsAPI.isSystemDarkMode())
+		Handle.initAsync(null, function(success:Bool)
 		{
-			funkin.external.windows.WindowsAPI.setWindowDarkMode(true);
-		}
+			if (success)
+			{
+				trace('[HXVLC] LibVLC initialized successfully!');
+			}
+			else
+			{
+				trace('[HXVLC] LibVLC failed to start!');
+			}
+		});
 		#end
 
-		var game:FlxGame = new FlxGame(0, 0, InitState, 60, 60, true);
+		final frameRate:Int = ClientPreferences.unlockedFrameRate ? 0 : ClientPreferences.frameRate;
+
+		var game:FlxGame = new FlxGame(1280, 720, InitState, frameRate, frameRate, true, FlxG.stage.window.fullscreen);
 		addChild(game);
 
-		debugOverlay = new DebugOverlay(0x484848);
-		debugOverlay.visible = funkin.data.ClientPreferences.showFPSCounter;
+		#if !web
+		FlxG.scaleMode = new funkin.system.FullScreenScaleMode();
+		#end
+
 		addChild(debugOverlay);
 	}
 }

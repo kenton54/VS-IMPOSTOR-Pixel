@@ -29,7 +29,7 @@ class BackButton extends funkin.input.FunkinButton
 	{
 		super(x, y);
 
-		frames = Paths.getFrames('ui/backButton');
+		loadSprite(Paths.image('ui/backButton'));
 		addAnimationByPrefix('idle', 'idle', 24, false);
 		addAnimationByPrefix('press', 'press', 24, false);
 		addAnimationByPrefix('confirm', 'confirm', 24, false);

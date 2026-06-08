@@ -40,6 +40,15 @@ class WindowSubMenu extends FunkinGroup<WindowButton>
 		}
 	}
 
+	public function pointerOverlaps(button:WindowButton):Bool
+	{
+		var overlap:Bool = Pointer.overlaps(button, this.camera);
+
+		untyped _parent.isOverlappingButton = overlap;
+
+		return overlap;
+	}
+
 	function get_controls():funkin.input.Controls
 	{
 		return funkin.input.InputManager.controlsP1;

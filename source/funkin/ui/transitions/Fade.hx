@@ -17,7 +17,7 @@ class Fade extends BaseTransition
 		super.transitionIn();
 
 		fadeSprite.alpha = 1;
-		playTween(fadeSprite, {alpha: 0}, 0.5);
+		playTween(fadeSprite, {alpha: 0}, 0.25, {onComplete: (_) -> complete()});
 	}
 
 	override function transitionOut()
@@ -25,6 +25,6 @@ class Fade extends BaseTransition
 		super.transitionOut();
 
 		fadeSprite.alpha = 0;
-		playTween(fadeSprite, {alpha: 1}, 0.5);
+		playTween(fadeSprite, {alpha: 1}, 0.25, {onComplete: (_) -> complete()});
 	}
 }

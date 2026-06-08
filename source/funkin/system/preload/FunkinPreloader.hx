@@ -10,6 +10,7 @@ import lime.system.System;
 import openfl.Lib;
 import openfl.display.Shape;
 import openfl.geom.Rectangle;
+import openfl.media.Sound;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.utils.Future;
@@ -50,15 +51,19 @@ class FunkinPreloader extends FlxBasePreloader
 
 	var downloadingPercent:Float = 0;
 	var downloaded:Bool = false;
+	var preloadingAssetsPercent:Float = 0;
+	var precachingState:Int = 0;
 	var precacheImagesPercent:Float = 0;
 	var precacheSoundsPercent:Float = 0;
-	var precacheMusicPercent:Float = 0;
+	var precacheMusicsPercent:Float = 0;
 
 	var scaleRatio:Float = 0;
 
 	public function new()
 	{
 		super();
+
+		// soundsToCache = soundsToCache.concat(Paths.readDirectory('sounds/menu', null, true));
 	}
 
 	override function create()
@@ -171,7 +176,11 @@ class FunkinPreloader extends FlxBasePreloader
 		}
 	}
 
-	var precacheImagesFuture:Future<lime.utils.AssetLibrary> = null;
+	var preloaderFuture:Future<lime.utils.AssetLibrary> = null;
+	var cacheBitmapFuture:Future<BitmapData> = null;
+	var cacheSoundFuture:Future<Sound> = null;
+
+	var cachingPos:Int = 0;
 
 	function updateProgress(percent:Float):Float
 	{
@@ -196,40 +205,127 @@ class FunkinPreloader extends FlxBasePreloader
 				loadingText.text = 'Preloading Assets';
 				completedStates = 1;
 
-				if (precacheImagesFuture == null)
+				if (preloadingAssetsPercent >= 1)
 				{
-					precacheImagesFuture = funkin.utils.Assets.loadLibrary('default');
-					precacheImagesFuture.onProgress(function(bytes:Int, total:Int)
+					curState = Done;
+					return 1;
+				}
+
+				if (preloaderFuture == null)
+				{
+					preloaderFuture = funkin.utils.Assets.loadLibrary('default').onProgress(function(bytes:Int, total:Int)
 					{
 						trace('$bytes / $total');
-						precacheImagesPercent = bytes / total;
-					});
-					precacheImagesFuture.onError(function(error:Dynamic)
+						preloadingAssetsPercent = bytes / total;
+					}).onError(function(error:Dynamic)
 					{
 						trace('Error preloading assets: $error');
-						precacheImagesPercent = 1;
-					});
-					precacheImagesFuture.onComplete(function(_)
+						preloadingAssetsPercent = 1;
+					}).onComplete(function(_)
 					{
-						precacheImagesPercent = 1;
+						preloadingAssetsPercent = 1;
 					});
 				}
 
-				if (precacheImagesPercent >= 1)
-				{
-					curState = CachingAssets;
-				}
+				return preloadingAssetsPercent;
+			/*
+				case CachingAssets:
+					loadingText.text = 'Caching Assets';
+					completedStates = 2;
 
-				return precacheImagesPercent;
+					if (precachingState == 0) // precaching images
+					{
+						if (precacheImagesPercent >= 1 || imagesToCache.length == 0)
+						{
+							precachingState++;
+							cachingPos = 0;
+							return 1;
+						}
 
-			case CachingAssets:
-				loadingText.text = 'Caching Assets';
-				completedStates = 2;
+						if (cacheBitmapFuture == null)
+						{
+							cacheBitmapFuture = Assets.loadBitmapData(imagesToCache[cachingPos]).onError(function(error:Dynamic)
+							{
+								trace('Error loading bitmap (${imagesToCache[cachingPos]}): $error');
+								cacheBitmapFuture = null;
+								cachingPos++;
+							}).onComplete(function(bitmap:BitmapData)
+							{
+								FunkinMemory.cacheFromBitmap(bitmap, imagesToCache[cachingPos]);
+								cacheBitmapFuture = null;
+								cachingPos++;
+							});
+						}
 
-				curState = Done;
-				return 1;
+						precacheImagesPercent = (cachingPos + 1) / imagesToCache.length;
+
+						return precacheImagesPercent;
+					}
+					else if (precachingState == 1) // precaching sounds
+					{
+						if (precacheSoundsPercent >= 1 || soundsToCache.length == 0)
+						{
+							precachingState++;
+							cachingPos = 0;
+							return 1;
+						}
+
+						if (cacheSoundFuture == null)
+						{
+							cacheSoundFuture = Assets.loadSound(soundsToCache[cachingPos]).onError(function(error:Dynamic)
+							{
+								trace('Error loading sound (${soundsToCache[cachingPos]}): $error');
+								cacheBitmapFuture = null;
+								cachingPos++;
+							}).onComplete(function(sound:Sound)
+							{
+								FunkinMemory.cacheFromSound(sound, soundsToCache[cachingPos]);
+								cacheBitmapFuture = null;
+								cachingPos++;
+							});
+						}
+
+						precacheSoundsPercent = (cachingPos + 1) / soundsToCache.length;
+
+						return precacheSoundsPercent;
+					}
+					else if (precachingState == 2) // precaching musics
+					{
+						if (precacheMusicsPercent >= 1 || musicsToCache.length == 0)
+						{
+							precachingState++;
+							cachingPos = 0;
+							return 1;
+						}
+
+						if (cacheSoundFuture == null)
+						{
+							cacheSoundFuture = Assets.loadMusic(musicsToCache[cachingPos]).onError(function(error:Dynamic)
+							{
+								trace('Error loading music (${musicsToCache[cachingPos]}): $error');
+								cacheBitmapFuture = null;
+								cachingPos++;
+							}).onComplete(function(music:Sound)
+							{
+								FunkinMemory.cacheFromSound(music, musicsToCache[cachingPos]);
+								cacheBitmapFuture = null;
+								cachingPos++;
+							});
+						}
+
+						precacheMusicsPercent = (cachingPos + 1) / musicsToCache.length;
+
+						return precacheMusicsPercent;
+					}
+					else if (precachingState > 2) // done caching assets
+					{
+						curState = Done;
+					}
+
+					return 1;
+			 */
 			case Done:
-				loadingText.text = 'Starting Game';
+				loadingText.text = 'Starting Game...';
 				completedStates = 3;
 
 				loadGame();
@@ -264,8 +360,10 @@ class FunkinPreloader extends FlxBasePreloader
 	function loadGame()
 	{
 		_loaded = true;
+		_percent = 1;
 	}
 
+	#if web
 	override function onLoaded()
 	{
 		super.onLoaded();
@@ -273,12 +371,13 @@ class FunkinPreloader extends FlxBasePreloader
 		_loaded = false;
 		downloaded = true;
 	}
+	#end
 
 	override function destroy()
 	{
 		super.destroy();
 
-		precacheImagesFuture = null;
+		preloaderFuture = null;
 	}
 }
 

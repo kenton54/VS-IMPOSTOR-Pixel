@@ -2,6 +2,8 @@ package funkin.input;
 
 import flixel.input.gamepad.FlxGamepad;
 
+import funkin.system.FunkinSave;
+
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.events.TouchEvent;
@@ -52,33 +54,67 @@ class InputManager
 	@:allow(funkin.InitState)
 	static function init()
 	{
-		controlsP1 = new Controls('player1', Solo);
-		controlsP2 = new Controls('player2', None);
+		controlsP1 = new Controls(0, 'player1', Solo);
+		controlsP2 = new Controls(1, 'player2', None);
 
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, (_) -> usingControls = true);
 		FlxG.stage.addEventListener(MouseEvent.MOUSE_MOVE, (_) -> usingControls = false);
 		FlxG.stage.addEventListener(MouseEvent.MOUSE_DOWN, (_) -> usingControls = false);
 		FlxG.stage.addEventListener(TouchEvent.TOUCH_BEGIN, (_) -> usingControls = false);
 
-		FlxG.gamepads.deviceConnected.add(onGamepadAdded);
+		FlxG.gamepads.deviceConnected.add(onGamepadConnected);
+		FlxG.gamepads.deviceDisconnected.add(onGamepadDisconnected);
 
 		for (i in 0...FlxG.gamepads.numActiveGamepads)
 		{
 			var gamepad:FlxGamepad = FlxG.gamepads.getByID(i);
 			if (gamepad != null)
 			{
-				onGamepadAdded(gamepad);
+				onGamepadConnected(gamepad);
 			}
 		}
 	}
 
-	static function onGamepadAdded(gamepad:FlxGamepad)
+	static function onGamepadConnected(gamepad:FlxGamepad)
 	{
 		for (controls in [controlsP1, controlsP2])
 		{
 			if (!controls.hasGamepadConnected)
 			{
-				controls.addGamepad(gamepad.id);
+				controls.addGamepad(gamepad);
+			}
+		}
+	}
+
+	static function onGamepadDisconnected(gamepad:FlxGamepad)
+	{
+		for (controls in [controlsP1, controlsP2])
+		{
+			if (controls.hasGamepadConnected)
+			{
+				controls.removeGamepad(gamepad);
+			}
+		}
+	}
+
+	public static function saveControls()
+	{
+		for (controls in [controlsP1, controlsP2])
+		{
+			var keybindsData:Null<ControlBindsSaveData> = controls.createSaveData(Keyboard);
+			if (keybindsData != null)
+			{
+				FunkinSave.setControls(controls.ID, Keyboard, keybindsData);
+			}
+
+			if (controls.hasGamepadConnected)
+			{
+				var gamepadID:Int = @:privateAccess controls.activeGamepad;
+				var gamepadBindsData:Null<ControlBindsSaveData> = controls.createSaveData(Gamepad(gamepadID));
+				if (gamepadBindsData != null)
+				{
+					FunkinSave.setControls(controls.ID, Gamepad(gamepadID), gamepadBindsData);
+				}
 			}
 		}
 	}

@@ -23,25 +23,26 @@ class SimpleDisplay extends Sprite
 	var times:Array<Float> = [];
 	var currentTime:Float = 0;
 
-	var memoryUpdateTimer:Float = 0;
+	var updateTimer:Int = 0;
 
-	public function new()
+	public function new(x:Float = 0, y:Float = 0)
 	{
 		super();
 
+		this.x = x;
+		this.y = y;
+
 		fpsText = new TextField();
-		fpsText.x = 8;
-		fpsText.y = 3;
 		fpsText.width = 300;
 		fpsText.height = 40;
 		fpsText.selectable = false;
 		fpsText.mouseEnabled = false;
 		fpsText.defaultTextFormat = new TextFormat(Constants.DEFAULT_FONT, 26, 0xFFFFFF);
+		fpsText.text = 'FPS: 0';
 		addChild(fpsText);
 
 		memoryText = new TextField();
-		memoryText.x = 8;
-		memoryText.y = 36;
+		memoryText.y = 34;
 		memoryText.width = 400;
 		memoryText.height = 20;
 		memoryText.selectable = false;
@@ -56,9 +57,9 @@ class SimpleDisplay extends Sprite
 		#end
 	}
 
-	public function update(deltaTime:Float)
+	override function __enterFrame(deltaTime:Int)
 	{
-		currentTime += deltaTime;
+		currentTime += deltaTime / 1000;
 		times.push(currentTime);
 
 		while (times[0] < currentTime - 1)
@@ -68,14 +69,25 @@ class SimpleDisplay extends Sprite
 
 		fps = times.length;
 
-		#if !web
-		memoryUpdateTimer += deltaTime;
-		if (memoryUpdateTimer >= DebugOverlay.UPDATE_FREQUENCY)
+		if (!visible)
 		{
-			memoryUpdateTimer = 0;
-			memoryText.text = 'Memory: ${FlxStringUtil.formatBytes(MemoryUtil.getGCMemory())}';
+			return;
 		}
+
+		updateTimer += deltaTime;
+
+		if (updateTimer < Constants.DEBUG_OVERLAY_UPDATE_FREQUENCY)
+		{
+			return;
+		}
+
+		#if !web
+		memoryText.text = 'Memory: ${FlxStringUtil.formatBytes(MemoryUtil.getGCMemory())}';
 		#end
+
+		updateTimer = 0;
+
+		super.__enterFrame(deltaTime);
 	}
 
 	function get_currentFPS():Int
@@ -85,18 +97,34 @@ class SimpleDisplay extends Sprite
 
 	function set_fps(value:Int):Int
 	{
-		fps = value;
-		fpsText.text = 'FPS: $fps';
+		if (value == fps)
+		{
+			return value;
+		}
 
-		if (fps < 10)
+		fps = value;
+
+		if (visible)
+		{
+			updateFPSDisplay(fps);
+		}
+
+		return fps;
+	}
+
+	function updateFPSDisplay(curFPS:Int)
+	{
+		fpsText.text = 'FPS: $curFPS';
+
+		if (curFPS < 10)
 		{
 			fpsText.textColor = 0xFF0000;
 		}
-		if (fps < 30)
+		if (curFPS < 30)
 		{
 			fpsText.textColor = 0xFF8800;
 		}
-		else if (fps < 60)
+		else if (curFPS < 60)
 		{
 			fpsText.textColor = 0xFFFF00;
 		}
@@ -104,7 +132,5 @@ class SimpleDisplay extends Sprite
 		{
 			fpsText.textColor = 0xFFFFFF;
 		}
-
-		return fps;
 	}
 }

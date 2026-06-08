@@ -51,6 +51,11 @@ final class Constants
 	public static final DEFAULT_ANIMATION_NAME:String = 'idle';
 
 	/**
+	 * How frequent will the debug overlay update the information it displays.
+	 */
+	public static final DEBUG_OVERLAY_UPDATE_FREQUENCY:Int = 500;
+
+	/**
 	 * The chance for shooting stars to spawn each frame.
 	 */
 	public static final SHOOTING_STAR_SPAWN_CHANCE:Float = 0.01;

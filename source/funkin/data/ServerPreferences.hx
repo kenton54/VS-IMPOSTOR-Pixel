@@ -5,16 +5,14 @@ import funkin.system.FunkinSave;
 class ServerPreferences
 {
 	/**
-	 * The last IP Adress the user used.
-	 *
-	 * For quick connectivity.
+	 * The last IP Adress the user used, for quick connectivity.
 	 */
 	public static var ipAdress(get, set):String;
 
 	/**
-	 * The last port the user used.
+	 * The last port the user used, for quick connectivity.
 	 *
-	 * For quick connectivity.
+	 * Allows values between `1024` and `65535`, to prevent conflicts with system servers and protocols.
 	 */
 	public static var port(get, set):Int;
 

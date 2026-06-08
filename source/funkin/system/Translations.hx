@@ -1,5 +1,6 @@
 package funkin.system;
 
+import funkin.data.LanguageData;
 import funkin.graphics.FunkinBitmapText;
 import funkin.ui.MusicBeatState;
 
@@ -13,7 +14,7 @@ class Translations
 	/**
 	 * All loaded languages.
 	 */
-	public static var languages(default, null):Map<String, Language>;
+	public static var languages(default, null):Array<LanguageData>;
 
 	/**
 	 * The current loaded language.
@@ -23,7 +24,7 @@ class Translations
 	/**
 	 * The current loaded language's data.
 	 */
-	public static var curLanguage(get, never):Language;
+	public static var curLanguage(get, never):LanguageData;
 
 	/**
 	 * The current loaded language's name.
@@ -33,7 +34,16 @@ class Translations
 	/**
 	 * The default language's data.
 	 */
-	static var defaultLanguage(get, never):Language;
+	static var defaultLanguage(get, never):LanguageData;
+
+	/**
+	 * If the engine somehow fails to load any languages, it falls back to this one.
+	 *
+	 * Used to prevent crashes.
+	 *
+	 * It just contains empty data.
+	 */
+	static var fallbackLanguage(default, null):LanguageData;
 
 	/**
 	 * Starts the Translation backend.
@@ -41,17 +51,19 @@ class Translations
 	@:allow(funkin.InitState)
 	static function init()
 	{
-		languages = new Map<String, Language>();
-		curLanguageID = Constants.DEFAULT_LANGUAGE;
+		languages = [];
+
+		fallbackLanguage = new LanguageData('null', 'Unknown', {});
 
 		for (language in Constants.LANGUAGES)
 		{
-			if (Assets.exists(Paths.json('languages/$language', 'impostor')))
+			if (Assets.exists(Paths.impostor('data/languages/$language.json')))
 			{
-				var langData:Language = Json.parse(Assets.getText(Paths.json('languages/$language', 'impostor')));
-				languages.set(language, langData);
+				languages.push(LanguageData.fromFile(Paths.impostor('data/languages/$language.json')));
 			}
 		}
+
+		curLanguageID = Constants.DEFAULT_LANGUAGE;
 
 		FlxG.signals.focusGained.add(checkSystemLanguage);
 		FlxG.signals.postStateSwitch.add(checkSystemLanguage);
@@ -68,11 +80,11 @@ class Translations
 	 */
 	public static function translate(id:String, ?parameters:Array<Dynamic>):String
 	{
-		if (exists(curLanguage, id))
+		if (curLanguage.exists(id))
 		{
 			return getText(curLanguage, id, parameters);
 		}
-		else if (exists(defaultLanguage, id))
+		else if (defaultLanguage.exists(id))
 		{
 			return getText(defaultLanguage, id, parameters);
 		}
@@ -88,35 +100,23 @@ class Translations
 	 * @param parameters    If the text has parameters that can be replaced with values.
 	 * @return The translated text.
 	 */
-	public static function getText(language:Language, id:String, ?parameters:Array<Dynamic>):String
+	public static function getText(language:LanguageData, id:String, ?parameters:Array<Dynamic>):String
 	{
-		var text:String = get(language, id);
+		var text:String = language.get(id);
 		var regex:EReg = ~/{[0-9]}/g;
 
 		var result:String = regex.map(text, function(reg:EReg)
 		{
-			var match:String = regex.matched(0);
-			match = match.substr(match.length - 1, match.length).substr(0, 1);
-			return parameters[Std.parseInt(match)];
+			var match:String = reg.matched(0);
+			var matchID:Int = Std.parseInt(match.substr(1, match.lastIndexOf('}')));
+			return parameters[matchID];
 		});
 
 		return result;
 	}
 
 	/**
-	 * Checks if the specified translation ID exists in a language.
-	 *
-	 * @param language  The language to check.
-	 * @param id        The translation ID to find.
-	 * @return Whether the translation ID exists in the language or not.
-	 */
-	public static function exists(language:Language, id:String):Bool
-	{
-		return get(language, id) != null;
-	}
-
-	/**
-	 * @return The system's current language in the Language Code format (i.e. `en-US`).
+	 * @return The system's current language in the Language Code format (e.g. `en-US`).
 	 */
 	public static function getUserLanguage():String
 	{
@@ -155,39 +155,22 @@ class Translations
 		}
 	}
 
-	static function get(language:Language, id:String):Null<String>
+	static function getLanguageFromID(langID:String):LanguageData
 	{
-		var parts:Array<String> = [];
-
-		if (id.contains('.'))
+		for (language in languages)
 		{
-			parts = id.split('.');
-		}
-		else
-		{
-			parts = [id];
-		}
-
-		var lastIndex:Int = parts.length - 1;
-
-		var result:Null<String> = null;
-		var curLevel:Dynamic = language.data;
-		for (i => part in parts)
-		{
-			if (Reflect.hasField(curLevel, part))
+			if (language.ID == langID)
 			{
-				if (i == lastIndex)
-				{
-					result = Reflect.getProperty(curLevel, part);
-				}
-				else
-				{
-					curLevel = Reflect.getProperty(curLevel, part);
-				}
+				return language;
 			}
 		}
 
-		return result;
+		return null;
+	}
+
+	static function languageExists(langID:String):Bool
+	{
+		return getLanguageFromID(langID) != null;
 	}
 
 	static function checkSystemLanguage()
@@ -250,7 +233,12 @@ class Translations
 
 	static function set_curLanguageID(language:String):String
 	{
-		if (languages.exists(language))
+		if (language == curLanguageID)
+		{
+			return language;
+		}
+
+		if (languageExists(language))
 		{
 			curLanguageID = language;
 			updateLanguage();
@@ -264,9 +252,9 @@ class Translations
 		return language;
 	}
 
-	static function get_curLanguage():Language
+	static function get_curLanguage():LanguageData
 	{
-		return languages.get(curLanguageID) ?? defaultLanguage;
+		return getLanguageFromID(curLanguageID) ?? defaultLanguage;
 	}
 
 	static function get_curLanguageName():String
@@ -274,9 +262,9 @@ class Translations
 		return curLanguage.name;
 	}
 
-	static function get_defaultLanguage():Language
+	static function get_defaultLanguage():LanguageData
 	{
-		return languages.get(Constants.DEFAULT_LANGUAGE) ?? {name: 'Unknown', data: {}};
+		return getLanguageFromID(Constants.DEFAULT_LANGUAGE) ?? fallbackLanguage;
 	}
 }
 
@@ -290,23 +278,7 @@ typedef TranslationData =
 	/**
 	 * An optional list of parameters that will be concantinated in the string result.
 	 *
-	 * Replaces the `{x}` inside the ID value with each parameter.
+	 * Replaces the `{n}` inside the ID value with each parameter.
 	 */
 	var ?parameters:Array<Dynamic>;
-}
-
-/**
- * The language's metadata.
- */
-typedef Language =
-{
-	/**
-	 * The name of the language.
-	 */
-	var name:String;
-
-	/**
-	 * All the translation IDs the language holds.
-	 */
-	var data:Dynamic;
 }

@@ -1,6 +1,7 @@
 package funkin.input;
 
 import flixel.FlxObject;
+import flixel.graphics.FlxGraphic;
 import flixel.input.mouse.FlxMouse;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxPoint;
@@ -110,7 +111,7 @@ class Pointer
 	 * @param object        The object or group to check for overlap.
 	 * @param camera        Helps determine the world position. If none is set, `FlxG.camera` will be used instead.
 	 * @param updateCursor  Whether to update `cursorMode` or not.
-	 * @return Whether the pointer overlaps or not.
+	 * @return Whether the pointer overlaps the object or group or not.
 	 */
 	public static function overlaps(object:flixel.FlxBasic, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
 	{
@@ -145,7 +146,7 @@ class Pointer
 	 * @param object        The object to check for overlap.
 	 * @param camera        Helps determine the world position. If none is set, `FlxG.camera` will be used instead.
 	 * @param updateCursor  Whether to update `cursorMode` or not.
-	 * @return Whether the pointer overlaps or not.
+	 * @return Whether the pointer overlaps the object or not.
 	 */
 	public static function overlapsComplex(object:FlxObject, ?camera:FlxCamera, ?updateCursor:Bool = false):Bool
 	{
@@ -161,12 +162,11 @@ class Pointer
 
 		var result:Bool = object.overlapsPoint(pointer.getWorldPosition(camera), true, camera);
 
-		if (updateCursor && (Std.isOfType(object, FunkinSprite)) && result)
+		if (updateCursor && result)
 		{
-			var sprite:FunkinSprite = cast object;
-			if (sprite.cursorMode != null)
+			if (object.cursorMode != null)
 			{
-				Pointer.cursorMode = sprite.cursorMode;
+				Pointer.cursorMode = object.cursorMode;
 			}
 			else
 			{
@@ -175,6 +175,36 @@ class Pointer
 		}
 
 		return result;
+	}
+
+	/**
+	 * Checks if the pointer is overlapping a `FlxObject` or `FlxGroup` and if the pointer was stopped being pressed.
+	 *
+	 * This is a shortcut of doing:
+	 *
+	 * ```haxe
+	 * if (Pointer.overlaps(object, camera) && Pointer.justReleased)
+	 * {
+	 * 	// code here
+	 * }
+	 * ```
+	 *
+	 * Pretty neat, huh?
+	 *
+	 * @param object 					The object or group to check for overlap.
+	 * @param camera 					Helps determine the world position. If none is set, `FlxG.camera` will be used instead.
+	 * @param preciseOverlap 	Whether to use the precise overlap calculation rather than the simple one.
+	 * @return Whether the pointer overlaps the object or group and was stopped being pressed.
+	 */
+	public static function pressAction(object:flixel.FlxBasic, ?camera:FlxCamera, ?preciseOverlap:Bool = false):Bool
+	{
+		if (pointer == null || object == null)
+		{
+			return false;
+		}
+
+		var overlap:Bool = (preciseOverlap && Std.isOfType(object, FlxObject)) ? overlapsComplex(cast object, camera) : overlaps(object, camera);
+		return overlap && justReleased;
 	}
 
 	/**
@@ -290,28 +320,50 @@ class Pointer
 			return;
 		}
 
+		var graphic:FlxGraphic = null;
+		var offsetX:Int = 0;
+		var offsetY:Int = 0;
+
 		switch (mode)
 		{
 			case Normal:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_default.graphic, 'impostor')).bitmap, cursor_default.offsetX, cursor_default.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_default.graphic + '.png'));
+				offsetX = cursor_default.offsetX;
+				offsetY = cursor_default.offsetY;
 
 			case Hover:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_hover.graphic, 'impostor')).bitmap, cursor_hover.offsetX, cursor_hover.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_hover.graphic + '.png'));
+				offsetX = cursor_hover.offsetX;
+				offsetY = cursor_hover.offsetY;
 
 			case Text:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_text.graphic, 'impostor')).bitmap, cursor_text.offsetX, cursor_text.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_text.graphic + '.png'));
+				offsetX = cursor_text.offsetX;
+				offsetY = cursor_text.offsetY;
 
 			case Crosshair:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_crosshair.graphic, 'impostor')).bitmap, cursor_crosshair.offsetX, cursor_crosshair.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_crosshair.graphic + '.png'));
+				offsetX = cursor_crosshair.offsetX;
+				offsetY = cursor_crosshair.offsetY;
 
 			case Grab:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_grab.graphic, 'impostor')).bitmap, cursor_grab.offsetX, cursor_grab.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_grab.graphic + '.png'));
+				offsetX = cursor_grab.offsetX;
+				offsetY = cursor_grab.offsetY;
 
 			case Hold:
-				applyCursor(FunkinMemory.getGraphic(Paths.image(cursor_hold.graphic, 'impostor')).bitmap, cursor_hold.offsetX, cursor_hold.offsetY);
+				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_hold.graphic + '.png'));
+				offsetX = cursor_hold.offsetX;
+				offsetY = cursor_hold.offsetY;
+		}
 
-			default:
-				setCursorGraphic();
+		if (graphic != null && graphic.bitmap != null)
+		{
+			applyCursor(graphic.bitmap, offsetX, offsetY);
+		}
+		else
+		{
+			setCursorGraphic();
 		}
 	}
 

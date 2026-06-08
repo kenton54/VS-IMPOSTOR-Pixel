@@ -32,4 +32,6 @@ using StringTools;
 
 using funkin.utils.tools.FloatTools;
 using funkin.utils.tools.IntTools;
+
+using thx.Arrays;
 #end

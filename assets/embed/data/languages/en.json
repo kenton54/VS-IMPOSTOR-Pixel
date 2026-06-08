@@ -30,6 +30,7 @@
       "extras": "Extras",
       "credits": "Credits",
       "options": "Options",
+      "loading": "Loading",
       "exit": "Exit"
     },
     "languages": {
@@ -41,6 +42,11 @@
       "vi": "Vietnamese"
     },
     "titleScreen": {
+      "intro": {
+        "team": "and the {0} team",
+        "presents": "Present",
+        "modBased": "A mod based of"
+      },
       "pressStart": {
         "press": "Press {0} to Play",
         "mouse": "Click the Mouse to Play",
@@ -50,7 +56,8 @@
         "press": "Press {0}",
         "mouse": "Click the Mouse",
         "touch": "Touch the Screen"
-      }
+      },
+      "typeCodeHint": "Use the keyboard to input a secret code"
     },
     "mainMenu": {
       "worldMap": "World Map",

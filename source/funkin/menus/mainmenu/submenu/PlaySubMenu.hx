@@ -79,13 +79,36 @@ class PlaySubMenu extends WindowSubMenu
 
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_LEFT || controls.UI_RIGHT)
+		if (InputManager.usingControls)
 		{
-			changeSelection(true, false);
+			if (controls.UI_LEFT || controls.UI_RIGHT)
+			{
+				changeSelection(true, false);
+			}
+
+			if (controls.UI_UP || controls.UI_DOWN)
+			{
+				changeSelection(false, true);
+			}
 		}
-		if (controls.UI_UP || controls.UI_DOWN)
+		else
 		{
-			changeSelection(false, true);
+			if (pointerOverlaps(worldmapButton))
+			{
+				forceSelection(false, false);
+			}
+			else if (pointerOverlaps(freeplayButton))
+			{
+				forceSelection(true, false);
+			}
+			else if (pointerOverlaps(tutorialButton))
+			{
+				forceSelection(selectingFreeplay, true);
+			}
+			else
+			{
+				unselectEverything();
+			}
 		}
 
 		super.update(elapsed);
@@ -93,6 +116,9 @@ class PlaySubMenu extends WindowSubMenu
 
 	function changeSelection(changeFreeplay:Bool, changeTutorial:Bool)
 	{
+		var lastFreeplay:Bool = selectingFreeplay;
+		var lastTutorial:Bool = selectingTutorial;
+
 		if (changeFreeplay)
 		{
 			selectingFreeplay = !selectingFreeplay;
@@ -105,7 +131,23 @@ class PlaySubMenu extends WindowSubMenu
 
 		updateButtons();
 
-		if (changeFreeplay || changeTutorial)
+		if (lastFreeplay != selectingFreeplay || lastTutorial != selectingTutorial)
+		{
+			FunkinSound.playMenuSound();
+		}
+	}
+
+	function forceSelection(freeplay:Bool, tutorial:Bool)
+	{
+		var lastFreeplay:Bool = selectingFreeplay;
+		var lastTutorial:Bool = selectingTutorial;
+
+		selectingFreeplay = freeplay;
+		selectingTutorial = tutorial;
+
+		updateButtons();
+
+		if (lastFreeplay != selectingFreeplay || lastTutorial != selectingTutorial)
 		{
 			FunkinSound.playMenuSound();
 		}
@@ -127,5 +169,10 @@ class PlaySubMenu extends WindowSubMenu
 				tutorialButton.hovering = false;
 			}
 		}
+	}
+
+	function unselectEverything()
+	{
+		@:privateAccess worldmapButton.hovering = freeplayButton.hovering = tutorialButton.hovering = false;
 	}
 }

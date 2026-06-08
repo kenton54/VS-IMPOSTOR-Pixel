@@ -37,6 +37,11 @@ class MainMenuButton extends FunkinSpriteGroup
 	 */
 	public var hovered(default, null):Bool = false;
 
+	/**
+	 * Whether the button is selected or not.
+	 */
+	public var selected(default, null):Bool = false;
+
 	var _idleColor:FlxColor;
 	var _hoverColor:FlxColor;
 
@@ -56,7 +61,9 @@ class MainMenuButton extends FunkinSpriteGroup
 		button = new FunkinSprite().loadGraphic(getImageFromType(type), true, buttonDimentions[0], buttonDimentions[1]);
 		button.addAnimationByFrameList('idle', [0], 0);
 		button.addAnimationByFrameList('hover', [1], 0);
-		button.addAnimationByFrameList('locked', [2], 0);
+		button.addAnimationByFrameList('press', [2], 0);
+		button.addAnimationByFrameList('select', [3], 0);
+		button.addAnimationByFrameList('locked', [4], 0);
 		button.scaleSprite(scale);
 		add(button);
 
@@ -93,26 +100,84 @@ class MainMenuButton extends FunkinSpriteGroup
 		available = data.available;
 	}
 
-	/**
-	 * Stops the button from being highlighted.
-	 */
 	public function idle()
 	{
-		button.playAnimation('idle');
-		label.color = _idleColor;
+		if (!available)
+		{
+			return;
+		}
+
+		if (!selected)
+		{
+			button.playAnimation('idle');
+			label.color = _idleColor;
+		}
 
 		hovered = false;
 	}
 
-	/**
-	 * Highlights the button.
-	 */
 	public function hover()
 	{
-		button.playAnimation('hover');
-		label.color = _hoverColor;
+		if (!available)
+		{
+			return;
+		}
+
+		if (!selected)
+		{
+			button.playAnimation('hover');
+			label.color = _idleColor;
+		}
 
 		hovered = true;
+	}
+
+	public function press()
+	{
+		if (!available)
+		{
+			return;
+		}
+
+		if (!selected)
+		{
+			button.playAnimation('press');
+			label.color = _idleColor;
+		}
+	}
+
+	public function unpress()
+	{
+		if (!available)
+		{
+			return;
+		}
+
+		if (!selected)
+		{
+			if (hovered)
+			{
+				hover();
+			}
+			else
+			{
+				idle();
+			}
+		}
+	}
+
+	public function select()
+	{
+		button.playAnimation('select');
+		label.color = _hoverColor;
+
+		selected = true;
+	}
+
+	public function unselect()
+	{
+		selected = false;
+		idle();
 	}
 
 	function getSelectionColorsFromType(buttonType:MainMenuButtonType):Array<FlxColor>

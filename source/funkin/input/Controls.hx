@@ -5,8 +5,11 @@ import flixel.input.actions.FlxAction.FlxActionDigital;
 import flixel.input.actions.FlxActionInput;
 import flixel.input.actions.FlxActionManager;
 import flixel.input.actions.FlxActionSet;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+
+import funkin.system.FunkinSave;
 
 class Controls extends FlxActionSet
 {
@@ -16,56 +19,30 @@ class Controls extends FlxActionSet
 	}
 
 	// gameplay controls
-	var note_left:FlxActionDigital = new FlxActionDigital(Action.NOTE_LEFT);
-	var note_left_p:FlxActionDigital = new FlxActionDigital(Action.NOTE_LEFT_PRESSED);
-	var note_left_r:FlxActionDigital = new FlxActionDigital(Action.NOTE_LEFT_RELEASED);
-	var note_down:FlxActionDigital = new FlxActionDigital(Action.NOTE_DOWN);
-	var note_down_p:FlxActionDigital = new FlxActionDigital(Action.NOTE_DOWN_PRESSED);
-	var note_down_r:FlxActionDigital = new FlxActionDigital(Action.NOTE_DOWN_RELEASED);
-	var note_up:FlxActionDigital = new FlxActionDigital(Action.NOTE_UP);
-	var note_up_p:FlxActionDigital = new FlxActionDigital(Action.NOTE_UP_PRESSED);
-	var note_up_r:FlxActionDigital = new FlxActionDigital(Action.NOTE_UP_RELEASED);
-	var note_right:FlxActionDigital = new FlxActionDigital(Action.NOTE_RIGHT);
-	var note_right_p:FlxActionDigital = new FlxActionDigital(Action.NOTE_RIGHT_PRESSED);
-	var note_right_r:FlxActionDigital = new FlxActionDigital(Action.NOTE_RIGHT_RELEASED);
-	var dodge:FlxActionDigital = new FlxActionDigital(Action.DODGE);
-	var dodge_p:FlxActionDigital = new FlxActionDigital(Action.DODGE_PRESSED);
-	var dodge_r:FlxActionDigital = new FlxActionDigital(Action.DODGE_RELEASED);
-	var reset:FlxActionDigital = new FlxActionDigital(Action.RESET);
+	var note_left:FunkinAction = new FunkinAction(Action.NOTE_LEFT);
+	var note_down:FunkinAction = new FunkinAction(Action.NOTE_DOWN);
+	var note_up:FunkinAction = new FunkinAction(Action.NOTE_UP);
+	var note_right:FunkinAction = new FunkinAction(Action.NOTE_RIGHT);
+	var dodge:FunkinAction = new FunkinAction(Action.DODGE);
+	var reset:FunkinAction = new FunkinAction(Action.RESET);
 
 	// ui and overworld controls
-	var ui_left:FlxActionDigital = new FlxActionDigital(Action.UI_LEFT);
-	var ui_left_p:FlxActionDigital = new FlxActionDigital(Action.UI_LEFT_PRESSED);
-	var ui_left_r:FlxActionDigital = new FlxActionDigital(Action.UI_LEFT_RELEASED);
-	var ui_right:FlxActionDigital = new FlxActionDigital(Action.UI_RIGHT);
-	var ui_right_p:FlxActionDigital = new FlxActionDigital(Action.UI_RIGHT_PRESSED);
-	var ui_right_r:FlxActionDigital = new FlxActionDigital(Action.UI_RIGHT_RELEASED);
-	var ui_up:FlxActionDigital = new FlxActionDigital(Action.UI_UP);
-	var ui_up_p:FlxActionDigital = new FlxActionDigital(Action.UI_UP_PRESSED);
-	var ui_up_r:FlxActionDigital = new FlxActionDigital(Action.UI_UP_RELEASED);
-	var ui_down:FlxActionDigital = new FlxActionDigital(Action.UI_DOWN);
-	var ui_down_p:FlxActionDigital = new FlxActionDigital(Action.UI_DOWN_PRESSED);
-	var ui_down_r:FlxActionDigital = new FlxActionDigital(Action.UI_DOWN_RELEASED);
-	var accept:FlxActionDigital = new FlxActionDigital(Action.ACCEPT);
-	var back:FlxActionDigital = new FlxActionDigital(Action.BACK);
-	var pause:FlxActionDigital = new FlxActionDigital(Action.PAUSE);
-	var fullscreen:FlxActionDigital = new FlxActionDigital(Action.FULLSCREEN);
-	var interact:FlxActionDigital = new FlxActionDigital(Action.INTERACT);
-	var interact_p:FlxActionDigital = new FlxActionDigital(Action.INTERACT_PRESSED);
-	var interact_r:FlxActionDigital = new FlxActionDigital(Action.INTERACT_RELEASED);
-	var map:FlxActionDigital = new FlxActionDigital(Action.MAP);
-	var map_p:FlxActionDigital = new FlxActionDigital(Action.MAP_PRESSED);
-	var map_r:FlxActionDigital = new FlxActionDigital(Action.MAP_RELEASED);
-	var chat:FlxActionDigital = new FlxActionDigital(Action.CHAT);
+	var ui_left:FunkinAction = new FunkinAction(Action.UI_LEFT);
+	var ui_right:FunkinAction = new FunkinAction(Action.UI_RIGHT);
+	var ui_up:FunkinAction = new FunkinAction(Action.UI_UP);
+	var ui_down:FunkinAction = new FunkinAction(Action.UI_DOWN);
+	var accept:FunkinAction = new FunkinAction(Action.ACCEPT);
+	var back:FunkinAction = new FunkinAction(Action.BACK);
+	var pause:FunkinAction = new FunkinAction(Action.PAUSE);
+	var fullscreen:FunkinAction = new FunkinAction(Action.FULLSCREEN);
+	var interact:FunkinAction = new FunkinAction(Action.INTERACT);
+	var map:FunkinAction = new FunkinAction(Action.MAP);
+	var chat:FunkinAction = new FunkinAction(Action.CHAT);
 
 	// volume controls
-	var volume_up:FlxActionDigital = new FlxActionDigital(Action.VOLUME_UP);
-	var volume_up_p:FlxActionDigital = new FlxActionDigital(Action.VOLUME_UP_PRESSED);
-	var volume_up_r:FlxActionDigital = new FlxActionDigital(Action.VOLUME_UP_RELEASED);
-	var volume_down:FlxActionDigital = new FlxActionDigital(Action.VOLUME_DOWN);
-	var volume_down_p:FlxActionDigital = new FlxActionDigital(Action.VOLUME_DOWN_PRESSED);
-	var volume_down_r:FlxActionDigital = new FlxActionDigital(Action.VOLUME_DOWN_RELEASED);
-	var volume_mute:FlxActionDigital = new FlxActionDigital(Action.VOLUME_MUTE);
+	var volume_up:FunkinAction = new FunkinAction(Action.VOLUME_UP);
+	var volume_down:FunkinAction = new FunkinAction(Action.VOLUME_DOWN);
+	var volume_mute:FunkinAction = new FunkinAction(Action.VOLUME_MUTE);
 
 	public var UI_LEFT(get, never):Bool;
 
@@ -92,6 +69,10 @@ class Controls extends FlxActionSet
 	public var UI_RIGHT_R(get, never):Bool;
 
 	public var ACCEPT(get, never):Bool;
+
+	public var ACCEPT_P(get, never):Bool;
+
+	public var ACCEPT_R(get, never):Bool;
 
 	public var BACK(get, never):Bool;
 
@@ -128,6 +109,11 @@ class Controls extends FlxActionSet
 	public var VOLUME_MUTE(get, never):Bool;
 
 	/**
+	 * The controls's ID.
+	 */
+	public var ID(default, null):Int;
+
+	/**
 	 * The current keyboard scheme.
 	 */
 	public var keyboardScheme(default, null):KeyboardScheme;
@@ -137,57 +123,38 @@ class Controls extends FlxActionSet
 	 */
 	public var hasGamepadConnected(default, null):Bool = false;
 
-	public function new(name:String, ?keyboardScheme:KeyboardScheme)
+	/**
+	 * The ID of the gamepad connected to this `Controls` instance.
+	 */
+	var activeGamepad:Int = -1;
+
+	public function new(id:Int, name:String, ?keyboardScheme:KeyboardScheme)
 	{
+		this.ID = id;
+
 		super(name);
 
 		add(note_left);
-		add(note_left_p);
-		add(note_left_r);
 		add(note_down);
-		add(note_down_p);
-		add(note_down_r);
 		add(note_up);
-		add(note_up_p);
-		add(note_up_r);
 		add(note_right);
-		add(note_right_p);
-		add(note_right_r);
 		add(dodge);
-		add(dodge_p);
-		add(dodge_r);
+		add(reset);
 
 		add(ui_left);
-		add(ui_left_p);
-		add(ui_left_r);
 		add(ui_down);
-		add(ui_down_p);
-		add(ui_down_r);
 		add(ui_up);
-		add(ui_up_p);
-		add(ui_up_r);
 		add(ui_right);
-		add(ui_right_p);
-		add(ui_right_r);
 		add(accept);
 		add(back);
 		add(pause);
 		add(fullscreen);
-		add(reset);
 		add(interact);
-		add(interact_p);
-		add(interact_r);
 		add(map);
-		add(map_p);
-		add(map_r);
 		add(chat);
 
 		add(volume_up);
-		add(volume_up_p);
-		add(volume_up_r);
 		add(volume_down);
-		add(volume_down_p);
-		add(volume_down_r);
 		add(volume_mute);
 
 		setKeyboardScheme(keyboardScheme ?? None, false);
@@ -230,6 +197,7 @@ class Controls extends FlxActionSet
 	}
 
 	/**
+	 * @param scheme 	The keyboard scheme.
 	 * @param control The type of action to retrieve the keybinds from.
 	 * @return The default keybinds of said action.
 	 */
@@ -386,8 +354,125 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	// TODO
-	public function addGamepad(id:Int) {}
+	public function addGamepad(gamepad:FlxGamepad)
+	{
+		if (FunkinSave.hasControls(this.ID, Gamepad(gamepad.id)))
+		{
+			var controlsData:Null<ControlBindsSaveData> = FunkinSave.getControls(this.ID, Gamepad(gamepad.id));
+			addGamepadFromSaveData(Gamepad(gamepad.id), controlsData);
+		}
+		else
+		{
+			addGamepadFromDefaults(this.ID);
+		}
+
+		hasGamepadConnected = true;
+		activeGamepad = gamepad.id;
+	}
+
+	function addGamepadFromSaveData(device:InputDevice, data:ControlBindsSaveData)
+	{
+		for (control in Control.createAll())
+		{
+			var inputs:Array<Int> = Reflect.field(data, control.getName());
+
+			if (inputs != null)
+			{
+				if (inputs.length == 0)
+				{
+					switch (device)
+					{
+						case Keyboard:
+							bindKeys(control, getDefaultKeybinds(Solo, control));
+
+						case Gamepad(id):
+							bindButtons(control, id, getDefaultButtons(control));
+					}
+				}
+				else if (inputs == [FlxKey.NONE])
+				{
+					// control is unbound, just do nothing
+				}
+				else
+				{
+					switch (device)
+					{
+						case Keyboard:
+							bindKeys(control, inputs.copy());
+
+						case Gamepad(id):
+							bindButtons(control, id, inputs.copy());
+					}
+				}
+			}
+			else
+			{
+				switch (device)
+				{
+					case Keyboard:
+						bindKeys(control, getDefaultKeybinds(Solo, control));
+
+					case Gamepad(id):
+						bindButtons(control, id, getDefaultButtons(control));
+				}
+			}
+		}
+	}
+
+	function addGamepadFromDefaults(id:Int)
+	{
+		for (control in Control.createAll())
+		{
+			bindButtons(control, id, getDefaultButtons(control));
+		}
+	}
+
+	public function removeGamepad(gamepad:FlxGamepad)
+	{
+		if (FlxG.gamepads.getByID(activeGamepad) != gamepad)
+		{
+			return;
+		}
+
+		for (action in digitalActions)
+		{
+			for (input in action.inputs)
+			{
+				if (isGamepad(input, activeGamepad))
+				{
+					action.remove(input);
+				}
+			}
+		}
+
+		hasGamepadConnected = false;
+		activeGamepad = -1;
+	}
+
+	public function createSaveData(device:InputDevice):Null<ControlBindsSaveData>
+	{
+		var isEmpty:Bool = true;
+		var data = {};
+
+		for (control in Control.createAll())
+		{
+			var inputs:Array<Int> = getInputsFor(control, device);
+			isEmpty = isEmpty && inputs.length == 0;
+
+			if (inputs.length == 0)
+			{
+				inputs = [FlxKey.NONE];
+			}
+			else
+			{
+				inputs = inputs.distinct();
+			}
+
+			Reflect.setField(data, control.getName(), inputs);
+		}
+
+		return isEmpty ? null : data;
+	}
 
 	public function getDefaultButtons(control:Control):Array<FlxGamepadInputID>
 	{
@@ -453,8 +538,8 @@ class Controls extends FlxActionSet
 	 * Adds the buttons to the specified action.
 	 *
 	 * @param action 	The action to add the keys.
-	 * @param buttons The `FlxGamepadInputID`s to add.
 	 * @param id			The connected gamepad ID.
+	 * @param buttons The `FlxGamepadInputID`s to add.
 	 * @param state 	What state should the keys trigger when pressed or released.
 	 */
 	public function addButtons(action:FlxActionDigital, id:Int, buttons:Array<FlxGamepadInputID>, state:FlxInputState)
@@ -475,60 +560,125 @@ class Controls extends FlxActionSet
 		return input.device == GAMEPAD && (input.deviceID == FlxInputDeviceID.ALL || input.deviceID == id);
 	}
 
+	public function getInputsFor(control:Control, device:InputDevice):Array<Int>
+	{
+		var list:Array<Int> = [];
+
+		switch (device)
+		{
+			case Keyboard:
+				for (input in getActionFromControl(control).inputs)
+				{
+					if (input.device == KEYBOARD)
+					{
+						list.push(input.inputID);
+					}
+				}
+
+			case Gamepad(id):
+				for (input in getActionFromControl(control).inputs)
+				{
+					if (isGamepad(input, id))
+					{
+						list.push(input.inputID);
+					}
+				}
+		}
+
+		return list;
+	}
+
+	/**
+	 * @param control The control type.
+	 * @return The matching `FunkinAction`.
+	 */
+	public function getActionFromControl(control:Control):FunkinAction
+	{
+		return switch (control)
+		{
+			case NOTE_LEFT: note_left;
+			case NOTE_DOWN: note_down;
+			case NOTE_UP: note_up;
+			case NOTE_RIGHT: note_right;
+			case DODGE: dodge;
+			case RESET: reset;
+
+			case UI_LEFT: ui_left;
+			case UI_DOWN: ui_down;
+			case UI_UP: ui_up;
+			case UI_RIGHT: ui_right;
+
+			case ACCEPT: accept;
+			case BACK: back;
+			case PAUSE: pause;
+			case FULLSCREEN: fullscreen;
+
+			case INTERACT: interact;
+			case MAP: map;
+			case CHAT: chat;
+
+			case VOLUME_UP: volume_up;
+			case VOLUME_DOWN: volume_down;
+			case VOLUME_MUTE: volume_mute;
+		}
+	}
+
 	function forEachBound(control:Control, func:FlxActionDigital -> FlxInputState -> Void)
 	{
 		switch (control)
 		{
 			case Control.NOTE_LEFT:
 				func(note_left, JUST_PRESSED);
-				func(note_left_p, PRESSED);
-				func(note_left_r, JUST_RELEASED);
+				func(note_left, PRESSED);
+				func(note_left, JUST_RELEASED);
 
 			case Control.NOTE_DOWN:
 				func(note_down, JUST_PRESSED);
-				func(note_down_p, PRESSED);
-				func(note_down_r, JUST_RELEASED);
+				func(note_down, PRESSED);
+				func(note_down, JUST_RELEASED);
 
 			case Control.NOTE_UP:
 				func(note_up, JUST_PRESSED);
-				func(note_up_p, PRESSED);
-				func(note_up_r, JUST_RELEASED);
+				func(note_up, PRESSED);
+				func(note_up, JUST_RELEASED);
 
 			case Control.NOTE_RIGHT:
 				func(note_right, JUST_PRESSED);
-				func(note_right_p, PRESSED);
-				func(note_right_r, JUST_RELEASED);
+				func(note_right, PRESSED);
+				func(note_right, JUST_RELEASED);
 
 			case Control.DODGE:
 				func(dodge, JUST_PRESSED);
-				func(dodge_p, PRESSED);
-				func(dodge_r, JUST_RELEASED);
+				func(dodge, PRESSED);
+				func(dodge, JUST_RELEASED);
 
 			case Control.RESET:
 				func(reset, JUST_PRESSED);
 
 			case Control.UI_LEFT:
 				func(ui_left, JUST_PRESSED);
-				func(ui_left_p, PRESSED);
-				func(ui_left_r, JUST_RELEASED);
+				func(ui_left, PRESSED);
+				func(ui_left, JUST_RELEASED);
 
 			case Control.UI_DOWN:
 				func(ui_down, JUST_PRESSED);
-				func(ui_down_p, PRESSED);
-				func(ui_down_r, JUST_RELEASED);
+				func(ui_down, PRESSED);
+				func(ui_down, JUST_RELEASED);
 
 			case Control.UI_UP:
 				func(ui_up, JUST_PRESSED);
-				func(ui_up_p, PRESSED);
-				func(ui_up_r, JUST_RELEASED);
+				func(ui_up, PRESSED);
+				func(ui_up, JUST_RELEASED);
 
 			case Control.UI_RIGHT:
 				func(ui_right, JUST_PRESSED);
-				func(ui_right_p, PRESSED);
-				func(ui_right_r, JUST_RELEASED);
+				func(ui_right, PRESSED);
+				func(ui_right, JUST_RELEASED);
 
 			case Control.ACCEPT:
 				func(accept, JUST_PRESSED);
+				func(accept, PRESSED);
+				func(accept, JUST_RELEASED);
 
 			case Control.BACK:
 				func(back, JUST_PRESSED);
@@ -541,26 +691,26 @@ class Controls extends FlxActionSet
 
 			case Control.INTERACT:
 				func(interact, JUST_PRESSED);
-				func(interact_p, PRESSED);
-				func(interact_r, JUST_RELEASED);
+				func(interact, PRESSED);
+				func(interact, JUST_RELEASED);
 
 			case Control.MAP:
 				func(map, JUST_PRESSED);
-				func(map_p, PRESSED);
-				func(map_r, JUST_RELEASED);
+				func(map, PRESSED);
+				func(map, JUST_RELEASED);
 
 			case Control.CHAT:
 				func(chat, JUST_PRESSED);
 
 			case Control.VOLUME_UP:
 				func(volume_up, JUST_PRESSED);
-				func(volume_up_p, PRESSED);
-				func(volume_up_r, JUST_RELEASED);
+				func(volume_up, PRESSED);
+				func(volume_up, JUST_RELEASED);
 
 			case Control.VOLUME_DOWN:
 				func(volume_down, JUST_PRESSED);
-				func(volume_down_p, PRESSED);
-				func(volume_down_r, JUST_RELEASED);
+				func(volume_down, PRESSED);
+				func(volume_down, JUST_RELEASED);
 
 			case Control.VOLUME_MUTE:
 				func(volume_mute, JUST_PRESSED);
@@ -597,67 +747,77 @@ class Controls extends FlxActionSet
 
 	function get_UI_LEFT():Bool
 	{
-		return ui_left.check();
+		return ui_left.checkJustPressed();
 	}
 
 	function get_UI_LEFT_P():Bool
 	{
-		return ui_left_p.check();
+		return ui_left.checkPressed();
 	}
 
 	function get_UI_LEFT_R():Bool
 	{
-		return ui_left_r.check();
+		return ui_left.checkJustReleased();
 	}
 
 	function get_UI_DOWN():Bool
 	{
-		return ui_down.check();
+		return ui_down.checkJustPressed();
 	}
 
 	function get_UI_DOWN_P():Bool
 	{
-		return ui_down_p.check();
+		return ui_down.checkPressed();
 	}
 
 	function get_UI_DOWN_R():Bool
 	{
-		return ui_down_r.check();
+		return ui_down.checkJustReleased();
 	}
 
 	function get_UI_UP():Bool
 	{
-		return ui_up.check();
+		return ui_up.checkJustPressed();
 	}
 
 	function get_UI_UP_P():Bool
 	{
-		return ui_up_p.check();
+		return ui_up.checkPressed();
 	}
 
 	function get_UI_UP_R():Bool
 	{
-		return ui_up_r.check();
+		return ui_up.checkJustReleased();
 	}
 
 	function get_UI_RIGHT():Bool
 	{
-		return ui_right.check();
+		return ui_right.checkJustPressed();
 	}
 
 	function get_UI_RIGHT_P():Bool
 	{
-		return ui_right_p.check();
+		return ui_right.checkPressed();
 	}
 
 	function get_UI_RIGHT_R():Bool
 	{
-		return ui_right_r.check();
+		return ui_right.checkJustReleased();
 	}
 
 	function get_ACCEPT():Bool
 	{
-		return accept.check();
+		return accept.checkJustPressed();
+	}
+
+	function get_ACCEPT_P():Bool
+	{
+		return accept.checkPressed();
+	}
+
+	function get_ACCEPT_R():Bool
+	{
+		return accept.checkJustReleased();
 	}
 
 	function get_BACK():Bool
@@ -677,32 +837,32 @@ class Controls extends FlxActionSet
 
 	function get_INTERACT():Bool
 	{
-		return interact.check();
+		return interact.checkJustPressed();
 	}
 
 	function get_INTERACT_P():Bool
 	{
-		return interact_p.check();
+		return interact.checkPressed();
 	}
 
 	function get_INTERACT_R():Bool
 	{
-		return interact_r.check();
+		return interact.checkJustReleased();
 	}
 
 	function get_MAP():Bool
 	{
-		return map.check();
+		return map.checkJustPressed();
 	}
 
 	function get_MAP_P():Bool
 	{
-		return map_p.check();
+		return map.checkPressed();
 	}
 
 	function get_MAP_R():Bool
 	{
-		return map_r.check();
+		return map.checkJustReleased();
 	}
 
 	function get_CHAT():Bool
@@ -712,32 +872,32 @@ class Controls extends FlxActionSet
 
 	function get_VOLUME_UP():Bool
 	{
-		return volume_up.check();
+		return volume_up.checkJustPressed();
 	}
 
 	function get_VOLUME_UP_P():Bool
 	{
-		return volume_up_p.check();
+		return volume_up.checkPressed();
 	}
 
 	function get_VOLUME_UP_R():Bool
 	{
-		return volume_up_r.check();
+		return volume_up.checkJustReleased();
 	}
 
 	function get_VOLUME_DOWN():Bool
 	{
-		return volume_down.check();
+		return volume_down.checkJustPressed();
 	}
 
 	function get_VOLUME_DOWN_P():Bool
 	{
-		return volume_down_p.check();
+		return volume_down.checkPressed();
 	}
 
 	function get_VOLUME_DOWN_R():Bool
 	{
-		return volume_down_r.check();
+		return volume_down.checkJustReleased();
 	}
 
 	function get_VOLUME_MUTE():Bool
@@ -746,70 +906,27 @@ class Controls extends FlxActionSet
 	}
 }
 
-enum KeyboardScheme
-{
-	Solo;
-	Duo(first:Bool);
-	None;
-}
-
 enum abstract Action(String) to String from String
 {
 	var NOTE_LEFT = 'note_left';
 
-	var NOTE_LEFT_PRESSED = 'note_left_p';
-
-	var NOTE_LEFT_RELEASED = 'note_left_r';
-
 	var NOTE_DOWN = 'note_down';
-
-	var NOTE_DOWN_PRESSED = 'note_down_p';
-
-	var NOTE_DOWN_RELEASED = 'note_down_r';
 
 	var NOTE_UP = 'note_up';
 
-	var NOTE_UP_PRESSED = 'note_up_p';
-
-	var NOTE_UP_RELEASED = 'note_up_r';
-
 	var NOTE_RIGHT = 'note_right';
 
-	var NOTE_RIGHT_PRESSED = 'note_right_p';
-
-	var NOTE_RIGHT_RELEASED = 'note_right_r';
-
 	var DODGE = 'dodge';
-
-	var DODGE_PRESSED = 'dodge_p';
-
-	var DODGE_RELEASED = 'dodge_r';
 
 	var RESET = 'reset';
 
 	var UI_LEFT = 'ui_left';
 
-	var UI_LEFT_PRESSED = 'ui_left_p';
-
-	var UI_LEFT_RELEASED = 'ui_left_r';
-
 	var UI_RIGHT = 'ui_right';
-
-	var UI_RIGHT_PRESSED = 'ui_right_p';
-
-	var UI_RIGHT_RELEASED = 'ui_right_r';
 
 	var UI_UP = 'ui_up';
 
-	var UI_UP_PRESSED = 'ui_up_p';
-
-	var UI_UP_RELEASED = 'ui_up_r';
-
 	var UI_DOWN = 'ui_down';
-
-	var UI_DOWN_PRESSED = 'ui_down_p';
-
-	var UI_DOWN_RELEASED = 'ui_down_r';
 
 	var ACCEPT = 'accept';
 
@@ -821,29 +938,13 @@ enum abstract Action(String) to String from String
 
 	var INTERACT = 'interact';
 
-	var INTERACT_PRESSED = 'interact_p';
-
-	var INTERACT_RELEASED = 'interact_r';
-
 	var MAP = 'map';
-
-	var MAP_PRESSED = 'map_p';
-
-	var MAP_RELEASED = 'map_r';
 
 	var CHAT = 'chat';
 
 	var VOLUME_UP = 'volume_up';
 
-	var VOLUME_UP_PRESSED = 'volume_up_p';
-
-	var VOLUME_UP_RELEASED = 'volume_up_r';
-
 	var VOLUME_DOWN = 'volume_down';
-
-	var VOLUME_DOWN_PRESSED = 'volume_down_p';
-
-	var VOLUME_DOWN_RELEASED = 'volume_down_r';
 
 	var VOLUME_MUTE = 'volume_mute';
 }
@@ -872,4 +973,17 @@ enum Control
 	VOLUME_UP;
 	VOLUME_DOWN;
 	VOLUME_MUTE;
+}
+
+enum InputDevice
+{
+	Keyboard;
+	Gamepad(id:Int);
+}
+
+enum KeyboardScheme
+{
+	Solo;
+	Duo(first:Bool);
+	None;
 }

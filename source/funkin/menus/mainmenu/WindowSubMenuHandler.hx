@@ -28,9 +28,11 @@ class WindowSubMenuHandler extends FlxBasic
 
 	public var enabled:Bool = true;
 
-	public var onOpen:FlxSignal = new FlxSignal();
+	public var onOpen(default, null):FlxSignal = new FlxSignal();
 
-	public var onClose:FlxSignal = new FlxSignal();
+	public var onClose(default, null):FlxSignal = new FlxSignal();
+
+	public var isOverlappingButton(default, null):Bool = false;
 
 	var background:FunkinSprite;
 	var line:FunkinSprite;
@@ -55,7 +57,7 @@ class WindowSubMenuHandler extends FlxBasic
 		closeButton = new StaticButton(scale, scale, Paths.image('ui/x'), () ->
 		{
 			FunkinSound.playMenuSound(CANCEL);
-			close(true);
+			close();
 		});
 		closeButton.scaleSprite(scale);
 		closeButton.camera = this.camera;
@@ -103,6 +105,7 @@ class WindowSubMenuHandler extends FlxBasic
 
 		onOpen.dispatch();
 
+		isOverlappingButton = false;
 		isOpen = true;
 	}
 
@@ -111,7 +114,7 @@ class WindowSubMenuHandler extends FlxBasic
 	 *
 	 * @param trigger Whether to trigger the `onClose` signal.
 	 */
-	public function close(trigger:Bool = false)
+	public function close(trigger:Bool = true)
 	{
 		if (!isOpen)
 		{
@@ -137,7 +140,16 @@ class WindowSubMenuHandler extends FlxBasic
 
 		kill();
 
+		isOverlappingButton = false;
 		isOpen = false;
+	}
+
+	/**
+	 * @return Whether this handler has any sub menu open.
+	 */
+	public function hasMenuOpen():Bool
+	{
+		return curSubMenu != null;
 	}
 
 	override function update(elapsed:Float)

@@ -1,5 +1,7 @@
 package funkin.utils;
 
+import haxe.io.Path;
+
 import lime.utils.AssetLibrary as LimeAssetLibrary;
 import lime.utils.Assets as LimeAssets;
 
@@ -76,17 +78,6 @@ class Assets
 	public static function list(?type:AssetType):Array<String>
 	{
 		return OpenFLAssets.list(type);
-	}
-
-	/**
-	 * Returns all the assets inside the specified directory.
-	 * @param path The path to the directory.
-	 * @return The list of files inside the directory.
-	 */
-	public static function readDirectory(path:String):Array<String>
-	{
-		var directory:Array<String> = list().filter(file -> file.startsWith(path));
-		return directory.map(file -> file.replace(path, '').replace('/', ''));
 	}
 
 	@:inheritDoc(openfl.utils.Assets.loadBitmapData)

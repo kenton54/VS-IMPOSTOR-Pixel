@@ -27,6 +27,8 @@
         <b>
         <a href="https://gamebanana.com/mods/506768">Gamebana</a>
         &middot;
+        <a href="https://kenton54.itch.io/vs-impostor-pixel">Itch.io</a>
+        &middot;
         <a href="https://drive.google.com/drive/folders/1D7bzf95Ig0HuAl6Zrm4iikSvv_Mc0cSm?usp=sharing">Google Drive</a>
         </b>
     </p>
@@ -45,44 +47,26 @@ Now Boyfriend has to go through every single one of the past lobbies he ventured
 
 <h1 align="center">THE TEAM BEHIND THE MOD</h1>
 
-## Director and Programmer
-- [kenton](https://github.com/kenton54)
+## Director
+- kenton
 
 ## Artists, Pixel-Artists and Animators
-- [kenton](https://github.com/kenton54)
+- kenton
 - GTM
+- AstroNomad
+
+## Programmers
+- kenton
+- AstroNomad
 
 ## Musicians
-<table>
-    <tr>
-        <th>Musician</th>
-        <th>Amount Composed</th>
-    </tr>
-    <tr>
-        <th><a href="https://www.youtube.com/@SparklyYea">Sparkly</th>
-        <th>4</th>
-    </tr>
-    <tr>
-        <th><a href="https://www.youtube.com/@SilteTheMusician">Silte</th>
-        <th>1</th>
-    </tr>
-</table>
+- Sparkly
+- Oxzy
+- Silte
+- VoltR
 
 ## Charters
-<table>
-    <tr>
-        <th>Charter</th>
-        <th>Amount Charted</th>
-    </tr>
-    <tr>
-        <th><a href="https://github.com/kenton54">kenton</th>
-        <th>17</th>
-    </tr>
-    <tr>
-        <th>Kdead</th>
-        <th>4</th>
-    </tr>
-</table>
+- kenton
 
 ## Translators
 <table>
@@ -91,24 +75,28 @@ Now Boyfriend has to go through every single one of the past lobbies he ventured
         <th>Language</th>
     </tr>
     <tr>
-        <th><a href="https://github.com/kenton54">kenton</th>
-        <th>Spanish</th>
+        <td>kenton</td>
+        <td>Spanish</td>
     </tr>
     <tr>
-        <th>Moxt</th>
-        <th>French</th>
+        <td>Moxt</td>
+        <td>French</td>
     </tr>
     <tr>
-        <th>Wøvenx</th>
-        <th>Portuguese</th>
+        <td>Wøvenx</td>
+        <td>Portuguese</td>
     </tr>
     <tr>
-        <th>Fred</th>
-        <th>Russian</th>
+        <td>FuniFred</td>
+        <td>Russian</td>
     </tr>
     <tr>
-        <th>Huy1234TH</th>
-        <th>Vietnamese</th>
+        <td>JustAlexus</td>
+        <td>German</td>
+    </tr>
+    <tr>
+        <td>Huy1234TH</td>
+        <td>Vietnamese</td>
     </tr>
 </table>
 

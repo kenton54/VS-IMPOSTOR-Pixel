@@ -1,6 +1,7 @@
 package funkin.system;
 
 import funkin.data.ClientPreferences;
+import funkin.input.Controls.InputDevice;
 
 class FunkinSave
 {
@@ -20,6 +21,11 @@ class FunkinSave
 	 * The user's loaded hosting preferences.
 	 */
 	public static var serverPreferences(get, never):ServerPreferencesSaveData;
+
+	/**
+	 * The user's statistics.
+	 */
+	public static var stats(get, never):StatisticsSaveData;
 
 	/**
 	 * The user's unlocked unlockables.
@@ -79,6 +85,168 @@ class FunkinSave
 			retryAttempts++;
 			load();
 		}
+	}
+
+	/**
+	 * Checks whether the user has played the song in any of the given difficulties.
+	 *
+	 * @param song 						The song ID.
+	 * @param difficultyList 	An array holding difficulty IDs. If none is set, it'll default to `easy`, `normal` and `hard`.
+	 * @return Whether the user has played the song or not.
+	 */
+	public static function hasBeatenSong(song:String, ?difficultyList:Array<String>):Bool
+	{
+		if (difficultyList == null)
+		{
+			difficultyList = ['easy', 'normal', 'hard'];
+		}
+
+		for (difficulty in difficultyList)
+		{
+			var songScore:Null<SongScoreSaveData> = getSongScore(song, difficulty);
+
+			if (songScore != null)
+			{
+				if (songScore.score > 0)
+				{
+					return true;
+				}
+				else
+				{
+					// we dont return false right away, so it can check for the other difficulties as well
+					continue;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param song 				The song ID.
+	 * @param difficulty 	The difficulty ID.
+	 * @return Data containing the score, judgements counts and accuracy achieved by the user, or `null` if there's no score.
+	 */
+	public static function getSongScore(song:String, difficulty:String = 'normal'):Null<SongScoreSaveData>
+	{
+		var songDiffData:Null<SongDifficultySaveData> = data.highscores.songs.get(song);
+
+		if (songDiffData == null)
+		{
+			songDiffData = [];
+			data.highscores.songs.set(song, songDiffData);
+
+			return null;
+		}
+
+		return songDiffData.get(difficulty);
+	}
+
+	/**
+	 * Sets the user's saved score from the specified song and difficulty.
+	 *
+	 * @param song 				The song ID.
+	 * @param difficulty 	The difficulty ID.
+	 * @param score 			The new score data.
+	 */
+	public static function setSongScore(song:String, difficulty:String, score:SongScoreSaveData)
+	{
+		var songDiffData:Null<SongDifficultySaveData> = data.highscores.songs.get(song);
+
+		if (songDiffData == null)
+		{
+			songDiffData = [];
+			data.highscores.songs.set(song, songDiffData);
+		}
+
+		songDiffData.set(difficulty, score);
+		flush();
+	}
+
+	/**
+	 * @param song 				The song ID.
+	 * @param difficulty 	The difficulty ID.
+	 * @param score 			The score data to compared with the saved one.
+	 * @return Whether the specified score surpasses the saved one.
+	 */
+	public static function isSongHighScore(song:String, difficulty:String = 'normal', score:SongScoreSaveData):Bool
+	{
+		var songDiffData:Null<SongDifficultySaveData> = data.highscores.songs.get(song);
+
+		if (songDiffData == null)
+		{
+			songDiffData = [];
+			data.highscores.songs.set(song, songDiffData);
+
+			return true;
+		}
+
+		var curSongScore:Null<SongScoreSaveData> = songDiffData.get(difficulty);
+
+		if (curSongScore == null)
+		{
+			return true;
+		}
+
+		return score.score > curSongScore.score;
+	}
+
+	/**
+	 * @param playerID 		The player ID.
+	 * @param inputDevice The type of device.
+	 * @return The control's bindings from the specified player and input device. Or `null` if there're no bindings saved.
+	 */
+	public static function getControls(playerID:Int, inputDevice:InputDevice):Null<ControlBindsSaveData>
+	{
+		return switch (inputDevice)
+		{
+			case Keyboard: playerID == 0 ? clientPreferences?.controls?.player1.keyboard : clientPreferences?.controls?.player2.keyboard;
+			case Gamepad(_): playerID == 0 ? clientPreferences?.controls?.player1.gamepad : clientPreferences?.controls?.player2.gamepad;
+		};
+	}
+
+	/**
+	 * @param playerID 		The player ID.
+	 * @param inputDevice The type of device.
+	 * @return Whether saved controls exist from the specified player and input device.
+	 */
+	public static function hasControls(playerID:Int, inputDevice:InputDevice):Bool
+	{
+		var controls:Null<ControlBindsSaveData> = getControls(playerID, inputDevice);
+
+		if (controls == null)
+		{
+			return false;
+		}
+
+		var controlFields:Array<String> = Reflect.fields(controls);
+		return controlFields.length > 0;
+	}
+
+	/**
+	 * Sets the specified player and input device's control bindings.
+	 *
+	 * @param playerID 		The player ID.
+	 * @param inputDevice The type of device.
+	 * @param controls 		The new control bindins's data.
+	 */
+	public static function setControls(playerID:Int, inputDevice:InputDevice, controls:ControlBindsSaveData)
+	{
+		switch (inputDevice)
+		{
+			case Keyboard:
+				getPlayerControls(playerID).keyboard = controls;
+
+			case Gamepad(_):
+				getPlayerControls(playerID).gamepad = controls;
+		}
+
+		flush();
+	}
+
+	static function getPlayerControls(playerID:Int):PlayerControlsSaveData
+	{
+		return playerID == 0 ? clientPreferences?.controls?.player1 : clientPreferences?.controls?.player2;
 	}
 
 	/**
@@ -201,10 +369,22 @@ class FunkinSave
 			story: {
 				storySequence: 0
 			},
+			stats: {
+				playtime: 0,
+				totalNoteHits: 0,
+				perfectNoteHits: 0,
+				greatNoteHits: 0,
+				goodNoteHits: 0,
+				badNoteHits: 0,
+				awfulNoteHits: 0,
+				missedNotes: 0,
+				combosBroken: 0
+			},
 			clientPreferences: {
 				frameRate: refreshRate,
+				unlockedFrameRate: false,
 				sentitiveContent: true,
-				flashingLights: true,
+				photosentivity: false,
 				intensiveShaders: true,
 				lowDetail: false,
 				colorBlindMode: 'none',
@@ -253,6 +433,11 @@ class FunkinSave
 	inline static function get_unlockables():UnlockablesSaveData
 	{
 		return data.unlockables;
+	}
+
+	inline static function get_stats():StatisticsSaveData
+	{
+		return data.stats;
 	}
 
 	static function get_data():BaseSaveData
@@ -311,6 +496,11 @@ typedef BaseSaveData =
 	var story:StorySaveData;
 
 	/**
+	 * The user's statistics.
+	 */
+	var stats:StatisticsSaveData;
+
+	/**
 	 * The user's saved client preferences.
 	 *
 	 * These are settings that only the user can see
@@ -335,12 +525,12 @@ typedef HighscoresSaveData =
 	/**
 	 * All songs's scores.
 	 */
-	var songs:Map<String, SongSaveData>;
+	var songs:SongSaveData;
 
 	/**
 	 * All lobbies's scores.
 	 */
-	var lobbies:Map<String, SongSaveData>;
+	var lobbies:SongSaveData;
 
 	/**
 	 * All speedruns's personal best for each map.
@@ -526,6 +716,54 @@ typedef StorySaveData =
 	var storySequence:Int;
 }
 
+typedef StatisticsSaveData =
+{
+	/**
+	 * The user's total passed time playing the game.
+	 */
+	var playtime:Float;
+
+	/**
+	 * The total amount of notes the user has hit.
+	 */
+	var totalNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has hit with a Perfect rating.
+	 */
+	var perfectNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has hit with a Great rating.
+	 */
+	var greatNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has hit with a Good rating.
+	 */
+	var goodNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has hit with a Bad rating.
+	 */
+	var badNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has hit with an Awful rating.
+	 */
+	var awfulNoteHits:Int;
+
+	/**
+	 * The total amount of notes the user has missed.
+	 */
+	var missedNotes:Int;
+
+	/**
+	 * The total amount of combos the user broke.
+	 */
+	var combosBroken:Int;
+}
+
 /**
  * The user's preferences.
  */
@@ -537,14 +775,19 @@ typedef ClientPreferencesSaveData =
 	var frameRate:Int;
 
 	/**
+	 * Whether the game should update every CPU cycle or by a fixed amount of frames.
+	 */
+	var unlockedFrameRate:Bool;
+
+	/**
 	 * Whether content that may disturb or make people uncomfortable should be shown.
 	 */
 	var sentitiveContent:Bool;
 
 	/**
-	 * If enabled, makes light more "flashy", if that makes any sense lol.
+	 * If enabled, reduces the use/strength of flashing lights.
 	 */
-	var flashingLights:Bool;
+	var photosentivity:Bool;
 
 	/**
 	 * If enabled, uses shaders that may be too resource-intensive.
@@ -635,8 +878,8 @@ typedef ClientPreferencesSaveData =
 	 */
 	var controls:
 		{
-			var player1:PlayerControlData;
-			var player2:PlayerControlData;
+			var player1:PlayerControlsSaveData;
+			var player2:PlayerControlsSaveData;
 		};
 }
 
@@ -668,23 +911,23 @@ typedef ServerPreferencesSaveData =
 /**
  * The player's control data.
  */
-typedef PlayerControlData =
+typedef PlayerControlsSaveData =
 {
 	/**
 	 * Holds the keyboard's saved controls.
 	 */
-	var keyboard:BindsData;
+	var keyboard:ControlBindsSaveData;
 
 	/**
 	 * Holds the gamepad's saved controls.
 	 */
-	var gamepad:BindsData;
+	var gamepad:ControlBindsSaveData;
 }
 
 /**
  * Holds a device's saved controls.
  */
-typedef BindsData =
+typedef ControlBindsSaveData =
 {
 	var ?NOTE_LEFT:Array<Int>;
 	var ?NOTE_DOWN:Array<Int>;

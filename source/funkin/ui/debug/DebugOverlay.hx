@@ -1,33 +1,30 @@
 package funkin.ui.debug;
 
-import funkin.ui.debug.advanced.*;
-
-import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 
 class DebugOverlay extends Sprite
 {
 	/**
-	 * How frequently the overlay updates, in seconds.
+	 * What the overlay displays.
 	 */
-	public static final UPDATE_FREQUENCY:Float = 0.5;
-
 	public var displayMode(default, null):DebugDisplayMode = NONE;
-
-	var displayModeInt:Int = DebugDisplayMode.NONE;
 
 	public var simple(default, null):SimpleDisplay;
 
-	var project:ProjectDebug;
+	public var advanced(default, null):AdvancedDisplay;
 
+	var displayModeInt:Int = 0;
 	var updateTimer:Float = 0;
 
-	public function new(backgroundColor:Int = 0x7F7F7F)
+	public function new()
 	{
 		super();
 
-		simple = new SimpleDisplay();
+		simple = new SimpleDisplay(8, 3);
 		addChild(simple);
+
+		advanced = new AdvancedDisplay(8, 3);
+		addChild(advanced);
 
 		updateDisplayMode();
 	}
@@ -39,9 +36,9 @@ class DebugOverlay extends Sprite
 	{
 		displayModeInt++;
 
-		if (displayModeInt > DebugDisplayMode.ADVANCED)
+		if (displayModeInt > DebugDisplayMode.ADVANCED.toInt())
 		{
-			displayModeInt = DebugDisplayMode.NONE;
+			displayModeInt = DebugDisplayMode.NONE.toInt();
 		}
 
 		displayMode = DebugDisplayMode.fromInt(displayModeInt);
@@ -56,6 +53,7 @@ class DebugOverlay extends Sprite
 	{
 		visible = displayMode != NONE;
 		simple.visible = displayMode == SIMPLE;
+		advanced.visible = displayMode == ADVANCED;
 	}
 
 	override function __enterFrame(deltaTime:Int)
@@ -65,62 +63,29 @@ class DebugOverlay extends Sprite
 			cycleDisplayMode();
 		}
 
-		var dt:Float = deltaTime / 1000;
-
-		if (displayMode == SIMPLE)
-		{
-			simple.update(dt);
-			return;
-		}
-
-		for (i in 0...numChildren)
-		{
-			var child:DisplayObject = getChildAt(i);
-			if (Std.isOfType(child, DebugCategory))
-			{
-				cast(child, DebugCategory).updatePosition();
-				cast(child, DebugCategory).update(dt);
-			}
-		}
-
-		if (updateTimer < UPDATE_FREQUENCY)
-		{
-			updateTimer += dt;
-			return;
-		}
-
-		for (i in 0...numChildren)
-		{
-			var child:DisplayObject = getChildAt(i);
-			if (Std.isOfType(child, DebugCategory))
-			{
-				cast(child, DebugCategory).postUpdate();
-			}
-		}
-
-		updateTimer = 0;
+		super.__enterFrame(deltaTime);
 	}
 }
 
 /**
- * The modes the overlay can be displayed.
+ * The different modes the overlay can be displayed.
  */
 enum abstract DebugDisplayMode(Int) from Int to Int
 {
 	/**
 	 * The overlay will be hidden.
 	 */
-	var NONE:Int = 0;
+	var NONE = 0;
 
 	/**
 	 * The overlay will only show the FPS counter and the Garbage Collector memory.
 	 */
-	var SIMPLE:Int = 1;
+	var SIMPLE = 1;
 
 	/**
-	 * The overlay will show everything.
+	 * The overlay will show important information about the engine.
 	 */
-	var ADVANCED:Int = 2;
+	var ADVANCED = 2;
 
 	public static function fromInt(int:Int):DebugDisplayMode
 	{
@@ -133,13 +98,14 @@ enum abstract DebugDisplayMode(Int) from Int to Int
 		};
 	}
 
-	public function toInt(mode:DebugDisplayMode):Int
+	public function toInt():Int
 	{
-		return switch (mode)
+		return switch (this)
 		{
 			case NONE: 0;
 			case SIMPLE: 1;
 			case ADVANCED: 2;
+			case _: 0;
 		};
 	}
 }

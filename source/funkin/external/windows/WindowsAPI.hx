@@ -67,7 +67,7 @@ class WindowsAPI
 	public static function setWindowDarkMode(enable:Bool):Void {}
 
 	/**
-	 * @return The user's current language in the Language Code format (i.e. `en-US`).
+	 * @return The user's current language in the Language Code format (e.g. `en-US`).
 	 */
 	@:functionCode('
 		wchar_t locale_name[LOCALE_NAME_MAX_LENGTH];

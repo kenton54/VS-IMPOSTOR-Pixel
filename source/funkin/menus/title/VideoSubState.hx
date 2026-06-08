@@ -2,20 +2,16 @@ package funkin.menus.title;
 
 import flixel.util.FlxTimer;
 
-import haxe.Int64;
-
-import hxvlc.flixel.FlxVideoSprite;
+import funkin.graphics.video.FunkinVideo;
 
 class VideoSubState extends MusicBeatSubState
 {
-	var videoSprite:FlxVideoSprite;
+	var videoSprite:FunkinVideo;
 	var video:String;
 
 	var onComplete:Void -> Void;
 
 	var videoCamera:FlxCamera;
-
-	var videoEndTime:Int64 = 0;
 
 	public function new(video:String, ?onComplete:Void -> Void)
 	{
@@ -44,24 +40,21 @@ class VideoSubState extends MusicBeatSubState
 		bg.camera = videoCamera;
 		add(bg);
 
-		videoSprite = new FlxVideoSprite();
+		videoSprite = new FunkinVideo().loadVideo(Paths.video('secrets/$video'));
 		videoSprite.camera = videoCamera;
-		videoSprite.bitmap.onFormatSetup.add(() ->
+		videoSprite.onFormatSetup.add(() ->
 		{
-			final scale:Float = Math.min(FlxG.width / videoSprite.bitmap.bitmapData.width, FlxG.height / videoSprite.bitmap.bitmapData.height);
+			final scale:Float = Math.min(FlxG.width / videoSprite.frameWidth, FlxG.height / videoSprite.frameHeight);
 
-			videoSprite.setGraphicSize(videoSprite.bitmap.bitmapData.width * scale, videoSprite.bitmap.bitmapData.height * scale);
+			videoSprite.setGraphicSize(videoSprite.frameWidth * scale, videoSprite.frameHeight * scale);
 			videoSprite.updateHitbox();
 			videoSprite.screenCenter();
-
-			// This is stored as a 64-bit integer???
-			videoEndTime = Int64.sub(videoSprite.bitmap.length, haxe.Int64.ofInt(500));
 		});
-		videoSprite.bitmap.onPlaying.add(onStartVideo);
-		videoSprite.bitmap.onEndReached.add(onFinishVideo);
-		videoSprite.load(Paths.video('secrets/$video'));
+		videoSprite.onFinish.add(onFinishVideo);
 		videoSprite.alpha = 0;
 		add(videoSprite);
+
+		FlxTween.tween(videoSprite, {alpha: 1}, 0.5);
 
 		FlxTimer.wait(0.1, () -> videoSprite.play());
 	}
@@ -72,25 +65,12 @@ class VideoSubState extends MusicBeatSubState
 		FlxG.cameras.remove(videoCamera);
 	}
 
-	var hasFaded:Bool = false;
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		if (Int64.compare(videoSprite.bitmap.time, videoEndTime) > 0 && !hasFaded)
-		{
-			FlxTween.tween(videoSprite, {alpha: 0}, 0.5);
-			hasFaded = true;
-		}
-	}
-
-	function onStartVideo()
-	{
-		FlxTween.tween(videoSprite, {alpha: 1}, 0.5);
-	}
-
 	function onFinishVideo()
+	{
+		FlxTween.tween(videoSprite, {alpha: 0}, 0.5, {onComplete: _ -> goBack()});
+	}
+
+	function goBack()
 	{
 		if (onComplete != null)
 		{

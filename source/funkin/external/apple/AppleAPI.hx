@@ -12,7 +12,7 @@ package funkin.external.apple;
 class AppleAPI
 {
 	/**
-	 * @return The user's current language in the Language Code format (i.e. `en-US`).
+	 * @return The user's current language in the Language Code format (e.g. `en-US`).
 	 */
 	@:functionCode('
 		std::string language_code;

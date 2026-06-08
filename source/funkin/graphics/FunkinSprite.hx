@@ -74,13 +74,13 @@ class FunkinSprite extends FlxSprite
 	 */
 	public function loadSprite(graphic:FlxGraphicAsset):FunkinSprite
 	{
-		if (Std.isOfType(graphic, BitmapData) || Std.isOfType(graphic, FlxGraphic))
+		if ((graphic is String))
 		{
-			loadGraphic(graphic);
+			frames = Paths.getFrames(graphic);
 		}
 		else
 		{
-			frames = Paths.getFrames(graphic);
+			loadGraphic(graphic);
 		}
 
 		return this;

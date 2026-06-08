@@ -14,7 +14,7 @@ class InitState extends FlxState
 {
 	static var coreStarted:Bool = false;
 
-	override public function create()
+	override function create()
 	{
 		if (coreStarted)
 		{
@@ -43,7 +43,7 @@ class InitState extends FlxState
 
 		funkin.system.Translations.init();
 		funkin.system.Achievements.init();
-
+		funkin.system.Statistics.init();
 
 		Conductor.init();
 
@@ -74,7 +74,8 @@ class InitState extends FlxState
 	{
 		coreStarted = true;
 
-		funkin.ui.MusicBeatState.skipTransIn = true;
-		FlxG.switchState(() -> new funkin.menus.title.TitleState());
+		// funkin.ui.MusicBeatState.skipTransIn = true;
+		funkin.ui.MusicBeatState.setTransitions(funkin.ui.transitions.Fade);
+		FlxG.switchState(() -> new funkin.menus.StartupState());
 	}
 }

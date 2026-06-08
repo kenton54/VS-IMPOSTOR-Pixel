@@ -3,6 +3,7 @@ package funkin.ui;
 import flixel.FlxSubState;
 
 import funkin.input.Controls;
+import funkin.system.FullScreenScaleMode;
 import funkin.ui.transitions.BaseTransition;
 
 @:access(flixel.FlxState)
@@ -86,6 +87,11 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function new()
 	{
+		if (FullScreenScaleMode.instance != null)
+		{
+			FullScreenScaleMode.instance.onMeasurePostAwait();
+		}
+
 		super();
 
 		Conductor.onMeasureHit.add(measureHit);

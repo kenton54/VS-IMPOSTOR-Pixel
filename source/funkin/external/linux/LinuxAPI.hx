@@ -11,7 +11,7 @@ package funkin.external.linux;
 class LinuxAPI
 {
 	/**
-	 * @return The user's current language in the Language Code format (i.e. `en-US`).
+	 * @return The user's current language in the Language Code format (e.g. `en-US`).
 	 */
 	@:functionCode('
 		const char *lang = std::getenv("LANG");

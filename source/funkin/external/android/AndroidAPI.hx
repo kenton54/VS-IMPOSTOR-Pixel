@@ -3,9 +3,8 @@ package funkin.external.android;
 #if android
 import extension.androidtools.jni.JNICache;
 
+import lime.math.Rectangle;
 import lime.system.JNI;
-
-import openfl.geom.Rectangle;
 
 /**
  * Functions that run exclusively on Android devices.
@@ -13,7 +12,7 @@ import openfl.geom.Rectangle;
 class AndroidAPI
 {
 	/**
-	 * @return The user's current language in the Language Code format (i.e. `en-US`).
+	 * @return The user's current language in the Language Code format (e.g. `en-US`).
 	 */
 	public static function getUserLanguage():String
 	{
@@ -31,9 +30,9 @@ class AndroidAPI
 	 * Retrieves the dimentions of display cutouts (such as notches).
 	 * @return An array of `Rectangle` objects, each representing a display cutout's position and size.
 	 */
-	public static function getCutoutDimentions():Array<Rectangle>
+	public static function getCutoutDimensions():Array<Rectangle>
 	{
-		final getCutoutDimensionsJNI:Null<Dynamic> = JNICache.createStaticMethod('funkin/util/ScreenUtil', 'getCutoutDimentions', '()[Landroid/graphics/Rect;');
+		final getCutoutDimensionsJNI:Null<Dynamic> = JNICache.createStaticMethod('funkin/util/ScreenUtil', 'getCutoutDimensions', '()[Landroid/graphics/Rect;');
 
 		if (getCutoutDimensionsJNI != null)
 		{

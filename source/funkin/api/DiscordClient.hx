@@ -72,7 +72,7 @@ class DiscordClient
 		// The text that appears when you hover over the RPC image.
 		presence.largeImageText = 'VS IMPOSTOR Pixel';
 		// The key name of the image inside the RPC assets.
-		presence.largeImageKey = cast(params.largeImageKey, Null<String>) ?? 'mainhd';
+		presence.largeImageKey = cast(params.largeImageKey, Null<String>) ?? 'mainnew';
 
 		// A small icon that appears at the bottom right of the image of the RPC.
 		// The text that appears when you hover over the RPC image.
@@ -112,8 +112,6 @@ typedef DiscordRPCParams =
 
 	/**
 	 * Details about the state.
-	 *
-	 * TODO?: maybe put a better description to this.
 	 */
 	var details:String;
 

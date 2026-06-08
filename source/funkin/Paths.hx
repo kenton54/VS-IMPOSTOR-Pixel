@@ -1,8 +1,14 @@
 package funkin;
 
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.system.FlxAssets.FlxAsepriteJsonAsset;
+import flixel.system.FlxAssets.FlxXmlAsset;
 
+import funkin.system.FunkinMemory;
 import funkin.system.Translations;
+
+import haxe.io.Path;
 
 /**
  * Helper class to get the location of files inside the assets folder.
@@ -66,6 +72,17 @@ class Paths
 	}
 
 	/**
+	 * Gets the full directory of the specified path, referencing the embedded `impostor` directory.
+	 *
+	 * @param path 			Where you want the directory to lead to.
+	 * @return The full directory.
+	 */
+	public inline static function impostor(path:String):String
+	{
+		return 'impostor/$path';
+	}
+
+	/**
 	 * @param path 			Where you want the directory to lead to.
 	 * @param library 	What library to reference.
 	 * @return The full directory to the file.
@@ -86,16 +103,74 @@ class Paths
 	}
 
 	/**
-	 * @param path 			Where the `.png` graphic file is located at.
-	 * @param library 	What library to reference.
+	 * @param path 						Where the `.png` graphic file is located at.
+	 * @param library 				What library to reference.
+	 * @param ignoreLanguage	Whether the language suffix should be ignored.
 	 * @return The full directory to the file.
 	 */
 	public static function image(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
 	{
 		var path:String = getPath('images/$path.png', library);
-		var pathLang:String = getPath('images/' + getLanguageSuffix(path) + '.png', library);
+		var pathLang:String = getPath('images/${getLanguageSuffix(path)}.png', library);
 
 		if (!ignoreLanguage && Assets.exists(pathLang, IMAGE))
+		{
+			return pathLang;
+		}
+
+		return path;
+	}
+
+	/**
+	 * @param path						Where the `.xml` sprite data is located at.
+	 * @param library					What library to reference.
+	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @return The full directory to the file.
+	 */
+	public static function sparrow(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
+	{
+		var path:String = getPath('images/$path.xml', library);
+		var pathLang:String = getPath('images/${getLanguageSuffix(path)}.xml', library);
+
+		if (!ignoreLanguage && Assets.exists(pathLang, TEXT))
+		{
+			return pathLang;
+		}
+
+		return path;
+	}
+
+	/**
+	 * @param path						Where the `.json` sprite data is located at.
+	 * @param library					What library to reference.
+	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @return The full directory to the file.
+	 */
+	public static function aseprite(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
+	{
+		var path:String = getPath('images/$path.json', library);
+		var pathLang:String = getPath('images/${getLanguageSuffix(path)}.json', library);
+
+		if (!ignoreLanguage && Assets.exists(pathLang, TEXT))
+		{
+			return pathLang;
+		}
+
+		return path;
+	}
+
+	/**
+	 * @param path						Where the `.txt` sprite data is located at.
+	 * @param library					What library to reference.
+	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @return The full directory to the file.
+	 */
+	public static function packer(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
+	{
+		var path:String = getPath('images/$path.txt', library);
+		var pathLang:String = getPath('images/${getLanguageSuffix(path)}.txt', library);
+
+		if (!ignoreLanguage && Assets.exists(pathLang, TEXT))
 		{
 			return pathLang;
 		}
@@ -111,7 +186,7 @@ class Paths
 	public inline static function sound(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
 	{
 		var path:String = getPath('sounds/$path.ogg', library);
-		var pathLang:String = getPath('sounds/' + getLanguageSuffix(path) + '.ogg', library);
+		var pathLang:String = getPath('sounds/${getLanguageSuffix(path)}.ogg', library);
 
 		if (!ignoreLanguage && Assets.exists(pathLang, SOUND))
 		{
@@ -146,52 +221,89 @@ class Paths
 	 */
 	public inline static function video(path:String):String
 	{
-		return getLibraryPath('$path.mp4', 'videos');
+		return getPath('videos/$path.mp4');
 	}
 
-	public inline static function getSparrowFrames(path:String, ?library:String):FlxAtlasFrames
+	public inline static function getSparrowFrames(graphic:FlxGraphic, xml:FlxXmlAsset):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSparrow(image(path, library), file('images/$path.xml', library));
+		return FlxAtlasFrames.fromSparrow(graphic, xml);
 	}
 
-	public inline static function getAsepriteFrames(path:String, ?library:String):FlxAtlasFrames
+	public inline static function getAsepriteFrames(graphic:FlxGraphic, json:FlxAsepriteJsonAsset):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromAseprite(image(path, library), file('images/$path.json', library));
+		return FlxAtlasFrames.fromAseprite(graphic, json);
 	}
 
-	public inline static function getPackerFrames(path:String, ?library:String):FlxAtlasFrames
+	public inline static function getPackerFrames(graphic:FlxGraphic, txt:String):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(path, library), file('images/$path.json', library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txt);
 	}
 
-	public static function getFrames(path:String, ?library:String):FlxAtlasFrames
+	public static function getFrames(path:String):FlxAtlasFrames
 	{
-		if (Assets.exists(file('images/$path.xml')))
+		var graphic:FlxGraphic = FunkinMemory.getGraphic(path);
+		var pathNoExt:String = Path.withoutExtension(path);
+
+		if (Assets.exists('$pathNoExt.xml', TEXT))
 		{
-			return getSparrowFrames(path, library);
+			return getSparrowFrames(graphic, '$pathNoExt.xml');
 		}
-		else if (Assets.exists(file('images/$path.json')))
+		else if (Assets.exists('$pathNoExt.json', TEXT))
 		{
-			return getAsepriteFrames(path, library);
+			return getAsepriteFrames(graphic, '$pathNoExt.json');
 		}
-		else if (Assets.exists(file('images/$path.txt')))
+		else if (Assets.exists('$pathNoExt.txt', TEXT))
 		{
-			return getPackerFrames(path, library);
+			return getPackerFrames(graphic, '$pathNoExt.txt');
 		}
 
 		return null;
 	}
 
-	public static function getMultipleFrames(paths:Array<String>, ?library):FlxAtlasFrames
+	public static function getMultipleFrames(paths:Array<String>):FlxAtlasFrames
 	{
-		var mainAtlas:FlxAtlasFrames = getFrames(paths[0], library);
+		var mainAtlas:FlxAtlasFrames = getFrames(paths[0]);
+
 		if (paths.length > 1)
 		{
 			for (i in 1...paths.length)
-				mainAtlas.addAtlas(getFrames(paths[i], library));
+			{
+				mainAtlas.addAtlas(getFrames(paths[i]));
+			}
 		}
 
 		return mainAtlas;
+	}
+
+	/**
+	 * Returns all the assets inside the specified directory.
+	 * @param path 				The path to the directory.
+	 * @param recursive		Whether to check for subdirectories as well.
+	 * @return The list of files inside the directory.
+	 */
+	public static function readDirectory(path:String, ?library:String, recursive:Bool = false):Array<String>
+	{
+		var assetPath:String = getPath(path, library);
+
+		if (!assetPath.endsWith('/'))
+		{
+			assetPath += '/';
+		}
+
+		var directory:Array<String> = Assets.list().filter(file -> file.startsWith(assetPath));
+
+		if (recursive)
+		{
+			for (file in directory)
+			{
+				if (Path.extension(file) == '')
+				{
+					directory = directory.concat(readDirectory(file));
+				}
+			}
+		}
+
+		return directory;
 	}
 
 	static function getLanguageSuffix(path:String):String
