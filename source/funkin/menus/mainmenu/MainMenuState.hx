@@ -347,7 +347,7 @@ class MainMenuState extends MusicBeatState
 		add(mainButtonsBack);
 
 		bgTopLine1.x = bgLeftLine.x = mainButtonsBack.x + mainButtonsBack.width - bgLeftLine.width - 4 * BASE_SCALE;
-		miniTitle.x = Std.int(mainButtonsBack.x + (mainButtonsBack.width - miniTitle.width) / 2);
+		miniTitle.x = MathUtil.roundToGrid(mainButtonsBack.x + (mainButtonsBack.width - miniTitle.width) / 2, BASE_SCALE);
 
 		bgMiddleLine.y = mainButtonsBack.y + 28 * BASE_SCALE;
 

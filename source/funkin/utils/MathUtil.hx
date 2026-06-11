@@ -81,6 +81,18 @@ class MathUtil
 	}
 
 	/**
+	 * Rounds the given value to a grid size.
+	 *
+	 * @param value 		The value to round.
+	 * @param gridSize 	The size of the supposed grid.
+	 * @return The rounded value.
+	 */
+	public static function roundToGrid(value:Float, gridSize:Float):Float
+	{
+		return Math.round(value / gridSize) * gridSize;
+	}
+
+	/**
 	 * Gets the distance between 2 integer values.
 	 *
 	 * @param intA The main integer value.
