@@ -6,6 +6,8 @@ import funkin.ui.MusicBeatState;
 
 import haxe.Json;
 
+import lime.system.CFFI;
+
 /**
  * This class helps translate the mod to multiple languages.
  */
@@ -120,12 +122,12 @@ class Translations
 	 */
 	public static function getUserLanguage():String
 	{
-		#if (windows && cpp)
-		return funkin.external.windows.WindowsAPI.getUserLanguage();
-		#elseif linux
-		return funkin.external.linux.LinuxAPI.getUserLanguage();
-		#elseif (macos || ios)
-		return funkin.external.apple.AppleAPI.getUserLanguage();
+		#if lime_cffi
+		#if hl
+		return @:privateAccess lime.system.Locale.lime_locale_get_system_locale();
+		#else
+		return CFFI.load('lime', 'lime_locale_get_system_locale', 0)();
+		#end
 		#elseif android
 		return funkin.external.android.AndroidAPI.getUserLanguage();
 		#elseif web

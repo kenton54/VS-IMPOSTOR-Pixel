@@ -51,7 +51,7 @@ class AdvancedDisplay extends Sprite
 		infoArray.push('Update Time: ${deltaTime}ms');
 		infoArray.push('');
 		infoArray.push('GC Memory: ${getGCMemory()}');
-		// infoArray.push('Task Memory: ${getTaskMemory()}');
+		infoArray.push('App Process Memory: ${getProcessMemory()}');
 		infoArray.push('');
 		infoArray.push('Song Position: ${FlxStringUtil.formatTime(Conductor.songPosition / 1000, true)} | ${FlxStringUtil.formatTime(Conductor.songLength / 1000, true)} (${Math.round(Conductor.songPercent * 100)}%)');
 		infoArray.push('Song BPM: ${Conductor.curBPM}');
@@ -104,12 +104,12 @@ class AdvancedDisplay extends Sprite
 		#end
 	}
 
-	function getTaskMemory():String
+	function getProcessMemory():String
 	{
 		#if web
 		return 'Not supported for Web targets';
 		#else
-		return FlxStringUtil.formatBytes(MemoryUtil.getTaskMemory());
+		return FlxStringUtil.formatBytes(MemoryUtil.getProcessMemory());
 		#end
 	}
 

@@ -16,11 +16,12 @@ class AndroidAPI
 	 */
 	public static function getUserLanguage():String
 	{
-		var getLanguageJNI:Null<Dynamic> = JNICache.createStaticMethod('funkin/util/LocaleUtil', 'getUserLanguage', '()Ljava/lang/String;');
+		var getDefault:Void -> Dynamic = JNICache.createStaticMethod('java/util/Locale', 'getDefault', '()Ljava/util/Locale;');
+		var toString:Dynamic -> String = JNICache.createMemberMethod('java/util/Locale', 'toString', '()Ljava/lang/String;');
 
-		if (getLanguageJNI != null)
+		if (getDefault != null && toString != null)
 		{
-			return getLanguageJNI();
+			return toString(getDefault());
 		}
 
 		return 'en-US';
@@ -72,7 +73,7 @@ class AndroidAPI
 	 */
 	public static function isKeyboardConnected():Bool
 	{
-		var isConnectedJNI:Null<Dynamic> = JNICache.createStaticMethod('funkin/util/KeyboardUtil', 'isKeyboardConnected', '()Z');
+		var isConnectedJNI:Null<Void -> Bool> = JNICache.createStaticMethod('funkin/util/KeyboardUtil', 'isKeyboardConnected', '()Z');
 
 		if (isConnectedJNI != null)
 		{

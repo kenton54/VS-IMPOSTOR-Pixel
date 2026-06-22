@@ -20,6 +20,7 @@ package funkin.external.windows;
 #include <string>
 #include <windows.h>
 #include <dwmapi.h>
+#include <psapi.h>
 #include <stdint.h>
 #include <stdio.h>
 ')
@@ -29,19 +30,19 @@ class WindowsAPI
 	 * @return Whether the system has dark mode enabled or not.
 	 */
 	@:functionCode('
-		HKEY hKey;
-		DWORD value = 1; // default to light theme
-		DWORD dwSize = sizeof(value);
-		DWORD dwType = REG_DWORD;
+	HKEY hKey;
+	DWORD value = 1; // default to light theme
+	DWORD dwSize = sizeof(value);
+	DWORD dwType = REG_DWORD;
 
-		// i know this looks stupid, but it parses the backward slashes properly
-		if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Themes\\\\Personalize", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
-		{
-			RegQueryValueEx(hKey, "AppsUseLightTheme", NULL, &dwType, (LPBYTE)&value, &dwSize);
-			RegCloseKey(hKey);
-		}
+	// i know this looks stupid, but it parses the backward slashes properly
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Themes\\\\Personalize", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+	{
+		RegQueryValueEx(hKey, "AppsUseLightTheme", NULL, &dwType, (LPBYTE)&value, &dwSize);
+		RegCloseKey(hKey);
+	}
 
-		return value == 0;
+	return value == 0;
 	')
 	public static function isSystemDarkMode():Bool
 	{
@@ -53,30 +54,33 @@ class WindowsAPI
 	 * @param enable Whether to enable it or not.
 	 */
 	@:functionCode('
-		HWND window = GetActiveWindow();
+	HWND window = GetActiveWindow();
 
-		int darkMode = enable ? 1 : 0;
+	int darkMode = enable ? 1 : 0;
 
-		if (DwmSetWindowAttribute(window, 20, &darkMode, sizeof(darkMode)) != S_OK)
-		{
-			DwmSetWindowAttribute(window, 19, &darkMode, sizeof(darkMode));
-		}
+	if (DwmSetWindowAttribute(window, 20, &darkMode, sizeof(darkMode)) != S_OK)
+	{
+		DwmSetWindowAttribute(window, 19, &darkMode, sizeof(darkMode));
+	}
 
-		UpdateWindow(window);
+	UpdateWindow(window);
 	')
 	public static function setWindowDarkMode(enable:Bool):Void {}
 
 	/**
-	 * @return The user's current language in the Language Code format (e.g. `en-US`).
+	 * @return The amount of memory the application is using.
 	 */
 	@:functionCode('
-		wchar_t locale_name[LOCALE_NAME_MAX_LENGTH];
-		GetUserDefaultLocaleName(locale_name, LOCALE_NAME_MAX_LENGTH);
-		return locale_name;
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+
+	if (GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc)))
+		return pmc.WorkingSetSize;
+
+	return 0;
 	')
-	public static function getUserLanguage():String
+	public static function getProcessMemory():Float
 	{
-		return 'en-US';
+		return 0;
 	}
 }
 #end

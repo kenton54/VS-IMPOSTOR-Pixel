@@ -1,7 +1,5 @@
 package funkin.utils;
 
-import openfl.display3D.Context3D;
-
 #if cpp
 import cpp.vm.Gc;
 #elseif hl
@@ -14,27 +12,50 @@ import hl.Gc;
 class MemoryUtil
 {
 	/**
-	 * @return The amount of RAM the system has installed.
-	 */
-	public static function getRAMTotal():Float
-	{
-		return 0;
-	}
-
-	/**
 	 * @return The total amount of memory the application is using.
 	 */
-	public static function getTaskMemory():Float
+	public static function getProcessMemory():Float
 	{
-		return 0;
-	}
+		#if (windows && cpp)
+		return funkin.external.windows.WindowsAPI.getProcessMemory();
+		#elseif ((macos || ios) && cpp)
+		return funkin.external.apple.AppleAPI.getProcessMemory();
+		#elseif (linux || android)
+		try
+		{
+			#if cpp
+			final input:sys.io.FileInput = sys.io.File.read('/proc/${cpp.NativeSys.sys_get_pid()}/status', false);
+			#else
+			final input:sys.io.FileInput = sys.io.File.read('/proc/self/status', false);
+			#end
 
-	/**
-	 * @return The percentage of the amount of memory the application is using.
-	 */
-	public static function getRAMUsage():Float
-	{
-		return getTaskMemory() / getRAMTotal();
+			final regex:EReg = ~/^VmRSS:\s+(\d+)\s+kB/m;
+			var line:String;
+			do
+			{
+				if (input.eof())
+				{
+					input.close();
+					return 0.0;
+				}
+
+				line = input.readLine();
+			}
+			while (!regex.match(line));
+
+			input.close();
+
+			final kb:Float = Std.parseFloat(regex.matched(1));
+
+			if (!Math.isNaN(kb))
+			{
+				return kb * 1024.0;
+			}
+		}
+		catch (e:Dynamic) {}
+		#end
+
+		return 0;
 	}
 
 	/**
@@ -76,21 +97,5 @@ class MemoryUtil
 		#elseif hl
 		Gc.major();
 		#end
-	}
-
-	public static function getGraphicsMemoryTotal():Int
-	{
-		return FlxG.stage.context3D.totalGPUMemory;
-	}
-
-	public static function getGraphicsMemoryUsage():Float
-	{
-		var vramBytes:Int = @:privateAccess FlxG.stage.context3D.gl.getParameter(Context3D.__glMemoryCurrentAvailable);
-		return vramBytes;
-	}
-
-	public static function getVRAMUsage():Float
-	{
-		return getGraphicsMemoryUsage() / getGraphicsMemoryTotal();
 	}
 }

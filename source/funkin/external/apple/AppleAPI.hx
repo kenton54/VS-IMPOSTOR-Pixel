@@ -6,33 +6,28 @@ package funkin.external.apple;
  */
 @:cppFileCode('
 #include <CoreFoundation/CoreFoundation.h>
+#include <mach/mach.h>
 #include <iostream>
 #include <string>
 ')
 class AppleAPI
 {
 	/**
-	 * @return The user's current language in the Language Code format (e.g. `en-US`).
+	 * @return The amount of memory the application is using.
 	 */
 	@:functionCode('
-		std::string language_code;
+	struct task_basic_info info;
 
-		CFArrayRef languages = CFLocaleCopyPreferredLanguages();
-    CFStringRef lang_code_ref = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
+	mach_msg_type_number_t count = TASK_BASIC_INFO_COUNT;
 
-    char buffer[128];
-    if (CFStringGetCString(lang_code_ref, buffer, sizeof(buffer), kCFStringEncodingUTF8))
-		{
-			CFRelease(languages);
-			language_code = std::string(buffer);
-    }
+	if (task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&info, &count) != KERN_SUCCESS)
+		return 0;
 
-    CFRelease(languages);
-		return language_code.c_str();
+	return info.resident_size;
 	')
-	public static function getUserLanguage():String
+	public static function getProcessMemory():Float
 	{
-		return 'en-US';
+		return 0;
 	}
 }
 #end
