@@ -382,16 +382,17 @@ class Project extends HXProject
     {
         if (isAndroid())
         {
-            recursiveCopyDirectory('.artwork/icons/android/', '${app.path}/android/bin/app/src/main/res/', templateContext);
+            recursiveCopyDirectory('.artwork/red/icons/android/', '${app.path}/android/bin/app/src/main/res/', templateContext);
         }
 
-        addIcon(".artwork/icons/x16.png", 16);
-        addIcon(".artwork/icons/x32.png", 32);
-        addIcon(".artwork/icons/x64.png", 64);
-        addIcon(".artwork/icons/x128.png", 128);
-        addIcon(".artwork/icons/x512.png", 512);
-        addIcon(".artwork/icons/x1024.png", 1024);
-        addIcon(".artwork/icons/x1024.png");
+        addIcon(".artwork/icons/red/x16.png", 16);
+        addIcon(".artwork/icons/red/x32.png", 32);
+        addIcon(".artwork/icons/red/x64.png", 64);
+        addIcon(".artwork/icons/red/x128.png", 128);
+        addIcon(".artwork/icons/red/x256.png", 256);
+        addIcon(".artwork/icons/red/x512.png", 512);
+        addIcon(".artwork/icons/red/x1024.png", 1024);
+        addIcon(".artwork/icons/red/x1024.png");
     }
 
     function setupAndroid()

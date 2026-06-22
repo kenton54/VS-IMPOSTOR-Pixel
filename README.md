@@ -48,27 +48,33 @@ Now Boyfriend has to go through every single one of the past lobbies he ventured
 <h1 align="center">THE TEAM BEHIND THE MOD</h1>
 
 ## Director
+
 - kenton
 
 ## Artists, Pixel-Artists and Animators
+
 - kenton
 - GTM
 - AstroNomad
 
 ## Programmers
+
 - kenton
 - AstroNomad
 
 ## Musicians
+
 - Sparkly
 - Oxzy
 - Silte
 - VoltR
 
 ## Charters
+
 - kenton
 
 ## Translators
+
 <table>
     <tr>
         <th>Translator</th>
