@@ -63,11 +63,6 @@ class Project extends HXProject
     static final MAIN_CLASS_PATH:String = "Main";
 
     /**
-     * The contents of the user's enviroment variables.
-     */
-    static var enviromentVariables:Null<Map<String, Dynamic>> = null;
-
-    /**
      * The minimum Android SDK version this application can launch on.
      *
      * SDK 28 is Android 9.0, codenamed "Pie".
@@ -105,20 +100,9 @@ class Project extends HXProject
      */
     static final FEATURE_HAPTICS:FeatureFlag = "FEATURE_HAPTICS";
 
-    /**
-     * EXPERIMENTAL (due to the mod being mostly pixel-art)
-     *
-     * If enabled, when compiling, the mod will compress every single image asset inside the mod's assets folder using the ASTC texture compression algorithm.
-     *
-     * Exceptions for the compression can be set inside the `astc-compress-data.json` file.
-     */
-    static final FEATURE_COMPRESSED_TEXTURES:FeatureFlag = "FEATURE_COMPRESSED_TEXTURES";
-
     public function new()
     {
         super();
-
-        enviromentVariables = parseEnviromentFile(".env");
 
         displayTarget();
 
@@ -127,7 +111,6 @@ class Project extends HXProject
         setupDefines();
         setupMacros();
         setupLibraries();
-        setupASTCTextures();
         setupAssets();
 
         if (!isLinux())
@@ -267,7 +250,6 @@ class Project extends HXProject
         FEATURE_DEBUG_CONTENT.apply(this, isDebug());
         FEATURE_DISCORD_API.apply(this, (isDesktop() || isMobile()) && isDesktop() && isCPP());
         FEATURE_HAPTICS.apply(this, true);
-        FEATURE_COMPRESSED_TEXTURES.apply(this, /*isMobile() && isRelease()*/false);
 
         if (isDesktop() || isMobile())
         {
@@ -333,29 +315,6 @@ class Project extends HXProject
         if (isLinux())
         {
             addHaxelib("hxgamemode");
-        }
-    }
-
-    function setupASTCTextures()
-    {
-        if (!(isDisplay() || isClean()))
-        {
-            astcExclusions = haxe.Json.parse(File.getContent("astc-compress-data.json")).exclude;
-
-            for (i in 0...astcExclusions.length)
-            {
-                astcExclusions[i] = astcExclusions[i].trim();
-            }
-
-            if (FEATURE_COMPRESSED_TEXTURES.isEnabled(this))
-            {
-                info('Compressing ASTC Textures...');
-
-                var args:Array<String> = ['run', 'astc-compressor', 'compress-from-json', '-json', './astc-compress-data.json'];
-                //Sys.command('haxelib', args);
-
-                info('Done compressing ASTC Textures!');
-            }
         }
     }
 
@@ -532,27 +491,13 @@ class Project extends HXProject
 
     public function addAsset(path:String, ?rename:String, ?library:String, embed:Bool = false, ?padName:String):Void
     {
-        if (Path.extension(path) == "png" && FEATURE_COMPRESSED_TEXTURES.isEnabled(this))
-        {
-            final astcPath:String = 'astc-textures/${path.substr(0, path.length - 4)}.astc';
-            if (FileSystem.exists(astcPath))
-            {
-                path = astcPath;
-
-                if (rename != null)
-                {
-                    rename = rename.substr(0, rename.length - 4) + ".astc";
-                }
-            }
-        }
-
         var asset:Asset = new Asset(path, rename, null, embed, true);
         asset.library = library ?? "default";
 
         /*
         if (padName != null && isBundle())
         {
-            asset.deliveryPackageName = padName;
+            asset.deliveryPackName = padName;
         }
         */
 
@@ -742,59 +687,6 @@ class Project extends HXProject
     {
         var process = new Process('haxelib', ['libpath', library]);
         return process.stdout.readLine();
-    }
-
-    public function parseEnviromentFile(file:String):Null<Map<String, Dynamic>>
-    {
-        if (!FileSystem.exists(file))
-        {
-            warn("Enviroment file doesn't exists!");
-            return null;
-        }
-
-        var envFile:String = File.getContent(file);
-
-        if (envFile == null)
-        {
-            warn("Failed to read enviroment file!");
-            return null;
-        }
-
-        if (envFile.length < 1)
-        {
-            warn("Enviroment file is empty!");
-            return null;
-        }
-
-        var envData:Map<String, Dynamic> = new Map<String, Dynamic>();
-
-        for (line in envFile.split('\n'))
-        {
-            line = line.trim();
-
-            if (line.length < 1 || line.startsWith("#"))
-            {
-                continue;
-            }
-
-            final index:Int = line.indexOf("=");
-
-            if (index == -1)
-            {
-                continue;
-            }
-
-            final value:String = line.substr(index + 1);
-
-            if (value.length < 1)
-            {
-                continue;
-            }
-
-            envData.set(line.substr(0, index), value);
-        }
-
-        return envData;
     }
 
     public function info(message:String)
