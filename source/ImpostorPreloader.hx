@@ -229,7 +229,14 @@ final class ImpostorPreloader extends FlxBasePreloader
 		this._width = Lib.current.stage.stageWidth;
 		this._height = Lib.current.stage.stageHeight;
 
+		#if mobile
+		var display = Lib.current.stage.window.display;
+		var dpiScale:Float = display.dpi / 160;
+		var normalizedWidth:Float = this._width / dpiScale;
+		scaleRatio = normalizedWidth / BASE_WIDTH;
+		#else
 		scaleRatio = this._width / BASE_WIDTH;
+		#end
 	}
 
 	override function onLoaded()
