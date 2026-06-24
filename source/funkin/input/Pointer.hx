@@ -88,12 +88,15 @@ class Pointer
 	 */
 	public static function show()
 	{
-		#if !mobile
-		FlxG.mouse.visible = true;
-		cursorMode = Normal;
-		#else
-		hide();
-		#end
+		if (!FlxG.onMobile)
+		{
+			FlxG.mouse.visible = true;
+			cursorMode = Normal;
+		}
+		else
+		{
+			hide();
+		}
 	}
 
 	/**

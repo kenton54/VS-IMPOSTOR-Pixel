@@ -128,9 +128,10 @@ class TitleState extends MusicBeatState
 		typeCodeHint.screenCenter(X);
 		typeCodeHint.y = FlxG.height * 0.9;
 
-		#if mobile
-		typeCodeHint.y -= pressStartText.height + typeCodeHint.height;
-		#end
+		if (FlxG.onMobile)
+		{
+			typeCodeHint.y -= pressStartText.height + typeCodeHint.height;
+		}
 
 		typeCodeHint.alpha = 0;
 		add(typeCodeHint);
@@ -153,8 +154,8 @@ class TitleState extends MusicBeatState
 		codeInputHitbox.screenCenter(X);
 		add(codeInputHitbox);
 
-		final buttonsScale:Float = #if mobile 6 #else 4 #end;
-		final bottomThreshold:Float = #if mobile 72 #else 12 #end;
+		final buttonsScale:Float = FlxG.onMobile ? 6 : 4;
+		final bottomBottomOffset:Float = FlxG.onMobile ? 72 : 12;
 
 		keyboardButton = new StaticButton(FullScreenScaleMode.notchSize.x + 12, 12, Paths.image('menus/title/keyboard'), openKeyboard);
 		keyboardButton.scaleSprite(buttonsScale);
@@ -164,7 +165,7 @@ class TitleState extends MusicBeatState
 
 		typeCancelButton = new StaticButton(FullScreenScaleMode.notchSize.x + 12, 0, Paths.image('menus/title/cancel'), closeKeyboard.bind(false));
 		typeCancelButton.scaleSprite(buttonsScale);
-		typeCancelButton.y = FlxG.height - typeCancelButton.height - bottomThreshold;
+		typeCancelButton.y = FlxG.height - typeCancelButton.height - bottomBottomOffset;
 		typeCancelButton.alpha = 0;
 		typeCancelButton.visible = false;
 		typeCancelButton.enabled = false;
@@ -173,7 +174,7 @@ class TitleState extends MusicBeatState
 		typeConfirmButton = new StaticButton(0, 0, Paths.image('menus/title/confirm'), closeKeyboard.bind(true));
 		typeConfirmButton.scaleSprite(buttonsScale);
 		typeConfirmButton.x = FlxG.width - typeConfirmButton.width - 12;
-		typeConfirmButton.y = FlxG.height - typeConfirmButton.height - bottomThreshold;
+		typeConfirmButton.y = FlxG.height - typeConfirmButton.height - bottomBottomOffset;
 		typeConfirmButton.alpha = 0;
 		typeConfirmButton.visible = false;
 		typeConfirmButton.enabled = false;
