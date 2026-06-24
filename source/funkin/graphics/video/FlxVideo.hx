@@ -34,6 +34,16 @@ class FlxVideo extends FlxSprite
 	public var endReach(default, null):FlxSignal = new FlxSignal();
 
 	/**
+	 * Triggered when the video playback gets to unloaded data, and pauses.
+	 */
+	public var onBufferEmpty(default, null):FlxSignal = new FlxSignal();
+
+	/**
+	 * Triggered when the video playback resumes after loading previously unloaded data.
+	 */
+	public var onBufferLoad(default, null):FlxSignal = new FlxSignal();
+
+	/**
 	 * The OpenFL `Video` object attached to this video, it takes care of rendering the video.
 	 */
 	public var video(default, null):Video;
@@ -75,9 +85,13 @@ class FlxVideo extends FlxSprite
 
 	var _mediaVolume:Float = 1;
 
+	var _userPaused:Bool = false;
+
 	var _netConnection:NetConnection;
 
 	var _finished:Bool = false;
+
+	var _loadingBuffer:Bool = false;
 
 	public function new(x:Float = 0, y:Float = 0)
 	{
@@ -93,7 +107,12 @@ class FlxVideo extends FlxSprite
 		_netConnection.addEventListener(NetStatusEvent.NET_STATUS, onNetConnectionStatus);
 
 		netStream = new NetStream(_netConnection);
-		netStream.client = {onMetaData: onClientMetaData};
+		netStream.client = {onMetaData: onMetaData, onPlayStatus: onPlayStatus};
+
+		@:privateAccess
+		{
+			netStream.__video.addEventListener('waiting', onEmptyBuffer, false);
+		}
 
 		if (FlxG.autoPause)
 		{
@@ -102,6 +121,9 @@ class FlxVideo extends FlxSprite
 		}
 
 		FlxG.sound.onVolumeChange.add(setFrontendVolume);
+
+		// triggers an update
+		setFrontendVolume(FlxG.sound.muted ? 0 : FlxG.sound.volume);
 	}
 
 	override function destroy()
@@ -114,6 +136,8 @@ class FlxVideo extends FlxSprite
 		FlxDestroyUtil.destroy(formatSetup);
 		FlxDestroyUtil.destroy(startPlaying);
 		FlxDestroyUtil.destroy(endReach);
+		FlxDestroyUtil.destroy(onBufferEmpty);
+		FlxDestroyUtil.destroy(onBufferLoad);
 
 		if (FlxG.autoPause)
 		{
@@ -157,7 +181,6 @@ class FlxVideo extends FlxSprite
 	public function play():Bool
 	{
 		@:privateAccess netStream.__video.play();
-		startPlaying.dispatch();
 		return true;
 	}
 
@@ -237,7 +260,7 @@ class FlxVideo extends FlxSprite
 		endReach.dispatch();
 	}
 
-	function onClientMetaData(metaData:Dynamic)
+	function onMetaData(metaData:VideoMetaData)
 	{
 		video.attachNetStream(netStream);
 		video.width = metaData.width;
@@ -253,12 +276,32 @@ class FlxVideo extends FlxSprite
 		volume = FlxG.sound.muted ? 0 : FlxG.sound.volume;
 	}
 
+	function onPlayStatus(status:VideoPlayStatus) {}
+
 	function onNetConnectionStatus(event:NetStatusEvent)
 	{
-		if (event.info.code == 'NetStream.Play.Complete')
+		if (event.info.code == 'NetStream.Play.Start')
+		{
+			if (_loadingBuffer)
+			{
+				onBufferLoad.dispatch();
+				_loadingBuffer = false;
+			}
+			else
+			{
+				startPlaying.dispatch();
+			}
+		}
+		else if (event.info.code == 'NetStream.Play.Complete')
 		{
 			finish();
 		}
+	}
+
+	function onEmptyBuffer(event:Dynamic)
+	{
+		onBufferEmpty.dispatch();
+		_loadingBuffer = true;
 	}
 
 	override function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FlxVideo
@@ -380,5 +423,21 @@ class FlxVideo extends FlxSprite
 	{
 		return video.smoothing = super.set_antialiasing(value);
 	}
+}
+
+typedef VideoMetaData =
+{
+	var width:Int;
+	var height:Int;
+	var duration:Float;
+}
+
+typedef VideoPlayStatus =
+{
+	var code:String;
+	var duration:Float;
+	var position:Float;
+	var speed:Float;
+	var start:Float;
 }
 #end

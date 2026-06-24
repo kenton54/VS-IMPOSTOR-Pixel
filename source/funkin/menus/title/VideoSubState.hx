@@ -9,6 +9,8 @@ class VideoSubState extends MusicBeatSubState
 	var videoSprite:FunkinVideo;
 	var video:String;
 
+	var miniCrewmate:FunkinSprite;
+
 	var onComplete:Void -> Void;
 
 	var videoCamera:FlxCamera;
@@ -50,11 +52,19 @@ class VideoSubState extends MusicBeatSubState
 			videoSprite.updateHitbox();
 			videoSprite.screenCenter();
 		});
+		videoSprite.onPlay.add(onStartVideo);
 		videoSprite.onFinish.add(onFinishVideo);
+		videoSprite.onBufferEmpty.add(onBufferLoad);
 		videoSprite.alpha = 0;
 		add(videoSprite);
 
-		FlxTween.tween(videoSprite, {alpha: 1}, 0.5);
+		miniCrewmate = new FunkinSprite().loadGraphic(Paths.image('ui/loading/mini-crewmate'), true, 32, 32);
+		miniCrewmate.addAnimationByFrameLength(10, 18);
+		miniCrewmate.playAnimation();
+		miniCrewmate.scaleSprite(4);
+		miniCrewmate.x = FlxG.width - miniCrewmate.width - 16;
+		miniCrewmate.y = FlxG.height - miniCrewmate.height - 16;
+		add(miniCrewmate);
 
 		FlxTimer.wait(0.1, () -> videoSprite.play());
 	}
@@ -65,9 +75,27 @@ class VideoSubState extends MusicBeatSubState
 		FlxG.cameras.remove(videoCamera);
 	}
 
+	function onStartVideo()
+	{
+		onBufferFinish();
+		FlxTween.tween(videoSprite, {alpha: 1}, 0.5);
+	}
+
 	function onFinishVideo()
 	{
 		FlxTween.tween(videoSprite, {alpha: 0}, 0.5, {onComplete: _ -> goBack()});
+	}
+
+	function onBufferLoad()
+	{
+		miniCrewmate.animation.resume();
+		miniCrewmate.visible = true;
+	}
+
+	function onBufferFinish()
+	{
+		miniCrewmate.animation.pause();
+		miniCrewmate.visible = false;
 	}
 
 	function goBack()

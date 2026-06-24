@@ -34,6 +34,20 @@ class FunkinVideo extends #if hxvlc FlxVideoSprite #else FlxVideo #end
 
 	#if hxvlc
 	/**
+	 * Triggered when the video playback gets to unloaded data, and pauses.
+	 *
+	 * On non-web targets, this never gets triggered.
+	 */
+	public var onBufferEmpty(default, null):FlxSignal = new FlxSignal();
+
+	/**
+	 * Triggered when the video playback resumes after loading previously unloaded data.
+	 *
+	 * On non-web targets, this never gets triggered.
+	 */
+	public var onBufferLoad(default, null):FlxSignal = new FlxSignal();
+
+	/**
 	 * Whether the video is currently playing.
 	 */
 	public var playing(default, null):Bool = false;
@@ -87,6 +101,11 @@ class FunkinVideo extends #if hxvlc FlxVideoSprite #else FlxVideo #end
 		FlxDestroyUtil.destroy(onFormatSetup);
 		FlxDestroyUtil.destroy(onPlay);
 		FlxDestroyUtil.destroy(onFinish);
+
+		#if hxvlc
+		FlxDestroyUtil.destroy(onBufferEmpty);
+		FlxDestroyUtil.destroy(onBufferLoad);
+		#end
 	}
 
 	/**
