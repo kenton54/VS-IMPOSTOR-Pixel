@@ -16,12 +16,11 @@ class AndroidAPI
 	 */
 	public static function getUserLanguage():String
 	{
-		var getDefault:Void -> Dynamic = JNICache.createStaticMethod('java/util/Locale', 'getDefault', '()Ljava/util/Locale;');
-		var toString:Dynamic -> String = JNICache.createMemberMethod('java/util/Locale', 'toString', '()Ljava/lang/String;');
+		var getLanguageJNI:Null<Dynamic> = JNICache.createStaticMethod('funkin/util/LocaleUtil', 'getUserLanguage', '()Ljava/lang/String;');
 
-		if (getDefault != null && toString != null)
+		if (getLanguageJNI != null)
 		{
-			return toString(getDefault());
+			return getLanguageJNI();
 		}
 
 		return 'en-US';

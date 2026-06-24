@@ -92,13 +92,13 @@ class FullScreenScaleMode extends flixel.system.scaleModes.BaseScaleMode
 	 */
 	public static var hasFakeCutouts:Bool = false;
 
-	static var cutoutBitmaps:Array<Null<Bitmap>> = [null, null];
+	@:noCompletion static var cutoutBitmaps:Array<Null<Bitmap>> = [null, null];
 
-	static var mustAwait:Bool = false;
+	@:noCompletion static var mustAwait:Bool = false;
 
-	static var awaitedSize:FlxPoint = FlxPoint.get();
+	@:noCompletion static var awaitedSize:FlxPoint = FlxPoint.get();
 
-	static var finishingAwait:Bool = false;
+	@:noCompletion static var finishingAwait:Bool = false;
 
 	/**
 	 * @param enable Whether fullscreen scaling should be enabled by default.
@@ -506,7 +506,7 @@ class FullScreenScaleMode extends flixel.system.scaleModes.BaseScaleMode
 		}
 	}
 
-	static function set_enabled(value:Bool):Bool
+	@:noCompletion static function set_enabled(value:Bool):Bool
 	{
 		if (ratioAxis == X #if android
 			&& (extension.androidtools.os.Build.VERSION.SDK_INT >= extension.androidtools.os.Build.VERSION_CODES.P

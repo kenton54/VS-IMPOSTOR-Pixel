@@ -10,11 +10,11 @@
     <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
     <br/>
     <p align="center">
-        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> Modification based on the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team MotorFrog, which itself is based of the very popular game and cultural meme <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
+        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> Modification based on the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team MotorFrog, which itself is based of the very popular game <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
     </p>
     <br/>
     <p align="center">
-        This is an unnoficial sequel, meant to not only improve what's already been introduced to the table, but to expand on it as well. Expect this mod to be nearly double (or above, idk yet im writing this before 1.0 LOL) the size of the original <a href="https://vsimpostor.com">VS IMPOSTOR</a>.
+        This is an unofficial sequel, meant to not only improve what's already been shown in the mod, but to expand on it as well, with twice the amount of content as VS IMPOSTOR!
     </p>
     <br/>
     <p align="center">
@@ -28,6 +28,8 @@
         <a href="https://gamebanana.com/mods/506768">Gamebana</a>
         &middot;
         <a href="https://kenton54.itch.io/vs-impostor-pixel">Itch.io</a>
+        &middot;
+        <a href="https://gamejolt.com/games/vsimpostorpixel/1079175">GameJolt</a>
         &middot;
         <a href="https://drive.google.com/drive/folders/1D7bzf95Ig0HuAl6Zrm4iikSvv_Mc0cSm?usp=sharing">Google Drive</a>
         </b>
