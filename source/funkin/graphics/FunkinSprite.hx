@@ -34,6 +34,11 @@ class FunkinSprite extends FlxSprite
 		}
 
 		antialiasing = false;
+	}
+
+	override function initVars()
+	{
+		super.initVars();
 
 		animation.onFinish.add(finishAnimation);
 	}

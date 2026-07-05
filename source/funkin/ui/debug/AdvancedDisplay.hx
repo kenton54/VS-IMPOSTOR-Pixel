@@ -53,6 +53,8 @@ class AdvancedDisplay extends Sprite
 		infoArray.push('GC Memory: ${getGCMemory()}');
 		infoArray.push('App Process Memory: ${getProcessMemory()}');
 		infoArray.push('');
+		infoArray.push('Debug Build: ${Constants.DEBUG_BUILD}');
+		infoArray.push('');
 		infoArray.push('Song Position: ${FlxStringUtil.formatTime(Conductor.songPosition / 1000, true)} | ${FlxStringUtil.formatTime(Conductor.songLength / 1000, true)} (${Math.round(Conductor.songPercent * 100)}%)');
 		infoArray.push('Song BPM: ${Conductor.curBPM}');
 		infoArray.push('Song Measure: ${Conductor.curMeasure}');
@@ -81,9 +83,12 @@ class AdvancedDisplay extends Sprite
 		infoArray.push('Children Count: ${FlxG.game.numChildren}');
 		infoArray.push('');
 		infoArray.push('Total Loaded: ${FlxStringUtil.formatBytes(FunkinMemory.bytesLoaded)}');
-		infoArray.push('Cached Graphics: ${@:privateAccess FunkinMemory.cachedGraphics.count()}');
-		infoArray.push('Cached Sounds: ${@:privateAccess FunkinMemory.cachedSounds.count()}');
-		infoArray.push('Temporary Cached Graphics: ${@:privateAccess FunkinMemory.temporalCachedGraphics.count()}');
+		@:privateAccess
+		{
+			infoArray.push('Cached Graphics: ${FunkinMemory.cachedGraphics.count()}');
+			infoArray.push('Cached Sounds: ${FunkinMemory.cachedSounds.count()}');
+			infoArray.push('Temporary Cached Graphics: ${FunkinMemory.temporalCachedGraphics.count()}');
+		}
 		infoArray.push('');
 		infoArray.push('Game Language: ${Translations.curLanguageID}');
 		infoArray.push('System Language: ${Translations.getUserLanguage()}');

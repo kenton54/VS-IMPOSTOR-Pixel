@@ -147,7 +147,7 @@ class MainMenuState extends MusicBeatState
 
 	override public function create()
 	{
-		super.create();
+		FunkinSound.playMenuMusic();
 
 		#if FEATURE_DISCORD_API
 		DiscordClient.changePresence({
@@ -156,7 +156,7 @@ class MainMenuState extends MusicBeatState
 		});
 		#end
 
-		FunkinSound.playMenuMusic();
+		super.create();
 
 		FlxG.camera.bgColor = FlxColor.TRANSPARENT;
 

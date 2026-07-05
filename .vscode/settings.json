@@ -35,7 +35,8 @@
   "haxe.displayServer": { "arguments": ["-v"] },
   "files.associations": {
     "*.hxp": "haxe",
-    "*.haxe": "haxe"
+    "*.haxe": "haxe",
+    "*.imppixelc": "json"
   },
   "haxecheckstyle.sourceFolders": ["source"],
   "haxecheckstyle.externalSourceRoots": [],

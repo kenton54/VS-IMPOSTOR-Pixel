@@ -6,7 +6,7 @@ package funkin.utils;
 class MathUtil
 {
 	/**
-	 * The value of the mathematical constant E.
+	 * The value of the mathematical constant Euler.
 	 */
 	public inline static var EULER:Float = 2.718281828459045;
 
@@ -63,11 +63,21 @@ class MathUtil
 	}
 
 	/**
+	 * @param x The value.
+	 * @return The base-2 exponent of the value. `2^x`.
+	 */
+	public inline static function exp2(x:Float):Float
+	{
+		return Math.pow(2, x);
+	}
+
+	/**
 	 * @param v Input value.
 	 * @return The factorial of `v`.
 	 */
 	public static function fact(v:Float):Float
 	{
+		// could be inlined, but since it can be called multiple times by itself, its better not to
 		return v <= 0 ? 1 : v * fact(v - 1);
 	}
 
@@ -78,6 +88,40 @@ class MathUtil
 	public inline static function fract(v:Float):Float
 	{
 		return v - Math.floor(v);
+	}
+
+	/**
+	 * @param base 		The starting value.
+	 * @param target 	The value to interpolate to.
+	 * @param ratio 	The percentage of the interpolation.
+	 * @return The linear interpolation of the two values.
+	 */
+	public static function lerp(base:Float, target:Float, ratio:Float):Float
+	{
+		if (ratio == 0)
+		{
+			return base;
+		}
+
+		if (ratio == 1)
+		{
+			return target;
+		}
+
+		// it would be cheaper if we just do the calculation ourselves instead of calling haxeflixel's
+		// but since its inlined i dont think it matters?
+		return FlxMath.lerp(base, target, ratio);
+	}
+
+	/**
+	 * @param base 		The starting value.
+	 * @param target 	The value to interpolate to.
+	 * @param ratio 	The percentage of the interpolation.
+	 * @return The linear interpolation of the two values, adjusted to the user's FPS.
+	 */
+	public inline static function fpsLerp(base:Float, target:Float, ratio:Float):Float
+	{
+		return lerp(base, target, FlxMath.getElapsedLerp(ratio, FlxG.elapsed));
 	}
 
 	/**

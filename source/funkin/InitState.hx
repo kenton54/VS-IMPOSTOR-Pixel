@@ -1,14 +1,15 @@
 package funkin;
 
-import flixel.FlxSprite;
 import flixel.FlxState;
 
-import funkin.system.ShaderResizeFix;
+#if sys
+import sys.FileSystem;
+#end
 
 /**
  * The state the game starts with.
  *
- * Used for setting up critical classes.
+ * Used for setting up core classes.
  */
 class InitState extends FlxState
 {
@@ -31,7 +32,7 @@ class InitState extends FlxState
 
 	function setupGame()
 	{
-		FlxSprite.defaultAntialiasing = false;
+		flixel.FlxSprite.defaultAntialiasing = false;
 
 		// FlxG.sound.volumeUpKeys = [];
 		// FlxG.sound.volumeDownKeys = [];
@@ -56,7 +57,7 @@ class InitState extends FlxState
 		});
 		#end
 
-		ShaderResizeFix.init();
+		funkin.system.ShaderResizeFix.init();
 
 		#if android
 		FlxG.android.preventDefaultKeys = [flixel.input.android.FlxAndroidKey.BACK];
@@ -74,7 +75,29 @@ class InitState extends FlxState
 	{
 		coreStarted = true;
 
-		// funkin.ui.MusicBeatState.skipTransIn = true;
+		#if (FEATURE_DEBUG_CONTENT && sys)
+		var sysArgs:Array<String> = Sys.args().filter(arg -> arg != null && arg != '');
+
+		var filePath:Null<String> = null;
+
+		for (arg in sysArgs)
+		{
+			if (filePath == null && FileSystem.isDirectory(arg) && FileSystem.exists(arg))
+			{
+				filePath = arg;
+			}
+		}
+
+		if (filePath != null)
+		{
+			if (funkin.data.song.SongParser.isFormatValid(filePath))
+			{
+				// FlxG.switchState(() -> new funkin.menus.debug.charter.loader.ChartLoaderState(filePath));
+			}
+			return;
+		}
+		#end
+
 		funkin.ui.MusicBeatState.setTransitions(funkin.ui.transitions.Fade);
 		FlxG.switchState(() -> new funkin.menus.StartupState());
 	}
