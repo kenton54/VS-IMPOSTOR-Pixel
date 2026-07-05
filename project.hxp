@@ -226,12 +226,6 @@ class Project extends HXProject
         window.background = 0xFF000000;
     }
 
-    function setupExport()
-    {
-        var exportPath:String = 'export/${FEATURE_DEBUG_CONTENT.isEnabled(this) ? 'debug' : 'release'}';
-        app.path = exportPath;
-    }
-
     function setupDefines()
     {
         // first dont compile stuff we are never gonna use
@@ -245,9 +239,9 @@ class Project extends HXProject
         setHaxeDefine('HXCPP_STACK_LINE');
         setHaxeDefine('HXCPP_STACK_TRACE');
 
-        FEATURE_DEBUG_CONTENT.apply(this, isDesktop() || isDebug());
-        FEATURE_DISCORD_API.apply(this, (isDesktop() || isMobile()) && isDesktop() && isCPP());
-        FEATURE_HAPTICS.apply(this, true);
+        FEATURE_DEBUG_CONTENT.apply(this, isDebug());
+        FEATURE_DISCORD_API.apply(this, isDesktop() && isCPP());
+        FEATURE_HAPTICS.apply(this, isMobile());
 
         if (isRelease())
         {
@@ -267,6 +261,12 @@ class Project extends HXProject
     {
         addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxObject())', 'flixel.FlxObject')");
         addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')");
+    }
+
+    function setupExport()
+    {
+        var exportPath:String = 'export/${FEATURE_DEBUG_CONTENT.isEnabled(this) ? 'debug' : 'release'}';
+        app.path = exportPath;
     }
 
     function setupLibraries()
@@ -327,8 +327,11 @@ class Project extends HXProject
 
         addAssetPath("assets/videos", null, null, ['*'], [], false, "assets");
 
-        addAssetLibrary('debug', embedAssets, preloadAssets);
-        addAssetPath("assets/debug", "assets", 'debug', ['*'], [], embedAssets, "assets");
+        if (FEATURE_DEBUG_CONTENT.isEnabled(this))
+        {
+            addAssetLibrary('debug', embedAssets, preloadAssets);
+            addAssetPath("assets/debug", "assets", 'debug', ['*'], [], embedAssets, "assets");
+        }
 
         addAssetLibrary('art', false, false);
         addAsset('LICENSE', 'LICENSE', 'art', false);

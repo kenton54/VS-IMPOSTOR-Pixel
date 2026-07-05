@@ -1,5 +1,6 @@
 package funkin.data.stage.format;
 
+#if FEATURE_DEBUG_CONTENT
 import haxe.io.Path;
 
 import json2object.JsonParser;
@@ -491,3 +492,4 @@ typedef PsychEngineStageEditorMetaData =
 	@:default('gf')
 	var gf:String;
 }
+#end
