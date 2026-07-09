@@ -2,7 +2,7 @@ package funkin.menus.title;
 
 import funkin.utils.TweenUtil;
 
-class IntroSubState extends MusicBeatSubState
+class IntroSubState extends MusicBeatState
 {
 	var bg:FunkinSprite;
 	var introText:FunkinText;

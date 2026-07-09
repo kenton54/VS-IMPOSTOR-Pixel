@@ -330,32 +330,32 @@ class Pointer
 		switch (mode)
 		{
 			case Normal:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_default.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_default.graphic, 'impostor'));
 				offsetX = cursor_default.offsetX;
 				offsetY = cursor_default.offsetY;
 
 			case Hover:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_hover.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_hover.graphic, 'impostor'));
 				offsetX = cursor_hover.offsetX;
 				offsetY = cursor_hover.offsetY;
 
 			case Text:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_text.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_text.graphic, 'impostor'));
 				offsetX = cursor_text.offsetX;
 				offsetY = cursor_text.offsetY;
 
 			case Crosshair:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_crosshair.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_crosshair.graphic, 'impostor'));
 				offsetX = cursor_crosshair.offsetX;
 				offsetY = cursor_crosshair.offsetY;
 
 			case Grab:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_grab.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_grab.graphic, 'impostor'));
 				offsetX = cursor_grab.offsetX;
 				offsetY = cursor_grab.offsetY;
 
 			case Hold:
-				graphic = FunkinMemory.getGraphic(Paths.impostor('images/' + cursor_hold.graphic + '.png'));
+				graphic = FunkinMemory.getGraphic(Paths.image(cursor_hold.graphic, 'impostor'));
 				offsetX = cursor_hold.offsetX;
 				offsetY = cursor_hold.offsetY;
 		}

@@ -2,6 +2,8 @@ package funkin;
 
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxTileFrames;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxAsepriteJsonAsset;
 import flixel.system.FlxAssets.FlxXmlAsset;
 
@@ -19,7 +21,7 @@ class Paths
 	 * Gets the full directory of the specified path.
 	 *
 	 * @param path 			Where you want the directory to lead to.
-	 * @param library 	What library to reference.
+	 * @param library 	The library to reference.
 	 * @return The full directory.
 	 */
 	public static function getPath(path:String, ?library:String):String
@@ -38,19 +40,24 @@ class Paths
 	 * Checks whether `library` is set to any of the default ones.
 	 *
 	 * @param path 			Where you want the directory to lead to.
-	 * @param library 	What library to reference.
+	 * @param library 	The library to reference.
 	 * @return The full directory.
 	 */
 	public static function getDynamicPath(path:String, library:String = 'default'):String
 	{
-		return (library == 'default' || library == 'main') ? getMainPath(path) : getLibraryPath(path, library);
+		return switch (library)
+		{
+			case 'default' | 'main': getMainPath(path);
+			case 'impostor': getImpostorPath(path);
+			default: getLibraryPath(path, library);
+		}
 	}
 
 	/**
 	 * Gets the full directory of the specified path, along side it's library.
 	 *
 	 * @param path 			Where you want the directory to lead to.
-	 * @param library 	What library to reference.
+	 * @param library 	The library to reference.
 	 * @return The full directory.
 	 */
 	public static function getLibraryPath(path:String, library:String):String
@@ -77,7 +84,7 @@ class Paths
 	 * @param path 			Where you want the directory to lead to.
 	 * @return The full directory.
 	 */
-	public inline static function impostor(path:String):String
+	public inline static function getImpostorPath(path:String):String
 	{
 		return 'impostor/$path';
 	}
@@ -122,9 +129,9 @@ class Paths
 	}
 
 	/**
-	 * @param path						Where the `.xml` sprite data is located at.
-	 * @param library					What library to reference.
-	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @param path 						Where the `.xml` sprite data is located at.
+	 * @param library 				What library to reference.
+	 * @param ignoreLanguage 	Whether the language suffix should be ignored.
 	 * @return The full directory to the file.
 	 */
 	public static function sparrow(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
@@ -141,9 +148,9 @@ class Paths
 	}
 
 	/**
-	 * @param path						Where the `.json` sprite data is located at.
-	 * @param library					What library to reference.
-	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @param path 						Where the `.json` sprite data is located at.
+	 * @param library 				What library to reference.
+	 * @param ignoreLanguage 	Whether the language suffix should be ignored.
 	 * @return The full directory to the file.
 	 */
 	public static function aseprite(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
@@ -160,9 +167,9 @@ class Paths
 	}
 
 	/**
-	 * @param path						Where the `.txt` sprite data is located at.
-	 * @param library					What library to reference.
-	 * @param ignoreLanguage	Whether the language suffix should be ignored.
+	 * @param path 						Where the `.txt` sprite data is located at.
+	 * @param library 				What library to reference.
+	 * @param ignoreLanguage 	Whether the language suffix should be ignored.
 	 * @return The full directory to the file.
 	 */
 	public static function packer(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
@@ -180,7 +187,7 @@ class Paths
 
 	/**
 	 * @param path 			Where the `.ogg` sound file is located at.
-	 * @param library 	What library to reference.
+	 * @param library 	The library to reference.
 	 * @return The full directory to the file.
 	 */
 	public inline static function sound(path:String, ?library:String, ?ignoreLanguage:Bool = true):String
@@ -198,7 +205,7 @@ class Paths
 
 	/**
 	 * @param path 			Where the `.ogg` music file is located at.
-	 * @param library 	What library to reference.
+	 * @param library 	The library to reference.
 	 * @return The full directory to the file.
 	 */
 	public inline static function music(path:String, ?library:String):String
@@ -239,6 +246,11 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txt);
 	}
 
+	public inline static function getTiledFrames(graphic:FlxGraphic, width:Int, height:Int, spacing:Int = 0):FlxTileFrames
+	{
+		return FlxTileFrames.fromGraphic(graphic, FlxPoint.get(width, height), null, spacing > 0 ? FlxPoint.get(spacing, spacing) : null);
+	}
+
 	public static function getFrames(path:String):FlxAtlasFrames
 	{
 		var graphic:FlxGraphic = FunkinMemory.getGraphic(path);
@@ -276,12 +288,12 @@ class Paths
 	}
 
 	/**
-	 * Returns all the assets inside the specified directory.
 	 * @param path 				The path to the directory.
-	 * @param recursive		Whether to check for subdirectories as well.
+	 * @param library 		The library to reference.
+	 * @param includePath Whether to include the path that leads to the files.
 	 * @return The list of files inside the directory.
 	 */
-	public static function readDirectory(path:String, ?library:String, recursive:Bool = false):Array<String>
+	public static function readDirectory(path:String, ?library:String, includePath:Bool = false):Array<String>
 	{
 		var assetPath:String = getPath(path, library);
 
@@ -292,14 +304,11 @@ class Paths
 
 		var directory:Array<String> = Assets.list().filter(file -> file.startsWith(assetPath));
 
-		if (recursive)
+		if (!includePath)
 		{
 			for (file in directory)
 			{
-				if (Path.extension(file) == '')
-				{
-					directory = directory.concat(readDirectory(file));
-				}
+				file.replace(path, '');
 			}
 		}
 

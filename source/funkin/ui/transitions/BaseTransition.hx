@@ -2,7 +2,7 @@ package funkin.ui.transitions;
 
 import flixel.FlxBasic;
 
-class BaseTransition extends MusicBeatSubState
+class BaseTransition extends MusicBeatState
 {
 	/**
 	 * Whether the transition has fully played.

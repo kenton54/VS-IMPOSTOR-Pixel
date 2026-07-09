@@ -653,7 +653,8 @@
           "ENUM_DEF",
           "INTERFACE_DEF",
           "TYPEDEF_DEF"
-        ]
+        ],
+        "severity": "IGNORE"
       }
     },
     {

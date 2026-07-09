@@ -59,9 +59,9 @@ class Translations
 
 		for (language in Constants.LANGUAGES)
 		{
-			if (Assets.exists(Paths.impostor('data/languages/$language.json')))
+			if (Assets.exists(Paths.json('languages/$language.json', 'impostor')))
 			{
-				languages.push(LanguageData.fromFile(Paths.impostor('data/languages/$language.json')));
+				languages.push(LanguageData.fromFile(Paths.json('languages/$language.json', 'impostor')));
 			}
 		}
 

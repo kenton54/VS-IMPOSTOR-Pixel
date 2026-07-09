@@ -9,11 +9,10 @@ import flixel.util.FlxSignal;
 
 import funkin.graphics.FunkinSprite;
 import funkin.graphics.FunkinText;
-import funkin.input.Controls;
 import funkin.input.InputManager;
 import funkin.input.Pointer;
 
-class ExitPrompt extends MusicBeatSubState
+class ExitPrompt extends MusicBeatState
 {
 	public var onConfirmExit:FlxSignal = new FlxSignal();
 

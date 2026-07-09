@@ -4,7 +4,6 @@ import flixel.FlxSprite;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxRect;
 import flixel.util.FlxGradient;
-import flixel.util.FlxSpriteUtil;
 
 import funkin.menus.mainmenu.MainMenuButton;
 import funkin.menus.mainmenu.submenu.*;

@@ -4,7 +4,7 @@ import flixel.util.FlxTimer;
 
 import funkin.graphics.video.FunkinVideo;
 
-class VideoSubState extends MusicBeatSubState
+class VideoSubState extends MusicBeatState
 {
 	var videoSprite:FunkinVideo;
 	var video:String;

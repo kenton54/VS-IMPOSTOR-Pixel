@@ -8,7 +8,7 @@ import funkin.ui.transitions.BaseTransition;
 
 @:access(flixel.FlxState)
 @:access(flixel.FlxSubState)
-class MusicBeatState extends flixel.FlxState
+class MusicBeatState extends FlxSubState
 {
 	/**
 	 * Whether to skip the next transition intro.
@@ -130,9 +130,9 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function createPost()
 	{
-		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		if (subState != null && Std.isOfType(subState, MusicBeatState))
 		{
-			cast(subState, MusicBeatSubState).createPost();
+			cast(subState, MusicBeatState).createPost();
 		}
 
 		startIntro();
@@ -144,9 +144,14 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function measureHit(measure:Int)
 	{
-		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		if (subState != null && Std.isOfType(subState, MusicBeatState))
 		{
-			cast(subState, MusicBeatSubState).measureHit(measure);
+			cast(subState, MusicBeatState).measureHit(measure);
+		}
+
+		if (transState != null)
+		{
+			transState.measureHit(measure);
 		}
 	}
 
@@ -156,9 +161,14 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function beatHit(beat:Int)
 	{
-		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		if (subState != null && Std.isOfType(subState, MusicBeatState))
 		{
-			cast(subState, MusicBeatSubState).beatHit(beat);
+			cast(subState, MusicBeatState).beatHit(beat);
+		}
+
+		if (transState != null)
+		{
+			transState.beatHit(beat);
 		}
 	}
 
@@ -168,9 +178,14 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function stepHit(step:Int)
 	{
-		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		if (subState != null && Std.isOfType(subState, MusicBeatState))
 		{
-			cast(subState, MusicBeatSubState).stepHit(step);
+			cast(subState, MusicBeatState).stepHit(step);
+		}
+
+		if (transState != null)
+		{
+			transState.stepHit(step);
 		}
 	}
 
@@ -180,9 +195,59 @@ class MusicBeatState extends flixel.FlxState
 	 */
 	public function onLanguageUpdate(language:String)
 	{
-		if (subState != null && Std.isOfType(subState, MusicBeatSubState))
+		if (subState != null && Std.isOfType(subState, MusicBeatState))
 		{
-			cast(subState, MusicBeatSubState).onLanguageUpdate(language);
+			cast(subState, MusicBeatState).onLanguageUpdate(language);
+		}
+
+		if (transState != null)
+		{
+			transState.onLanguageUpdate(language);
+		}
+	}
+
+	override function onFocus()
+	{
+		super.onFocus();
+
+		if (subState != null)
+		{
+			subState.onFocus();
+		}
+
+		if (transState != null)
+		{
+			transState.onFocus();
+		}
+	}
+
+	override function onFocusLost()
+	{
+		super.onFocusLost();
+
+		if (subState != null)
+		{
+			subState.onFocusLost();
+		}
+
+		if (transState != null)
+		{
+			transState.onFocusLost();
+		}
+	}
+
+	override function onResize(width:Int, height:Int)
+	{
+		super.onResize(width, height);
+
+		if (subState != null)
+		{
+			subState.onResize(width, height);
+		}
+
+		if (transState != null)
+		{
+			transState.onResize(width, height);
 		}
 	}
 
