@@ -193,7 +193,7 @@ class IntroSubState extends MusicBeatState
 		logoShine.blend = ADD;
 		add(logoShine);
 
-		introLogo = new FunkinSprite().loadSprite(Paths.image('menus/title/introLogo'));
+		introLogo = new FunkinSprite().loadSprite('menus/title/introLogo');
 		introLogo.addAnimationByPrefix('versus', 'versus', 0, false);
 		introLogo.addAnimationByPrefix('impostor', 'impostor', 0, false);
 		introLogo.addAnimationByPrefix('pixel', 'pixel', 40, false);

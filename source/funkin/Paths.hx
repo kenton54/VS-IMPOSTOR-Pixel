@@ -1,16 +1,15 @@
 package funkin;
 
+import animate.FlxAnimateFrames;
+
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
-import flixel.system.FlxAssets.FlxAsepriteJsonAsset;
-import flixel.system.FlxAssets.FlxXmlAsset;
 
+import funkin.graphics.animation.FlxAssetsFrames;
 import funkin.system.FunkinMemory;
 import funkin.system.Translations;
-
-import haxe.io.Path;
 
 /**
  * Helper class to get the location of files inside the assets folder.
@@ -43,12 +42,13 @@ class Paths
 	 * @param library 	The library to reference.
 	 * @return The full directory.
 	 */
-	public static function getDynamicPath(path:String, library:String = 'default'):String
+	public static function getDynamicPath(path:String, library:String):String
 	{
 		return switch (library)
 		{
 			case 'default' | 'main': getMainPath(path);
 			case 'impostor': getImpostorPath(path);
+			case 'flixel': getFlixelPath(path);
 			default: getLibraryPath(path, library);
 		}
 	}
@@ -70,7 +70,7 @@ class Paths
 	 *
 	 * Will always return the main assets directory.
 	 *
-	 * @param path 			Where you want the directory to lead to.
+	 * @param path 	Where you want the directory to lead to.
 	 * @return The full directory.
 	 */
 	public inline static function getMainPath(path:String):String
@@ -81,7 +81,7 @@ class Paths
 	/**
 	 * Gets the full directory of the specified path, referencing the embedded `impostor` directory.
 	 *
-	 * @param path 			Where you want the directory to lead to.
+	 * @param path 	Where you want the directory to lead to.
 	 * @return The full directory.
 	 */
 	public inline static function getImpostorPath(path:String):String
@@ -90,13 +90,13 @@ class Paths
 	}
 
 	/**
-	 * @param path 			Where you want the directory to lead to.
-	 * @param library 	What library to reference.
-	 * @return The full directory to the file.
+	 * Gets the full directory of the specified path, referencing the embedded `flixel` directory.
+	 * @param path 	Where you want the directory to lead to.
+	 * @return The full directory.
 	 */
-	public inline static function file(path:String, ?library:String):String
+	public inline static function getFlixelPath(path:String):String
 	{
-		return getPath(path, library);
+		return 'flixel/$path';
 	}
 
 	/**
@@ -231,48 +231,106 @@ class Paths
 		return getPath('videos/$path.mp4');
 	}
 
-	public inline static function getSparrowFrames(graphic:FlxGraphic, xml:FlxXmlAsset):FlxAtlasFrames
+	public inline static function getSparrowFrames(path:String, ?library:String):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSparrow(graphic, xml);
+		var graphic:FlxGraphic = FunkinMemory.getGraphic(image(path, library));
+		return FlxAtlasFrames.fromSparrow(graphic, sparrow(path, library));
 	}
 
-	public inline static function getAsepriteFrames(graphic:FlxGraphic, json:FlxAsepriteJsonAsset):FlxAtlasFrames
+	public inline static function getAsepriteFrames(path:String, ?library:String):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromAseprite(graphic, json);
+		var graphic:FlxGraphic = FunkinMemory.getGraphic(image(path, library));
+		return FlxAtlasFrames.fromAseprite(graphic, aseprite(path, library));
 	}
 
-	public inline static function getPackerFrames(graphic:FlxGraphic, txt:String):FlxAtlasFrames
+	public inline static function getPackerFrames(path:String, ?library:String):FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txt);
+		var graphic:FlxGraphic = FunkinMemory.getGraphic(image(path, library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(graphic, Assets.getText(packer(path, library)));
 	}
 
-	public inline static function getTiledFrames(graphic:FlxGraphic, width:Int, height:Int, spacing:Int = 0):FlxTileFrames
+	public inline static function getTiledFrames(path:String, ?library:String, width:Int, height:Int, spacing:Int = 0):FlxTileFrames
 	{
+		var graphic:FlxGraphic = FunkinMemory.getGraphic(image(path, library));
 		return FlxTileFrames.fromGraphic(graphic, FlxPoint.get(width, height), null, spacing > 0 ? FlxPoint.get(spacing, spacing) : null);
 	}
 
-	public static function getFrames(path:String):FlxAtlasFrames
+	public inline static function getAssetsFrames(folder:String, ?library:String):FlxAssetsFrames
 	{
-		var graphic:FlxGraphic = FunkinMemory.getGraphic(path);
-		var pathNoExt:String = Path.withoutExtension(path);
+		return FlxAssetsFrames.fromAssets(readDirectory(folder, library, true));
+	}
 
-		if (Assets.exists('$pathNoExt.xml', TEXT))
+	public inline static function getAnimateFrames(folder:String, ?library:String, ?animateSettings:AnimateAtlasSettings):FlxAnimateFrames
+	{
+		var path:String = getPath('images/$folder', library);
+
+		if (animateSettings == null)
 		{
-			return getSparrowFrames(graphic, '$pathNoExt.xml');
+			animateSettings = FunkinSprite.getDefaultAtlasSettings();
 		}
-		else if (Assets.exists('$pathNoExt.json', TEXT))
+
+		var validSettings:AnimateAtlasSettings = {
+			swfMode: animateSettings?.swfMode ?? false,
+			cacheOnLoad: animateSettings?.cacheOnLoad ?? false,
+			filterQuality: animateSettings?.filterQuality ?? MEDIUM,
+			onSymbolCreate: animateSettings?.onSymbolCreate ?? null,
+			spritemaps: animateSettings?.spritemaps ?? null,
+			metadata: animateSettings?.metadata ?? null,
+			cacheKey: animateSettings?.cacheKey ?? null,
+			uniqueCache: animateSettings?.uniqueCache ?? false,
+			applyStageMatrix: animateSettings?.applyStageMatrix ?? false,
+			useRenderTexture: animateSettings?.useRenderTexture ?? false
+		};
+
+		return FlxAnimateFrames.fromAnimate(path, validSettings.spritemaps, validSettings.metadata, validSettings.cacheKey, validSettings.uniqueCache, {
+			swfMode: validSettings.swfMode,
+			cacheOnLoad: validSettings.cacheOnLoad,
+			filterQuality: validSettings.filterQuality,
+			onSymbolCreate: validSettings.onSymbolCreate
+		});
+	}
+
+	/**
+	 * Dynamically retrieves the frames of a sprite in the given path.
+	 *
+	 * @param path 						Where you want the directory to lead to.
+	 * @param library 				The library to reference.
+	 * @param animateSettings Settings to set when loading an Animate Atlas.
+	 * @return The Sparrow, Aseprite, Packer or Animate Atlas frames.
+	 */
+	public static function getFrames(path:String, ?library:String, ?animateSettings:AnimateAtlasSettings):FlxAtlasFrames
+	{
+		var fullPath:String = getPath('images/$path', library);
+
+		if (Assets.exists('$fullPath/Animation.json', TEXT))
 		{
-			return getAsepriteFrames(graphic, '$pathNoExt.json');
+			return getAnimateFrames(path, library, animateSettings);
 		}
-		else if (Assets.exists('$pathNoExt.txt', TEXT))
+		else if (Assets.exists('$fullPath.xml', TEXT))
 		{
-			return getPackerFrames(graphic, '$pathNoExt.txt');
+			return getSparrowFrames(path, library);
+		}
+		else if (Assets.exists('$fullPath.json', TEXT))
+		{
+			return getAsepriteFrames(path, library);
+		}
+		else if (Assets.exists('$fullPath.txt', TEXT))
+		{
+			return getPackerFrames(path, library);
 		}
 
 		return null;
 	}
 
-	public static function getMultipleFrames(paths:Array<String>):FlxAtlasFrames
+	/**
+	 * Dynamically retrieves the frames of multiple sprites in the multiple given paths.
+	 *
+	 * @param paths 					Where all the directories lead to.
+	 * @param library					The library to reference.
+	 * @param animateSettings Settings to set when loading an Animate Atlas.
+	 * @return All the Sparrow, Aseprite, Packer or Animate Atlas frames.
+	 */
+	public static function getMultipleFrames(paths:Array<String>, ?library:String, ?animateSettings:AnimateAtlasSettings):FlxAtlasFrames
 	{
 		var mainAtlas:FlxAtlasFrames = getFrames(paths[0]);
 
@@ -306,10 +364,7 @@ class Paths
 
 		if (!includePath)
 		{
-			for (file in directory)
-			{
-				file.replace(path, '');
-			}
+			directory = directory.map(file -> file.replace(path, ''));
 		}
 
 		return directory;

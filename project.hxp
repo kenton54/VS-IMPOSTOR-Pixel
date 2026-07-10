@@ -273,6 +273,7 @@ class Project extends HXProject
     {
         addHaxelib('flixel');
         addHaxelib('flixel-addons');
+        addHaxelib('flixel-animate');
 
         if (FEATURE_DISCORD_API.isEnabled(this))
         {
@@ -319,18 +320,18 @@ class Project extends HXProject
         var embedAssets:Bool = isWeb();
 
         addAssetLibrary('default', embedAssets, preloadAssets);
-        addAssetPath("assets/main", "assets", 'default', ['*'], [], embedAssets, "assets");
+        addAssetPath('assets/main', 'assets', 'default', ['*'], [], embedAssets, 'assets');
 
-        addAssetPath("assets/fonts", null, 'default', ['*'], [], true, "assets");
+        addAssetPath('assets/fonts', null, 'default', ['*'], [], true, 'assets');
 
-        addAssetPath("assets/embed", "impostor", null, ['*'], [], true, "assets");
+        addAssetPath('assets/embed', 'impostor', null, ['*'], [], true, 'assets');
 
-        addAssetPath("assets/videos", null, null, ['*'], [], false, "assets");
+        addAssetPath('assets/videos', null, null, ['*'], [], false, 'assets');
 
         if (FEATURE_DEBUG_CONTENT.isEnabled(this))
         {
             addAssetLibrary('debug', embedAssets, preloadAssets);
-            addAssetPath("assets/debug", "assets", 'debug', ['*'], [], embedAssets, "assets");
+            addAssetPath('assets/debug', 'assets', 'debug', ['*'], [], embedAssets, 'assets');
         }
 
         addAssetLibrary('art', false, false);

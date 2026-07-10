@@ -1,19 +1,94 @@
 package funkin.graphics;
 
-import flixel.FlxSprite;
+import animate.FlxAnimate;
+import animate.FlxAnimateFrames;
+
 import flixel.animation.FlxAnimation;
 import flixel.graphics.FlxGraphic;
+import flixel.math.FlxMatrix;
 import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
+import funkin.graphics.animation.FunkinAnimationController;
 import funkin.system.FunkinMemory;
 
 import openfl.display.BitmapData;
 
-class FunkinSprite extends FlxSprite
+typedef AnimateAtlasSettings =
 {
+	> FlxAnimateSettings,
+
+	/**
+	 * An array of spritemaps for the atlas to load.
+	 */
+	@:optional
+	var spritemaps:Array<SpritemapInput>;
+
+	/**
+	 * Meta data of the atlas, JSON-formatted.
+	 */
+	@:optional
+	var metadata:String;
+
+	/**
+	 * Forces the cache to use a specific key to index the texture atlas.
+	 */
+	@:optional
+	var cacheKey:String;
+
+	/**
+	 * Whether the atlas uses a unique slot in cache instead of reusing an existing identical one.
+	 */
+	@:optional
+	var uniqueCache:Bool;
+
+	/**
+	 * Whether to apply the stage matrix.
+	 *
+	 * Makes the sprite render with the bounds set in Animate.
+	 */
+	@:optional
+	var applyStageMatrix:Bool;
+
+	/**
+	 * When enabled, the graphic will render as one whole texture.
+	 *
+	 * Recommended to enable when modifying the opacity of the sprite, applying shaders or applying a blend mode.
+	 */
+	@:optional
+	var useRenderTexture:Bool;
+}
+
+@:access(animate.FlxAnimateController)
+class FunkinSprite extends FlxAnimate
+{
+	/**
+	 * @return The default settings for a texture atlas sprite.
+	 */
+	public static function getDefaultAtlasSettings():AnimateAtlasSettings
+	{
+		return {
+			swfMode: false,
+			cacheOnLoad: false,
+			filterQuality: MEDIUM,
+			onSymbolCreate: null,
+			spritemaps: null,
+			metadata: null,
+			cacheKey: null,
+			uniqueCache: false,
+			applyStageMatrix: false,
+			useRenderTexture: false
+		};
+	}
+
+	/**
+	 * Whether the sprite should round its position like it's in a grid, using its scale as the grid size.
+	 */
+	public var useGridPosition:Bool = false;
+
 	/**
 	 * Dispatches each time an animation finishes playing.
 	 *
@@ -40,7 +115,9 @@ class FunkinSprite extends FlxSprite
 	{
 		super.initVars();
 
-		animation.onFinish.add(finishAnimation);
+		animation = anim = new FunkinAnimationController(this);
+
+		animation.onFinish.add(onAnimationFinish);
 	}
 
 	override public function destroy()
@@ -77,11 +154,11 @@ class FunkinSprite extends FlxSprite
 	 * @param graphic   The graphic to want to load and parse the frames from. Must be a file path (a `String`) in order to load the frames.
 	 * @return This `FunkinSprite` instance, for chaining.
 	 */
-	public function loadSprite(graphic:FlxGraphicAsset):FunkinSprite
+	public function loadSprite(graphic:FlxGraphicAsset, ?animateSettings:AnimateAtlasSettings):FunkinSprite
 	{
 		if ((graphic is String))
 		{
-			frames = Paths.getFrames(graphic);
+			frames = Paths.getFrames(graphic, animateSettings);
 		}
 		else
 		{
@@ -146,7 +223,7 @@ class FunkinSprite extends FlxSprite
 		this.graphic.persist = true;
 		Assets.loadBitmapData(graphic).onComplete(function(bitmap:BitmapData)
 		{
-			loadGraphic(bitmap);
+			loadGraphic(bitmap, animated, frameWidth, frameHeight, unique, key);
 		}).onError(function(error:Dynamic)
 		{
 				FlxG.log.error('Couldn\'t load graphic asynchronously! (error: $error)');
@@ -221,6 +298,43 @@ class FunkinSprite extends FlxSprite
 		return output;
 	}
 
+	override function preparePixelPerfectMatrix(matrix:FlxMatrix)
+	{
+		if (useGridPosition)
+		{
+			matrix.tx = MathUtil.roundToGrid(matrix.tx, scale.x);
+			matrix.ty = MathUtil.roundToGrid(matrix.ty, scale.y);
+		}
+		else
+		{
+			super.preparePixelPerfectMatrix(matrix);
+		}
+	}
+
+	@:access(flixel.FlxCamera)
+	override function getBoundingBox(camera:FlxCamera):FlxRect
+	{
+		getScreenPosition(_point, camera);
+
+		_rect.set(_point.x, _point.y, width, height);
+		_rect = camera.transformRect(_rect);
+
+		if (isPixelPerfectRender(camera))
+		{
+			if (useGridPosition)
+			{
+				_rect.x = MathUtil.roundToGrid(_rect.x, scale.x);
+				_rect.y = MathUtil.roundToGrid(_rect.y, scale.y);
+				_rect.width = MathUtil.roundToGrid(_rect.width, scale.x);
+				_rect.height = MathUtil.roundToGrid(_rect.height, scale.y);
+			}
+
+			_rect.floor();
+		}
+
+		return _rect;
+	}
+
 	/**
 	 * Plays an existing animation. Doesn't do anything if an animation with the same name is already playing.
 	 *
@@ -237,9 +351,9 @@ class FunkinSprite extends FlxSprite
 		{
 			validAnimation = animation;
 		}
-		else if (hasAnimation(Constants.DEFAULT_ANIMATION_NAME))
+		else if (hasAnimation(getDefaultAnimation()))
 		{
-			validAnimation = Constants.DEFAULT_ANIMATION_NAME;
+			validAnimation = getDefaultAnimation();
 		}
 
 		this.animation.play(validAnimation, force, reverse, frame);
@@ -341,10 +455,10 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * Gets triggered when an animation finishes playing.
+	 * Gets called when an animation finishes playing.
 	 * @param animation The animation name that just finished playing.
 	 */
-	public function finishAnimation(animation:String)
+	public function onAnimationFinish(animation:String)
 	{
 		if (hasAnimation('$animation-loop'))
 		{
@@ -369,7 +483,20 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * @return The current playing `FlxAnimation`.
+	 * @return The default animation name.
+	 */
+	public function getDefaultAnimation():String
+	{
+		if (anim.hasAnimateAtlas)
+		{
+			return library.timeline.name;
+		}
+
+		return Constants.DEFAULT_ANIMATION_NAME;
+	}
+
+	/**
+	 * @return The current playing `FlxAnimation`. Can be `null`!
 	 */
 	public function getCurrentAnimation():Null<FlxAnimation>
 	{
@@ -386,13 +513,47 @@ class FunkinSprite extends FlxSprite
 	}
 
 	/**
-	 * Checks if an animation exists.
 	 * @param animation The animation to check, by it's name.
-	 * @return Whether it exists or not.
+	 * @return Whether if an animation with the matching name exists.
 	 */
 	public function hasAnimation(animation:String):Bool
 	{
-		return this.animation.getByName(animation) != null;
+		return listAnimations().contains(animation);
+	}
+
+	/**
+	 * @return An array containing all the animations the sprite has.
+	 */
+	public function listAnimations():Array<String>
+	{
+		return animation.getNameList().concat(listFrameLabels());
+	}
+
+	/**
+	 * @return An array containing all the frame labels of the sprite. Only works if the sprite is a valid
+	 * Animate Atlas, if it isn't, it will return an empty array.
+	 */
+	public function listFrameLabels():Array<String>
+	{
+		if (!anim.hasAnimateAtlas)
+		{
+			return [];
+		}
+
+		var labels:Array<String> = [];
+
+		for (layer in library.timeline.layers)
+		{
+			for (frame in layer.frames)
+			{
+				if (frame.name.trim() != '')
+				{
+					labels.push(frame.name);
+				}
+			}
+		}
+
+		return labels;
 	}
 
 	/**

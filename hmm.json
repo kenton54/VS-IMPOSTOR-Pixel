@@ -4,7 +4,7 @@
       "name": "hxcpp",
       "type": "git",
       "dir": null,
-      "ref": "funkin",
+      "ref": "c79483a7bf1c0afa77d35a8c564cecac83d5c890",
       "url": "https://github.com/FunkinCrew/hxcpp"
     },
     {
@@ -46,6 +46,13 @@
       "name": "flixel-addons",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "flixel-animate",
+      "type": "git",
+      "dir": null,
+      "ref": "34e5760063b2303d74acf85d1dba152c9aa4a17c",
+      "url": "https://github.com/FunkinCrew/flixel-animate"
     },
     {
       "name": "hxvlc",

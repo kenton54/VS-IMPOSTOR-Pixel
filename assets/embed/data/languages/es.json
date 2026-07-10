@@ -1,5 +1,7 @@
 {
+  "ID": "es",
   "name": "Español",
+  "suffix": true,
   "data": {
     "common": {
       "version": "Versión {0}",
