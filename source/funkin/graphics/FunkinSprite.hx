@@ -165,6 +165,12 @@ class FunkinSprite extends FlxAnimate
 			loadGraphic(graphic);
 		}
 
+		if (animateSettings != null)
+		{
+			this.applyStageMatrix = animateSettings?.applyStageMatrix ?? false;
+			this.useRenderTexture = animateSettings?.useRenderTexture ?? false;
+		}
+
 		return this;
 	}
 
