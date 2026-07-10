@@ -154,11 +154,11 @@ class FunkinSprite extends FlxAnimate
 	 * @param graphic   The graphic to want to load and parse the frames from. Must be a file path (a `String`) in order to load the frames.
 	 * @return This `FunkinSprite` instance, for chaining.
 	 */
-	public function loadSprite(graphic:FlxGraphicAsset, ?animateSettings:AnimateAtlasSettings):FunkinSprite
+	public function loadSprite(graphic:FlxGraphicAsset, ?library:String, ?animateSettings:AnimateAtlasSettings):FunkinSprite
 	{
 		if ((graphic is String))
 		{
-			frames = Paths.getFrames(graphic, animateSettings);
+			frames = Paths.getFrames(graphic, library, animateSettings);
 		}
 		else
 		{

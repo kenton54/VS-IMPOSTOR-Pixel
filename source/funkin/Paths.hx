@@ -332,13 +332,13 @@ class Paths
 	 */
 	public static function getMultipleFrames(paths:Array<String>, ?library:String, ?animateSettings:AnimateAtlasSettings):FlxAtlasFrames
 	{
-		var mainAtlas:FlxAtlasFrames = getFrames(paths[0]);
+		var mainAtlas:FlxAtlasFrames = getFrames(paths[0], library, animateSettings);
 
 		if (paths.length > 1)
 		{
 			for (i in 1...paths.length)
 			{
-				mainAtlas.addAtlas(getFrames(paths[i]));
+				mainAtlas.addAtlas(getFrames(paths[i], library, animateSettings));
 			}
 		}
 
