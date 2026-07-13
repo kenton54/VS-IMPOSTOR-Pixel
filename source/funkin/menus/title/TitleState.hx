@@ -656,6 +656,8 @@ class TitleState extends MusicBeatState
 
 	function transitionUpwards(onComplete:Void -> Void)
 	{
+		allowInput = false;
+
 		transitionSprite.visible = true;
 		transitionSprite.flipY = true;
 		transitionSprite.y = -FlxG.height - transitionSprite.height;

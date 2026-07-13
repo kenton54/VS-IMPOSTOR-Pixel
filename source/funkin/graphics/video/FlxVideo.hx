@@ -44,6 +44,11 @@ class FlxVideo extends FlxSprite
 	public var onBufferLoad(default, null):FlxSignal = new FlxSignal();
 
 	/**
+	 * Triggered when an error occurs.
+	 */
+	public var onError(default, null):FlxSignal = new FlxSignal();
+
+	/**
 	 * The OpenFL `Video` object attached to this video, it takes care of rendering the video.
 	 */
 	public var video(default, null):Video;
@@ -51,7 +56,7 @@ class FlxVideo extends FlxSprite
 	/**
 	 * The `NetStream` object attached to this video, it takes care of video playback.
 	 */
-	public var netStream(default, null):NetStream;
+	public var netStream(default, null):FunkinStream;
 
 	/**
 	 * Whether the video is currently playing.
@@ -85,13 +90,11 @@ class FlxVideo extends FlxSprite
 
 	var _mediaVolume:Float = 1;
 
-	var _userPaused:Bool = false;
-
 	var _netConnection:NetConnection;
 
 	var _finished:Bool = false;
 
-	var _loadingBuffer:Bool = false;
+	var _queuedEvent:Null<String> = null;
 
 	public function new(x:Float = 0, y:Float = 0)
 	{
@@ -106,18 +109,13 @@ class FlxVideo extends FlxSprite
 		_netConnection.connect(null);
 		_netConnection.addEventListener(NetStatusEvent.NET_STATUS, onNetConnectionStatus);
 
-		netStream = new NetStream(_netConnection);
+		netStream = new FunkinStream(_netConnection);
 		netStream.client = {onMetaData: onMetaData, onPlayStatus: onPlayStatus};
-
-		@:privateAccess
-		{
-			netStream.__video.addEventListener('waiting', onEmptyBuffer, false);
-		}
 
 		if (FlxG.autoPause)
 		{
-			FlxG.signals.focusGained.add(resume);
-			FlxG.signals.focusLost.add(pause);
+			FlxG.signals.focusGained.add(focusHandler);
+			FlxG.signals.focusLost.add(unfocusHandler);
 		}
 
 		FlxG.sound.onVolumeChange.add(setFrontendVolume);
@@ -138,11 +136,12 @@ class FlxVideo extends FlxSprite
 		FlxDestroyUtil.destroy(endReach);
 		FlxDestroyUtil.destroy(onBufferEmpty);
 		FlxDestroyUtil.destroy(onBufferLoad);
+		FlxDestroyUtil.destroy(onError);
 
 		if (FlxG.autoPause)
 		{
-			FlxG.signals.focusGained.remove(resume);
-			FlxG.signals.focusLost.remove(pause);
+			FlxG.signals.focusGained.remove(focusHandler);
+			FlxG.signals.focusLost.remove(unfocusHandler);
 		}
 
 		FlxG.sound.onVolumeChange.remove(setFrontendVolume);
@@ -180,7 +179,15 @@ class FlxVideo extends FlxSprite
 	 */
 	public function play():Bool
 	{
-		@:privateAccess netStream.__video.play();
+		if (!FlxG.isGameFocused)
+		{
+			_queuedEvent = 'play';
+		}
+		else
+		{
+			@:privateAccess netStream.__video.play();
+		}
+
 		return true;
 	}
 
@@ -191,8 +198,14 @@ class FlxVideo extends FlxSprite
 	{
 		if (playing && !_finished)
 		{
-			netStream.pause();
-			playing = false;
+			if (!FlxG.isGameFocused)
+			{
+				_queuedEvent = 'pause';
+			}
+			else
+			{
+				_pause();
+			}
 		}
 	}
 
@@ -203,8 +216,14 @@ class FlxVideo extends FlxSprite
 	{
 		if (!playing && !_finished)
 		{
-			netStream.resume();
-			playing = true;
+			if (!FlxG.isGameFocused)
+			{
+				_queuedEvent = 'resume';
+			}
+			else
+			{
+				_resume();
+			}
 		}
 	}
 
@@ -280,28 +299,67 @@ class FlxVideo extends FlxSprite
 
 	function onNetConnectionStatus(event:NetStatusEvent)
 	{
-		if (event.info.code == 'NetStream.Play.Start')
+		switch (event.info.code)
 		{
-			if (_loadingBuffer)
-			{
+			case 'NetStream.Buffer.Empty':
+				onBufferEmpty.dispatch();
+
+			case 'NetStream.Buffer.Full':
 				onBufferLoad.dispatch();
-				_loadingBuffer = false;
-			}
-			else
-			{
+
+			case 'NetStream.Play.StreamNotFound':
+				onError.dispatch();
+
+			case 'NetStream.Play.Failed':
+				onError.dispatch();
+
+			case 'NetStream.Play.Start':
 				startPlaying.dispatch();
-			}
-		}
-		else if (event.info.code == 'NetStream.Play.Complete')
-		{
-			finish();
+
+			case 'NetStream.Play.Stop':
+				finish();
 		}
 	}
 
-	function onEmptyBuffer(event:Dynamic)
+	function focusHandler()
 	{
-		onBufferEmpty.dispatch();
-		_loadingBuffer = true;
+		if (_queuedEvent != null)
+		{
+			switch (_queuedEvent)
+			{
+				case 'play':
+					@:privateAccess netStream.__video.play();
+
+				case 'pause':
+					_pause();
+
+				case 'resume':
+					_resume();
+			}
+		}
+
+		_queuedEvent = null;
+	}
+
+	function unfocusHandler()
+	{
+		if (_queuedEvent == null && playing)
+		{
+			_pause();
+			_queuedEvent = 'play';
+		}
+	}
+
+	function _pause()
+	{
+		netStream.pause();
+		playing = false;
+	}
+
+	function _resume()
+	{
+		netStream.resume();
+		playing = true;
 	}
 
 	override function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FlxVideo
@@ -353,11 +411,6 @@ class FlxVideo extends FlxSprite
 
 	function get_volume():Float
 	{
-		if (netStream.soundTransform == null)
-		{
-			netStream.soundTransform = new SoundTransform();
-		}
-
 		return netStream.soundTransform.volume;
 	}
 
@@ -370,8 +423,9 @@ class FlxVideo extends FlxSprite
 
 		_mediaVolume = value.clamp(0, 1);
 
-		netStream.soundTransform.volume = _mediaVolume * FlxG.sound.volume;
-		netStream.soundTransform = netStream.soundTransform; // so it triggers an update
+		var sndTrans:SoundTransform = netStream.soundTransform;
+		sndTrans.volume = _mediaVolume * FlxG.sound.volume;
+		netStream.soundTransform = sndTrans;
 		return value;
 	}
 
@@ -388,13 +442,23 @@ class FlxVideo extends FlxSprite
 			netStream.soundTransform = new SoundTransform();
 		}
 
-		netStream.soundTransform.volume = _mediaVolume * value;
-		netStream.soundTransform = netStream.soundTransform; // so it triggers an update
+		var sndTrans:SoundTransform = netStream.soundTransform;
+		sndTrans.volume = _mediaVolume * value;
+		netStream.soundTransform = sndTrans;
+
+		if (value == 0)
+		{
+			netStream.muted = true;
+		}
+		else
+		{
+			netStream.muted = false;
+		}
 	}
 
 	function set_looped(value:Bool):Bool
 	{
-		return @:privateAccess netStream.__video.loop = value;
+		return netStream.loop = value;
 	}
 
 	function get_playbackRate():Float
