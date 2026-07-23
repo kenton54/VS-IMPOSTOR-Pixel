@@ -6,9 +6,9 @@ on:
       - main
     paths:
       - .github/workflows/build-game.yml
-      - assets/
+      - assets/**
       - setup/Setup.hx
-      - source/
+      - source/**
       - project.hxp
 
 permissions: write-all
