@@ -1,6 +1,5 @@
 package;
 
-import haxe.Exception;
 import haxe.Json;
 
 import sys.FileSystem;

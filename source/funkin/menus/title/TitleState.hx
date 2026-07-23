@@ -65,6 +65,9 @@ class TitleState extends MusicBeatState
 
 	var comingFromMainMenu:Bool = false;
 
+	var transitionTimer:FlxTimer = new FlxTimer();
+	var keyboardTimer:FlxTimer = new FlxTimer();
+
 	public function new(?fromMainMenu:Bool = false)
 	{
 		super();
@@ -217,6 +220,8 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 		openSubState(new IntroSubState());
 
+		dissapearKeyboard(false);
+
 		curState = Intro;
 	}
 
@@ -225,13 +230,15 @@ class TitleState extends MusicBeatState
 		doCameraBop = true;
 		canChangeColor = true;
 
+		closeSubState();
+
 		showTitle(flash);
 		tweenPressStart();
 
 		playedIntro = true;
 		curState = Idle;
 
-		FlxTimer.wait(1, appearKeyboard);
+		keyboardTimer.start(1, _ -> appearKeyboard());
 	}
 
 	function skipIntro(ignoreChanges:Bool = false)
@@ -376,7 +383,6 @@ class TitleState extends MusicBeatState
 	}
 
 	var pressed:Bool = false;
-	var transitionTimer:FlxTimer = new FlxTimer();
 	var psKeyboardTransData:funkin.system.Translations.TranslationData;
 	var psMouseTransData:funkin.system.Translations.TranslationData;
 	var psTouchTransData:funkin.system.Translations.TranslationData;
@@ -538,6 +544,12 @@ class TitleState extends MusicBeatState
 
 	function dissapearKeyboard(appearHelpers:Bool = true)
 	{
+		if (keyboardTimer.active)
+		{
+			keyboardTimer.cancel();
+			return;
+		}
+
 		keyboardButton.enabled = false;
 		FlxTween.cancelTweensOf(keyboardButton);
 		FlxTween.tween(keyboardButton, {alpha: 0}, 0.25, {onComplete: (_) -> keyboardButton.visible = false});
@@ -663,6 +675,14 @@ class TitleState extends MusicBeatState
 		transitionSprite.y = -FlxG.height - transitionSprite.height;
 		FlxTween.tween(transitionSprite, {y: -FlxG.height}, 1, {ease: FlxEase.quartIn});
 		FlxTween.tween(FlxG.camera.scroll, {y: -FlxG.height}, 1, {ease: FlxEase.quartIn, onComplete: (_) -> onComplete()});
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+
+		keyboardTimer.destroy();
+		transitionTimer.destroy();
 	}
 }
 

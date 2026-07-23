@@ -32,6 +32,7 @@
   "haxe.displayPort": "auto",
   "haxe.enableCompilationServer": true,
   "haxe.enableServerView": true,
+  "haxe.enableCodeLens": true,
   "haxe.displayServer": { "arguments": ["-v"] },
   "files.associations": {
     "*.hxp": "haxe",
