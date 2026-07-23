@@ -90,8 +90,8 @@ class FunkinSound extends FlxSound
 		music.loadStreamed(key);
 		music.looped = true;
 		#else
-		sound.loadHelper(FunkinMemory.getMusic(key));
-		sound.init(true, false, null);
+		music.loadHelper(FunkinMemory.getMusic(key));
+		music.init(true, false, null);
 		#end
 
 		music.volume = volume;
