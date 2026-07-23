@@ -1,6 +1,16 @@
 name: Build Game
 
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-game.yml
+      - assets/
+      - setup/
+      - source/
+      - hmm.json
+      - project.hxp
 
 jobs:
   build_windows:
