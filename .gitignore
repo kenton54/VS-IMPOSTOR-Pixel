@@ -10,3 +10,4 @@ RECOVER_*.fla
 astc-textures/
 
 .env
+.build_time
