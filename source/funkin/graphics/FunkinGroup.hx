@@ -118,8 +118,8 @@ class FunkinGroup<T:FlxSprite> extends FlxSprite
 		}
 		else if (!preciseScale && preciseAngle)
 		{
-			var cos:Float = MathUtil.cos(this.angle);
-			var sin:Float = MathUtil.sin(this.angle);
+			var cos:Float = Math.cos(this.angle);
+			var sin:Float = Math.sin(this.angle);
 
 			dx += cos * (child.parentX - origin.x + child.width / 2);
 			dx -= sin * (child.parentY - origin.y + child.height / 2);
@@ -129,8 +129,8 @@ class FunkinGroup<T:FlxSprite> extends FlxSprite
 		}
 		else if (preciseScale && preciseAngle)
 		{
-			var cos:Float = MathUtil.cos(this.angle);
-			var sin:Float = MathUtil.sin(this.angle);
+			var cos:Float = Math.cos(this.angle);
+			var sin:Float = Math.sin(this.angle);
 
 			dx += scale.x * cos * (child.parentX - origin.x + child.width / 2);
 			dx -= scale.y * sin * (child.parentY - origin.y + child.height / 2);

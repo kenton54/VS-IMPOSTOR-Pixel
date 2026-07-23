@@ -11,58 +11,6 @@ class MathUtil
 	public inline static var EULER:Float = 2.718281828459045;
 
 	/**
-	 * Calculates the sine of `v`.
-	 *
-	 * The result is dependant on the user's preferences.
-	 *
-	 * If `lowDetail` is enabled, it returns a less precise value, but it's faster to calculate.
-	 *
-	 * Converts `v` to radians automatically.
-	 *
-	 * @param v The angle, in degrees.
-	 * @return The sine of `v`.
-	 */
-	public static function sin(v:Float):Float
-	{
-		var rad:Float = v * flixel.math.FlxAngle.TO_RAD;
-
-		if (funkin.data.ClientPreferences.lowDetail)
-		{
-			return FlxMath.fastSin(rad);
-		}
-		else
-		{
-			return Math.sin(rad);
-		}
-	}
-
-	/**
-	 * Calculates the cosine of `v`.
-	 *
-	 * The result is dependant on the user's preferences.
-	 *
-	 * If `lowDetail` is enabled, it returns a less precise value, but it's faster to calculate.
-	 *
-	 * Converts `v` to radians automatically.
-	 *
-	 * @param v The angle, in degrees.
-	 * @return The cosine of `v`.
-	 */
-	public static function cos(v:Float):Float
-	{
-		var rad:Float = v * flixel.math.FlxAngle.TO_RAD;
-
-		if (funkin.data.ClientPreferences.lowDetail)
-		{
-			return FlxMath.fastCos(rad);
-		}
-		else
-		{
-			return Math.cos(rad);
-		}
-	}
-
-	/**
 	 * @param x The value.
 	 * @return The base-2 exponent of the value. `2^x`.
 	 */
