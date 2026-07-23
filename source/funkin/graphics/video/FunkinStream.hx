@@ -1,7 +1,7 @@
 package funkin.graphics.video;
 
-import openfl.media.SoundTransform;
 #if web
+import openfl.media.SoundTransform;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
 
