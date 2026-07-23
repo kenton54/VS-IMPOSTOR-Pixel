@@ -7,16 +7,16 @@ on:
     paths:
       - .github/workflows/build-game.yml
       - assets/
-      - setup/
+      - setup/Setup.hx
       - source/
-      - hmm.json
       - project.hxp
+
+permissions: write-all
 
 jobs:
   build_windows:
     name: Windows
     runs-on: windows-latest
-    permissions: write-all
     steps:
       - name: Checkout Repository
         id: repo-check
@@ -80,7 +80,6 @@ jobs:
   build_linux:
     name: Linux
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout Repository
         id: repo-check
@@ -147,9 +146,8 @@ jobs:
             export/release/linux/obj/
 
   build_mac:
-    name: macOS
+    name: MacOS
     runs-on: macos-latest
-    permissions: write-all
     steps:
       - name: Checkout Repository
         id: repo-check
@@ -185,7 +183,7 @@ jobs:
         id: artifact-upload
         uses: actions/upload-artifact@v6
         with:
-          name: VS IMPOSTOR Pixel (macOS)
+          name: VS IMPOSTOR Pixel (MacOS)
           path: export/release/macos/bin/
 
       - name: Clear old Cache
@@ -213,7 +211,6 @@ jobs:
   build_html5:
     name: HTML5 (Web)
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout Repository
         id: repo-check
@@ -277,7 +274,6 @@ jobs:
   build_android:
     name: Android
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout Repository
         id: repo-check
