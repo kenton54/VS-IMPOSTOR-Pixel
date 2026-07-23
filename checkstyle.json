@@ -505,7 +505,8 @@
       "type": "ParameterNumber",
       "props": {
         "max": 7,
-        "ignoreOverriddenMethods": false
+        "ignoreOverriddenMethods": false,
+        "severity": "IGNORE"
       }
     },
     {
