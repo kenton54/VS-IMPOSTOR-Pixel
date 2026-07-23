@@ -61,7 +61,7 @@ jobs:
         if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = github.rest.actions.deleteActionsCacheByKey({
+            await github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
               repo: context.repo.repo,
               key: "cache_windows"
@@ -129,7 +129,7 @@ jobs:
         if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = github.rest.actions.deleteActionsCacheByKey({
+            await github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
               repo: context.repo.repo,
               key: "cache_linux"
@@ -192,7 +192,7 @@ jobs:
         if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = github.rest.actions.deleteActionsCacheByKey({
+            await github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
               repo: context.repo.repo,
               key: "cache_mac"
@@ -255,7 +255,7 @@ jobs:
         if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = github.rest.actions.deleteActionsCacheByKey({
+            await github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
               repo: context.repo.repo,
               key: "cache_html5"
@@ -288,7 +288,7 @@ jobs:
 
       - name: Install Android SDK
         id: sdk-install
-        uses: android-actions/setup-android@v3.2.2
+        uses: android-actions/setup-android@v4
 
       - name: Install Android NDK
         id: ndk-install
@@ -353,7 +353,7 @@ jobs:
         if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
         with:
           script: |
-            const caches = github.rest.actions.deleteActionsCacheByKey({
+            await github.rest.actions.deleteActionsCacheByKey({
               owner: context.repo.owner,
               repo: context.repo.repo,
               key: "cache_android"
