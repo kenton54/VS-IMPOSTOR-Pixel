@@ -1,4 +1,4 @@
-package funkin.system.macro;
+package funkin.system.macros;
 
 #if macro
 class FlxMacro

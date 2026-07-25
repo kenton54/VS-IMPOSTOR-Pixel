@@ -1,6 +1,8 @@
 package funkin.data;
 
+import funkin.graphics.shaders.ColorBlindShader.ColorBlindMode;
 import funkin.system.FunkinSave;
+import funkin.system.display.Chat.ChatPosition;
 
 import lime.system.System;
 
@@ -99,6 +101,14 @@ class ClientPreferences
 	 * Whether to show the FPS Counter.
 	 */
 	public static var showFPSCounter(get, set):Bool;
+
+	public static var chatPosition(get, set):ChatPosition;
+
+	public static var chatOpacity(get, set):Float;
+
+	public static var chatMessageDisplayTime(get, set):Float;
+
+	public static var chatOffline(get, set):Bool;
 
 	/**
 	 * The saved game's language.
@@ -397,6 +407,54 @@ class ClientPreferences
 		#end
 	}
 
+	static function get_chatPosition():ChatPosition
+	{
+		return FunkinSave.clientPreferences?.chatPosition ?? BOTTOM_LEFT;
+	}
+
+	static function set_chatPosition(value:ChatPosition):ChatPosition
+	{
+		FunkinSave.clientPreferences.chatPosition = value;
+		FunkinSave.flush();
+		return value;
+	}
+
+	static function get_chatOpacity():Float
+	{
+		return FunkinSave.clientPreferences?.chatOpacity ?? 0.6;
+	}
+
+	static function set_chatOpacity(value:Float):Float
+	{
+		FunkinSave.clientPreferences.chatOpacity = value.clamp(0, 1);
+		FunkinSave.flush();
+		return value;
+	}
+
+	static function get_chatMessageDisplayTime():Float
+	{
+		return FunkinSave.clientPreferences?.chatMessageDisplayTime ?? 8.0;
+	}
+
+	static function set_chatMessageDisplayTime(value:Float):Float
+	{
+		FunkinSave.clientPreferences.chatMessageDisplayTime = value;
+		FunkinSave.flush();
+		return value;
+	}
+
+	static function get_chatOffline():Bool
+	{
+		return FunkinSave.clientPreferences?.chatOffline ?? false;
+	}
+
+	static function set_chatOffline(value:Bool):Bool
+	{
+		FunkinSave.clientPreferences.chatOffline = value;
+		FunkinSave.flush();
+		return value;
+	}
+
 	static function get_language():String
 	{
 		return FunkinSave.clientPreferences?.language ?? 'en';
@@ -432,21 +490,4 @@ class ClientPreferences
 
 		return value;
 	}
-}
-
-enum abstract ColorBlindMode(String) from String to String
-{
-	var NONE:String = 'none';
-
-	var DEUTERANOMALY:String = 'deuteranomaly';
-
-	var PROTANOMALY:String = 'protanomaly';
-
-	var PROTANOPIA:String = 'protanopia';
-
-	var DEUTERANOPIA:String = 'deuteranopia';
-
-	var TRITANOPIA:String = 'tritanopia';
-
-	var TRITANOMALY:String = 'tritanomaly';
 }

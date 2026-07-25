@@ -4,8 +4,6 @@ import funkin.data.LanguageData;
 import funkin.graphics.FunkinBitmapText;
 import funkin.ui.MusicBeatState;
 
-import haxe.Json;
-
 import lime.system.CFFI;
 
 /**
@@ -45,13 +43,12 @@ class Translations
 	 *
 	 * It just contains empty data.
 	 */
-	static var fallbackLanguage(default, null):LanguageData;
+	@:noCompletion static var fallbackLanguage(default, null):LanguageData;
 
 	/**
 	 * Starts the Translation backend.
 	 */
-	@:allow(funkin.InitState)
-	static function init()
+	@:noCompletion static function init()
 	{
 		languages = [];
 

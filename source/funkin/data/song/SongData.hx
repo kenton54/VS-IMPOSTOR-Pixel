@@ -80,6 +80,7 @@ class SongData
 	/**
 	 * The internal name of the song.
 	 */
+	@:alias('id')
 	public var ID:String;
 
 	/**
@@ -216,6 +217,7 @@ class SongNoteData
 	/**
 	 * The note ID.
 	 */
+	@:alias('id')
 	public var ID:Int;
 
 	/**
@@ -250,6 +252,7 @@ class SongEventData
 	/**
 	 * The event ID.
 	 */
+	@:alias('id')
 	public var ID:String;
 
 	/**
@@ -276,6 +279,7 @@ class SongMetaData
 	 * The internal name of the song.
 	 */
 	@:optional
+	@:alias('id')
 	public var ID:String;
 
 	/**

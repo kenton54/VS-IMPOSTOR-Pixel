@@ -315,6 +315,11 @@ class Project extends HXProject
 		setHaxeDefine('FLX_NO_DEBUG');
 		setHaxeDefine('analyzer-optimize');
 
+		if ((isDesktop() || isMobile()) && isCPP())
+		{
+			setHaxeDefine('HXVLC_NO_SHARE_DIRECTORY');
+		}
+
 		setHaxeDefine('lime_disable_assets_version');
 		setHaxeDefine('message.reporting', 'pretty');
 
@@ -323,8 +328,8 @@ class Project extends HXProject
 
 	function setupMacros()
 	{
-		addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxObject())', 'flixel.FlxObject')");
-		addHaxeMacro("addMetadata('@:build(funkin.system.macro.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')");
+		addHaxeMacro("addMetadata('@:build(funkin.system.macros.FlxMacro.buildFlxObject())', 'flixel.FlxObject')");
+		addHaxeMacro("addMetadata('@:build(funkin.system.macros.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')");
 	}
 
 	function setupExport()

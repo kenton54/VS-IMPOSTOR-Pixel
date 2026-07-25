@@ -28,6 +28,7 @@ class StageData
 	 * The internal name of the stage.
 	 */
 	@:optional
+	@:alias('id')
 	public var ID:String;
 
 	/**
@@ -77,6 +78,7 @@ typedef StageObjectData =
 	 *
 	 * Used for the object to be retrieved by scripts.
 	 */
+	@:alias('id')
 	var ID:String;
 
 	/**

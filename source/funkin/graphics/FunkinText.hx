@@ -37,7 +37,7 @@ class FunkinText extends FlxText
 	public var strikethrough(get, set):Bool;
 
 	/**
-	 * How much space is there between each text line.
+	 * The amount of space between each text line, in pixels.
 	 */
 	public var leading(get, set):Int;
 
@@ -200,7 +200,7 @@ typedef TextFormatParameters =
 	var ?alignment:FlxTextAlign;
 
 	/**
-	 * How much is the separation between text lines.
+	 * The amount of space between text lines, in pixels.
 	 */
 	var ?leading:Int;
 

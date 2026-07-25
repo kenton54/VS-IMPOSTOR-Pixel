@@ -47,8 +47,7 @@ class Statistics
 	 */
 	public static var combosBroken(default, null):Int;
 
-	@:allow(funkin.InitState)
-	static function init()
+	@:noCompletion static function init()
 	{
 		playtime = FunkinSave.stats?.playtime ?? 0;
 		totalNoteHits = FunkinSave.stats?.totalNoteHits ?? 0;

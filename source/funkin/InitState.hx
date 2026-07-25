@@ -11,6 +11,10 @@ import sys.FileSystem;
  *
  * Used for setting up core classes.
  */
+@:access(funkin.input.InputManager)
+@:access(funkin.system.Achievements)
+@:access(funkin.system.Statistics)
+@:access(funkin.system.Translations)
 class InitState extends FlxState
 {
 	static var coreStarted:Bool = false;
@@ -42,11 +46,17 @@ class InitState extends FlxState
 
 		FlxG.fixedTimestep = false;
 
+		trace('a');
+
 		funkin.system.Translations.init();
 		funkin.system.Achievements.init();
 		funkin.system.Statistics.init();
 
+		trace('b');
+
 		Conductor.init();
+
+		trace('c');
 
 		#if FEATURE_DISCORD_API
 		DiscordClient.init();
@@ -59,6 +69,8 @@ class InitState extends FlxState
 
 		funkin.system.ShaderResizeFix.init();
 
+		trace('d');
+
 		#if android
 		FlxG.android.preventDefaultKeys = [flixel.input.android.FlxAndroidKey.BACK];
 		#end
@@ -69,6 +81,8 @@ class InitState extends FlxState
 		funkin.system.FunkinSave.applyLoadedData();
 
 		Pointer.hide();
+
+		trace('e');
 	}
 
 	function startGame()

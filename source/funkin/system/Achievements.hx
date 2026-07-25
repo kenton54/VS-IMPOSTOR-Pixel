@@ -3,13 +3,12 @@ package funkin.system;
 import flixel.util.FlxTimer;
 
 import funkin.data.AchievementData;
-import funkin.system.FunkinSave;
-import funkin.system.Translations;
 
 /**
  * The achievements backend.
  * Handles registering, unlocking, saving, and showing pop-up toasts.
  */
+@:access(funkin.data.AchievementData)
 class Achievements
 {
 	/**
@@ -22,8 +21,7 @@ class Achievements
 	 */
 	public static var achievementsUnlocked(default, null):Array<String> = [];
 
-	@:allow(funkin.InitState)
-	static function init()
+	@:noCompletion static function init()
 	{
 		achievementsUnlocked = FunkinSave.unlockables?.achievements ?? [];
 		registerAll();
@@ -34,24 +32,24 @@ class Achievements
 	static function registerAll()
 	{
 		achievements = [
-			create('scammed', BRONZE),
-			create('curiosityBenefitedTheInspector', GOLD),
-			create('relivingNostalgia', SILVER),
-			create('newStoryUnfolds', SILVER),
-			create('alteredReality', SILVER),
-			create('outsmarted', SILVER),
-			create('outperformed', SILVER),
-			create('onTheRun', SILVER),
-			create('noBeans', SILVER),
-			create('waiterMoreBeansPlease', GOLD, 1000000),
-			create('fingerBreaker', GOLD, 10000),
-			create('tooHard', BRONZE, 200),
-			create('skillIssue', BRONZE, 50),
-			create('easyPrey', SILVER, 100),
-			create('bruh', BRONZE),
-			create('impostorFan', BRONZE),
-			create('slothSupporter', BRONZE),
-			create('leroy', PLATINUM),
+			create('scammed', bronze),
+			create('curiosityBenefitedTheInspector', gold),
+			create('relivingNostalgia', silver),
+			create('newStoryUnfolds', silver),
+			create('alteredReality', silver),
+			create('outsmarted', silver),
+			create('outperformed', silver),
+			create('onTheRun', silver),
+			create('noBeans', silver),
+			create('waiterMoreBeansPlease', gold, 1000000),
+			create('fingerBreaker', gold, 10000),
+			create('tooHard', bronze, 200),
+			create('skillIssue', bronze, 50),
+			create('easyPrey', silver, 100),
+			create('bruh', bronze),
+			create('impostorFan', bronze),
+			create('slothSupporter', bronze),
+			create('leroy', platinum),
 		];
 	}
 
@@ -63,9 +61,9 @@ class Achievements
 	 * @param unlockCriteria	(OPTIONAL) How the achievement gets unlocked.
 	 * @return The created `AchievementData`.
 	 */
-	inline static function create(id:String, level:AchievementLevel, ?points:Int, ?unlockCriteria:AchievementData -> Bool):AchievementData
+	inline static function create(id:String, grade:AchievementGrade, ?points:Int, ?unlockCriteria:AchievementData -> Bool):AchievementData
 	{
-		return new AchievementData(id, level, points, unlockCriteria);
+		return new AchievementData(id, grade, points, unlockCriteria);
 	}
 
 	inline static function createPointsBasedUnlockCriteria(points:Int):AchievementData -> Bool
@@ -231,98 +229,6 @@ class Achievements
 		// Decrement slot count when this toast is done
 		toast.onDone = () -> _toastCount = Std.int(Math.max(0, _toastCount - 1));
 	}
-
-	public static function getAchievementLevelString(level:AchievementLevel):String
-	{
-		return switch (level)
-		{
-			case BRONZE: 'bronze';
-			case SILVER: 'silver';
-			case GOLD: 'gold';
-			case PLATINUM: 'platinum';
-			case LOCKED: 'locked';
-		};
-	}
-
-	public static function getAchievementLevelColor(level:AchievementLevel):FlxColor
-	{
-		return switch (level)
-		{
-			case BRONZE: 0xFF7A644F;
-			case SILVER: 0xFF9E9999;
-			case GOLD: 0xFFF8A514;
-			case PLATINUM: 0xFFB6C5E4;
-			case LOCKED: 0xFF292929;
-		};
-	}
-
-	public static function getAchievementLevelPrize(level:AchievementLevel):Int
-	{
-		return switch (level)
-		{
-			case BRONZE: 100;
-			case SILVER: 200;
-			case GOLD: 500;
-			case PLATINUM: 1000;
-			case LOCKED: 0;
-		};
-	}
-}
-
-class Achievement
-{
-	public var ID:String;
-	public var level:AchievementLevel;
-
-	public var progress(default, null):Int = 0;
-
-	public var maxPoints(default, null):Null<Int> = null;
-
-	var unlockCriteria:Achievement -> Bool;
-
-	/**
-	 * The readable name of the achievement.
-	 */
-	public var name(get, never):String;
-
-	function get_name():String
-	{
-		return Translations.translate('achievements.$ID.name');
-	}
-
-	/**
-	 * The description that displays in the `AchievementsState` menu.
-	 */
-	public var description(get, never):String;
-
-	function get_description():String
-	{
-		return Translations.translate('achievements.$ID.desc');
-	}
-
-	/**
-	 * Creates new achievement data.
-	 *
-	 * @param id							The ID of the achievement. This is also used to get the readable name of the achievement.
-	 * @param level						The grade level of the achievement.
-	 * @param points					How many points
-	 * @param unlockCriteria	How the achievement should be unlocked. Optional.
-	 */
-	public function new(id:String, level:AchievementLevel, ?points:Int, ?unlockCriteria:Achievement -> Bool)
-	{
-		this.ID = id;
-		this.level = level;
-		this.maxPoints = points;
-		this.unlockCriteria = unlockCriteria;
-	}
-
-	/**
-	 * @param points The amount of points to add to the achievement.
-	 */
-	public function addPoints(points:Int = 0)
-	{
-		progress += points;
-	}
 }
 
 // ─── Toast Sprite ─────────────────────────────────────────────────────────────
@@ -354,9 +260,7 @@ class AchievementToast extends FlxSpriteGroup
 		trace('[AchievementToast] Creating toast for: ${data.ID}, slot: $slot');
 		_data = data;
 
-		var levelStr:String = Achievements.getAchievementLevelString(data.level);
-
-		var panelPath:String = Paths.image('achievements/levels/${levelStr}Panel');
+		var panelPath:String = Paths.image('achievements/levels/${data.grade}Panel');
 		var panel:FunkinSprite = new FunkinSprite(0, 0).loadGraphic(panelPath);
 		panel.setGraphicSize(Std.int(panel.width * SCALE), Std.int(panel.height * SCALE));
 		panel.updateHitbox();
@@ -367,7 +271,7 @@ class AchievementToast extends FlxSpriteGroup
 		var panelH:Float = panel.height;
 
 		var levelIcon:FunkinSprite = new FunkinSprite(panelW, 0);
-		levelIcon.loadGraphic(Paths.image('achievements/levels/$levelStr'));
+		levelIcon.loadGraphic(Paths.image('achievements/levels/${data.grade}'));
 		levelIcon.setGraphicSize(Std.int(panelH), Std.int(panelH));
 		levelIcon.updateHitbox();
 		levelIcon.antialiasing = false;
@@ -392,7 +296,7 @@ class AchievementToast extends FlxSpriteGroup
 		_label = new FunkinText(8, panelH * 0.25, panelW - 16, '', 20);
 		_label.translationData = {id: 'achievements.earned'};
 		_label.alignment = CENTER;
-		_label.color = _textColor(data.level);
+		_label.color = FlxColor.BLACK;
 		_label.bold = true;
 		add(_label);
 
@@ -441,14 +345,5 @@ class AchievementToast extends FlxSpriteGroup
 				}
 			});
 		});
-	}
-
-	static function _textColor(level:AchievementLevel):FlxColor
-	{
-		return switch (level)
-		{
-			case GOLD, PLATINUM: FlxColor.BLACK;
-			default: FlxColor.WHITE;
-		};
 	}
 }

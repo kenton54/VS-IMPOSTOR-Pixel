@@ -1,8 +1,23 @@
 package funkin.graphics.shaders;
 
-import funkin.data.ClientPreferences.ColorBlindMode;
-
 import openfl.filters.ColorMatrixFilter;
+
+enum abstract ColorBlindMode(String)
+{
+	var NONE = 'none';
+
+	var DEUTERANOMALY = 'deuteranomaly';
+
+	var PROTANOMALY = 'protanomaly';
+
+	var PROTANOPIA = 'protanopia';
+
+	var DEUTERANOPIA = 'deuteranopia';
+
+	var TRITANOPIA = 'tritanopia';
+
+	var TRITANOMALY = 'tritanomaly';
+}
 
 class ColorBlindShader
 {

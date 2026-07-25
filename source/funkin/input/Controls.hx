@@ -13,7 +13,7 @@ import funkin.system.FunkinSave;
 
 class Controls extends FlxActionSet
 {
-	static function init()
+	@:noCompletion static function init()
 	{
 		FlxG.inputs.addUniqueType(new FlxActionManager());
 	}

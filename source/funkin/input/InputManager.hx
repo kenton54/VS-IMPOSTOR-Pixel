@@ -51,8 +51,7 @@ class InputManager
 		Pointer.enabled = controlsP1.active = controlsP2.active = enabled = false;
 	}
 
-	@:allow(funkin.InitState)
-	static function init()
+	@:noCompletion static function init()
 	{
 		controlsP1 = new Controls(0, 'player1', Solo);
 		controlsP2 = new Controls(1, 'player2', None);

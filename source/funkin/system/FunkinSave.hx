@@ -1,7 +1,9 @@
 package funkin.system;
 
 import funkin.data.ClientPreferences;
+import funkin.graphics.shaders.ColorBlindShader.ColorBlindMode;
 import funkin.input.Controls.InputDevice;
+import funkin.system.display.Chat.ChatPosition;
 
 class FunkinSave
 {
@@ -37,7 +39,7 @@ class FunkinSave
 	 */
 	public static function load()
 	{
-		FlxG.save.bind(Constants.SAVE_PATH, 'ImpostorPixel');
+		FlxG.save.bind('ImpostorPixel', Constants.SAVE_PATH);
 
 		switch (FlxG.save.status)
 		{
@@ -387,7 +389,7 @@ class FunkinSave
 				photosentivity: false,
 				intensiveShaders: true,
 				lowDetail: false,
-				colorBlindMode: 'none',
+				colorBlindMode: NONE,
 				downScroll: false,
 				middleScroll: false,
 				timeBar: true,
@@ -399,6 +401,10 @@ class FunkinSave
 				autoPause: true,
 				screenTimeout: false,
 				showFPSCounter: false,
+				chatPosition: BOTTOM_LEFT,
+				chatOpacity: 0.6,
+				chatMessageDisplayTime: 8.0,
+				chatOffline: false,
 				language: 'en',
 				syncSystemLanguage: true,
 				controls: {
@@ -862,6 +868,26 @@ typedef ClientPreferencesSaveData =
 	 * Whether to show the FPS Counter.
 	 */
 	var showFPSCounter:Bool;
+
+	/**
+	 * The position of the chat on the screen.
+	 */
+	var chatPosition:ChatPosition;
+
+	/**
+	 * The opacity of the chat background.
+	 */
+	var chatOpacity:Float;
+
+	/**
+	 * How long a chat message can stay visible before fading out, in seconds.
+	 */
+	var chatMessageDisplayTime:Float;
+
+	/**
+	 * Whether the chat can be opened even if the user is not connected to an online lobby.
+	 */
+	var chatOffline:Bool;
 
 	/**
 	 * The saved game's language.
