@@ -26,7 +26,7 @@ class DiscordClient
 		Thread.create(discordRPCUpdate);
 	}
 
-	static function discordRPCUpdate():Void
+	static function discordRPCUpdate()
 	{
 		while (true)
 		{
@@ -36,7 +36,7 @@ class DiscordClient
 
 			Discord.RunCallbacks();
 
-			Sys.sleep(2);
+			Sys.sleep(1);
 		}
 	}
 
@@ -56,7 +56,7 @@ class DiscordClient
 	}
 
 	/**
-	 * Changes what the Discord RPC presence displays.
+	 * Changes what the Discord Rich Presence presence displays.
 	 * @param params The parameters to change.
 	 */
 	public static function changePresence(params:DiscordRPCParams)
@@ -68,23 +68,23 @@ class DiscordClient
 		presence.state = cast(params.state, Null<String>) ?? '';
 		presence.details = cast(params.details, Null<String>) ?? '';
 
-		// The big image representing the game that appears on the RPC.
-		// The text that appears when you hover over the RPC image.
+		// The big image representing the game that appears on the Rich Presence.
+		// The text that appears when you hover over the Rich Presence image.
 		presence.largeImageText = 'VS IMPOSTOR Pixel';
-		// The key name of the image inside the RPC assets.
-		presence.largeImageKey = cast(params.largeImageKey, Null<String>) ?? 'mainnew';
+		// The key name of the image inside the Rich Presence assets.
+		presence.largeImageKey = cast(params.largeImageKey, Null<String>) ?? 'red';
 
-		// A small icon that appears at the bottom right of the image of the RPC.
-		// The text that appears when you hover over the RPC image.
+		// A small icon that appears at the bottom right of the image of the Rich Presence.
+		// The text that appears when you hover over the Rich Presence image.
 		presence.smallImageText = cast(params.smallImageText, Null<String>) ?? '';
-		// The key name of the image inside the RPC assets.
+		// The key name of the image inside the Rich Presence assets.
 		presence.smallImageKey = cast(params.smallImageKey, Null<String>) ?? '';
 
 		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence));
 	}
 
 	/**
-	 * Clears the current Discord RPC Presence.
+	 * Clears the current Discord Rich Presence.
 	 */
 	public static function clearPresence()
 	{
@@ -92,7 +92,7 @@ class DiscordClient
 	}
 
 	/**
-	 * Stops the current Discord RPC Presence.
+	 * Stops the current Discord Rich Presence instance.
 	 */
 	public static function shutdown()
 	{
@@ -101,7 +101,7 @@ class DiscordClient
 }
 
 /**
- * Parameters for changing the presence of the Discord RPC.
+ * Parameters for changing the presence of the Discord Rich Presence.
  */
 typedef DiscordRPCParams =
 {
@@ -121,16 +121,16 @@ typedef DiscordRPCParams =
 	var ?activity:DiscordActivityType;
 
 	/**
-	 * The image to display in the Discord RPC.
+	 * The image to display in the Discord Rich Presence.
 	 *
-	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RPC ASSETS!!!
+	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RICH PRESENCE ASSETS!!!
 	 */
 	var ?largeImageKey:String;
 
 	/**
 	 * The image to display in the small icon at the bottom right of the large image.
 	 *
-	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RPC ASSETS!!!
+	 * MUST BE THE KEY NAME OF THE IMAGE INSIDE THE RICH PRESENCE ASSETS!!!
 	 */
 	var ?smallImageKey:String;
 

@@ -151,6 +151,8 @@ class FunkinGroup<T:FlxSprite> extends FlxSprite
 		{
 			child.cameras = this.cameras;
 		}
+
+		displace.put();
 	}
 
 	/**
