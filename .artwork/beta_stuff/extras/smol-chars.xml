@@ -1,0 +1,28 @@
+﻿<TextureAtlas imagePath="smol-chars.png">
+	<SubTexture name="bf normal0000" x="0" y="0" width="32" height="40"/>
+	<SubTexture name="bf normal0001" x="32" y="0" width="32" height="40"/>
+	<SubTexture name="bf polus0000" x="64" y="0" width="32" height="40"/>
+	<SubTexture name="bf polus0001" x="96" y="0" width="32" height="40"/>
+	<SubTexture name="bf airship0000" x="128" y="0" width="32" height="40"/>
+	<SubTexture name="bf airship0001" x="160" y="0" width="32" height="40"/>
+	<SubTexture name="bf mira0000" x="192" y="0" width="32" height="40"/>
+	<SubTexture name="bf mira0001" x="224" y="0" width="32" height="40"/>
+	<SubTexture name="bf fungle0000" x="256" y="0" width="32" height="40"/>
+	<SubTexture name="bf fungle0001" x="288" y="0" width="32" height="40"/>
+	<SubTexture name="bf chef0000" x="320" y="0" width="32" height="40"/>
+	<SubTexture name="bf chef0001" x="352" y="0" width="32" height="40"/>
+	<SubTexture name="bf bsides0000" x="0" y="40" width="32" height="40"/>
+	<SubTexture name="bf bsides0001" x="32" y="40" width="32" height="40"/>
+	<SubTexture name="bf dsides0000" x="64" y="40" width="32" height="40"/>
+	<SubTexture name="bf dsides0001" x="96" y="40" width="32" height="40"/>
+	<SubTexture name="bf evil0000" x="128" y="40" width="32" height="40"/>
+	<SubTexture name="bf evil0001" x="160" y="40" width="32" height="40"/>
+	<SubTexture name="bf glitched0000" x="192" y="40" width="32" height="40"/>
+	<SubTexture name="bf glicthed0001" x="224" y="40" width="32" height="40"/>
+	<SubTexture name="bestfriend0000" x="256" y="40" width="32" height="40"/>
+	<SubTexture name="bestfriend0001" x="288" y="40" width="32" height="40"/>
+	<SubTexture name="mini red0000" x="320" y="40" width="32" height="32"/>
+	<SubTexture name="mini red0001" x="352" y="40" width="32" height="32"/>
+	<SubTexture name="mini green0000" x="0" y="80" width="32" height="32"/>
+	<SubTexture name="mini green0001" x="32" y="80" width="32" height="32"/>
+</TextureAtlas>

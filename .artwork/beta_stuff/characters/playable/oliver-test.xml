@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="oliver-test.png" width="371" height="260">
+	<SubTexture name="oliver alt down miss1" x="236" y="0" width="49" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="54" frameHeight="49"/>
+	<SubTexture name="oliver alt down note1" x="270" y="162" width="48" height="53" rotated="true" frameX="-0" frameY="-0" frameWidth="53" frameHeight="48"/>
+	<SubTexture name="oliver alt down note2" x="327" y="0" width="44" height="52" rotated="true" frameX="-1" frameY="-2" frameWidth="53" frameHeight="48"/>
+	<SubTexture name="oliver alt down note3" x="327" y="52" width="44" height="52" rotated="true" frameX="-1" frameY="-2" frameWidth="53" frameHeight="48"/>
+	<SubTexture name="oliver alt left miss1" x="207" y="111" width="53" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="54" frameHeight="53"/>
+	<SubTexture name="oliver alt left note1" x="37" y="209" width="52" height="51" rotated="true" frameX="-0" frameY="-0" frameWidth="51" frameHeight="52"/>
+	<SubTexture name="oliver alt left note2" x="318" y="150" width="51" height="50" rotated="true" frameX="-1" frameY="-1" frameWidth="51" frameHeight="52"/>
+	<SubTexture name="oliver alt left note3" x="318" y="200" width="51" height="50" rotated="true" frameX="-1" frameY="-1" frameWidth="51" frameHeight="52"/>
+	<SubTexture name="oliver alt left note4" x="318" y="200" width="51" height="50" rotated="true" frameX="-1" frameY="-1" frameWidth="51" frameHeight="52"/>
+	<SubTexture name="oliver alt left note5" x="318" y="200" width="51" height="50" rotated="true" frameX="-1" frameY="-1" frameWidth="51" frameHeight="52"/>
+	<SubTexture name="oliver alt right miss1" x="37" y="0" width="40" height="80" rotated="true" frameX="-0" frameY="-0" frameWidth="80" frameHeight="40"/>
+	<SubTexture name="oliver alt right note1" x="0" y="0" width="37" height="82" rotated="true" frameX="-0" frameY="-0" frameWidth="82" frameHeight="37"/>
+	<SubTexture name="oliver alt right note2" x="0" y="82" width="37" height="81" rotated="true" frameX="-0" frameY="-0" frameWidth="82" frameHeight="37"/>
+	<SubTexture name="oliver alt right note3" x="0" y="163" width="37" height="81" rotated="true" frameX="-0" frameY="-0" frameWidth="82" frameHeight="37"/>
+	<SubTexture name="oliver alt right note4" x="0" y="163" width="37" height="81" rotated="true" frameX="-0" frameY="-0" frameWidth="82" frameHeight="37"/>
+	<SubTexture name="oliver alt right note5" x="0" y="163" width="37" height="81" rotated="true" frameX="-0" frameY="-0" frameWidth="82" frameHeight="37"/>
+	<SubTexture name="oliver alt up miss1" x="79" y="126" width="44" height="58" rotated="true" frameX="-0" frameY="-0" frameWidth="58" frameHeight="44"/>
+	<SubTexture name="oliver alt up note1" x="208" y="55" width="50" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="55" frameHeight="50"/>
+	<SubTexture name="oliver alt up note2" x="89" y="184" width="47" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="55" frameHeight="50"/>
+	<SubTexture name="oliver alt up note3" x="123" y="115" width="47" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="55" frameHeight="50"/>
+	<SubTexture name="oliver alt up note4" x="123" y="115" width="47" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="55" frameHeight="50"/>
+	<SubTexture name="oliver alt up note5" x="123" y="115" width="47" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="55" frameHeight="50"/>
+	<SubTexture name="oliver normal down miss1" x="136" y="225" width="53" height="35" frameX="-0" frameY="-0" frameWidth="53" frameHeight="35"/>
+	<SubTexture name="oliver normal down note1" x="189" y="225" width="53" height="35" frameX="-1" frameY="-1" frameWidth="54" frameHeight="36"/>
+	<SubTexture name="oliver normal down note2" x="260" y="108" width="36" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="54" frameHeight="36"/>
+	<SubTexture name="oliver normal down note3" x="242" y="219" width="54" height="36" frameX="-0" frameY="-0" frameWidth="54" frameHeight="36"/>
+	<SubTexture name="oliver normal down note4" x="242" y="219" width="54" height="36" frameX="-0" frameY="-0" frameWidth="54" frameHeight="36"/>
+	<SubTexture name="oliver normal down note5" x="242" y="219" width="54" height="36" frameX="-0" frameY="-0" frameWidth="54" frameHeight="36"/>
+	<SubTexture name="oliver normal idle1" x="161" y="0" width="37" height="56" rotated="true" frameX="-0" frameY="-1" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle10" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle11" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle12" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle13" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle14" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle2" x="161" y="0" width="37" height="56" rotated="true" frameX="-0" frameY="-1" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle3" x="161" y="0" width="37" height="56" rotated="true" frameX="-0" frameY="-1" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle4" x="170" y="111" width="37" height="55" rotated="true" frameX="-1" frameY="-1" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle5" x="170" y="111" width="37" height="55" rotated="true" frameX="-1" frameY="-1" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle6" x="198" y="0" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle7" x="198" y="0" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle8" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal idle9" x="170" y="56" width="38" height="55" rotated="true" frameX="-1" frameY="-0" frameWidth="56" frameHeight="38"/>
+	<SubTexture name="oliver normal left miss1" x="77" y="0" width="42" height="63" rotated="true" frameX="-0" frameY="-0" frameWidth="63" frameHeight="42"/>
+	<SubTexture name="oliver normal left note1" x="37" y="80" width="42" height="66" rotated="true" frameX="-0" frameY="-0" frameWidth="66" frameHeight="42"/>
+	<SubTexture name="oliver normal left note2" x="37" y="146" width="42" height="63" rotated="true" frameX="-2" frameY="-0" frameWidth="66" frameHeight="42"/>
+	<SubTexture name="oliver normal left note3" x="79" y="63" width="42" height="63" rotated="true" frameX="-2" frameY="-0" frameWidth="66" frameHeight="42"/>
+	<SubTexture name="oliver normal left note4" x="79" y="63" width="42" height="63" rotated="true" frameX="-2" frameY="-0" frameWidth="66" frameHeight="42"/>
+	<SubTexture name="oliver normal left note5" x="79" y="63" width="42" height="63" rotated="true" frameX="-2" frameY="-0" frameWidth="66" frameHeight="42"/>
+	<SubTexture name="oliver normal right miss1" x="258" y="54" width="42" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="54" frameHeight="42"/>
+	<SubTexture name="oliver normal right note1" x="318" y="108" width="53" height="42" frameX="-2" frameY="-0" frameWidth="55" frameHeight="42"/>
+	<SubTexture name="oliver normal right note2" x="285" y="0" width="42" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="55" frameHeight="42"/>
+	<SubTexture name="oliver normal right note3" x="228" y="165" width="42" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="55" frameHeight="42"/>
+	<SubTexture name="oliver normal right note4" x="228" y="165" width="42" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="55" frameHeight="42"/>
+	<SubTexture name="oliver normal right note5" x="228" y="165" width="42" height="54" rotated="true" frameX="-0" frameY="-0" frameWidth="55" frameHeight="42"/>
+	<SubTexture name="oliver normal up miss1" x="119" y="0" width="42" height="59" rotated="true" frameX="-0" frameY="-0" frameWidth="59" frameHeight="42"/>
+	<SubTexture name="oliver normal up note1" x="121" y="59" width="49" height="56" rotated="true" frameX="-0" frameY="-0" frameWidth="56" frameHeight="49"/>
+	<SubTexture name="oliver normal up note2" x="136" y="170" width="46" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="56" frameHeight="49"/>
+	<SubTexture name="oliver normal up note3" x="182" y="170" width="46" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="56" frameHeight="49"/>
+	<SubTexture name="oliver normal up note4" x="182" y="170" width="46" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="56" frameHeight="49"/>
+	<SubTexture name="oliver normal up note5" x="182" y="170" width="46" height="55" rotated="true" frameX="-0" frameY="-3" frameWidth="56" frameHeight="49"/>
+</TextureAtlas>

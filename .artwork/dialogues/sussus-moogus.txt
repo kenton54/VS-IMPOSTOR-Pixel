@@ -1,0 +1,54 @@
+[blue]          [neutral]       Perfect timing!
+[blue]          [showcasing]    See, this is an impostor, and he has killed some crewmates.
+[blue]          [explaining]    Us crewmates's job is not only to do our tasks, but to report any paranormal activity, like this one right here!
+[red-impostor]  [confused]      Uhh... What? [surprised] OH SHIT!! (sentitive: OH SHOOT!!)
+[girlfriend]    [question]      And how do we report?
+[blue]          [excited]       Using your megaphones! You just have to shout "Emergency Meeting".
+[blue]          [neutral]       Now... let's confront this idiot...
+[blue]          [AA pointing]   We caught you impostor, now drop the act and surrender!
+[red-impostor]  [confident]     What are you talking about? Impostor??? There are no impostors in here buddy, I'm just a regular ol' crewmate!
+[blue]          [skeptical]     Oh is that so...?
+[red-impostor]  [confident]     Yes! I am very trustful, so obviously you have to trust me.
+[boyfriend]     [pointing]      Then what's that dead body behind you?
+[red-impostor]  [surprised]     Oh-!
+[red-impostor]  [nervious]      Uhhhhhhhhhhhhhhhhhh.......
+[red-impostor]  [nervious left] Uhhhhmmmmm.......
+[red-impostor]  [nervious]      Eeeeeehhhhhhh.......
+[red-impostor]  [nervious left] Ahhhmmmmmmmmmmmmm.......
+[red-impostor]  [surprised]     Oh!
+[red-impostor]  [confident]     Well you see... [nervious] The thing is....
+[red-impostor]  [uwu pointing]  It's my first time playing this game, so I don't know how to do most of the stuff in here...
+[boyfriend]     [confused]      Is he telling the truth?
+[blue]          [thinking]      I can't tell...
+[blue]          [skeptical]     But I've seen this trick multiple times.
+[girlfriend]    [curious]       But what about his behaviour from earlier? Wasn't it weird and suspicious?
+[blue]          [skeptical]     Yeah it was very suspicious...
+[blue]          [skeptical]     Mmmmmm...
+[boyfriend]     [silly]         ...Guys I have an idea.
+[blue]          [curious]       I'm listening.
+[boyfriend]     [yolo]          Let me cook >:)
+[blue]          [confused]      ???
+[boyfriend]     [ahem]          *Ahem*
+[boyfriend]     [fanboy]        OGMMGGG!!11!!1!1! IS THAT RED IMPOSTOR FROM THE VERY POPULAR 2020 HIT GAME AMONG US????!!11!!1!!
+[blue]          [shocked]       ASKDVWSJAEWGFVWEQ????? DUDE WHAT THE FUCK!? (sentitive: DUDE WHAT!?)
+[blue]          [skeptical]     This is NOT going to-
+[red-impostor]  [fanboy omg]    OMG YES THAT'S ME OHH I THOUGH NO ONE WOULD ASK!!!!11!1!11
+[red-impostor]  [fanboy happy]  OF COURSE I AM THE VERY KNOWN RED IMPOSTOR FROM THE VERY POPULAR 2020 HIT GAME AMONG US!!!11111!!1!1!1!
+[blue]          [surprised]     ...
+[boyfriend]     [surprised]     ...
+[girlfriend]    [surprised]     ...That actually worked???
+[boyfriend]     [gottem]        HA!!! Gottem! Now surrender impostor!
+[red-impostor]  [pleading]      NO WAIT! H-HOLD ON! LET'S TALK ABOUT THIS!!
+[boyfriend]     [doubt]         You know what? [confident] Sure. Let's talk.
+[girlfriend]    [confused]      What are you doing?
+[boyfriend]     [confident]     We all know that he's clearly the impostor, so it doesn't matter what he tells us, I know nothing will change our minds.
+[girlfriend]    [confused]      ...so?
+[boyfriend]     [confident]     I just want to listen to all the stuff he has to say.
+[boyfriend]     [smug]          His act is so ass anyways. (sentitive: so bad anyways)
+[red-impostor]  [confident]     Hehe... These idiots have no idea what they'll get to hear...
+[red-impostor]  [confident]     And then they'll let me go.
+[red-impostor]  [confident]     And afterwards, I'll keep on killing this stupid crew.
+[red-impostor]  [dreaming]      Wow Red. You always manage to impress me.
+[red-impostor]  [himselfness]   Aww thank you Red. [ready] Now let's roll!
+[blue]          [surprised]     ...
+[blue]          [rage]          WHAT THE FUCK JUST HAPPENED?????? (sentitive: WHAT JUST HAPPENED??????)

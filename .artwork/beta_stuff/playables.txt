@@ -1,0 +1,38 @@
+15 (common)
+
+x1 (meltdown)
+x2 (lights down)
+x1 (reactor)
+x1 (ejected)
+x2 (danger)
+x2 (double kill)
+x1 (magmatic)
+x2 (boiling point)
+x1 (blackout)
+x1 (heartbeat)
+x3 (pretender) + 14
+x1 (ominous)
+x3 (defeat)
+x4 (finale)
+
+x5 (?) (voting time)
+x1 (turbulance)
+x1 (christmas)
+x1 (sussy bussy)
+x1 (chewmate)
+
+x1 (identity crisis) for monotone's shapeshift
+x3 (triple kill)
+x1 (tomongus tuesday)
+x1 (alpha songs)
+x1 (ow)
+x1 (who)
+x1 (idk)
+x1 (drippypop)
+
+405 (main weeks total)
+150 (extra weeks total)
+165 (freeplay total)
+
+720 (total) - THIS IS THE AMOUNT OF CHARACTERS (json files) I HAVE TO MAKE, WHAT THE ABSOLUTE FUCK
+2160 (amount of files this'll take lol)

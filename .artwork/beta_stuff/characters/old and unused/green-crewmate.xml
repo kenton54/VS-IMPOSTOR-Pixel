@@ -1,0 +1,76 @@
+﻿<TextureAtlas imagePath="green-crewmate.png">
+	<SubTexture name="sus idle0000" x="0" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0001" x="0" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0002" x="0" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0003" x="56" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0004" x="56" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0005" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0006" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0007" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0008" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0009" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0010" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0011" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0012" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus idle0013" x="112" y="0" width="56" height="40"/>
+	<SubTexture name="sus left note0000" x="168" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0001" x="168" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0002" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0003" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0004" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0005" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0006" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0007" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0008" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0009" x="248" y="0" width="80" height="40"/>
+	<SubTexture name="sus down note0000" x="0" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0001" x="0" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0002" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0003" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0004" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0005" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0006" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0007" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0008" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus down note0009" x="72" y="40" width="72" height="40"/>
+	<SubTexture name="sus up note0000" x="144" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0001" x="144" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0002" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0003" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0004" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0005" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0006" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0007" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0008" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0009" x="208" y="40" width="64" height="48"/>
+	<SubTexture name="sus right note0000" x="0" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0001" x="0" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0002" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0003" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0004" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0005" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0006" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0007" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0008" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus right note0009" x="72" y="80" width="72" height="40"/>
+	<SubTexture name="sus dance left0000" x="144" y="88" width="56" height="40"/>
+	<SubTexture name="sus dance left0001" x="144" y="88" width="56" height="40"/>
+	<SubTexture name="sus dance left0002" x="200" y="88" width="56" height="40"/>
+	<SubTexture name="sus dance left0003" x="200" y="88" width="56" height="40"/>
+	<SubTexture name="sus dance left0004" x="256" y="88" width="56" height="40"/>
+	<SubTexture name="sus dance left0005" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance left0006" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance left0007" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance left0008" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance left0009" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance right0000" x="0" y="120" width="56" height="40"/>
+	<SubTexture name="sus dance right0001" x="0" y="120" width="56" height="40"/>
+	<SubTexture name="sus dance right0002" x="56" y="120" width="56" height="40"/>
+	<SubTexture name="sus dance right0003" x="56" y="120" width="56" height="40"/>
+	<SubTexture name="sus dance right0004" x="112" y="128" width="56" height="40"/>
+	<SubTexture name="sus dance right0005" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance right0006" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance right0007" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance right0008" x="272" y="40" width="56" height="40"/>
+	<SubTexture name="sus dance right0009" x="272" y="40" width="56" height="40"/>
+</TextureAtlas>

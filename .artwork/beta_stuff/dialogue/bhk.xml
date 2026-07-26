@@ -1,0 +1,37 @@
+﻿<TextureAtlas imagePath="bhk.png">
+    <SubTexture name="bhk normal idle0000" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0000" x="0" y="80" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0001" x="0" y="80" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0002" x="0" y="80" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0003" x="0" y="80" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0004" x="0" y="40" width="40" height="40"/>
+	<SubTexture name="bhk normal loop0005" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="bhk neutral idle0000" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0000" x="40" y="80" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0001" x="40" y="80" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0002" x="40" y="80" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0003" x="40" y="80" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0004" x="40" y="40" width="40" height="40"/>
+	<SubTexture name="bhk neutral loop0005" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="bhk angry idle0000" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0000" x="80" y="80" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0001" x="80" y="80" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0002" x="80" y="80" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0003" x="80" y="80" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0004" x="80" y="40" width="40" height="40"/>
+	<SubTexture name="bhk angry loop0005" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk mad idle0000" x="120" y="0" width="48" height="40"/>
+	<SubTexture name="bhk mad loop0000" x="120" y="80" width="48" height="40"/>
+	<SubTexture name="bhk mad loop0001" x="120" y="40" width="48" height="40"/>
+	<SubTexture name="bhk mad loop0002" x="120" y="0" width="48" height="40"/>
+	<SubTexture name="bhk sad idle0000" x="168" y="0" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0000" x="168" y="80" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0001" x="168" y="80" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0002" x="168" y="80" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0003" x="168" y="80" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0004" x="168" y="40" width="40" height="40"/>
+	<SubTexture name="bhk sad loop0005" x="168" y="0" width="40" height="40"/>
+	<SubTexture name="bhk thoughts0000" x="208" y="0" width="40" height="40"/>
+	<SubTexture name="bhk wut0000" x="208" y="40" width="40" height="40"/>
+	
+</TextureAtlas>

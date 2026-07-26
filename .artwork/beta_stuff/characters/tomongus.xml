@@ -1,0 +1,30 @@
+﻿<TextureAtlas imagePath="tomongus.png">
+	<SubTexture name="tomongus idle0000" x="0" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0001" x="24" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0002" x="48" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0003" x="48" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0004" x="48" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0005" x="48" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus idle0006" x="48" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus left note0000" x="72" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus left note0001" x="96" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus left note0002" x="96" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus left note0003" x="96" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus left note0004" x="96" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus down note0000" x="120" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus down note0001" x="144" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus down note0002" x="144" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus down note0003" x="144" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus down note0004" x="144" y="0" width="24" height="24"/>
+	<SubTexture name="tomongus up note0000" x="0" y="24" width="24" height="24"/>
+	<SubTexture name="tomongus up note0001" x="24" y="24" width="24" height="24"/>
+	<SubTexture name="tomongus up note0002" x="24" y="24" width="24" height="24"/>
+	<SubTexture name="tomongus up note0003" x="24" y="24" width="24" height="24"/>
+	<SubTexture name="tomongus up note0004" x="24" y="24" width="24" height="24"/>
+	<SubTexture name="tomongus right note0000" x="48" y="24" width="32" height="24"/>
+	<SubTexture name="tomongus right note0001" x="80" y="24" width="32" height="24"/>
+	<SubTexture name="tomongus right note0002" x="80" y="24" width="32" height="24"/>
+	<SubTexture name="tomongus right note0003" x="80" y="24" width="32" height="24"/>
+	<SubTexture name="tomongus right note0004" x="80" y="24" width="32" height="24"/>
+	<SubTexture name="tomongus reveal0000" x="112" y="24" width="24" height="24"/>
+</TextureAtlas>

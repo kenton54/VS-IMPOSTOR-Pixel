@@ -1,0 +1,74 @@
+﻿<TextureAtlas imagePath="gfpix.png">
+	<SubTexture name="gfpix dance right0000" x="0" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0001" x="0" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0002" x="40" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0003" x="40" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0004" x="80" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0005" x="80" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0006" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0007" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0008" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance right0009" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0000" x="360" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0001" x="360" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0002" x="320" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0003" x="320" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0004" x="280" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0005" x="280" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0006" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0007" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0008" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance left0009" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0000" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0001" x="120" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0002" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0003" x="160" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0004" x="200" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0005" x="200" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0006" x="240" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix dance loop0007" x="240" y="0" width="40" height="48"/>
+	<SubTexture name="gfpix sob0000" x="0" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0001" x="0" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0002" x="40" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0003" x="40" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0004" x="80" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0005" x="80" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0006" x="120" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix sob0007" x="120" y="48" width="40" height="48"/>
+	<SubTexture name="gfpix appear0000" x="160" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0001" x="160" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0002" x="200" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0003" x="200" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0004" x="240" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0005" x="240" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0006" x="280" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0007" x="280" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0008" x="320" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0009" x="320" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0010" x="360" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0011" x="360" y="48" width="40" height="40"/>
+	<SubTexture name="gfpix appear0012" x="0" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0013" x="0" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0014" x="40" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0015" x="40" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0016" x="80" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0017" x="80" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0018" x="120" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0019" x="120" y="96" width="40" height="40"/>
+	<SubTexture name="gfpix appear0020" x="160" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0021" x="160" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0022" x="200" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0023" x="200" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0024" x="240" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0025" x="240" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0026" x="280" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0027" x="280" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0028" x="160" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0029" x="160" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0030" x="200" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0031" x="200" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0032" x="240" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0033" x="240" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0034" x="280" y="88" width="40" height="40"/>
+	<SubTexture name="gfpix appear0035" x="280" y="88" width="40" height="40"/>
+</TextureAtlas>

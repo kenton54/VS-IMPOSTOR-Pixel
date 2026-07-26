@@ -1,0 +1,4 @@
+﻿<TextureAtlas imagePath="fire.png">
+	<SubTexture name="anim0000" x="0" y="0" width="56" height="32"/>
+	<SubTexture name="anim0001" x="56" y="0" width="56" height="32"/>
+</TextureAtlas>

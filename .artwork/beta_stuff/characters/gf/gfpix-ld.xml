@@ -1,0 +1,30 @@
+﻿<TextureAtlas imagePath="gfpix.png">
+	<SubTexture name="gfpix dance right0000" x="0" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0001" x="0" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0002" x="0" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0003" x="0" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0004" x="40" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0005" x="40" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0006" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0007" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0008" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance right0009" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0000" x="160" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0001" x="160" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0002" x="160" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0003" x="160" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0004" x="120" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0005" x="120" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0006" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0007" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0008" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix dance left0009" x="80" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0000" x="200" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0001" x="200" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0002" x="240" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0003" x="240" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0004" x="200" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0005" x="200" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0006" x="240" y="0" width="40" height="56"/>
+	<SubTexture name="gfpix sob0007" x="240" y="0" width="40" height="56"/>
+</TextureAtlas>

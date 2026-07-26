@@ -1,0 +1,16 @@
+﻿<TextureAtlas imagePath="loner.png">
+	<SubTexture name="anim0000" x="0" y="0" width="64" height="64"/>
+	<SubTexture name="anim0001" x="0" y="0" width="64" height="64"/>
+	<SubTexture name="anim0002" x="0" y="0" width="64" height="64"/>
+	<SubTexture name="anim0003" x="64" y="0" width="64" height="64"/>
+	<SubTexture name="anim0004" x="64" y="0" width="64" height="64"/>
+	<SubTexture name="anim0005" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0006" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0007" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0008" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0009" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0010" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0011" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0012" x="128" y="0" width="64" height="64"/>
+	<SubTexture name="anim0013" x="128" y="0" width="64" height="64"/>
+</TextureAtlas>

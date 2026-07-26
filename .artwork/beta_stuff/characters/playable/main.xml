@@ -1,0 +1,324 @@
+﻿<TextureAtlas imagePath="main.png">
+	<SubTexture name="normal idle0000" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0001" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0002" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0003" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0004" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0005" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0006" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0007" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0008" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0009" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0010" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0011" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0012" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal idle0013" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="normal left note0000" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="normal left note0001" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="normal left note0002" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="normal left note0003" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="normal left note0004" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="normal down note0000" x="240" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal down note0001" x="272" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal down note0002" x="272" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal down note0003" x="272" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal down note0004" x="272" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal right note0000" x="304" y="0" width="40" height="40"/>
+	<SubTexture name="normal right note0001" x="344" y="0" width="40" height="40"/>
+	<SubTexture name="normal right note0002" x="344" y="0" width="40" height="40"/>
+	<SubTexture name="normal right note0003" x="344" y="0" width="40" height="40"/>
+	<SubTexture name="normal right note0004" x="344" y="0" width="40" height="40"/>
+	<SubTexture name="normal up note0000" x="464" y="0" width="32" height="48"/>
+	<SubTexture name="normal up note0001" x="496" y="0" width="32" height="48"/>
+	<SubTexture name="normal up note0002" x="496" y="0" width="32" height="48"/>
+	<SubTexture name="normal up note0003" x="496" y="0" width="32" height="48"/>
+	<SubTexture name="normal up note0004" x="496" y="0" width="32" height="48"/>
+	<SubTexture name="normal hey0000" x="384" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0001" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0002" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0003" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0004" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0005" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal hey0006" x="424" y="0" width="40" height="40"/>
+	<SubTexture name="normal left miss0000" x="560" y="0" width="40" height="40"/>
+	<SubTexture name="normal down miss0000" x="600" y="0" width="32" height="40" rotated="true"/>
+	<SubTexture name="normal right miss0000" x="632" y="0" width="40" height="40"/>
+	<SubTexture name="normal up miss0000" x="528" y="0" width="32" height="48"/>
+	<SubTexture name="crew idle0000" x="0" y="40" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0001" x="0" y="96" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0002" x="0" y="96" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0003" x="0" y="152" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0004" x="0" y="152" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0005" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0006" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0007" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0008" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0009" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0010" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0011" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0012" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew idle0013" x="0" y="208" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew left note0000" x="40" y="40" width="64" height="40"/>
+	<SubTexture name="crew left note0001" x="104" y="40" width="64" height="40"/>
+	<SubTexture name="crew left note0002" x="104" y="40" width="64" height="40"/>
+	<SubTexture name="crew left note0003" x="104" y="40" width="64" height="40"/>
+	<SubTexture name="crew left note0004" x="104" y="40" width="64" height="40"/>
+	<SubTexture name="crew down note0000" x="40" y="80" width="40" height="48" rotated="true"/>
+	<SubTexture name="crew down note0001" x="80" y="80" width="40" height="48" rotated="true"/>
+	<SubTexture name="crew down note0002" x="80" y="80" width="40" height="48" rotated="true"/>
+	<SubTexture name="crew down note0003" x="80" y="80" width="40" height="48" rotated="true"/>
+	<SubTexture name="crew down note0004" x="80" y="80" width="40" height="48" rotated="true"/>
+	<SubTexture name="crew right note0000" x="168" y="40" width="48" height="40"/>
+	<SubTexture name="crew right note0001" x="216" y="40" width="48" height="40"/>
+	<SubTexture name="crew right note0002" x="216" y="40" width="48" height="40"/>
+	<SubTexture name="crew right note0003" x="216" y="40" width="48" height="40"/>
+	<SubTexture name="crew right note0004" x="216" y="40" width="48" height="40"/>
+	<SubTexture name="crew up note0000" x="120" y="80" width="48" height="48"/>
+	<SubTexture name="crew up note0001" x="168" y="80" width="48" height="48"/>
+	<SubTexture name="crew up note0002" x="168" y="80" width="48" height="48"/>
+	<SubTexture name="crew up note0003" x="168" y="80" width="48" height="48"/>
+	<SubTexture name="crew up note0004" x="168" y="80" width="48" height="48"/>
+	<SubTexture name="crew hey0000" x="0" y="264" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0001" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0002" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0003" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0004" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0005" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew hey0006" x="0" y="320" width="40" height="56" rotated="true"/>
+	<SubTexture name="crew left miss0000" x="264" y="40" width="64" height="40"/>
+	<SubTexture name="crew down miss0000" x="328" y="40" width="48" height="40"/>
+	<SubTexture name="crew right miss0000" x="376" y="40" width="48" height="40"/>
+	<SubTexture name="crew up miss0000" x="216" y="80" width="48" height="48"/>
+	<SubTexture name="bsides idle0000" x="264" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0001" x="304" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0002" x="304" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0003" x="344" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0004" x="344" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0005" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0006" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0007" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0008" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0009" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0010" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0011" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0012" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides idle0013" x="384" y="80" width="40" height="40"/>
+	<SubTexture name="bsides left note0000" x="40" y="128" width="40" height="40"/>
+	<SubTexture name="bsides left note0001" x="80" y="128" width="40" height="40"/>
+	<SubTexture name="bsides left note0002" x="80" y="128" width="40" height="40"/>
+	<SubTexture name="bsides left note0003" x="80" y="128" width="40" height="40"/>
+	<SubTexture name="bsides left note0004" x="80" y="128" width="40" height="40"/>
+	<SubTexture name="bsides down note0000" x="120" y="128" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides down note0001" x="152" y="128" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides down note0002" x="152" y="128" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides down note0003" x="152" y="128" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides down note0004" x="152" y="128" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides right note0000" x="184" y="128" width="40" height="40"/>
+	<SubTexture name="bsides right note0001" x="224" y="128" width="40" height="40"/>
+	<SubTexture name="bsides right note0002" x="224" y="128" width="40" height="40"/>
+	<SubTexture name="bsides right note0003" x="224" y="128" width="40" height="40"/>
+	<SubTexture name="bsides right note0004" x="224" y="128" width="40" height="40"/>
+	<SubTexture name="bsides up note0000" x="464" y="48" width="32" height="48"/>
+	<SubTexture name="bsides up note0001" x="496" y="48" width="32" height="48"/>
+	<SubTexture name="bsides up note0002" x="496" y="48" width="32" height="48"/>
+	<SubTexture name="bsides up note0003" x="496" y="48" width="32" height="48"/>
+	<SubTexture name="bsides up note0004" x="496" y="48" width="32" height="48"/>
+	<SubTexture name="bsides hey0000" x="424" y="40" width="40" height="40"/>
+	<SubTexture name="bsides hey0001" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides hey0002" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides hey0003" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides hey0004" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides hey0005" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides hey0006" x="424" y="80" width="40" height="40"/>
+	<SubTexture name="bsides left miss0000" x="560" y="40" width="40" height="40"/>
+	<SubTexture name="bsides down miss0000" x="600" y="40" width="32" height="40" rotated="true"/>
+	<SubTexture name="bsides right miss0000" x="632" y="40" width="40" height="40"/>
+	<SubTexture name="bsides up miss0000" x="528" y="48" width="32" height="48"/>
+	<SubTexture name="bestf idle0000" x="264" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0001" x="304" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0002" x="304" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0003" x="344" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0004" x="344" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0005" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0006" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0007" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0008" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0009" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0010" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0011" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0012" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf idle0013" x="384" y="120" width="40" height="40"/>
+	<SubTexture name="bestf left note0000" x="40" y="168" width="40" height="40"/>
+	<SubTexture name="bestf left note0001" x="80" y="168" width="40" height="40"/>
+	<SubTexture name="bestf left note0002" x="80" y="168" width="40" height="40"/>
+	<SubTexture name="bestf left note0003" x="80" y="168" width="40" height="40"/>
+	<SubTexture name="bestf left note0004" x="80" y="168" width="40" height="40"/>
+	<SubTexture name="bestf down note0000" x="120" y="168" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf down note0001" x="152" y="168" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf down note0002" x="152" y="168" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf down note0003" x="152" y="168" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf down note0004" x="152" y="168" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf right note0000" x="184" y="168" width="40" height="40"/>
+	<SubTexture name="bestf right note0001" x="224" y="168" width="40" height="40"/>
+	<SubTexture name="bestf right note0002" x="224" y="168" width="40" height="40"/>
+	<SubTexture name="bestf right note0003" x="224" y="168" width="40" height="40"/>
+	<SubTexture name="bestf right note0004" x="224" y="168" width="40" height="40"/>
+	<SubTexture name="bestf up note0000" x="464" y="96" width="32" height="48"/>
+	<SubTexture name="bestf up note0001" x="496" y="96" width="32" height="48"/>
+	<SubTexture name="bestf up note0002" x="496" y="96" width="32" height="48"/>
+	<SubTexture name="bestf up note0003" x="496" y="96" width="32" height="48"/>
+	<SubTexture name="bestf up note0004" x="496" y="96" width="32" height="48"/>
+	<SubTexture name="bestf hey0000" x="424" y="120" width="40" height="40"/>
+	<SubTexture name="bestf hey0001" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf hey0002" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf hey0003" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf hey0004" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf hey0005" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf hey0006" x="424" y="160" width="40" height="40"/>
+	<SubTexture name="bestf left miss0000" x="560" y="80" width="40" height="40"/>
+	<SubTexture name="bestf down miss0000" x="600" y="80" width="32" height="40" rotated="true"/>
+	<SubTexture name="bestf right miss0000" x="632" y="80" width="40" height="40"/>
+	<SubTexture name="bestf up miss0000" x="528" y="96" width="32" height="48"/>
+	<SubTexture name="glitch idle0000" x="264" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0001" x="304" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0002" x="304" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0003" x="344" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0004" x="344" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0005" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0006" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0007" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0008" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0009" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0010" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0011" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0012" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch idle0013" x="384" y="160" width="40" height="40"/>
+	<SubTexture name="glitch left note0000" x="40" y="208" width="40" height="40"/>
+	<SubTexture name="glitch left note0001" x="80" y="208" width="40" height="40"/>
+	<SubTexture name="glitch left note0002" x="80" y="208" width="40" height="40"/>
+	<SubTexture name="glitch left note0003" x="80" y="208" width="40" height="40"/>
+	<SubTexture name="glitch left note0004" x="80" y="208" width="40" height="40"/>
+	<SubTexture name="glitch down note0000" x="120" y="208" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch down note0001" x="152" y="208" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch down note0002" x="152" y="208" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch down note0003" x="152" y="208" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch down note0004" x="152" y="208" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch right note0000" x="184" y="208" width="40" height="40"/>
+	<SubTexture name="glitch right note0001" x="224" y="208" width="40" height="40"/>
+	<SubTexture name="glitch right note0002" x="224" y="208" width="40" height="40"/>
+	<SubTexture name="glitch right note0003" x="224" y="208" width="40" height="40"/>
+	<SubTexture name="glitch right note0004" x="224" y="208" width="40" height="40"/>
+	<SubTexture name="glitch up note0000" x="464" y="192" width="48" height="40" rotated="true"/>
+	<SubTexture name="glitch up note0001" x="512" y="192" width="48" height="40" rotated="true"/>
+	<SubTexture name="glitch up note0002" x="512" y="192" width="48" height="40" rotated="true"/>
+	<SubTexture name="glitch up note0003" x="512" y="192" width="48" height="40" rotated="true"/>
+	<SubTexture name="glitch up note0004" x="512" y="192" width="48" height="40" rotated="true"/>
+	<SubTexture name="glitch hey0000" x="424" y="200" width="40" height="40"/>
+	<SubTexture name="glitch hey0001" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch hey0002" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch hey0003" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch hey0004" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch hey0005" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch hey0006" x="424" y="240" width="40" height="40"/>
+	<SubTexture name="glitch left miss0000" x="560" y="120" width="40" height="40"/>
+	<SubTexture name="glitch down miss0000" x="600" y="120" width="32" height="40" rotated="true"/>
+	<SubTexture name="glitch right miss0000" x="632" y="120" width="40" height="40"/>
+	<SubTexture name="glitch up miss0000" x="464" y="184" width="40" height="48" rotated="true"/>
+	<SubTexture name="dsides idle0000" x="264" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0001" x="264" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0002" x="264" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0003" x="304" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0004" x="304" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0005" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0006" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0007" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0008" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0009" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0010" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0011" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0012" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides idle0013" x="344" y="200" width="40" height="40"/>
+	<SubTexture name="dsides left note0000" x="512" y="184" width="48" height="40"/>
+	<SubTexture name="dsides left note0001" x="464" y="224" width="48" height="40"/>
+	<SubTexture name="dsides left note0002" x="464" y="224" width="48" height="40"/>
+	<SubTexture name="dsides left note0003" x="464" y="224" width="48" height="40"/>
+	<SubTexture name="dsides left note0004" x="464" y="224" width="48" height="40"/>
+	<SubTexture name="dsides down note0000" x="512" y="224" width="48" height="40"/>
+	<SubTexture name="dsides down note0001" x="464" y="264" width="48" height="40"/>
+	<SubTexture name="dsides down note0002" x="464" y="264" width="48" height="40"/>
+	<SubTexture name="dsides down note0003" x="464" y="264" width="48" height="40"/>
+	<SubTexture name="dsides down note0004" x="464" y="264" width="48" height="40"/>
+	<SubTexture name="dsides right note0000" x="40" y="248" width="40" height="56" rotated="true"/>
+	<SubTexture name="dsides right note0001" x="80" y="248" width="40" height="56" rotated="true"/>
+	<SubTexture name="dsides right note0002" x="80" y="248" width="40" height="56" rotated="true"/>
+	<SubTexture name="dsides right note0003" x="80" y="248" width="40" height="56" rotated="true"/>
+	<SubTexture name="dsides right note0004" x="80" y="248" width="40" height="56" rotated="true"/>
+	<SubTexture name="dsides up note0000" x="40" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="dsides up note0001" x="88" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="dsides up note0002" x="88" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="dsides up note0003" x="88" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="dsides up note0004" x="88" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="dsides hey0000" x="384" y="200" width="40" height="40"/>
+	<SubTexture name="dsides hey0001" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides hey0002" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides hey0003" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides hey0004" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides hey0005" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides hey0006" x="384" y="240" width="40" height="40"/>
+	<SubTexture name="dsides left miss0000" x="120" y="248" width="48" height="40"/>
+	<SubTexture name="dsides down miss0000" x="168" y="248" width="48" height="40"/>
+	<SubTexture name="dsides right miss0000" x="256" y="288" width="56" height="40"/>
+	<SubTexture name="dsides up miss0000" x="216" y="248" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil idle0000" x="136" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0001" x="136" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0002" x="136" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0003" x="176" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0004" x="176" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0005" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0006" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0007" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0008" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0009" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0010" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0011" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0012" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil idle0013" x="216" y="288" width="40" height="56" rotated="true"/>
+	<SubTexture name="evil left note0000" x="264" y="240" width="40" height="40"/>
+	<SubTexture name="evil left note0001" x="304" y="240" width="40" height="40"/>
+	<SubTexture name="evil left note0002" x="344" y="240" width="40" height="40"/>
+	<SubTexture name="evil left note0003" x="344" y="240" width="40" height="40"/>
+	<SubTexture name="evil left note0004" x="344" y="240" width="40" height="40"/>
+	<SubTexture name="evil down note0000" x="560" y="160" width="56" height="40"/>
+	<SubTexture name="evil down note0001" x="616" y="160" width="56" height="40"/>
+	<SubTexture name="evil down note0002" x="616" y="160" width="56" height="40"/>
+	<SubTexture name="evil down note0003" x="616" y="160" width="56" height="40"/>
+	<SubTexture name="evil down note0004" x="616" y="160" width="56" height="40"/>
+	<SubTexture name="evil right note0000" x="312" y="280" width="56" height="40"/>
+	<SubTexture name="evil right note0001" x="368" y="280" width="56" height="40"/>
+	<SubTexture name="evil right note0002" x="360" y="320" width="56" height="40"/>
+	<SubTexture name="evil right note0003" x="360" y="320" width="56" height="40"/>
+	<SubTexture name="evil right note0004" x="360" y="320" width="56" height="40"/>
+	<SubTexture name="evil up note0000" x="512" y="264" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil up note0001" x="464" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil up note0002" x="512" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil up note0003" x="512" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil up note0004" x="512" y="304" width="48" height="40" rotated="true"/>
+	<SubTexture name="evil hey0000" x="560" y="240" width="56" height="40"/>
+	<SubTexture name="evil hey0001" x="560" y="240" width="56" height="40"/>
+	<SubTexture name="evil hey0002" x="616" y="240" width="56" height="40"/>
+	<SubTexture name="evil hey0003" x="560" y="280" width="56" height="40"/>
+	<SubTexture name="evil hey0004" x="616" y="280" width="56" height="40"/>
+	<SubTexture name="evil hey0005" x="560" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0006" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0007" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0008" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0009" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0010" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0011" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0012" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil hey0013" x="616" y="320" width="56" height="40"/>
+	<SubTexture name="evil left miss0000" x="424" y="280" width="40" height="40"/>
+	<SubTexture name="evil down miss0000" x="560" y="200" width="56" height="40"/>
+	<SubTexture name="evil right miss0000" x="616" y="200" width="56" height="40"/>
+	<SubTexture name="evil up miss0000" x="312" y="320" width="48" height="40" rotated="true"/>
+</TextureAtlas>

@@ -1,0 +1,103 @@
+{
+	"position": [
+		160,
+		230
+	],
+	"dialogue_pos": "right",
+	"no_antialiasing": true,
+	"scale": 12,
+	"image": "bhk",
+	"animations": [
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "normal",
+			"idle_name": "bhk normal idle",
+			"loop_name": "bhk normal loop"
+		},
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"anim": "neutral",
+			"loop_offsets": [
+				0,
+				0
+			],
+			"idle_name": "bhk neutral idle",
+			"loop_name": "bhk neutral loop"
+		},
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"anim": "angry",
+			"loop_offsets": [
+				0,
+				0
+			],
+			"idle_name": "bhk angry idle",
+			"loop_name": "bhk angry loop"
+		},
+		{
+			"idle_offsets": [
+				42,
+				0
+			],
+			"anim": "mad",
+			"loop_offsets": [
+				42,
+				0
+			],
+			"idle_name": "bhk mad idle",
+			"loop_name": "bhk mad loop"
+		},
+		{
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "sad",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "bhk sad loop",
+			"idle_name": "bhk sad idle"
+		},
+		{
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "thoughts",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "bhk thoughts",
+			"idle_name": "bhk thoughts"
+		},
+		{
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "wut",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "bhk wut",
+			"idle_name": "bhk wut"
+		}
+	]
+}

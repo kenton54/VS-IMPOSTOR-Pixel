@@ -1,0 +1,71 @@
+﻿<TextureAtlas imagePath="loggo.png">
+	<SubTexture name="loggo idle0000" x="0" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0001" x="0" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0002" x="0" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0003" x="72" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0004" x="72" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0005" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0006" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0007" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0008" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0009" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0010" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0011" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0012" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo idle0013" x="144" y="0" width="72" height="48"/>
+	<SubTexture name="loggo left note0000" x="0" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0001" x="0" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0002" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0003" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0004" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0005" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0006" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0007" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0008" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo left note0009" x="48" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0000" x="96" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0001" x="96" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0002" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0003" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0004" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0005" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0006" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0007" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0008" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo down note0009" x="144" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0000" x="192" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0001" x="192" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0002" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0003" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0004" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0005" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0006" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0007" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0008" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo up note0009" x="240" y="48" width="48" height="64" rotated="true"/>
+	<SubTexture name="loggo right note0000" x="216" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0001" x="216" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0002" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0003" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0004" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0005" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0006" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0007" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0008" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo right note0009" x="296" y="0" width="80" height="48"/>
+	<SubTexture name="loggo hey0000" x="288" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0001" x="288" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0002" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0003" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0004" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0005" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0006" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0007" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0008" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0009" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0010" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0011" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0012" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo hey0013" x="352" y="48" width="64" height="48"/>
+	<SubTexture name="loggo ok0000" x="376" y="0" width="64" height="48"/>
+</TextureAtlas>

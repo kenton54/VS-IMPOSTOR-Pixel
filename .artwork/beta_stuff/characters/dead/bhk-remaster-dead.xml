@@ -1,0 +1,111 @@
+﻿<TextureAtlas imagePath="bhk-remaster-dead.png">
+    <SubTexture name="bhk dies0000" x="0" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0001" x="48" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0002" x="96" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0003" x="144" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0004" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0005" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0006" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0007" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0008" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0009" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0010" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0011" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0012" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0013" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0014" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0015" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0016" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0017" x="192" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0018" x="240" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0019" x="240" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0020" x="240" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0021" x="240" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0022" x="240" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0023" x="288" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0024" x="288" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0025" x="336" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0026" x="384" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0027" x="384" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0028" x="432" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0029" x="432" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0030" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0031" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0032" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0033" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0034" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0035" x="480" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0036" x="528" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0037" x="576" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0038" x="624" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0039" x="672" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0040" x="720" y="0" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0041" x="0" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0042" x="48" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0043" x="96" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0044" x="144" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0045" x="192" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0046" x="240" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0047" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0048" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0049" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0050" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0051" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0052" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0053" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk dies0054" x="288" y="64" width="48" height="64" rotated="true"/>
+	<SubTexture name="bhk loop0000" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0001" x="384" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0002" x="384" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0003" x="432" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0004" x="432" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0005" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0006" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0007" x="480" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0008" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0009" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0010" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0011" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0012" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0013" x="384" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0014" x="384" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0015" x="432" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0016" x="432" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0017" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0018" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0019" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0020" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0021" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0022" x="336" y="64" width="48" height="48"/>
+	<SubTexture name="bhk loop0023" x="480" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0000" x="528" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0001" x="576" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0002" x="624" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0003" x="672" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0004" x="672" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0005" x="720" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0006" x="720" y="64" width="48" height="48"/>
+	<SubTexture name="bhk revive0007" x="0" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0008" x="0" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0009" x="48" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0010" x="48" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0011" x="96" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0012" x="96" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0013" x="144" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0014" x="144" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0015" x="192" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0016" x="192" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0017" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0018" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0019" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0020" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0021" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0022" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0023" x="240" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0024" x="288" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0025" x="288" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0026" x="288" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0027" x="288" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0028" x="288" y="128" width="48" height="48"/>
+	<SubTexture name="bhk revive0029" x="288" y="128" width="48" height="48"/>
+</TextureAtlas>

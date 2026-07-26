@@ -1,0 +1,56 @@
+﻿<TextureAtlas imagePath="blackpix-crewmate.png">
+	<SubTexture name="black idle0000" x="0" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0001" x="0" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0002" x="0" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0003" x="56" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0004" x="56" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0005" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0006" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0007" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0008" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0009" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0010" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0011" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0012" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black idle0013" x="112" y="0" width="56" height="48"/>
+	<SubTexture name="black left note0000" x="168" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0001" x="168" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0002" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0003" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0004" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0005" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0006" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0007" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0008" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black left note0009" x="216" y="0" width="48" height="48"/>
+	<SubTexture name="black down note0000" x="0" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0001" x="0" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0002" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0003" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0004" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0005" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0006" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0007" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0008" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black down note0009" x="48" y="48" width="48" height="48"/>
+	<SubTexture name="black up note0000" x="96" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0001" x="96" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0002" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0003" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0004" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0005" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0006" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0007" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0008" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black up note0009" x="152" y="48" width="56" height="56"/>
+	<SubTexture name="black right note0000" x="208" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0001" x="208" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0002" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0003" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0004" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0005" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0006" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0007" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0008" x="264" y="48" width="56" height="48"/>
+	<SubTexture name="black right note0009" x="264" y="48" width="56" height="48"/>
+</TextureAtlas>

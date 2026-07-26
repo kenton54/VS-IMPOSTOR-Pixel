@@ -1,0 +1,72 @@
+﻿<TextureAtlas imagePath="red.png">
+	<SubTexture name="normal idle0000" x="40" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0001" x="40" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0002" x="40" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0003" x="104" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0004" x="104" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0005" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0006" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0007" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0008" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0009" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0010" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0011" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0012" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal idle0013" x="168" y="0" width="64" height="40"/>
+	<SubTexture name="normal left note0000" x="0" y="0" width="40" height="88" rotated="true"/>
+	<SubTexture name="normal left note0001" x="0" y="88" width="88" height="40"/>
+	<SubTexture name="normal left note0002" x="88" y="88" width="88" height="40"/>
+	<SubTexture name="normal left note0003" x="88" y="88" width="88" height="40"/>
+	<SubTexture name="normal left note0004" x="88" y="88" width="88" height="40"/>
+	<SubTexture name="normal down note0000" x="232" y="0" width="64" height="40"/>
+	<SubTexture name="normal down note0001" x="296" y="0" width="64" height="40"/>
+	<SubTexture name="normal down note0002" x="360" y="0" width="64" height="40"/>
+	<SubTexture name="normal down note0003" x="360" y="0" width="64" height="40"/>
+	<SubTexture name="normal down note0004" x="360" y="0" width="64" height="40"/>
+	<SubTexture name="normal right note0000" x="40" y="40" width="72" height="48"/>
+	<SubTexture name="normal right note0001" x="112" y="40" width="72" height="48"/>
+	<SubTexture name="normal right note0002" x="184" y="40" width="72" height="48"/>
+	<SubTexture name="normal right note0003" x="184" y="40" width="72" height="48"/>
+	<SubTexture name="normal right note0004" x="184" y="40" width="72" height="48"/>
+	<SubTexture name="normal up note0000" x="256" y="40" width="64" height="64"/>
+	<SubTexture name="normal up note0001" x="320" y="40" width="64" height="64"/>
+	<SubTexture name="normal up note0002" x="320" y="40" width="64" height="64"/>
+	<SubTexture name="normal up note0003" x="320" y="40" width="64" height="64"/>
+	<SubTexture name="normal up note0004" x="320" y="40" width="64" height="64"/>
+	<SubTexture name="normal shocked0000" x="176" y="88" width="64" height="40"/> <!--anim yet to implement-->
+	<SubTexture name="normal shocked0001" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0002" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0003" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0004" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0005" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0006" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0007" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0008" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0009" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0010" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0011" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0012" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0013" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0014" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0015" x="304" y="88" width="64" height="40"/>
+	<SubTexture name="normal shocked0016" x="368" y="80" width="64" height="40"/>
+	<SubTexture name="normal shocked0017" x="368" y="80" width="64" height="40"/>
+	<SubTexture name="normal shocked0018" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0019" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0020" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0021" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0022" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0023" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0024" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0025" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0026" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0027" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0028" x="64" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0029" x="128" y="128" width="64" height="40"/>
+	<SubTexture name="normal shocked0030" x="64" y="120" width="64" height="40"/>
+	<SubTexture name="normal shocked0031" x="128" y="128" width="64" height="40"/>
+	<SubTexture name="normal shocked0032" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="normal shocked0033" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="normal shocked0034" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="normal shocked0035" x="192" y="128" width="64" height="40"/>
+</TextureAtlas>

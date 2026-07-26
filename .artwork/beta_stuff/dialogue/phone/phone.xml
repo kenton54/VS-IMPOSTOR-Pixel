@@ -1,0 +1,6 @@
+﻿<TextureAtlas imagePath="phone.png">
+    <SubTexture name="none0000" x="0" y="0" width="136" height="56"/>
+	<SubTexture name="bf0000" x="0" y="0" width="136" height="56"/>
+	<SubTexture name="red0000" x="0" y="0" width="136" height="56"/>
+	<SubTexture name="gf0000" x="0" y="0" width="136" height="56"/>
+</TextureAtlas>

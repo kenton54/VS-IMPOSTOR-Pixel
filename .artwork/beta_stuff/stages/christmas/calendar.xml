@@ -1,0 +1,4 @@
+﻿<TextureAtlas imagePath="calendar.png">
+	<SubTexture name="ok0000" x="0" y="0" width="24" height="24"/>
+	<SubTexture name="ohno0000" x="24" y="0" width="24" height="24"/>
+</TextureAtlas>

@@ -1,0 +1,190 @@
+﻿<TextureAtlas imagePath="bhk-remaster.png">
+	<SubTexture name="bhk idle0000" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0001" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0002" x="0" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0003" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0004" x="40" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0005" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0006" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0007" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0008" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0009" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0010" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0011" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0012" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk idle0013" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0000" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0001" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0002" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0003" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0004" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0005" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0006" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0007" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0008" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left note0009" x="160" y="0" width="40" height="40"/>
+	<SubTexture name="bhk down note0000" x="240" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0001" x="240" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0002" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0003" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0004" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0005" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0006" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0007" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0008" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down note0009" x="280" y="0" width="40" height="32"/>
+	<SubTexture name="bhk up note0000" x="0" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0001" x="0" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0002" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0003" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0004" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0005" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0006" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0007" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0008" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up note0009" x="32" y="40" width="32" height="48"/>
+	<SubTexture name="bhk right note0000" x="96" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0001" x="96" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0002" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0003" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0004" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0005" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0006" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0007" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0008" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right note0009" x="136" y="40" width="40" height="40"/>
+	<SubTexture name="bhk left miss0000" x="120" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0001" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0002" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0003" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0004" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0005" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0006" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0007" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0008" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk left miss0009" x="200" y="0" width="40" height="40"/>
+	<SubTexture name="bhk down miss0000" x="240" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0001" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0002" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0003" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0004" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0005" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0006" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0007" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0008" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk down miss0009" x="320" y="0" width="40" height="32"/>
+	<SubTexture name="bhk up miss0000" x="0" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0001" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0002" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0003" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0004" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0005" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0006" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0007" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0008" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk up miss0009" x="64" y="40" width="32" height="48"/>
+	<SubTexture name="bhk right miss0000" x="96" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0001" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0002" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0003" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0004" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0005" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0006" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0007" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0008" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk right miss0009" x="176" y="40" width="40" height="40"/>
+	<SubTexture name="bhk intro0000" x="0" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0001" x="0" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0002" x="0" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0003" x="0" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0004" x="48" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0005" x="96" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0006" x="96" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0007" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0008" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0009" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0010" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0011" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0012" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0013" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0014" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0015" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0016" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0017" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0018" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0019" x="192" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0020" x="192" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0021" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0022" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0023" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0024" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0025" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0026" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0027" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0028" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0029" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0030" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0031" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0032" x="240" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0033" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0034" x="144" y="80" width="48" height="40"/>
+	<SubTexture name="bhk intro0035" x="288" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0036" x="288" y="88" width="48" height="40"/>
+	<SubTexture name="bhk intro0037" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0038" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0039" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0040" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0041" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0042" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0043" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0044" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0045" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0046" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0047" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0048" x="336" y="72" width="48" height="40"/>
+	<SubTexture name="bhk intro0049" x="0" y="128" width="48" height="40"/>
+	<SubTexture name="bhk intro0050" x="48" y="128" width="48" height="40"/>
+	<SubTexture name="bhk intro0051" x="48" y="128" width="48" height="40"/>
+	<SubTexture name="bhk intro0052" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0053" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0054" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0055" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0056" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0057" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0058" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0059" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0060" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0061" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0062" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0063" x="96" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0064" x="48" y="128" width="48" height="40"/>
+	<SubTexture name="bhk intro0065" x="0" y="128" width="48" height="40"/>
+	<SubTexture name="bhk intro0066" x="144" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0067" x="144" y="120" width="48" height="40"/>
+	<SubTexture name="bhk intro0068" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk intro0069" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk intro0070" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk intro0071" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk hit0000" x="192" y="128" width="48" height="40"/>
+	<SubTexture name="bhk hit0001" x="240" y="128" width="48" height="40"/>
+	<SubTexture name="bhk hit0002" x="288" y="128" width="48" height="40"/>
+	<SubTexture name="bhk hit0003" x="288" y="128" width="48" height="40"/>
+	<SubTexture name="bhk hit0004" x="336" y="112" width="48" height="40"/>
+	<SubTexture name="bhk hit0005" x="336" y="112" width="48" height="40"/>
+	<SubTexture name="bhk hit0006" x="336" y="112" width="48" height="40"/>
+	<SubTexture name="bhk hit0007" x="336" y="112" width="48" height="40"/>
+	<SubTexture name="bhk hit0008" x="0" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0009" x="0" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0010" x="48" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0011" x="48" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0012" x="96" y="160" width="48" height="40"/>
+	<SubTexture name="bhk hit0013" x="96" y="160" width="48" height="40"/>
+	<SubTexture name="bhk hit0014" x="144" y="160" width="48" height="40"/>
+	<SubTexture name="bhk hit0015" x="144" y="160" width="48" height="40"/>
+	<SubTexture name="bhk hit0016" x="192" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0017" x="192" y="168" width="48" height="40"/>
+	<SubTexture name="bhk hit0018" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk hit0019" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk hit0020" x="80" y="0" width="40" height="40"/>
+	<SubTexture name="bhk hit0021" x="80" y="0" width="40" height="40"/>
+</TextureAtlas>

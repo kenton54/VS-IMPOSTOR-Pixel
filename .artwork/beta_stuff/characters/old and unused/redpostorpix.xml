@@ -1,0 +1,92 @@
+﻿<TextureAtlas imagePath="redpostorpix.png">
+	<SubTexture name="sus idle0000" x="0" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0001" x="0" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0002" x="0" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0003" x="64" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0004" x="64" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0005" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0006" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0007" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0008" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0009" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0010" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0011" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0012" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus idle0013" x="128" y="0" width="64" height="40"/>
+	<SubTexture name="sus left note0000" x="192" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0001" x="192" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0002" x="272" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0003" x="272" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0004" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0005" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0006" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0007" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0008" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus left note0009" x="352" y="0" width="80" height="40"/>
+	<SubTexture name="sus down note0000" x="0" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0001" x="0" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0002" x="64" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0003" x="64" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0004" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0005" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0006" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0007" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0008" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus down note0009" x="128" y="40" width="64" height="40"/>
+	<SubTexture name="sus up note0000" x="192" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0001" x="192" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0002" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0003" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0004" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0005" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0006" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0007" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0008" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus up note0009" x="256" y="40" width="64" height="48"/>
+	<SubTexture name="sus right note0000" x="320" y="40" width="88" height="40"/>
+	<SubTexture name="sus right note0001" x="320" y="40" width="88" height="40"/>
+	<SubTexture name="sus right note0002" x="0" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0003" x="0" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0004" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0005" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0006" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0007" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0008" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus right note0009" x="88" y="80" width="88" height="40"/>
+	<SubTexture name="sus shocked0000" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0001" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0002" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0003" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0004" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0005" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0006" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0007" x="176" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0008" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0009" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0010" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0011" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0012" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0013" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0014" x="240" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0015" x="304" y="88" width="64" height="40"/>
+	<SubTexture name="sus shocked0016" x="368" y="80" width="64" height="40"/>
+	<SubTexture name="sus shocked0017" x="368" y="80" width="64" height="40"/>
+	<SubTexture name="sus shocked0018" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0019" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0020" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0021" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0022" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0023" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0024" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0025" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0026" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0027" x="0" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0028" x="64" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0029" x="128" y="128" width="64" height="40"/>
+	<SubTexture name="sus shocked0030" x="64" y="120" width="64" height="40"/>
+	<SubTexture name="sus shocked0031" x="128" y="128" width="64" height="40"/>
+	<SubTexture name="sus shocked0032" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="sus shocked0033" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="sus shocked0034" x="192" y="128" width="64" height="40"/>
+	<SubTexture name="sus shocked0035" x="192" y="128" width="64" height="40"/>
+</TextureAtlas>
