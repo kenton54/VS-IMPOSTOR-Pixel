@@ -26,6 +26,7 @@ class LanguageData
 	/**
 	 * The unique ID of the language, usually it's a Language Code.
 	 */
+	@:alias('id')
 	public var ID(default, null):String;
 
 	/**
