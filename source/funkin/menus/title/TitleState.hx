@@ -573,7 +573,7 @@ class TitleState extends MusicBeatState
 		if ((subState is VideoSubState))
 		{
 			#if FEATURE_DISCORD_API
-			DiscordClient.changePresence({
+			DiscordRPC.instance.changePresence({
 				state: 'Navigating Menus',
 				details: 'Title Screen'
 			});
