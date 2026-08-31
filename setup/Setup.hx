@@ -17,6 +17,8 @@ class Setup
 			FileSystem.createDirectory('.haxelib');
 		}
 
+    final libraries:Array<Library> = Json.parse(File.getContent('./hmm.json')).dependencies;
+
 		Sys.println('Installing libraries...');
 
 		for (library in libraries)
@@ -44,6 +46,7 @@ class Setup
 			}
 		}
 
+    /*
 		if (checkVisualStudio && getSystem() == 'windows')
 		{
 			Sys.println('Checking for Visual Studio... (Required dependency for Windows)');
@@ -63,6 +66,7 @@ class Setup
 				Sys.println('You already have Visual Studio installed!');
 			}
 		}
+    */
 	}
 
 	static function checkHaxeVersion(minimum:String):Bool
