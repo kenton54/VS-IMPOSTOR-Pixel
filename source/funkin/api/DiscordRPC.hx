@@ -44,7 +44,7 @@ class DiscordRPC
     thread = Thread.create(update);
   }
 
-	static function update()
+	function update()
 	{
 		while (true)
 		{
@@ -58,17 +58,17 @@ class DiscordRPC
 		}
 	}
 
-	function onReady(request:cpp.RawConstPointer<DiscordUser>)
+	static function onReady(request:cpp.RawConstPointer<DiscordUser>)
 	{
 		trace('[DISCORD] Successfully connected to user "${request[0].username}"!');
 	}
 
-	function onDisconnect(error:Int, message:cpp.ConstCharStar)
+	static function onDisconnect(error:Int, message:cpp.ConstCharStar)
 	{
 		trace('[DISCORD] Disconnected from user');
 	}
 
-	function onError(error:Int, message:cpp.ConstCharStar)
+	static function onError(error:Int, message:cpp.ConstCharStar)
 	{
 		throw '[DISCORD] AN ERROR OCURRED! (Error code: $error | Message: ${cast (message, String)})';
 	}
