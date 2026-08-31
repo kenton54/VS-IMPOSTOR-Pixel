@@ -81,7 +81,7 @@ class DiscordRPC
 	{
 		var presence:DiscordRichPresence = new DiscordRichPresence();
 
-		presence.type = params.activity ?? DiscordActivityType.DiscordActivityType_Playing;
+		presence.type = DiscordActivityType.DiscordActivityType_Playing;
 
 		presence.state = cast(params.state, Null<String>) ?? '';
 		presence.details = cast(params.details, Null<String>) ?? '';
