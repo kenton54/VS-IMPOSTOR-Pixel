@@ -85,7 +85,7 @@ class TitleState extends MusicBeatState
 		subStateClosed.add(onSubStateClose);
 
 		#if FEATURE_DISCORD_API
-		DiscordClient.changePresence({
+		DiscordRPC.instance.changePresence({
 			state: 'Navigating Menus',
 			details: 'Title Screen'
 		});

@@ -46,30 +46,22 @@ class InitState extends FlxState
 
 		FlxG.fixedTimestep = false;
 
-		trace('a');
-
 		funkin.system.Translations.init();
 		funkin.system.Achievements.init();
 		funkin.system.Statistics.init();
 
-		trace('b');
-
 		Conductor.init();
 
-		trace('c');
-
 		#if FEATURE_DISCORD_API
-		DiscordClient.init();
+		DiscordRPC.instance.init();
 
 		lime.app.Application.current.onExit.add(function(exitCode:Int)
 		{
-			DiscordClient.shutdown();
+			DiscordRPC.instance.shutdown();
 		});
 		#end
 
 		funkin.system.ShaderResizeFix.init();
-
-		trace('d');
 
 		#if android
 		FlxG.android.preventDefaultKeys = [flixel.input.android.FlxAndroidKey.BACK];

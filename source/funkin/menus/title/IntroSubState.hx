@@ -241,18 +241,15 @@ class IntroSubState extends MusicBeatState
 			return;
 		}
 
-		if (introEvents != null)
-		{
-			var curIntroEvent:TitleIntroEventParams = introEvents[introIndex];
-			if (curIntroEvent != null)
-			{
-				if (step >= curIntroEvent.step)
-				{
-					curIntroEvent?.func();
-					introIndex++;
-				}
-			}
-		}
+    var curIntroEvent:TitleIntroEventParams = introEvents[introIndex];
+    if (curIntroEvent != null)
+    {
+      if (step >= curIntroEvent.step)
+      {
+        curIntroEvent?.func();
+        introIndex++;
+      }
+    }
 
 		super.stepHit(step);
 	}

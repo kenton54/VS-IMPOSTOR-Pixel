@@ -109,7 +109,7 @@ class PlayState extends MusicBeatState
 	function updateDiscordPresence()
 	{
 		#if FEATURE_DISCORD_API
-		DiscordClient.changePresence({
+		DiscordRPC.instance.changePresence({
 			state: 'testing source',
 			details: 'Source Port'
 		});

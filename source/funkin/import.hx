@@ -2,7 +2,7 @@ package funkin;
 
 #if !macro
 #if FEATURE_DISCORD_API
-import funkin.api.DiscordClient;
+import funkin.api.DiscordRPC;
 #end
 
 import flixel.FlxCamera;
@@ -15,7 +15,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 import funkin.Constants;
-import funkin.Paths;
+import funkin.assets.Paths;
 import funkin.graphics.FunkinGroup;
 import funkin.graphics.FunkinSprite;
 import funkin.graphics.FunkinText;
@@ -32,6 +32,7 @@ using StringTools;
 
 using funkin.utils.tools.FloatTools;
 using funkin.utils.tools.IntTools;
+using funkin.utils.tools.StringTools;
 
 using thx.Arrays;
 #end

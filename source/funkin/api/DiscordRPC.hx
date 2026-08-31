@@ -6,27 +6,45 @@ import hxdiscord_rpc.Types;
 
 import sys.thread.Thread;
 
-class DiscordClient
+class DiscordRPC
 {
 	/**
 	 * The ID of the Discord Application.
 	 */
-	public static final clientID:String = '1392684759658008758';
+	static final CLIENT_ID:String = '1392684759658008758';
 
-	@:allow(funkin.InitState)
-	static function init()
+  public static var instance(get, never):DiscordRPC;
+
+  static var _instance:Null<DiscordRPC> = null;
+
+  static function get_instance():DiscordRPC
+  {
+    if (_instance == null)
+    {
+      _instance = new DiscordRPC();
+    }
+
+    return _instance;
+  }
+
+  var handlers:DiscordEventHandlers;
+  var thread:Null<Thread> = null;
+
+	private function new()
 	{
-		var handlers:DiscordEventHandlers = new DiscordEventHandlers();
+		handlers = new DiscordEventHandlers();
 		handlers.ready = cpp.Function.fromStaticFunction(onReady);
 		handlers.disconnected = cpp.Function.fromStaticFunction(onDisconnect);
 		handlers.errored = cpp.Function.fromStaticFunction(onError);
-
-		Discord.Initialize(clientID, cpp.RawPointer.addressOf(handlers), true, null);
-
-		Thread.create(discordRPCUpdate);
 	}
 
-	static function discordRPCUpdate()
+  public function init()
+  {
+    Discord.Initialize(CLIENT_ID, cpp.RawPointer.addressOf(handlers), false, null);
+    thread = Thread.create(update);
+  }
+
+	static function update()
 	{
 		while (true)
 		{
@@ -40,17 +58,17 @@ class DiscordClient
 		}
 	}
 
-	static function onReady(request:cpp.RawConstPointer<DiscordUser>)
+	function onReady(request:cpp.RawConstPointer<DiscordUser>)
 	{
 		trace('[DISCORD] Successfully connected to user "${request[0].username}"!');
 	}
 
-	static function onDisconnect(error:Int, message:cpp.ConstCharStar)
+	function onDisconnect(error:Int, message:cpp.ConstCharStar)
 	{
 		trace('[DISCORD] Disconnected from user');
 	}
 
-	static function onError(error:Int, message:cpp.ConstCharStar)
+	function onError(error:Int, message:cpp.ConstCharStar)
 	{
 		throw '[DISCORD] AN ERROR OCURRED! (Error code: $error | Message: ${cast (message, String)})';
 	}
@@ -59,11 +77,11 @@ class DiscordClient
 	 * Changes what the Discord Rich Presence presence displays.
 	 * @param params The parameters to change.
 	 */
-	public static function changePresence(params:DiscordRPCParams)
+	public function changePresence(params:DiscordRPCParams)
 	{
 		var presence:DiscordRichPresence = new DiscordRichPresence();
 
-		presence.type = DiscordActivityType.DiscordActivityType_Playing;
+		presence.type = params.activity ?? DiscordActivityType.DiscordActivityType_Playing;
 
 		presence.state = cast(params.state, Null<String>) ?? '';
 		presence.details = cast(params.details, Null<String>) ?? '';
@@ -80,21 +98,23 @@ class DiscordClient
 		// The key name of the image inside the Rich Presence assets.
 		presence.smallImageKey = cast(params.smallImageKey, Null<String>) ?? '';
 
+    // TODO: add buttons to the rpc
+
 		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence));
 	}
 
 	/**
 	 * Clears the current Discord Rich Presence.
 	 */
-	public static function clearPresence()
+	public function clearPresence()
 	{
 		Discord.ClearPresence();
 	}
 
 	/**
-	 * Stops the current Discord Rich Presence instance.
+	 * Stops the active Discord Rich Presence.
 	 */
-	public static function shutdown()
+	public function shutdown()
 	{
 		Discord.Shutdown();
 	}

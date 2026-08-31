@@ -26,7 +26,7 @@ class VideoSubState extends MusicBeatState
 	override function create()
 	{
 		#if FEATURE_DISCORD_API
-		DiscordClient.changePresence({
+		DiscordRPC.instance.changePresence({
 			state: 'Navigating Menus',
 			details: 'Watching a Secret Video'
 		});

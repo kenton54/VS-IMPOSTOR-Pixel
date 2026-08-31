@@ -1,4 +1,4 @@
-package funkin;
+package funkin.assets;
 
 import animate.FlxAnimateFrames;
 

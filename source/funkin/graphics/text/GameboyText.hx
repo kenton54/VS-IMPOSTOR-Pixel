@@ -11,6 +11,7 @@ class GameboyText extends FunkinBitmapText
 	/**
 	 * All the glyphs this font uses.
 	 */
+  // TODO: make this cleaner
 	static final glyphs:String = ' !"#%&\'()*+.-,/0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`{|}~¡¨¯´¸¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝŸ';
 
 	public function new(x:Float = 0, y:Float = 0, text:String = '', size:Int = 12)

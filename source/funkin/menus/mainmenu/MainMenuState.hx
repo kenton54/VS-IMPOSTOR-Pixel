@@ -149,7 +149,7 @@ class MainMenuState extends MusicBeatState
 		FunkinSound.playMenuMusic();
 
 		#if FEATURE_DISCORD_API
-		DiscordClient.changePresence({
+		DiscordRPC.instance.changePresence({
 			state: 'Navigating Menus',
 			details: 'Main Menu'
 		});
@@ -870,7 +870,7 @@ private enum SelectionMode
 	Main;
 
 	/**
-	 * The player is currently on a window submenu.
+	 * The player is in a window submenu.
 	 */
 	Window;
 }
