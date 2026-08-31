@@ -108,13 +108,13 @@ class Setup
   static function trimArguments(args:String):String
   {
     var argsSplit:Array<String> = args.split(' ');
-
     var result:Array<String> = [];
+
     for (arg in argsSplit)
     {
       if (arg.length > 0)
       {
-        result += arg.trim();
+        result.push(arg.trim());
       }
     }
 
