@@ -41,7 +41,7 @@ jobs:
       - name: Install / Update Libraries
         id: lib-install
         run: |
-          haxe -cp setup -D analyzer-optimize --run Setup --no-vscheck -quiet
+          haxe -cp setup -D analyzer-optimize --run Setup
 
       - name: Build Game
         id: game-compile
@@ -109,7 +109,7 @@ jobs:
       - name: Install / Update Libraries
         id: lib-install
         run: |
-          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+          haxe -cp setup -D analyzer-optimize --run Setup
 
       - name: Build Game
         id: game-compile
@@ -172,7 +172,7 @@ jobs:
       - name: Install / Update Libraries
         id: lib-install
         run: |
-          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+          haxe -cp setup -D analyzer-optimize --run Setup
 
       - name: Build Game
         id: game-compile
@@ -235,7 +235,7 @@ jobs:
       - name: Install / Update Libraries
         id: lib-install
         run: |
-          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+          haxe -cp setup -D analyzer-optimize --run Setup
 
       - name: Build Game
         id: game-compile
@@ -315,7 +315,7 @@ jobs:
       - name: Install / Update Libraries
         id: lib-install
         run: |
-          haxe -cp setup -D analyzer-optimize --run Setup -quiet
+          haxe -cp setup -D analyzer-optimize --run Setup
 
       - name: Setup Android
         id: setup-android

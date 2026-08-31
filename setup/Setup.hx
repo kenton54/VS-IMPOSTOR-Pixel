@@ -17,37 +17,27 @@ class Setup
 			FileSystem.createDirectory('.haxelib');
 		}
 
-		var arguments:Arguments = new Arguments(Sys.args());
-		final libraries:Array<Library> = Json.parse(File.getContent('./hmm.json')).dependencies;
-
-		final checkVisualStudio:Bool = !arguments.exists('no-vscheck');
-		final silentInstall:Bool = arguments.exists('silent') || arguments.exists('quiet');
-		final globalInstall:Bool = arguments.exists('global');
-
 		Sys.println('Installing libraries...');
 
 		for (library in libraries)
 		{
-			var mainArg:String = '--never --skip-dependencies';
-			var quietArg:String = silentInstall ? '--quiet' : '';
-			var globalArg:String = globalInstall ? '--global' : '';
-			var allArguments:String = trimArguments([mainArg, quietArg, globalArg].join(' '));
+			var arguments:String = '--never --skip-dependencies --quiet';
 
 			switch (library.type)
 			{
 				case haxelib:
-					var version:String = library.version != null ? library.version : '';
-					Sys.println('Installing library "${library.name}" ${version != '' ? 'Version $version ' : ''}${globalInstall ? 'globally' : 'locally'}');
-					Sys.command('haxelib install ${library.name} $version $allArguments');
+					var version:String = (library.version != null ? library.version : '') + ' ';
+					Sys.println('Installing library "${library.name}" ${version != '' ? 'Version $version ' : ''}');
+					Sys.command('haxelib install ${library.name} ${version}${arguments}');
 
 				case git:
 					var branch:String = (library.ref != null ? library.ref : '') + ' ';
 					Sys.println('Installing library "${library.name}" from git URL "${library.url}" ${branch != '' ? 'branch "$branch" ' : ''}');
-					Sys.command('haxelib git ${library.name} ${library.url} ${branch}${allArguments}');
+					Sys.command('haxelib git ${library.name} ${library.url} ${branch}${arguments}');
 
 				case mercurial:
           var branch:String = (library.ref != null ? library.ref : '') + ' ';
-					Sys.command('haxelib hg ${library.name} ${library.url} ${branch}${allArguments}');
+					Sys.command('haxelib hg ${library.name} ${library.url} ${branch}${arguments}');
 
 				case dev:
 					Sys.command('haxelib dev ${library.name} "${library.path}"');
@@ -94,32 +84,6 @@ class Setup
 
 		return false;
 	}
-
-	static function hasVisualStudioInstalled():Bool
-	{
-		return new Process('"C:/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -requires Microsoft.VisualStudio.Component.Windows10SDK.19041 -property installationPath').exitCode(true) == 0;
-	}
-
-	static function getSystem():String
-	{
-		return Sys.systemName().toLowerCase();
-	}
-
-  static function trimArguments(args:String):String
-  {
-    var argsSplit:Array<String> = args.split(' ');
-    var result:Array<String> = [];
-
-    for (arg in argsSplit)
-    {
-      if (arg.length > 0)
-      {
-        result.push(arg.trim());
-      }
-    }
-
-    return result.join(' ');
-  }
 }
 
 class Arguments
