@@ -318,8 +318,6 @@ class Project extends HXProject
 
 		setHaxeDefine('lime_disable_assets_version');
 		setHaxeDefine('message.reporting', 'pretty');
-
-		addHaxeFlag('-dce no');
 	}
 
 	function setupMacros()
