@@ -3,7 +3,7 @@
         <picture>
             <source media="(prefers-color-scheme: dark)" srcset=".artwork/github/logo-dark-scaledx10.gif">
             <source media="(prefers-color-scheme: light)" srcset=".artwork/github/logo-light-scaledx10.gif">
-            <img src=".artwork/github/logo-light-scaledx10.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 95%;">
+            <img src=".artwork/github/logo-light-scaledx10.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel">
         </picture>
     </a>
     <h1>VS IMPOSTOR PIXEL</h1> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
@@ -33,6 +33,9 @@
 > [!NOTE]
 > Some of the features that are showcased down below aren't present inside the latest build of the mod yet, however some show when they're planned to be made public!
 
+> [!NOTE]
+> Some features mentioned down below are still ideas and could get scrapped in the future, whether it's because it sounds freaking impossible or just laziness lol.
+
 **VS IMPOSTOR PIXEL** is a fanmade sequel and reimagination of VS IMPOSTOR Legacy, telling a revamped story, improvements of already-established characters, as well as a plethora of new ones!
 
 Down below is all the features this mod contains:
@@ -43,7 +46,7 @@ Featuring a complete reimagination of the story VS IMPOSTOR introduced to us, en
 
 Black Impostor has gone rogue and is tired by your little games, he wants to end you once and for all, but messes up his sabotaging in the process and ends up corrupting reality and resetting the timeline, undoing all of Boyfriend's progress!
 
-What will be of our beloved short-sized blue-balled Boyfriend? **Play the mod to find out!**
+What will be of our beloved short-sized blue-balled rapper? **Play the mod to find out!**
 
 Play through all the Among Us maps, as well as fanmade-ones, solving puzzles and mysteries, discovering who the impostor is, foiling their plans, or sabotaging the crew! With a lot of fun and interesting interactions.
 
@@ -51,17 +54,15 @@ Play through all the Among Us maps, as well as fanmade-ones, solving puzzles and
 
 Done with the main story? or are you just tired of the same rhythmic playstyle? Well look no further than the **Side Stories**!
 
-Play a bunch of small games with new stories to tell, comepletely adjacent from the main experience, with non-rhythmic gameplay! To spice up the overall experience!
+Play a bunch of small games with new stories to tell, completely adjacent from the main experience, with non-rhythmic gameplay to spice up the overall experience!
 
 **Coming Soon**
 
 ## Freeplay & Mini-Games
 
-Acting as a quick access to all the content you've already played!
+If you just want to get to the action right away, without going through a bunch of menus that just kill the mood, having to watch cutscenes that delay the fun (even though you can skip them), or just don't want to waste your time walking around the overworld, then the Freeplay menu is best suited for these situations!
 
-If you just want to get to the action right away, without going through a bunch of menus that just kill the mood.
-
-Compete for the highscore, or the quickest time! Be the best and most skilled crewmate (or impostor) in the world!!!
+Use it to quickly access all the content you've already played! But not only that... You can compete for the highscore! Get higher ranks! Achieve the fastest time! Be the best and most skilled crewmate (or impostor) in the world!!!
 
 ## Multiplayer
 
@@ -73,7 +74,9 @@ Ever wanted to play all the mod brings with a friend? Say no more!
 
 For all of those enthusiastic maniacs that want to 100% complete every single fucking game in their library!
 
-**Coming in v1.5**
+Mind you some achievements are horrible to get... so get ready~!
+
+**Coming Soon**
 
 ## Language & Localization
 
@@ -81,7 +84,7 @@ Ever wanted to enjoy a beloved project, but couldn't fully because the game does
 
 Thanks to our amazing team of localizers, **YOU** can enjoy this project in **YOUR** language! No one gets left behind!!!
 
-Current supported languages and localizations:
+Current supported languages:
 
 - English (United States)
 - Spanish (Latin America)
@@ -93,7 +96,13 @@ Current supported languages and localizations:
 
 ## Movie Theater & Jukebox
 
-Do you want to re-watch those beautiful-looking cutscenes, or listen to the soundtrack the mod offers, without going through a bunch of different applications or websites? You can!
+Do you want to re-watch those beautiful-looking cutscenes, or listen to the soundtrack the mod offers, without going through a bunch of different applications or websites? You can! all from the same place!
+
+Rewatch your favorite moments with full control over the cutscenes! Skip ahead or rewind, speed up or slow down the playback, enjoy it your way!
+
+Listen to your favorite songs or musics heard throughout the mod, dynamically change between other songs and remixes! And leave it playing in the background while you do your own thing.
+
+<!-- And lastly for mobile users, it comes with fully integrated Bluetooth support! ok this one not yet it sounds beyond impossible -->
 
 **Jukebox coming in v1.5**
 
@@ -116,7 +125,7 @@ TBA
 <h1 align="center">CREDITS</h1>
 
 > [!NOTE]
-> The mod's development team and its workflow is currently being completely refactored, so the list will appear will a lot less people than before. (or as you will see, mostly just me, kenton, lol)
+> The mod's development workflow and its team are currently being completely refactored, so the list will appear with a lot less people than before. (or as you will see, mostly just me, kenton, lol)
 >
 > The change is only temporary, not permanent, and it will be reflected once the refactoring phase is over.
 
@@ -176,8 +185,8 @@ _None_
 ## Special Thanks
 
 - Silte – Composer of Sussus Moogus
-- Volt Arix – Composer of Defeat <a style="font-size:60%;color:gray;"><——— thanks to them this mod is where it is LOL tysm, seriously</a>
-- Clowfoe – For creating VS IMPOSTOR, and for being a huge inspiration to me and manu others \<3
+- Volt Arix – Composer of Defeat <!-- github doesnt support this <a style="font-size:60%;color:gray;"><——— thanks to them this mod is where it is LOL tysm, seriously</a>-->
+- Clowfoe – For creating VS IMPOSTOR, and for being a huge inspiration to me and many others \<3
 
 ---
 
