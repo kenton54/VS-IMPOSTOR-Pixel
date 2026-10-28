@@ -6,18 +6,11 @@
             <img src=".artwork/github/logo-light-scaledx10.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 95%;">
         </picture>
     </a>
-    <h1>VS IMPOSTOR Pixel</h1> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
-    <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
-    <br/>
-    <p align="center">
-        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> mod based of the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team MotorFrog, which itself is based of the popular game <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
-    </p>
-    <br/>
-    <p align="center">
-        The mod is fully compatible with Desktop and Mobile devices!
-    </p>
-    <br/>
-    <p align="center">
+    <h1>VS IMPOSTOR PIXEL</h1> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
+    <p><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
+    <p><b>VS IMPOSTOR PIXEL</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> modification based of <a href="https://vsimpostor.com">VS IMPOSTOR Legacy</a> created by the team MotorFrog, which is based of the popular game <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth LLC</a>.</p>
+    <p>The mod is fully compatible with Desktop and Mobile devices!</p>
+    <p>
         Downloads
         <br/>
         <b>
@@ -32,18 +25,100 @@
     </p>
 </div>
 
+<h1 align="center">ABOUT</h1>
+
+> [!WARNING]
+> This part of the page is unfinished, there's a lot of missing information and images that need to be included throughout the showcase of the features, to provide better feedback or just make the page prettier.
+
+> [!NOTE]
+> Some of the features that are showcased down below aren't present inside the latest build of the mod yet, however some show when they're planned to be made public!
+
+**VS IMPOSTOR PIXEL** is a fanmade sequel and reimagination of VS IMPOSTOR Legacy, telling a revamped story, improvements of already-established characters, as well as a plethora of new ones!
+
+Down below is all the features this mod contains:
+
+## Story & Overworld
+
+Featuring a complete reimagination of the story VS IMPOSTOR introduced to us, enhanced thanks to the Overworld!
+
+Black Impostor has gone rogue and is tired by your little games, he wants to end you once and for all, but messes up his sabotaging in the process and ends up corrupting reality and resetting the timeline, undoing all of Boyfriend's progress!
+
+What will be of our beloved short-sized blue-balled Boyfriend? **Play the mod to find out!**
+
+Play through all the Among Us maps, as well as fanmade-ones, solving puzzles and mysteries, discovering who the impostor is, foiling their plans, or sabotaging the crew! With a lot of fun and interesting interactions.
+
+## Side Stories
+
+Done with the main story? or are you just tired of the same rhythmic playstyle? Well look no further than the **Side Stories**!
+
+Play a bunch of small games with new stories to tell, comepletely adjacent from the main experience, with non-rhythmic gameplay! To spice up the overall experience!
+
+**Coming Soon**
+
+## Freeplay & Mini-Games
+
+Acting as a quick access to all the content you've already played!
+
+If you just want to get to the action right away, without going through a bunch of menus that just kill the mood.
+
+Compete for the highscore, or the quickest time! Be the best and most skilled crewmate (or impostor) in the world!!!
+
+## Multiplayer
+
+Ever wanted to play all the mod brings with a friend? Say no more!
+
+**Coming in v3**
+
+## Achievements
+
+For all of those enthusiastic maniacs that want to 100% complete every single fucking game in their library!
+
+**Coming in v1.5**
+
+## Language & Localization
+
+Ever wanted to enjoy a beloved project, but couldn't fully because the game doesn't support translations or doesn't have your native language? Not for this project!
+
+Thanks to our amazing team of localizers, **YOU** can enjoy this project in **YOUR** language! No one gets left behind!!!
+
+Current supported languages and localizations:
+
+- English (United States)
+- Spanish (Latin America)
+- French (France)
+- Russian
+- German
+
+**Coming in v1.5**
+
+## Movie Theater & Jukebox
+
+Do you want to re-watch those beautiful-looking cutscenes, or listen to the soundtrack the mod offers, without going through a bunch of different applications or websites? You can!
+
+**Jukebox coming in v1.5**
+
+**Movie Theater coming in v2**
+
+## Others
+
+TBA
+
+<!--
 <h1 align="center">STORY</h1>
-After Boyfriend finished his adventure across the VS IMPOSTOR universe, it's time for him to face off against Black Impostor in one epic final song!!11!1!
 
-But after winning, Black refuses to admit defeat! In one last desperate attempt, he tries to kill Boyfriend, but he's too elusive for him! Boyfriend dodges every single one of his attacks and escapes! But he doesn't get too far thanks to the floor breaking apart around him, Black now has him cornered!
-
-Reality started breaking around them. Boyfriend notices how the breaking floor behind him turned into a giant seemingly bottomless void, with no other option, he jumps into it, finally escaping from Black's clutches!
-
-Black, seeing how his prey managed to find a way to escape from him AGAIN, decides to reset the entire timeline, back to where everything began, to have a better chance of catching Boyfriend and make him pay for all the mockery he has made of Black. But something didn't go according to his plan... everything is now pixelated!
-
-Now Boyfriend has to go through all of the past lobbies he ventured already, meeting the same crew and impostors he once fought against valiantly, but now with new challenges and new dangerous foes to battle against, all in a different visual style! Will Boyfriend succeed once again? or will Black succeed this time and finish him off?
+<div align="justify">
+	<p><em>The story takes place right after VS IMPOSTOR.</em></p>
+    <p>After Boyfriend finished his adventure, it's time for him to face off against Black Impostor one last time, freeing him from his parasitic nature or Boyfriend succumbing to his knife. After the sing-off, Boyfriend emerges victorious, however Black wasn't going to throw the towel just yet, decides to go all-in, no more games, just straight for the kill, but Boyfriend is too elusive for him, managing to dodge every single one of his attacks! Black, still not giving up, decides to do one last sabotage in yet another attempt to stop Boyfriend, however due to his sheer amount of anger, he messes up the sabotage and does something he doesn't fully understands for now, reality starts breaking apart, causing huge earthquakes and corruptions, not only breaking everything around them, but pixelating it as well. Black not wanting to lose his prey, once again continues to attack Boyfriend, starting a chase. After a barrage of attacks, corruptions and earthquakes, Boyfriend stops running after realizing he has nowhere else to run, in front of him, a huge bottomless-looking void filled with corrupt graphics, behind him, his demise, Black Impostor. He, now cornering him, mocks Boyfriend one last time for being his most interesting prey, for his unsuccessful attempts at stopping him and for making his slaughter more entertaining, finishing his speech telling him that it was fun foiling his plans, and that his head will be his most precious collection for his pile of corpses. Boyfriend, with nothing else to do anymore, gives up, but won't fall by Black's knife, he won't give him the satisfaction of killing him, so he decides to jump into the void, closing his eyes expecting the worse, slowly getting pixelated by the corruption, but alas escaping from Black's clutches once again...</p>
+    <p>The corruption consumes reality, making everything and everyone have a pixelated appearance. And the timeline gets reset, undoing Boyfriend's progress entirely...</p>
+</div>
+-->
 
 <h1 align="center">CREDITS</h1>
+
+> [!NOTE]
+> The mod's development team and its workflow is currently being completely refactored, so the list will appear will a lot less people than before. (or as you will see, mostly just me, kenton, lol)
+>
+> The change is only temporary, not permanent, and it will be reflected once the refactoring phase is over.
 
 ## Director
 
@@ -52,7 +127,6 @@ Now Boyfriend has to go through all of the past lobbies he ventured already, mee
 ## Artists, Pixel-Artists and Animators
 
 - kenton
-- GTM
 
 ## Programmers
 
@@ -60,16 +134,17 @@ Now Boyfriend has to go through all of the past lobbies he ventured already, mee
 
 ## Musicians
 
-- Sparkly
-- Oxzy
-- Silte
-- VoltR
+_None_
 
 ## Charters
 
 - kenton
 
-## Translators
+## Writers
+
+- kenton
+
+## Translators & Localizers
 
 <table>
     <tr>
@@ -78,15 +153,15 @@ Now Boyfriend has to go through all of the past lobbies he ventured already, mee
     </tr>
     <tr>
         <td>kenton</td>
-        <td>Spanish</td>
+        <td>Spanish (Latin America)</td>
     </tr>
     <tr>
         <td>Moxt</td>
-        <td>French</td>
+        <td>French (France)</td>
     </tr>
     <tr>
         <td>Wøvenx</td>
-        <td>Portuguese</td>
+        <td>Portuguese (Brazil)</td>
     </tr>
     <tr>
         <td>FuniFred</td>
@@ -96,8 +171,24 @@ Now Boyfriend has to go through all of the past lobbies he ventured already, mee
         <td>JustAlexus</td>
         <td>German</td>
     </tr>
-    <tr>
-        <td>Huy1234TH</td>
-        <td>Vietnamese</td>
-    </tr>
 </table>
+
+## Special Thanks
+
+- Silte – Composer of Sussus Moogus
+- Volt Arix – Composer of Defeat <a style="font-size:60%;color:gray;"><——— thanks to them this mod is where it is LOL tysm, seriously</a>
+- Clowfoe – For creating VS IMPOSTOR, and for being a huge inspiration to me and manu others \<3
+
+---
+
+<div style="font-size:75%;color:gray;">
+	This is a project made for fun and with love, forever made free-to-play, never with the intent of profiting from it.
+	<br/>
+    All rights and non-original assets present in the project belong to their respective owners.
+	<br/><br/>
+	<b>Friday Night Funkin'</b> owned by <b>The Funkin Crew Inc.</b>
+	<br/>
+	<b>Among Us</b> <!--& <b>The Henry Stickmin Collection</b>--> owned by <b>Innersloth LLC</b>
+	<!--<br/> shhhh not yet
+	<b>Sonic the Hedgehog</b> owned by <b>SEGA</b>-->
+</div>
